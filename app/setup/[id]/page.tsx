@@ -145,7 +145,13 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               >
                 Add me
                 {user.imageUrl && (
-                  <Image src={user.imageUrl} alt="" width={32} height={32} className="rounded-full" />
+                  <Image
+                    src={user.imageUrl}
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
                 )}
               </button>
             )}
@@ -191,7 +197,9 @@ function SetupPageContent({ params }: { params: { id: string } }) {
           disabled={!players.length || isStarting}
           onClick={handleContinue}
         >
-          {isStarting ? 'Starting…' : (
+          {isStarting ? (
+            'Starting…'
+          ) : (
             <>
               Everyone&apos;s in — let&apos;s go! <ArrowRight size={26} />
             </>

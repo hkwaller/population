@@ -15,7 +15,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-
 import { sample } from 'lodash'
 import { animals, adjectives } from '@/app/mockData'
 
@@ -55,8 +54,7 @@ export function haversineKm(a: LatLng, b: LatLng) {
   const dLng = toRad(b.lng - a.lng)
   const lat1 = toRad(a.lat)
   const lat2 = toRad(b.lat)
-  const h =
-    Math.sin(dLat / 2) ** 2 + Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2)
+  const h = Math.sin(dLat / 2) ** 2 + Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2)
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)))
 }
 
@@ -293,17 +291,121 @@ const stat = (key: string): number => (stats as Record<string, number>)[key] ?? 
 // category picker into Main (the crowd-pleasers) and Special (the deep cuts).
 // ids match the generator output in scripts/gen/build-questions.mjs and stats.json.
 export const categories = [
-  { id: 'flags', name: 'Flags', icon: 'Flag', group: 'core', tier: 'main', bg: categoryBackgroundColors[0], count: stat('flags') },
-  { id: 'outline', name: 'Country Shapes', icon: 'Map', group: 'core', tier: 'main', bg: categoryBackgroundColors[1], count: stat('outline') },
-  { id: 'borders', name: 'Borders', icon: 'Waypoints', group: 'core', tier: 'main', bg: categoryBackgroundColors[2], count: stat('borders') },
-  { id: 'capitals', name: 'Capitals', icon: 'Landmark', group: 'core', tier: 'main', bg: categoryBackgroundColors[3], count: stat('capitals') },
-  { id: 'population', name: 'Population', icon: 'Users', group: 'core', tier: 'main', bg: categoryBackgroundColors[4], count: stat('population') },
-  { id: 'locate', name: 'Locate It', icon: 'MapPin', group: 'map', tier: 'main', bg: categoryBackgroundColors[5], count: stat('locate') },
-  { id: 'which-bigger', name: 'Which is Bigger?', icon: 'Scale', group: 'quickfire', tier: 'main', bg: categoryBackgroundColors[8], count: stat('which-bigger') },
-  { id: 'area', name: 'Land Area', icon: 'Maximize2', group: 'sliders', tier: 'special', bg: categoryBackgroundColors[6], count: stat('area') },
-  { id: 'distance', name: 'Distances', icon: 'Ruler', group: 'sliders', tier: 'special', bg: categoryBackgroundColors[7], count: stat('distance') },
-  { id: 'currency', name: 'Currencies', icon: 'Coins', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[9], count: stat('currency') },
-  { id: 'language', name: 'Languages', icon: 'Languages', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[10], count: stat('language') },
-  { id: 'continent', name: 'Continents', icon: 'Globe', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[11], count: stat('continent') },
-  { id: 'ranking', name: 'Rank by Population', icon: 'ArrowDownWideNarrow', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[12], count: stat('ranking') },
+  {
+    id: 'flags',
+    name: 'Flags',
+    icon: 'Flag',
+    group: 'core',
+    tier: 'main',
+    bg: categoryBackgroundColors[0],
+    count: stat('flags'),
+  },
+  {
+    id: 'outline',
+    name: 'Country Shapes',
+    icon: 'Map',
+    group: 'core',
+    tier: 'main',
+    bg: categoryBackgroundColors[1],
+    count: stat('outline'),
+  },
+  {
+    id: 'borders',
+    name: 'Borders',
+    icon: 'Waypoints',
+    group: 'core',
+    tier: 'main',
+    bg: categoryBackgroundColors[2],
+    count: stat('borders'),
+  },
+  {
+    id: 'capitals',
+    name: 'Capitals',
+    icon: 'Landmark',
+    group: 'core',
+    tier: 'main',
+    bg: categoryBackgroundColors[3],
+    count: stat('capitals'),
+  },
+  {
+    id: 'ranking',
+    name: 'Rank by Population',
+    icon: 'ArrowDownWideNarrow',
+    group: 'quickfire',
+    tier: 'main',
+    bg: categoryBackgroundColors[12],
+    count: stat('ranking'),
+  },
+  {
+    id: 'locate',
+    name: 'Locate It',
+    icon: 'MapPin',
+    group: 'map',
+    tier: 'main',
+    bg: categoryBackgroundColors[5],
+    count: stat('locate'),
+  },
+  {
+    id: 'which-bigger',
+    name: 'Which is Bigger?',
+    icon: 'Scale',
+    group: 'quickfire',
+    tier: 'main',
+    bg: categoryBackgroundColors[8],
+    count: stat('which-bigger'),
+  },
+  {
+    id: 'area',
+    name: 'Land Area',
+    icon: 'Maximize2',
+    group: 'sliders',
+    tier: 'special',
+    bg: categoryBackgroundColors[6],
+    count: stat('area'),
+  },
+  {
+    id: 'distance',
+    name: 'Distances',
+    icon: 'Ruler',
+    group: 'sliders',
+    tier: 'special',
+    bg: categoryBackgroundColors[7],
+    count: stat('distance'),
+  },
+  {
+    id: 'currency',
+    name: 'Currencies',
+    icon: 'Coins',
+    group: 'quickfire',
+    tier: 'special',
+    bg: categoryBackgroundColors[9],
+    count: stat('currency'),
+  },
+  {
+    id: 'language',
+    name: 'Languages',
+    icon: 'Languages',
+    group: 'quickfire',
+    tier: 'special',
+    bg: categoryBackgroundColors[10],
+    count: stat('language'),
+  },
+  {
+    id: 'continent',
+    name: 'Continents',
+    icon: 'Globe',
+    group: 'quickfire',
+    tier: 'special',
+    bg: categoryBackgroundColors[11],
+    count: stat('continent'),
+  },
+  {
+    id: 'population',
+    name: 'Population',
+    icon: 'Users',
+    group: 'core',
+    tier: 'special',
+    bg: categoryBackgroundColors[4],
+    count: stat('population'),
+  },
 ] as const

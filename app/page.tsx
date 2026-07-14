@@ -41,7 +41,13 @@ export default function StartPage() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <PopButton href="/new-game" variant="secondary" size="lg" rotate={-1} className="text-pop-coral">
+          <PopButton
+            href="/new-game"
+            variant="secondary"
+            size="lg"
+            rotate={-1}
+            className="text-pop-coral"
+          >
             Start a party
           </PopButton>
           <PopButton href="/join" variant="primary" size="lg" rotate={1}>
@@ -92,8 +98,10 @@ export default function StartPage() {
                 value={<CountUp end={totalQuestions} duration={1.2} separator="," />}
                 label="questions and counting"
               />
-              <Stat value={<CountUp end={categories.length} duration={1} />} label="categories to mix" />
-              <Stat value={<span>∞</span>} label="custom quizzes (pro)" />
+              <Stat
+                value={<CountUp end={categories.length} duration={1} />}
+                label="categories to mix"
+              />
             </div>
             <p className="mt-6 text-[17px] font-bold text-pop-ink/70">
               Live scoring · play on any device · rematch in one tap
@@ -127,9 +135,15 @@ function Footer() {
           Population
         </span>
         <nav className="flex flex-wrap items-center justify-center gap-6 text-[17px] font-bold text-white/70">
-          <Link href="/about" className="hover:text-white">About</Link>
-          <Link href="/contact" className="hover:text-white">Contact</Link>
-          <Link href="/privacy" className="hover:text-white">Privacy</Link>
+          <Link href="/about" className="hover:text-white">
+            About
+          </Link>
+          <Link href="/contact" className="hover:text-white">
+            Contact
+          </Link>
+          <Link href="/privacy" className="hover:text-white">
+            Privacy
+          </Link>
           <a
             href="https://amaliesutviklingsfabrikk.no"
             target="_blank"
