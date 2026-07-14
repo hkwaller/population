@@ -13,9 +13,9 @@ import { POP, POP_SPRING } from './components/pop/theme'
 
 const STEPS = [
   { n: 1, bg: POP.coral, text: 'Host starts a party, friends scan the code' },
-  { n: 2, bg: POP.cobalt, text: 'Every question has a number for an answer' },
-  { n: 3, bg: POP.grape, text: 'Slide to guess — points = how far off you are' },
-  { n: 4, bg: POP.mint, text: 'Lowest score takes the crown' },
+  { n: 2, bg: POP.cobalt, text: 'Flags, capitals, borders, sliders, pin-the-map' },
+  { n: 3, bg: POP.grape, text: 'The closer your guess, the more points you bag' },
+  { n: 4, bg: POP.mint, text: 'Highest score takes the crown 👑' },
 ]
 
 export default function StartPage() {
@@ -31,13 +31,13 @@ export default function StartPage() {
           animate={{ scale: 1, opacity: 1, rotate: -2 }}
           transition={POP_SPRING}
           className="pop-textshadow font-black leading-[0.85] tracking-[-0.03em] text-white"
-          style={{ fontSize: 'clamp(88px, 20vw, 190px)' }}
+          style={{ fontSize: 'clamp(52px, 13vw, 132px)' }}
         >
-          ish!
+          Population
         </motion.h1>
 
         <p className="mx-auto mt-6 max-w-[620px] text-xl font-bold text-white/90 md:text-[28px] md:leading-tight">
-          Nobody knows the answer. Guess anyway. Closest wins, wildest gets roasted.
+          Flags, capitals, borders and a few billion people. Guess the world — closest wins.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -46,6 +46,11 @@ export default function StartPage() {
           </PopButton>
           <PopButton href="/join" variant="primary" size="lg" rotate={1}>
             I have a code
+          </PopButton>
+        </div>
+        <div className="mt-4">
+          <PopButton href="/daily" variant="ghostLight" size="lg" rotate={-1}>
+            🗓️ Play today&apos;s daily
           </PopButton>
         </div>
 
@@ -119,7 +124,7 @@ function Footer() {
           className="rounded-[14px] bg-white px-3 py-1.5 text-lg font-black"
           style={{ color: POP.coral, rotate: '-3deg' }}
         >
-          ish!
+          Population
         </span>
         <nav className="flex flex-wrap items-center justify-center gap-6 text-[17px] font-bold text-white/70">
           <Link href="/about" className="hover:text-white">About</Link>

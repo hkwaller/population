@@ -12,8 +12,10 @@ import { useGame } from '@/hooks/useGame'
 import { useSupabase } from '@/hooks/useSupabase'
 import { useToast } from '@/hooks/use-toast'
 import { GameRoomProvider } from '@/app/providers'
-import { asSlider } from '@/lib/utils'
-import { AnswerValue } from '@/app/types'
+import { asSlider, formatAnswerValue } from '@/lib/utils'
+import { AnswerValue, LatLng } from '@/app/types'
+import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { WorldMap } from '@/app/components/geo/WorldMap'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
@@ -38,8 +40,10 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   const router = useRouter()
 
   const slider = asSlider(currentQuestion)
+  const [mapPin, setMapPin] = useState<LatLng | null>(null)
 
   useEffect(() => {
+    setMapPin(null)
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -112,18 +116,35 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
         <div className="fixed inset-x-0 bottom-0 z-20 px-5 pb-6">
           <div className="mx-auto max-w-md">
             {myAnswered ? (
-              <LockedState players={players} currentQuestionId={currentQuestion.id} value={currentAnswer} />
+              <LockedState
+                players={players}
+                currentQuestionId={currentQuestion.id}
+                value={myPlayerInfo?.answers?.find((a) => a.questionId === currentQuestion.id)?.answer}
+              />
             ) : (
               <>
-                <PopSlider
-                  min={slider?.lower_bound ?? 0}
-                  max={slider?.upper_bound ?? 100}
-                  value={currentAnswer}
-                  onChange={setCurrentAnswer}
-                  valueColor={POP.cobalt}
-                  onOpenKeypad={() => setAnswerInputModalOpen(true)}
-                  compact
-                />
+                {slider && (
+                  <PopSlider
+                    min={slider.lower_bound}
+                    max={slider.upper_bound}
+                    value={currentAnswer}
+                    onChange={setCurrentAnswer}
+                    valueColor={POP.cobalt}
+                    onOpenKeypad={() => setAnswerInputModalOpen(true)}
+                    compact
+                  />
+                )}
+                {currentQuestion.type === 'map' && (
+                  <div className="overflow-hidden rounded-[20px] border-4 border-pop-ink">
+                    <WorldMap value={mapPin} onPick={setMapPin} />
+                  </div>
+                )}
+                {currentQuestion.type === 'choice' && (
+                  <ChoiceOptions
+                    options={currentQuestion.options}
+                    onSelect={(opt) => submit(opt)}
+                  />
+                )}
                 <div className="mt-4 flex items-center gap-3">
                   {showReplace && (
                     <CircleBtn color={POP.mint} onClick={() => send('replace')} label="Replace question">
@@ -135,15 +156,18 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       <SkipForward size={22} strokeWidth={2.5} color="#fff" />
                     </CircleBtn>
                   )}
-                  <PopButton
-                    variant="primary"
-                    size="lg"
-                    rotate={-1}
-                    className="flex-1"
-                    onClick={() => submit(currentAnswer)}
-                  >
-                    Lock it in ✊
-                  </PopButton>
+                  {currentQuestion.type !== 'choice' && (
+                    <PopButton
+                      variant="primary"
+                      size="lg"
+                      rotate={-1}
+                      className="flex-1"
+                      disabled={currentQuestion.type === 'map' && !mapPin}
+                      onClick={() => submit(currentQuestion.type === 'map' ? mapPin! : currentAnswer)}
+                    >
+                      Lock it in ✊
+                    </PopButton>
+                  )}
                 </div>
               </>
             )}
@@ -220,7 +244,7 @@ function LockedState({
 }: {
   players: any[]
   currentQuestionId: string
-  value: number
+  value: AnswerValue | undefined
 }) {
   const waitingName = players.find((p) => !p.answers.some((a: any) => a.questionId === currentQuestionId))?.name
   return (
@@ -229,7 +253,7 @@ function LockedState({
         className="rounded-pill bg-white px-5 py-2 text-3xl font-black"
         style={{ color: POP.ink, rotate: '-2deg' }}
       >
-        {value}
+        {formatAnswerValue(value)}
       </span>
       <span className="text-3xl font-black text-white">Locked in! ✊</span>
       <span className="text-lg font-bold text-white/70">No takebacks. Sweating yet?</span>

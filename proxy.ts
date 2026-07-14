@@ -7,6 +7,9 @@ const isPublicRoute = createRouteMatcher([
   '/join',
   '/join/(.*)',
   '/game/(.*)',
+  '/daily',
+  '/preview',
+  '/geo/(.*)', // public static geometry (.json is otherwise caught by the matcher)
   '/highscores',
   '/sign-in',
   '/sign-up',

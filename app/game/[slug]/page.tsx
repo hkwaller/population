@@ -7,6 +7,9 @@ import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
 import { asSlider } from '@/lib/utils'
+import { LatLng } from '@/app/types'
+import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { WorldMap } from '@/app/components/geo/WorldMap'
 import { Player } from '@/app/components/Player'
 import { Question } from '@/app/components/Question'
 import { Category } from '@/app/components/Category'
@@ -47,8 +50,10 @@ function GamePageContent({ params }: { params: { slug: string } }) {
   )
 
   const slider = asSlider(currentQuestion)
+  const [mapPin, setMapPin] = useState<LatLng | null>(null)
 
   useEffect(() => {
+    setMapPin(null)
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -102,7 +107,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
       {/* Bottom control dock */}
       <div className="fixed inset-x-0 bottom-0 z-20 px-5 pb-6">
         <div className="mx-auto max-w-2xl">
-          {me?.localPlayer && slider && (
+          {me?.localPlayer && !myAnswered && slider && (
             <div className="mb-4">
               <PopSlider
                 min={slider.lower_bound}
@@ -115,6 +120,21 @@ function GamePageContent({ params }: { params: { slug: string } }) {
               />
             </div>
           )}
+          {me?.localPlayer && !myAnswered && currentQuestion?.type === 'map' && (
+            <div className="mb-4 overflow-hidden rounded-[20px] border-4 border-pop-ink">
+              <WorldMap value={mapPin} onPick={setMapPin} />
+            </div>
+          )}
+          {me?.localPlayer && !myAnswered && currentQuestion?.type === 'choice' && (
+            <div className="mb-4">
+              <ChoiceOptions
+                options={currentQuestion.options}
+                onSelect={(opt) =>
+                  send('answer', { id: me?.id, answer: opt, questionId: currentQuestion.id })
+                }
+              />
+            </div>
+          )}
 
           <div className="flex items-center justify-center gap-3">
             {showReplace && (
@@ -123,16 +143,17 @@ function GamePageContent({ params }: { params: { slug: string } }) {
               </PopButton>
             )}
 
-            {me?.localPlayer && !myAnswered && currentQuestion && (
+            {me?.localPlayer && !myAnswered && currentQuestion && currentQuestion.type !== 'choice' && (
               <PopButton
                 variant="primary"
                 size="lg"
                 rotate={-1}
                 className="flex-1"
+                disabled={currentQuestion.type === 'map' && !mapPin}
                 onClick={() =>
                   send('answer', {
                     id: me?.id,
-                    answer: currentAnswer,
+                    answer: currentQuestion.type === 'map' ? mapPin! : currentAnswer,
                     questionId: currentQuestion.id,
                   })
                 }

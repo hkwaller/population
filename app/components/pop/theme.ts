@@ -1,16 +1,17 @@
-// Sticker Pop design tokens & helpers.
-// See Downloads/design_handoff_sticker_pop/README.md for the full spec.
-
+// Earthy / topographic design tokens & helpers.
+// Token names are kept from the original "Sticker Pop" system so every usage
+// re-tints automatically; the palette is now an atlas of terracotta, ocean,
+// ochre, moss and parchment.
 export const POP = {
-  coral: '#FF5747',
-  cobalt: '#2B5BFF',
-  sunshine: '#FFC933',
-  grape: '#8C4DFF',
-  mint: '#3DDCA5',
-  bubblegum: '#FF9BD2',
-  ink: '#171214',
-  paper: '#FFF4E4',
-  sky: '#7FD8FF',
+  coral: '#CC6B49', // terracotta — primary accent / home
+  cobalt: '#1F6E7B', // deep ocean teal — game
+  sunshine: '#E0A63C', // ochre / gold — reveal, badges
+  grape: '#8B5E3C', // highland brown — game over / generate
+  mint: '#4F9E6A', // moss green — correct / locked / positive
+  bubblegum: '#D98E77', // clay rose
+  ink: '#211812', // warm espresso near-black
+  paper: '#F4E8D2', // parchment
+  sky: '#A7D4D0', // glacial pale aqua
 } as const
 
 // Each route owns one background color — this is the navigation signature.
@@ -27,16 +28,16 @@ export const ROUTE_BG: Record<string, string> = {
   generate: POP.grape,
 }
 
-// The 5 pastel player-sticker fills.
-export const STICKER_FILLS = ['#FFC933', '#7FD8FF', '#8AF0BE', '#FF9BD2', '#FFD66E']
+// The 5 earthy player-sticker fills.
+export const STICKER_FILLS = ['#E7C77A', '#8FC7C4', '#A8C79B', '#E0A98C', '#CBA24A']
 
 // Player color options (id + hex) shown in the join/profile pickers.
 export const stickerColors = [
-  { id: 'sunshine', hex: '#FFC933' },
-  { id: 'sky', hex: '#7FD8FF' },
-  { id: 'mint', hex: '#8AF0BE' },
-  { id: 'bubblegum', hex: '#FF9BD2' },
-  { id: 'butter', hex: '#FFD66E' },
+  { id: 'sand', hex: '#E7C77A' },
+  { id: 'lagoon', hex: '#8FC7C4' },
+  { id: 'sage', hex: '#A8C79B' },
+  { id: 'clay', hex: '#E0A98C' },
+  { id: 'ochre', hex: '#CBA24A' },
 ]
 
 function hashStr(s: string): number {

@@ -24,7 +24,7 @@ export const GameInfo = () => {
 
   return (
     <motion.div
-      className="bg-ish-lime border-8 border-ish-ink p-6 transform -rotate-2 shadow-[6px_6px_0px_#0D0D0D]"
+      className="bg-ish-lime border-8 border-ish-ink p-6 transform -rotate-2 shadow-[6px_6px_0px_#211812]"
       whileHover={{
         rotate: 3,
       }}

@@ -13,7 +13,7 @@ import {
 import { SignOutButton } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
 
-// The tilted `ish!` tag, top-left of most screens. Clicking it goes home.
+// The tilted `Population` tag, top-left of most screens. Clicking it goes home.
 export function PopLogo({
   tone = 'paper',
   textColor,
@@ -27,12 +27,12 @@ export function PopLogo({
       <motion.span
         whileHover={{ rotate: 0, y: -2 }}
         className={cn(
-          'inline-block cursor-pointer rounded-[18px] px-4 py-2 text-2xl font-black shadow-pop-sm md:text-[28px]',
+          'inline-block cursor-pointer rounded-[18px] px-4 py-2 text-xl font-black shadow-pop-sm md:text-2xl',
           isPaper ? 'bg-white' : 'bg-pop-ink text-white',
         )}
         style={{ rotate: '-3deg', color: textColor, boxShadow: '0 5px 0 rgba(0,0,0,0.15)' }}
       >
-        ish!
+        Population
       </motion.span>
     </Link>
   )

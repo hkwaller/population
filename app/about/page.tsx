@@ -8,7 +8,7 @@ export default function AboutPage() {
       <Logo />
       <div className="h-full text-ish-ink p-0 md:p-8">
         <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-8 max-w-[800px]">
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h1 className="text-3xl md:text-5xl font-extrabold mb-6 uppercase tracking-tight text-ish-coral">
               About Ish
             </h1>
@@ -23,7 +23,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">How It Works</h2>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-2">
               <li>One player creates a game and shares the link</li>
@@ -34,7 +34,7 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">The Categories</h2>
             <p className="text-lg md:text-xl mb-4">
               Ish has a large and growing question bank spanning categories like TV &amp; Movies,
@@ -46,7 +46,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-violet text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-violet text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Who Made This?</h2>
             <p className="text-lg md:text-xl mb-4">
               Ish was built by{' '}

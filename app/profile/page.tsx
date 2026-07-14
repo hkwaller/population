@@ -96,7 +96,7 @@ export default function Profile() {
                     className="flex h-[62px] w-[62px] items-center justify-center rounded-[20px]"
                     style={{
                       background: sel ? stickerFill(colorId) : POP.paper,
-                      border: sel ? '4px solid #171214' : 'none',
+                      border: sel ? '4px solid #211812' : 'none',
                       rotate: sel ? `${i % 2 ? 3 : -3}deg` : '0deg',
                     }}
                   >

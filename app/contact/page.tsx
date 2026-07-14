@@ -8,7 +8,7 @@ export default function ContactPage() {
       <Logo />
       <div className="h-full text-ish-ink p-0 md:p-8">
         <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-8 max-w-[800px]">
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h1 className="text-3xl md:text-5xl font-extrabold mb-6 uppercase tracking-tight text-ish-coral">
               Get In Touch
             </h1>
@@ -29,17 +29,17 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-sun border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-sun border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-6 uppercase">Email Us</h2>
             <a
               href="mailto:hei@amaliesutviklingsfabrikk.no"
-              className="inline-block bg-ish-ink text-white text-xl md:text-2xl font-extrabold py-4 px-8 border-4 border-ish-ink transform rotate-1 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#0D0D0D]"
+              className="inline-block bg-ish-ink text-white text-xl md:text-2xl font-extrabold py-4 px-8 border-4 border-ish-ink transform rotate-1 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#211812]"
             >
               hei@amaliesutviklingsfabrikk.no
             </a>
           </div>
 
-          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
               Reporting a Problem?
             </h2>
@@ -53,7 +53,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-mint border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-mint border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Visit Us Online</h2>
             <p className="text-lg md:text-xl mb-4">
               Check out our other projects and work at{' '}

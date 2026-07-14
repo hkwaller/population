@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 
 import { TQuestion } from '../types'
 import { Category } from './Category'
+import { QuestionPrompt } from './geo/QuestionPrompt'
 
 export const Question = ({
   question,
@@ -31,14 +32,9 @@ export const Question = ({
       <div className="absolute -top-3.5 left-6">
         <Category question={question} className="rotate-[-3deg] shadow-pop-sm" />
       </div>
-      <p
-        className="text-center font-black leading-tight tracking-[-0.01em] text-pop-ink"
-        style={{
-          fontSize: compact ? 'clamp(20px, 6vw, 27px)' : 'clamp(28px, 5vw, 56px)',
-        }}
-      >
-        {question.question}
-      </p>
+      <div className="flex flex-col items-center gap-4">
+        <QuestionPrompt prompt={question.prompt} fallbackText={question.question} />
+      </div>
     </motion.div>
   )
 }

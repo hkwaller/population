@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --background: 40 100% 97%;
-    --foreground: 0 0% 5%;
+    --background: 42 55% 89%;
+    --foreground: 30 29% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
+    --card: 40 45% 96%;
+    --card-foreground: 30 29% 10%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover: 40 45% 96%;
+    --popover-foreground: 30 29% 10%;
 
-    --primary: 221 100% 50%;
+    --primary: 16 56% 54%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
@@ -28,9 +28,9 @@
     --destructive: 4 100% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 100% 50%;
+    --border: 36 25% 82%;
+    --input: 36 25% 82%;
+    --ring: 16 56% 54%;
 
     --radius: 0.5rem;
   }
@@ -77,13 +77,14 @@
 
 html,
 body {
-  color: #171214;
+  color: #211812;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Parchment base with faint topographic contour rings */
 .ish-bg {
-  background-color: #FFF8EC;
-  background-image: radial-gradient(#0D0D0D 1.5px, transparent 1.5px);
+  background-color: #F4E8D2;
+  background-image: radial-gradient(rgba(33, 24, 18, 0.06) 1.5px, transparent 1.5px);
   background-size: 28px 28px;
 }
 

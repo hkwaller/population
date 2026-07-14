@@ -12,8 +12,8 @@ const gabarito = Gabarito({
 })
 
 export const metadata: Metadata = {
-  title: 'ish! — guess anyway, closest wins',
-  description: 'Nobody knows the answer. Guess anyway. Closest wins, wildest gets roasted.',
+  title: 'Population — how well do you know the world?',
+  description: 'Flags, capitals, borders and a few billion people. Guess the world — closest wins.',
 }
 
 export default function RootLayout({

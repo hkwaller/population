@@ -384,7 +384,7 @@ export function useSupabase() {
 
 async function incrementPlayerStats(playerId: string, increments: Record<string, number>) {
   const { data, error } = await supabase.rpc('increment_columns', {
-    table_name: 'user_preferences',
+    table_name: 'population_user_preferences',
     id_column: 'id',
     id_value: playerId,
     increments: increments,

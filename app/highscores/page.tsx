@@ -85,7 +85,7 @@ export default function Highscores() {
                 style={{
                   rotate: index % 2 === 0 ? '-1deg' : '1deg',
                   background: isFirst ? POP.sunshine : '#fff',
-                  border: isFirst ? '4px solid #171214' : undefined,
+                  border: isFirst ? '4px solid #211812' : undefined,
                 }}
               >
                 <span className="w-9 shrink-0 text-center text-2xl font-black text-pop-ink/40">

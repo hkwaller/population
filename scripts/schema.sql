@@ -1,11 +1,13 @@
--- Geography game — Supabase schema.
--- Run this in the Supabase SQL editor (or `supabase db execute`) on a fresh project,
+-- Geography game — Supabase schema. All objects are prefixed `population_` so they
+-- can live alongside other tables in a shared project.
+--
+-- Run this in the Supabase SQL editor (or `supabase db execute`) on your project,
 -- then seed with:  npx tsx --env-file=.env.local scripts/migrate-questions.ts
 
 -- ---------------------------------------------------------------------------
--- questions: the geography question bank (slider | choice | map)
+-- population_questions: the geography question bank (slider | choice | map)
 -- ---------------------------------------------------------------------------
-create table if not exists public.questions (
+create table if not exists public.population_questions (
   id            uuid primary key,
   type          text not null default 'slider',   -- 'slider' | 'choice' | 'map'
   category      text not null,
@@ -19,13 +21,13 @@ create table if not exists public.questions (
   falloff_km    double precision,                  -- map scoring falloff override
   source        text default 'geo'
 );
-create index if not exists questions_category_idx on public.questions (category);
+create index if not exists population_questions_category_idx on public.population_questions (category);
 
 -- ---------------------------------------------------------------------------
--- games: finished-game history for stats / highscores (camelCase columns must
--- be quoted to match the supabase-js payload keys)
+-- population_games: finished-game history for stats / highscores
+-- (camelCase columns are quoted to match the supabase-js payload keys)
 -- ---------------------------------------------------------------------------
-create table if not exists public.games (
+create table if not exists public.population_games (
   id                uuid primary key default gen_random_uuid(),
   "gameId"          text,
   finished_at       timestamptz,
@@ -38,20 +40,98 @@ create table if not exists public.games (
   players           jsonb,
   winner            jsonb
 );
-create index if not exists games_gameid_idx on public.games ("gameId");
+create index if not exists population_games_gameid_idx on public.population_games ("gameId");
 
 -- ---------------------------------------------------------------------------
--- RLS: questions are public read; games are public read + insert (guests, no auth).
--- Seeding uses the service role key, which bypasses RLS.
+-- population_user_preferences: per-player profile + cumulative stats
 -- ---------------------------------------------------------------------------
-alter table public.questions enable row level security;
-alter table public.games enable row level security;
+create table if not exists public.population_user_preferences (
+  id                       text primary key,
+  preferred_color          text,
+  icon                     text,
+  display_name             text,
+  games_played             int  default 0,
+  overall_score            numeric default 0,
+  bullseyes                int  default 0,
+  total_questions_answered int  default 0,
+  multiplayer_games        int  default 0,
+  wins                     int  default 0
+);
 
-drop policy if exists "questions public read" on public.questions;
-create policy "questions public read" on public.questions for select using (true);
+-- ---------------------------------------------------------------------------
+-- population_reported_questions: player-flagged bad questions
+-- ---------------------------------------------------------------------------
+create table if not exists public.population_reported_questions (
+  id           uuid primary key default gen_random_uuid(),
+  question     text not null,
+  report_count int default 1,
+  created_at   timestamptz default now(),
+  updated_at   timestamptz default now()
+);
 
-drop policy if exists "games public read" on public.games;
-create policy "games public read" on public.games for select using (true);
+-- ---------------------------------------------------------------------------
+-- population_played_games: lookup of a shared game by public game_id
+-- ---------------------------------------------------------------------------
+create table if not exists public.population_played_games (
+  id        uuid primary key default gen_random_uuid(),
+  game_id   text unique,
+  data      jsonb,
+  created_at timestamptz default now()
+);
 
-drop policy if exists "games public insert" on public.games;
-create policy "games public insert" on public.games for insert with check (true);
+-- ---------------------------------------------------------------------------
+-- increment_columns: generic atomic counter bump used for player stats.
+-- Safe to skip if it already exists in your project (created by another app).
+-- ---------------------------------------------------------------------------
+create or replace function public.increment_columns(
+  table_name text,
+  id_column  text,
+  id_value   text,
+  increments jsonb
+) returns void language plpgsql as $$
+declare
+  set_clause text;
+begin
+  select string_agg(format('%I = coalesce(%I,0) + %s', key, key, (value)::numeric), ', ')
+    into set_clause
+  from jsonb_each_text(increments);
+
+  if set_clause is null then
+    return;
+  end if;
+
+  execute format(
+    'update public.%I set %s where %I = %L',
+    table_name, set_clause, id_column, id_value
+  );
+end;
+$$;
+
+-- ---------------------------------------------------------------------------
+-- RLS: questions/games/preferences public read; games + reports insertable by
+-- guests (no auth). Seeding uses the service role key, which bypasses RLS.
+-- ---------------------------------------------------------------------------
+alter table public.population_questions          enable row level security;
+alter table public.population_games              enable row level security;
+alter table public.population_user_preferences   enable row level security;
+alter table public.population_reported_questions enable row level security;
+alter table public.population_played_games       enable row level security;
+
+drop policy if exists "population questions read"   on public.population_questions;
+create policy "population questions read"   on public.population_questions   for select using (true);
+
+drop policy if exists "population games read"        on public.population_games;
+create policy "population games read"        on public.population_games        for select using (true);
+drop policy if exists "population games insert"      on public.population_games;
+create policy "population games insert"      on public.population_games        for insert with check (true);
+
+drop policy if exists "population prefs all"         on public.population_user_preferences;
+create policy "population prefs all"         on public.population_user_preferences for all using (true) with check (true);
+
+drop policy if exists "population reports all"       on public.population_reported_questions;
+create policy "population reports all"       on public.population_reported_questions for all using (true) with check (true);
+
+drop policy if exists "population played read"       on public.population_played_games;
+create policy "population played read"       on public.population_played_games for select using (true);
+drop policy if exists "population played insert"     on public.population_played_games;
+create policy "population played insert"     on public.population_played_games for insert with check (true);

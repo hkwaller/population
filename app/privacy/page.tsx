@@ -8,7 +8,7 @@ export default function PrivacyPage() {
       <Logo />
       <div className="h-full text-ish-ink p-0 md:p-8">
         <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-8 max-w-[800px]">
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h1 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-ish-coral">
               Privacy Policy
             </h1>
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
               What We Collect
             </h2>
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
               How We Use It
             </h2>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
               Third-Party Services
             </h2>
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-ish-violet text-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-violet text-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Your Rights</h2>
             <p className="text-lg md:text-xl mb-4">
               You have the right to access, correct, or delete your personal data. If you want to
@@ -115,7 +115,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-sun border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#0D0D0D]">
+          <div className="w-full bg-ish-sun border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Changes</h2>
             <p className="text-lg md:text-xl">
               We may update this policy occasionally. When we do, we&apos;ll update the date at the
