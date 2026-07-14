@@ -8,6 +8,7 @@ import CountUp from 'react-countup'
 import { AnswerValue, LatLng, TPlayer, TQuestion } from '../types'
 import { formatAnswerValue, haversineKm, MAX_SCORE } from '@/lib/utils'
 import { POP, stickerFill } from './pop/theme'
+import { RankGuessFlags } from './geo/RankFlags'
 
 export const PlayerResult = ({
   player,
@@ -39,9 +40,12 @@ export const PlayerResult = ({
   const highlight = isExact ? isCorrect : isWinner || isClosest
   const pointsBg = highlight ? (isExact ? POP.mint : POP.coral) : POP.ink
 
+  // Rank rounds: show the guessed order as flags only, bordered right/wrong.
+  const isRank = question?.type === 'rank' && Array.isArray(answer)
+
   // Map rounds: distance from the true spot reads better than raw coordinates.
   const guessLine = (() => {
-    if (answer === undefined) return null
+    if (answer === undefined || isRank) return null
     if (question?.type === 'map' && typeof answer === 'object') {
       if (score >= MAX_SCORE) return 'nailed it 🎯'
       const km = Math.round(haversineKm(answer as LatLng, question.answer))
@@ -72,6 +76,9 @@ export const PlayerResult = ({
         {Icon && createElement(Icon, { size: 26, className: 'text-pop-ink' })}
       </div>
       <span className="text-[22px] font-black text-pop-ink">{player.name}</span>
+      {isRank && question?.type === 'rank' && (
+        <RankGuessFlags guess={answer as string[]} answer={question.answer} />
+      )}
       {guessLine && (
         <span className="text-[17px] font-bold text-pop-ink/60">{guessLine}</span>
       )}

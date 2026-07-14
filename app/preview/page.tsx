@@ -5,11 +5,12 @@
 
 import { useState } from 'react'
 
-import type { AnswerValue, TQuestion } from '@/app/types'
+import type { AnswerValue, RankQuestion, TQuestion } from '@/app/types'
 import { QuestionPrompt } from '@/app/components/geo/QuestionPrompt'
 import { QuestionInput } from '@/app/components/geo/QuestionInput'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
+import { RankReveal } from '@/app/components/geo/RankReveal'
 import { formatAnswerValue } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { POP } from '@/app/components/pop/theme'
@@ -151,6 +152,12 @@ function RevealDemo() {
       <p className="mt-2 text-center font-bold text-pop-ink/60">
         distance: {mapDistanceKm(guess, answer)} km
       </p>
+      <div className="mt-8">
+        <RankReveal
+          question={SAMPLES.find((q) => q.id === 's-rank') as RankQuestion}
+          guess={['Nigeria', 'Portugal', 'Argentina', 'Iceland']}
+        />
+      </div>
     </section>
   )
 }

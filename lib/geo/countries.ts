@@ -28,6 +28,7 @@ export type Country = {
 export const COUNTRIES = raw as Country[]
 
 export const byCca2 = new Map(COUNTRIES.map((c) => [c.cca2, c]))
+export const byName = new Map(COUNTRIES.map((c) => [c.name, c]))
 export const byCca3 = new Map(COUNTRIES.map((c) => [c.cca3, c]))
 /** Numeric ISO code (world-atlas geometry id) → country. */
 export const byCcn3 = new Map(COUNTRIES.map((c) => [String(parseInt(c.ccn3, 10)), c]))

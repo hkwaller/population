@@ -12,6 +12,7 @@ export const useStart = () => {
     hideQuestions,
     selectedCategories,
     selectedDifficulty,
+    getSeenQuestionIds,
     updateGame,
   } = usePopStore()
   const { updateGameState } = useUpdateGameState()
@@ -24,6 +25,7 @@ export const useStart = () => {
       selectedCategories,
       selectedDifficulty,
       amountQuestions,
+      excludeIds: new Set(getSeenQuestionIds()),
     })
 
     if (sampled.length === 0) {

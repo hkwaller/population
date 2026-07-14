@@ -12,7 +12,7 @@ export const useRematch = () => {
     hideQuestions,
     selectedCategories,
     selectedDifficulty,
-    questions,
+    getSeenQuestionIds,
     updateGame,
   } = usePopStore()
   const { updateGameState } = useUpdateGameState()
@@ -20,16 +20,15 @@ export const useRematch = () => {
 
   const rematch = async (payload: undefined) => {
     // Re-fetch and re-sample a fresh pool instead of reusing the previous game's
-    // `questions` (which replayed the same round). Exclude the questions that
-    // were just played so the rematch is genuinely different when the bank has
-    // enough to spare.
+    // `questions` (which replayed the same round). Exclude every question shown
+    // on this device today — which already covers the round just played — so
+    // successive rematches keep serving new questions until the bank runs low.
     const fetched = await fetchQuestionsByCategories(selectedCategories, amountQuestions)
-    const excludeIds = new Set(questions.filter(Boolean).map((q) => q.id))
     const sampled = sampleQuestions(fetched, {
       selectedCategories,
       selectedDifficulty,
       amountQuestions,
-      excludeIds,
+      excludeIds: new Set(getSeenQuestionIds()),
     })
 
     if (sampled.length === 0) {

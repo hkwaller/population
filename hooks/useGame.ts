@@ -68,6 +68,17 @@ export const useGame = (gameId?: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStorage])
 
+  // ── Seen-question tracking ─────────────────────────────────────────────────
+  // Remember every question shown on this device today so successive rounds on
+  // the same host (rematch or a fresh game) don't repeat questions. Keyed on the
+  // current question id, so it fires once per question regardless of which
+  // command (start/next/rematch/replace) put it on screen.
+  const currentQuestionId = zustand.currentQuestion?.id
+  useEffect(() => {
+    if (currentQuestionId) zustand.markQuestionsSeen([currentQuestionId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestionId])
+
   // ── Command handlers ───────────────────────────────────────────────────────
   const { answer } = useAnswer()
   const { boss } = useBoss()

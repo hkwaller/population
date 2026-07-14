@@ -1,10 +1,11 @@
 /** See docs/state-store.md for a high-level overview of this store. */
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { sample, uniqBy } from 'lodash'
+import { sample, uniq, uniqBy } from 'lodash'
 
 import { AnswerValue, Command, CommandType, Difficulty, TPlayer, TPreferences, TQuestion } from './types'
 import { scoreGuess } from '@/lib/geo/score'
+import { dateKeyUTC } from '@/lib/daily'
 
 export type State = {
   addOrRemoveCategory: (category: string) => void
@@ -48,6 +49,16 @@ export type State = {
   showQuestions: boolean
   showScoreModal: boolean
   skippedQuestions: TQuestion[]
+  /**
+   * Questions already shown on this device today (per-day, resets at UTC
+   * midnight). Lets successive rounds on the same host avoid repeats. Persisted
+   * and intentionally NOT cleared by resetGame.
+   */
+  seenQuestions: { date: string; ids: string[] }
+  /** Record question ids as shown; resets the set when the UTC day rolls over. */
+  markQuestionsSeen: (ids: string[]) => void
+  /** Ids shown today (empty once the day rolls over). */
+  getSeenQuestionIds: () => string[]
   updateGame: (gameState: Partial<State>) => void
 }
 
@@ -92,6 +103,18 @@ export const usePopStore = create<State>()(
       showScoreModal: false,
       showQuestionResultModal: false,
       skippedQuestions: [],
+      seenQuestions: { date: '', ids: [] },
+      markQuestionsSeen: (ids: string[]) => {
+        const today = dateKeyUTC(new Date())
+        const current = get().seenQuestions
+        const base = current.date === today ? current.ids : []
+        set({ seenQuestions: { date: today, ids: uniq([...base, ...ids.filter(Boolean)]) } })
+      },
+      getSeenQuestionIds: () => {
+        const today = dateKeyUTC(new Date())
+        const current = get().seenQuestions
+        return current.date === today ? current.ids : []
+      },
       updateGame: (gameState: Partial<State>) => set((state) => ({ ...state, ...gameState })),
       addOrRemoveCategory: (category: string) => {
         if (get().selectedCategories.includes(category)) {

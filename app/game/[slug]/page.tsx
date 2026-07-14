@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
-import { RefreshCw, SkipForward, ListEnd } from 'lucide-react'
-import { motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
@@ -21,6 +19,7 @@ import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { PopSlider } from '@/app/components/pop/PopSlider'
+import { Dock } from '@/app/components/pop/Dock'
 import { POP } from '@/app/components/pop/theme'
 
 function GamePageContent({ params }: { params: { slug: string } }) {
@@ -102,8 +101,9 @@ function GamePageContent({ params }: { params: { slug: string } }) {
         </div>
       </main>
 
-      {/* Bottom control dock */}
-      <div className="fixed inset-x-0 bottom-0 z-20 px-5 pb-6">
+      {/* Answer input area — host game-flow controls now live in <Dock />.
+          Extra bottom clearance so inputs sit above the floating Dock. */}
+      <div className="fixed inset-x-0 bottom-0 z-20 px-5 pb-28">
         <div className="mx-auto max-w-2xl">
           {me?.localPlayer && !myAnswered && slider && (
             <div className="mb-4">
@@ -144,21 +144,16 @@ function GamePageContent({ params }: { params: { slug: string } }) {
             </div>
           )}
 
-          <div className="flex items-center justify-center gap-3">
-            <PopButton variant="ghostLight" size="sm" onClick={() => send('replace')}>
-              <RefreshCw size={20} /> Replace
-            </PopButton>
-
-            {me?.localPlayer &&
-              !myAnswered &&
-              currentQuestion &&
-              currentQuestion.type !== 'choice' &&
-              currentQuestion.type !== 'rank' && (
+          {me?.localPlayer &&
+            !myAnswered &&
+            currentQuestion &&
+            currentQuestion.type !== 'choice' &&
+            currentQuestion.type !== 'rank' && (
               <PopButton
                 variant="primary"
                 size="lg"
                 rotate={-1}
-                className="flex-1"
+                className="w-full"
                 disabled={currentQuestion.type === 'map' && !mapPin}
                 onClick={() =>
                   send('answer', {
@@ -171,28 +166,22 @@ function GamePageContent({ params }: { params: { slug: string } }) {
                 Lock it in ✊
               </PopButton>
             )}
-
-            {canEndGame ? (
-              <PopButton
-                variant="secondary"
-                size="sm"
-                disabled={isEnding}
-                onClick={async () => {
-                  setIsEnding(true)
-                  await send('end')
-                  router.push(`/game/${params.slug}/end`)
-                }}
-              >
-                {isEnding ? 'Ending…' : <>End game <ListEnd size={20} /></>}
-              </PopButton>
-            ) : (
-              <PopButton variant="ghostLight" size="sm" onClick={() => send('next')}>
-                <SkipForward size={20} /> Next
-              </PopButton>
-            )}
-          </div>
         </div>
       </div>
+
+      {currentQuestion && (
+        <Dock
+          onReplace={() => send('replace')}
+          onNext={() => send('next')}
+          onEnd={async () => {
+            setIsEnding(true)
+            await send('end')
+            router.push(`/game/${params.slug}/end`)
+          }}
+          canEndGame={canEndGame}
+          ending={isEnding}
+        />
+      )}
 
       <AnswerInputModal
         isOpen={answerInputModalOpen}

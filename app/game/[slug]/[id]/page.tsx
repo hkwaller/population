@@ -1,8 +1,7 @@
 'use client'
 
 import React, { createElement, useEffect, useMemo, useState } from 'react'
-import { RefreshCw, SkipForward, Flag, icons as lucideIcons } from 'lucide-react'
-import { motion } from 'motion/react'
+import { Flag, icons as lucideIcons } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import QuestionResultModal from '@/app/components/QuestionResultModal'
@@ -21,10 +20,12 @@ import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { PopSlider } from '@/app/components/pop/PopSlider'
+import { Dock } from '@/app/components/pop/Dock'
 import { POP, stickerFill } from '@/app/components/pop/theme'
 
 function PlayerPageContent({ params }: { params: { slug: string; id: string } }) {
   const { game, send, closeModals } = useGame(params.slug)
+  const { postGameToSupabase } = useSupabase()
   const {
     players,
     amountQuestions,
@@ -38,6 +39,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   } = game
   const [answerInputModalOpen, setAnswerInputModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(0)
+  const [isEnding, setIsEnding] = useState(false)
   const router = useRouter()
 
   const slider = asSlider(currentQuestion)
@@ -69,6 +71,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   const myAnswered = myPlayerInfo?.answers?.some((a) => a.questionId === currentQuestion?.id)
   const myScore = myPlayerInfo?.answers?.reduce((acc, a) => acc + a.score, 0) ?? 0
   const isBoss = boss === playerId
+  const canEndGame = everyoneHasAnswered && answeredQuestions?.length === amountQuestions - 1
 
   const waiting = !currentQuestion || command === 'idle'
 
@@ -111,9 +114,10 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
         )}
       </main>
 
-      {/* Bottom stack */}
+      {/* Bottom stack — extra bottom clearance on the host view so answer
+          content sits above the floating Dock. */}
       {!waiting && (
-        <div className="fixed inset-x-0 bottom-0 z-20 px-5 pb-6">
+        <div className={`fixed inset-x-0 bottom-0 z-20 px-5 ${isBoss ? 'pb-28' : 'pb-6'}`}>
           <div className="mx-auto max-w-md">
             {myAnswered ? (
               <LockedState
@@ -148,32 +152,38 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 {currentQuestion.type === 'rank' && (
                   <RankInput question={currentQuestion} onAnswer={(v, ms) => submit(v, ms)} />
                 )}
-                <div className="mt-4 flex items-center gap-3">
-                  <CircleBtn color={POP.mint} onClick={() => send('replace')} label="Replace question">
-                    <RefreshCw size={22} strokeWidth={2.5} />
-                  </CircleBtn>
-                  {isBoss && (
-                    <CircleBtn color={POP.grape} onClick={() => send('next')} label="Next question">
-                      <SkipForward size={22} strokeWidth={2.5} color="#fff" />
-                    </CircleBtn>
-                  )}
-                  {currentQuestion.type !== 'choice' && currentQuestion.type !== 'rank' && (
+                {currentQuestion.type !== 'choice' && currentQuestion.type !== 'rank' && (
+                  <div className="mt-4">
                     <PopButton
                       variant="primary"
                       size="lg"
                       rotate={-1}
-                      className="flex-1"
+                      className="w-full"
                       disabled={currentQuestion.type === 'map' && !mapPin}
                       onClick={() => submit(currentQuestion.type === 'map' ? mapPin! : currentAnswer)}
                     >
                       Lock it in ✊
                     </PopButton>
-                  )}
-                </div>
+                  </div>
+                )}
               </>
             )}
           </div>
         </div>
+      )}
+
+      {isBoss && !waiting && (
+        <Dock
+          onReplace={() => send('replace')}
+          onNext={() => send('next')}
+          onEnd={async () => {
+            setIsEnding(true)
+            postGameToSupabase()
+            await send('end')
+          }}
+          canEndGame={canEndGame}
+          ending={isEnding}
+        />
       )}
 
       <AnswerInputModal
@@ -211,30 +221,6 @@ function ReportLink({ question }: { question?: string }) {
     >
       <Flag size={14} /> report this question
     </button>
-  )
-}
-
-function CircleBtn({
-  color,
-  onClick,
-  label,
-  children,
-}: {
-  color: string
-  onClick: () => void
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <motion.button
-      whileTap={{ scale: 0.9 }}
-      onClick={onClick}
-      aria-label={label}
-      className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full border-[3px] border-white text-pop-ink shadow-pop-sm"
-      style={{ background: color }}
-    >
-      {children}
-    </motion.button>
   )
 }
 
