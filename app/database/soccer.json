@@ -1,0 +1,1293 @@
+{
+    "name": "football",
+    "questions": [
+        {
+            "question": "How many times has Cristiano Ronaldo won the Ballon d'Or?",
+            "answer": 5
+        },
+        {
+            "question": "How many goals did Lionel Messi score for Barcelona?",
+            "answer": 672
+        },
+        {
+            "question": "How many times has England won the World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many clubs has Zlatan Ibrahimović played for?",
+            "answer": 9
+        },
+        {
+            "question": "How many goals did Gerd Müller score for Bayern Munich?",
+            "answer": 566
+        },
+        {
+            "question": "How many times has Spain won the World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Pelé score in World Cup tournaments?",
+            "answer": 12
+        },
+        {
+            "question": "How many clubs has Fernando Torres played for?",
+            "answer": 6
+        },
+        {
+            "question": "How many goals did Roberto Baggio score in Serie A?",
+            "answer": 205
+        },
+        {
+            "question": "How many times has Inter Milan won the Champions League?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Ronaldinho score for Barcelona?",
+            "answer": 94
+        },
+        {
+            "question": "How many countries participate in the African Cup of Nations?",
+            "answer": 24
+        },
+        {
+            "question": "How many goals did Romário score in the Brazilian league?",
+            "answer": 155
+        },
+        {
+            "question": "How many times has Belgium finished third in the World Cup?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did Alfredo Di Stéfano score in La Liga?",
+            "answer": 227
+        },
+        {
+            "question": "How many clubs are in the Russian Premier League?",
+            "answer": 16
+        },
+        {
+            "question": "How many goals did George Weah score in Ligue 1?",
+            "answer": 47
+        },
+        {
+            "question": "How many times has Italy won the European Championship?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did Ruud van Nistelrooy score in the Premier League?",
+            "answer": 95
+        },
+        {
+            "question": "How many clubs has Kylian Mbappé played for?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did David Villa score for Spain?",
+            "answer": 59
+        },
+        {
+            "question": "How many times has Bayern Munich won the Champions League?",
+            "answer": 6
+        },
+        {
+            "question": "How many goals did Francesco Totti score in Serie A?",
+            "answer": 250
+        },
+        {
+            "question": "How many clubs are in the Portuguese Primeira Liga?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Frank Lampard score in the Premier League?",
+            "answer": 177
+        },
+        {
+            "question": "How many times has the Netherlands won the European Championship?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Marco van Basten score in his career?",
+            "answer": 300
+        },
+        {
+            "question": "How many teams participate in the AFC Asian Cup?",
+            "answer": 24
+        },
+        {
+            "question": "How many goals did Didier Drogba score for Ivory Coast?",
+            "answer": 65
+        },
+        {
+            "question": "How many clubs has Gianluigi Buffon played for?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Johan Cruyff score in his career?",
+            "answer": 291
+        },
+        {
+            "question": "How many times has Portugal won the Nations League?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Karim Benzema score for Real Madrid?",
+            "answer": 278
+        },
+        {
+            "question": "How many clubs are in the Mexican Liga MX?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Gabriel Batistuta score in Serie A?",
+            "answer": 184
+        },
+        {
+            "question": "How many times has the United States won the CONCACAF Gold Cup?",
+            "answer": 7
+        },
+        {
+            "question": "How many goals did George Best score in his career?",
+            "answer": 205
+        },
+        {
+            "question": "How many clubs are in the Belgian Pro League?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Hristo Stoichkov score in La Liga?",
+            "answer": 83
+        },
+        {
+            "question": "How many times has Croatia finished as runners-up in the World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Fernando Torres score in the Premier League?",
+            "answer": 85
+        },
+        {
+            "question": "How many clubs has Neymar played for?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Didier Drogba score for Chelsea in all competitions?",
+            "answer": 164
+        },
+        {
+            "question": "How many times has Manchester United won the FA Cup?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Alan Shearer score for Newcastle United?",
+            "answer": 148
+        },
+        {
+            "question": "How many clubs are in the Dutch Eredivisie?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Samuel Eto'o score for Cameroon?",
+            "answer": 56
+        },
+        {
+            "question": "How many times has Juventus won the Coppa Italia?",
+            "answer": 14
+        },
+        {
+            "question": "How many goals did Kaka score in Serie A?",
+            "answer": 77
+        },
+        {
+            "question": "How many clubs are in the Turkish Süper Lig?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Gareth Bale score for Tottenham Hotspur?",
+            "answer": 56
+        },
+        {
+            "question": "How many times has Germany won the European Championship?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Sergio Agüero score in the Premier League?",
+            "answer": 184
+        },
+        {
+            "question": "How many clubs has Mario Balotelli played for?",
+            "answer": 10
+        },
+        {
+            "question": "How many goals did Rivaldo score in La Liga?",
+            "answer": 83
+        },
+        {
+            "question": "How many times has AC Milan won the Coppa Italia?",
+            "answer": 5
+        },
+        {
+            "question": "How many goals did Hernán Crespo score in Serie A?",
+            "answer": 153
+        },
+        {
+            "question": "How many clubs are in the Austrian Bundesliga?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Wayne Rooney score for England?",
+            "answer": 53
+        },
+        {
+            "question": "How many times has Spain won the European Championship?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Frank Lampard score for Chelsea?",
+            "answer": 211
+        },
+        {
+            "question": "How many clubs has Luka Modrić played for?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Michael Ballack score in the Bundesliga?",
+            "answer": 77
+        },
+        {
+            "question": "How many times has the United States won the FIFA Women's World Cup?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Andriy Shevchenko score in Serie A?",
+            "answer": 127
+        },
+        {
+            "question": "How many clubs are in the Swiss Super League?",
+            "answer": 10
+        },
+        {
+            "question": "How many goals did Thierry Henry score for France?",
+            "answer": 51
+        },
+        {
+            "question": "How many times has Brazil won the FIFA Women's World Cup?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Roberto Carlos score in La Liga?",
+            "answer": 46
+        },
+        {
+            "question": "How many clubs has Diego Maradona played for?",
+            "answer": 6
+        },
+        {
+            "question": "How many goals did Lionel Messi score in the Copa America?",
+            "answer": 13
+        },
+        {
+            "question": "How many times has England won the FIFA Women's World Cup?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Xavi score in La Liga?",
+            "answer": 58
+        },
+        {
+            "question": "How many clubs are in the Argentine Primera División?",
+            "answer": 26
+        },
+        {
+            "question": "How many goals did Romelu Lukaku score for Belgium as of 2023?",
+            "answer": 72
+        },
+        {
+            "question": "How many times has France won the FIFA Women's World Cup?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Didier Drogba score in the Premier League?",
+            "answer": 104
+        },
+        {
+            "question": "How many clubs has Ronaldinho played for?",
+            "answer": 7
+        },
+        {
+            "question": "How many goals did Diego Forlán score in La Liga?",
+            "answer": 128
+        },
+        {
+            "question": "How many times has the Netherlands won the FIFA Women's World Cup?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Alessandro Del Piero score in Serie A?",
+            "answer": 188
+        },
+        {
+            "question": "How many clubs are in the Greek Super League?",
+            "answer": 14
+        },
+        {
+            "question": "How many goals did Zlatan Ibrahimović score for Sweden?",
+            "answer": 62
+        },
+        {
+            "question": "How many World Cups has Brazil won?",
+            "answer": 5
+        },
+        {
+            "question": "How many teams compete in the English Premier League?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Pelé score in his career?",
+            "answer": 1281
+        },
+        {
+            "question": "How many UEFA Champions League titles has Real Madrid won?",
+            "answer": 14
+        },
+        {
+            "question": "How many Ballon d'Or awards has Lionel Messi won?",
+            "answer": 7
+        },
+        {
+            "question": "How many countries participate in the FIFA World Cup?",
+            "answer": 32
+        },
+        {
+            "question": "How many goals did Cristiano Ronaldo score in the 2020-2021 season?",
+            "answer": 36
+        },
+        {
+            "question": "How many times has Manchester United won the Premier League?",
+            "answer": 13
+        },
+        {
+            "question": "How many clubs are in La Liga?",
+            "answer": 20
+        },
+        {
+            "question": "How many times has Italy won the World Cup?",
+            "answer": 4
+        },
+        {
+            "question": "How many clubs has Zlatan Ibrahimović played for?",
+            "answer": 9
+        },
+        {
+            "question": "How many times has Germany won the World Cup?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Diego Maradona score in World Cup tournaments?",
+            "answer": 8
+        },
+        {
+            "question": "How many minutes are in a standard football match?",
+            "answer": 90
+        },
+        {
+            "question": "How many red cards has Sergio Ramos received in his career?",
+            "answer": 26
+        },
+        {
+            "question": "How many goals did Thierry Henry score in the Premier League?",
+            "answer": 175
+        },
+        {
+            "question": "How many countries are in UEFA?",
+            "answer": 55
+        },
+        {
+            "question": "How many World Cups has France won?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did Lionel Messi score in the 2011-2012 season?",
+            "answer": 73
+        },
+        {
+            "question": "How many European Championships has Spain won?",
+            "answer": 3
+        },
+        {
+            "question": "How many teams are promoted to the Premier League each season?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Gerd Müller score in the Bundesliga?",
+            "answer": 365
+        },
+        {
+            "question": "How many clubs are in Serie A?",
+            "answer": 20
+        },
+        {
+            "question": "How many times has AC Milan won the Champions League?",
+            "answer": 7
+        },
+        {
+            "question": "How many goals did Miroslav Klose score in World Cup tournaments?",
+            "answer": 16
+        },
+        {
+            "question": "How many teams participate in the UEFA Europa League group stage?",
+            "answer": 48
+        },
+        {
+            "question": "How many goals did Alan Shearer score in the Premier League?",
+            "answer": 260
+        },
+        {
+            "question": "How many times has the Netherlands finished as runners-up in the World Cup?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Ronaldinho score in his career?",
+            "answer": 313
+        },
+        {
+            "question": "How many clubs are in Ligue 1?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Robert Lewandowski score in the 2020-2021 season?",
+            "answer": 48
+        },
+        {
+            "question": "How many times has Barcelona won La Liga?",
+            "answer": 26
+        },
+        {
+            "question": "How many goals did Ferenc Puskás score for Hungary?",
+            "answer": 84
+        },
+        {
+            "question": "How many times has Liverpool won the Champions League?",
+            "answer": 6
+        },
+        {
+            "question": "How many clubs are in the Bundesliga?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Eusébio score in the 1966 World Cup?",
+            "answer": 9
+        },
+        {
+            "question": "How many teams participate in the Copa America?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did David Beckham score in his career?",
+            "answer": 127
+        },
+        {
+            "question": "How many times has Juventus won Serie A?",
+            "answer": 36
+        },
+        {
+            "question": "How many clubs has David Beckham played for?",
+            "answer": 5
+        },
+        {
+            "question": "How many goals did Romário score in his career?",
+            "answer": 688
+        },
+        {
+            "question": "How many times has Manchester City won the Premier League?",
+            "answer": 7
+        },
+        {
+            "question": "How many goals did Marco van Basten score for the Netherlands?",
+            "answer": 24
+        },
+        {
+            "question": "How many teams are in Major League Soccer (MLS)?",
+            "answer": 29
+        },
+        {
+            "question": "How many goals did Andriy Shevchenko score in his career?",
+            "answer": 309
+        },
+        {
+            "question": "How many times has Bayern Munich won the Bundesliga?",
+            "answer": 31
+        },
+        {
+            "question": "How many goals did George Best score for Manchester United?",
+            "answer": 137
+        },
+        {
+            "question": "How many clubs are in the Scottish Premiership?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Wayne Rooney score in the Premier League?",
+            "answer": 208
+        },
+        {
+            "question": "How many times has Argentina won the World Cup?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Alfredo Di Stéfano score for Real Madrid?",
+            "answer": 216
+        },
+        {
+            "question": "How many clubs has Cristiano Ronaldo played for?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Samuel Eto'o score in his career?",
+            "answer": 369
+        },
+        {
+            "question": "How many times has Portugal won the European Championship?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Gary Lineker score in the Premier League?",
+            "answer": 95
+        },
+        {
+            "question": "How many clubs are in the Eredivisie?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Neymar score for Brazil as of 2023?",
+            "answer": 77
+        },
+        {
+            "question": "How many times has Paris Saint-Germain won Ligue 1?",
+            "answer": 10
+        },
+        {
+            "question": "How many goals did Didier Drogba score for Chelsea?",
+            "answer": 104
+        },
+        {
+            "question": "How many teams participate in the UEFA Champions League group stage?",
+            "answer": 32
+        },
+        {
+            "question": "How many goals did Raúl score for Real Madrid?",
+            "answer": 323
+        },
+        {
+            "question": "How many clubs are in the Primeira Liga?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Francesco Totti score for Roma?",
+            "answer": 250
+        },
+        {
+            "question": "How many times has Ajax won the Eredivisie?",
+            "answer": 36
+        },
+        {
+            "question": "How many goals did Zinedine Zidane score in his career?",
+            "answer": 125
+        },
+        {
+            "question": "How many teams participate in the Copa Libertadores?",
+            "answer": 47
+        },
+        {
+            "question": "How many goals did Thierry Henry score for Arsenal?",
+            "answer": 228
+        },
+        {
+            "question": "How many clubs has Andrés Iniesta played for?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did Rivaldo score in his career?",
+            "answer": 327
+        },
+        {
+            "question": "How many times has AC Milan won Serie A?",
+            "answer": 19
+        },
+        {
+            "question": "How many goals did Miroslav Klose score for Germany?",
+            "answer": 71
+        },
+        {
+            "question": "How many clubs are in the A-League?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Dennis Bergkamp score for Arsenal?",
+            "answer": 87
+        },
+        {
+            "question": "How many times has Brazil won the Copa America?",
+            "answer": 9
+        },
+        {
+            "question": "How many goals did Eric Cantona score for Manchester United?",
+            "answer": 64
+        },
+        {
+            "question": "How many teams participate in the CONCACAF Gold Cup?",
+            "answer": 16
+        },
+        {
+            "question": "How many goals did Romelu Lukaku score in the Premier League?",
+            "answer": 118
+        },
+        {
+            "question": "How many clubs has Ronaldinho played for?",
+            "answer": 7
+        },
+        {
+            "question": "How many goals did Gabriel Batistuta score for Argentina?",
+            "answer": 54
+        },
+        {
+            "question": "How many times has Chelsea won the Premier League?",
+            "answer": 6
+        },
+        {
+            "question": "How many goals did Paolo Maldini score for AC Milan?",
+            "answer": 33
+        },
+        {
+            "question": "How many clubs are in the J1 League?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Michael Owen score in the Premier League?",
+            "answer": 150
+        },
+        {
+            "question": "How many times has Uruguay won the World Cup?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did Xavi score for Barcelona?",
+            "answer": 85
+        },
+        {
+            "question": "How many clubs has Clarence Seedorf played for?",
+            "answer": 9
+        },
+        {
+            "question": "How many goals did Lionel Messi score in his debut season for Barcelona?",
+            "answer": 1
+        },
+        {
+            "question": "How many times has Real Madrid won La Liga?",
+            "answer": 35
+        },
+        {
+            "question": "How many goals did Cristiano Ronaldo score for Manchester United in all competitions?",
+            "answer": 145
+        },
+        {
+            "question": "How many teams participate in the Serie A season?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Pelé score in the 1958 World Cup?",
+            "answer": 6
+        },
+        {
+            "question": "How many times has Argentina won the Copa America?",
+            "answer": 15
+        },
+        {
+            "question": "How many goals did Robert Lewandowski score for Bayern Munich in all competitions?",
+            "answer": 344
+        },
+        {
+            "question": "How many clubs are in the Spanish Segunda División?",
+            "answer": 22
+        },
+        {
+            "question": "How many goals did Zinedine Zidane score in the 1998 World Cup?",
+            "answer": 2
+        },
+        {
+            "question": "How many times has Paris Saint-Germain won the Coupe de France?",
+            "answer": 14
+        },
+        {
+            "question": "How many goals did Neymar score in his debut season for Paris Saint-Germain?",
+            "answer": 19
+        },
+        {
+            "question": "How many times has Atletico Madrid won La Liga?",
+            "answer": 11
+        },
+        {
+            "question": "How many goals did Andriy Shevchenko score in the UEFA Champions League?",
+            "answer": 48
+        },
+        {
+            "question": "How many teams compete in the MLS season?",
+            "answer": 29
+        },
+        {
+            "question": "How many goals did Didier Drogba score in the UEFA Champions League?",
+            "answer": 44
+        },
+        {
+            "question": "How many times has Bayern Munich won the DFB-Pokal?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Wayne Rooney score for Manchester United in all competitions?",
+            "answer": 253
+        },
+        {
+            "question": "How many clubs are in the Brazilian Série A?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Ruud van Nistelrooy score in the UEFA Champions League?",
+            "answer": 56
+        },
+        {
+            "question": "How many times has the Netherlands won the Olympic gold medal in football?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Frank Lampard score for West Ham United?",
+            "answer": 38
+        },
+        {
+            "question": "How many clubs are in the English Championship?",
+            "answer": 24
+        },
+        {
+            "question": "How many goals did Alan Shearer score in the UEFA Champions League?",
+            "answer": 23
+        },
+        {
+            "question": "How many times has Uruguay won the Copa America?",
+            "answer": 15
+        },
+        {
+            "question": "How many goals did Thierry Henry score for New York Red Bulls?",
+            "answer": 52
+        },
+        {
+            "question": "How many clubs are in the South African Premier Division?",
+            "answer": 16
+        },
+        {
+            "question": "How many goals did Samuel Eto'o score in the UEFA Champions League?",
+            "answer": 30
+        },
+        {
+            "question": "How many times has Mexico won the CONCACAF Gold Cup?",
+            "answer": 11
+        },
+        {
+            "question": "How many goals did Alessandro Del Piero score for Juventus in all competitions?",
+            "answer": 290
+        },
+        {
+            "question": "How many clubs are in the Australian A-League?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Michael Owen score for Real Madrid?",
+            "answer": 16
+        },
+        {
+            "question": "How many times has Cameroon won the Africa Cup of Nations?",
+            "answer": 5
+        },
+        {
+            "question": "How many goals did Filippo Inzaghi score in the UEFA Champions League?",
+            "answer": 46
+        },
+        {
+            "question": "How many clubs are in the Ukrainian Premier League?",
+            "answer": 14
+        },
+        {
+            "question": "How many goals did David Beckham score for LA Galaxy?",
+            "answer": 18
+        },
+        {
+            "question": "How many times has the United States won the FIFA Women's World Cup?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Diego Maradona score for Napoli?",
+            "answer": 115
+        },
+        {
+            "question": "How many clubs are in the Danish Superliga?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Kaká score for Orlando City SC?",
+            "answer": 24
+        },
+        {
+            "question": "How many times has Nigeria won the Africa Cup of Nations?",
+            "answer": 3
+        },
+        {
+            "question": "How many goals did Andriy Shevchenko score for Dynamo Kyiv?",
+            "answer": 60
+        },
+        {
+            "question": "How many clubs are in the Swedish Allsvenskan?",
+            "answer": 16
+        },
+        {
+            "question": "How many goals did Frank Lampard score for Manchester City?",
+            "answer": 6
+        },
+        {
+            "question": "How many times has the Soviet Union won the European Championship?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Rivaldo score for Barcelona?",
+            "answer": 86
+        },
+        {
+            "question": "How many clubs are in the Chilean Primera División?",
+            "answer": 16
+        },
+        {
+            "question": "How many goals did Gabriel Batistuta score for Fiorentina?",
+            "answer": 168
+        },
+        {
+            "question": "How many times has the FIFA Women's World Cup been held?",
+            "answer": 8
+        },
+        {
+            "question": "How many goals did David Beckham score for the England national team?",
+            "answer": 17
+        },
+        {
+            "question": "How many clubs are in the Chinese Super League?",
+            "answer": 16
+        },
+        {
+            "question": "How many goals did Dennis Bergkamp score for Ajax?",
+            "answer": 122
+        },
+        {
+            "question": "How many times has South Korea won the AFC Asian Cup?",
+            "answer": 2
+        },
+        {
+            "question": "How many goals did Xabi Alonso score for Real Madrid?",
+            "answer": 6
+        },
+        {
+            "question": "How many clubs are in the Russian Football National League?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Neymar score for Santos?",
+            "answer": 70
+        },
+        {
+            "question": "How many times has Ghana won the Africa Cup of Nations?",
+            "answer": 4
+        },
+        {
+            "question": "How many goals did Zico score in his career?",
+            "answer": 476
+        },
+        {
+            "question": "How many clubs are in the Scottish Championship?",
+            "answer": 10
+        },
+        {
+            "question": "How many goals did Lionel Messi score for Argentina in World Cup tournaments?",
+            "answer": 13
+        },
+        {
+            "question": "How many times has Argentina won the FIFA Women's World Cup?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Landon Donovan score for LA Galaxy?",
+            "answer": 112
+        },
+        {
+            "question": "How many clubs are in the South Korean K League 1?",
+            "answer": 12
+        },
+        {
+            "question": "How many goals did Didier Drogba score in the African Cup of Nations?",
+            "answer": 11
+        },
+        {
+            "question": "How many times has Norway won the FIFA Women's World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Alan Shearer score in the UEFA Europa League?",
+            "answer": 30
+        },
+        {
+            "question": "How many clubs are in the Polish Ekstraklasa?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Miroslav Klose score for Lazio?",
+            "answer": 63
+        },
+        {
+            "question": "How many times has Argentina won the FIFA U-20 World Cup?",
+            "answer": 6
+        },
+        {
+            "question": "How many goals did Hugo Sánchez score in La Liga?",
+            "answer": 234
+        },
+        {
+            "question": "How many clubs are in the Japanese J2 League?",
+            "answer": 22
+        },
+        {
+            "question": "How many goals did Thierry Henry score for Juventus?",
+            "answer": 3
+        },
+        {
+            "question": "How many times has Brazil won the FIFA U-20 World Cup?",
+            "answer": 5
+        },
+        {
+            "question": "How many goals did Hristo Stoichkov score for Bulgaria?",
+            "answer": 37
+        },
+        {
+            "question": "How many clubs are in the French Ligue 2?",
+            "answer": 20
+        },
+        {
+            "question": "How many goals did Diego Forlán score for Atlético Madrid?",
+            "answer": 74
+        },
+        {
+            "question": "How many times has Spain won the FIFA U-20 World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Romário score in the Copa Libertadores?",
+            "answer": 12
+        },
+        {
+            "question": "How many clubs are in the Canadian Premier League?",
+            "answer": 8
+        },
+        {
+            "question": "How many goals did Johan Cruyff score for the Netherlands?",
+            "answer": 33
+        },
+        {
+            "question": "How many times has Uruguay won the FIFA U-20 World Cup?",
+            "answer": 0
+        },
+        {
+            "question": "How many goals did Roberto Baggio score in the UEFA Champions League?",
+            "answer": 9
+        },
+        {
+            "question": "How many clubs are in the Indian Super League?",
+            "answer": 11
+        },
+        {
+            "question": "How many goals did George Weah score for AC Milan?",
+            "answer": 46
+        },
+        {
+            "question": "How many times has England won the FIFA U-20 World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Ronaldinho score in the Copa Libertadores?",
+            "answer": 5
+        },
+        {
+            "question": "How many clubs are in the Indonesian Liga 1?",
+            "answer": 18
+        },
+        {
+            "question": "How many goals did Ryan Giggs score for Manchester United?",
+            "answer": 168
+        },
+        {
+            "question": "How many times has France won the FIFA U-20 World Cup?",
+            "answer": 1
+        },
+        {
+            "question": "How many goals did Zinedine Zidane score for Juventus?",
+            "answer": 24
+        },
+        {
+            "question": "How many players are there on a football team on the field?",
+            "answer": 11
+        },
+        {
+            "question": "How many minutes are there in a standard football match?",
+            "answer": 90
+        },
+        {
+            "question": "How many points are awarded for a win in the Premier League?",
+            "answer": 3
+        },
+        {
+            "question": "How many points are awarded for a draw in football?",
+            "answer": 1
+        },
+        {
+            "question": "How many referees are there in a standard football match?",
+            "answer": 1
+        },
+        {
+            "question": "How many assistant referees are there in a standard football match?",
+            "answer": 2
+        },
+        {
+            "question": "How many substitutes are allowed on the bench in the Premier League?",
+            "answer": 9
+        },
+        {
+            "question": "How many substitutes can be used in a standard football match?",
+            "answer": 5
+        },
+        {
+            "question": "How many teams compete in the UEFA Champions League group stage?",
+            "answer": 32
+        },
+        {
+            "question": "How many teams qualify for the World Cup from UEFA?",
+            "answer": 13
+        },
+        {
+            "question": "How many teams compete in the FIFA World Cup?",
+            "answer": 32
+        },
+        {
+            "question": "How many yellow cards result in a one-match suspension in the World Cup?",
+            "answer": 2
+        },
+        {
+            "question": "How many red cards result in an automatic one-match suspension?",
+            "answer": 1
+        },
+        {
+            "question": "How many meters is the penalty spot from the goal line?",
+            "answer": 11
+        },
+        {
+            "question": "How many centimeters is the distance of the penalty area from the goal line?",
+            "answer": 165
+        },
+        {
+            "question": "How many teams are relegated from the Premier League each season?",
+            "answer": 3
+        },
+        {
+            "question": "How many teams are promoted to the Premier League each season?",
+            "answer": 3
+        },
+        {
+            "question": "How many countries are in FIFA?",
+            "answer": 211
+        },
+        {
+            "question": "How many groups are there in the World Cup group stage?",
+            "answer": 8
+        },
+        {
+            "question": "How many teams are there in the Scottish Premiership?",
+            "answer": 12
+        },
+        {
+            "question": "How many leagues make up the English Football League (EFL)?",
+            "answer": 3
+        },
+        {
+            "question": "How many teams are there in the Bundesliga?",
+            "answer": 18
+        },
+        {
+            "question": "How many players are on a standard football squad for international tournaments?",
+            "answer": 23
+        },
+        {
+            "question": "How many teams compete in the Copa America?",
+            "answer": 10
+        },
+        {
+            "question": "How many teams qualify for the European Championship from each group?",
+            "answer": 2
+        },
+        {
+            "question": "How many teams are there in Ligue 1?",
+            "answer": 20
+        },
+        {
+            "question": "How many teams are there in Serie A?",
+            "answer": 20
+        },
+        {
+            "question": "How many teams are there in La Liga?",
+            "answer": 20
+        },
+        {
+            "question": "How many teams are there in the Russian Premier League?",
+            "answer": 16
+        },
+        {
+            "question": "How many teams compete in the Asian Cup?",
+            "answer": 24
+        },
+        {
+            "question": "How many national teams have won the World Cup?",
+            "answer": 8
+        },
+        {
+            "question": "How many times has the FIFA World Cup been held?",
+            "answer": 21
+        },
+        {
+            "question": "How many times has the UEFA European Championship been held?",
+            "answer": 16
+        },
+        {
+            "question": "How many players are on a standard football squad for domestic leagues?",
+            "answer": 25
+        },
+        {
+            "question": "How many players are allowed on the bench in the Champions League?",
+            "answer": 12
+        },
+        {
+            "question": "How many players can be on the field during a penalty shootout?",
+            "answer": 11
+        },
+        {
+            "question": "How many total substitutions are allowed in extra time?",
+            "answer": 1
+        },
+        {
+            "question": "How many teams qualify for the knockout stage in the Champions League?",
+            "answer": 16
+        },
+        {
+            "question": "How many official languages does FIFA have?",
+            "answer": 4
+        },
+        {
+            "question": "How many federations are there in FIFA?",
+            "answer": 6
+        },
+        {
+            "question": "How many referees are there in a VAR team?",
+            "answer": 4
+        },
+        {
+            "question": "How many substitutions are allowed in the MLS?",
+            "answer": 5
+        },
+        {
+            "question": "How many centimeters is the width of a standard football goal?",
+            "answer": 732
+        },
+        {
+            "question": "How many centimeters is the height of a standard football goal?",
+            "answer": 244
+        },
+        {
+            "question": "How many clubs are in the Portuguese Primeira Liga?",
+            "answer": 18
+        },
+        {
+            "question": "How many clubs are in the Scottish Championship?",
+            "answer": 10
+        },
+        {
+            "question": "How many teams compete in the FIFA Club World Cup?",
+            "answer": 7
+        },
+        {
+            "question": "How many countries participate in the CONCACAF Gold Cup?",
+            "answer": 16
+        },
+        {
+            "question": "How many stadiums were used for the 2018 World Cup in Russia?",
+            "answer": 12
+        },
+        {
+            "question": "How many minutes are added for half-time in a football match?",
+            "answer": 15
+        },
+        {
+            "question": "How many teams compete in the English League Cup?",
+            "answer": 92
+        },
+        {
+            "question": "How many stadiums are planned for the 2022 World Cup in Qatar?",
+            "answer": 8
+        },
+        {
+            "question": "How many countries are in UEFA?",
+            "answer": 55
+        },
+        {
+            "question": "How many referees are there in a UEFA Champions League match?",
+            "answer": 1
+        },
+        {
+            "question": "How many teams are there in the Mexican Liga MX?",
+            "answer": 18
+        },
+        {
+            "question": "How many teams are there in the Argentine Primera División?",
+            "answer": 26
+        },
+        {
+            "question": "How many groups are there in the Champions League group stage?",
+            "answer": 8
+        },
+        {
+            "question": "How many clubs are in the Dutch Eredivisie?",
+            "answer": 18
+        },
+        {
+            "question": "How many clubs are in the Brazilian Série A?",
+            "answer": 20
+        },
+        {
+            "question": "How many clubs are in the Australian A-League?",
+            "answer": 12
+        },
+        {
+            "question": "How many teams are in the CONCACAF Champions League?",
+            "answer": 16
+        },
+        {
+            "question": "How many countries participate in the AFC Asian Cup?",
+            "answer": 24
+        },
+        {
+            "question": "How many teams compete in the FIFA Women's World Cup?",
+            "answer": 24
+        },
+        {
+            "question": "How many clubs are in the Swiss Super League?",
+            "answer": 10
+        }
+    ]
+}

@@ -1,0 +1,807 @@
+{
+    "name": "religion",
+    "questions": [
+        {
+            "id": 1,
+            "question": "How many major Greek Olympian gods are there?",
+            "answer": 12
+        },
+        {
+            "id": 2,
+            "question": "In what year was the Church of England founded?",
+            "answer": 1534
+        },
+        {
+            "id": 3,
+            "question": "How many heads does the Hindu god Brahma typically have?",
+            "answer": 4
+        },
+        {
+            "id": 4,
+            "question": "How many books are in the New Testament?",
+            "answer": 27
+        },
+        {
+            "id": 5,
+            "question": "How many labors did Hercules perform in Greek mythology?",
+            "answer": 12
+        },
+        {
+            "id": 6,
+            "question": "In what year did the Great Schism between the Eastern and Western Christian churches occur?",
+            "answer": 1054
+        },
+        {
+            "id": 7,
+            "question": "How many main branches of Buddhism are there?",
+            "answer": 3
+        },
+        {
+            "id": 8,
+            "question": "How many books are in the Hebrew Bible?",
+            "answer": 24
+        },
+        {
+            "id": 9,
+            "question": "How many Muses are there in Greek mythology?",
+            "answer": 9
+        },
+        {
+            "id": 10,
+            "question": "In what year was the first Crusade launched?",
+            "answer": 1095
+        },
+        {
+            "id": 11,
+            "question": "How many arms does the Hindu god Vishnu typically have?",
+            "answer": 4
+        },
+        {
+            "id": 12,
+            "question": "How many days and nights did the Great Flood last according to the Bible?",
+            "answer": 40
+        },
+        {
+            "id": 13,
+            "question": "How many Titans are there in Greek mythology?",
+            "answer": 12
+        },
+        {
+            "id": 14,
+            "question": "In what year was the Mormon Church founded?",
+            "answer": 1830
+        },
+        {
+            "id": 15,
+            "question": "How many cardinal virtues are there in Christian theology?",
+            "answer": 4
+        },
+        {
+            "id": 16,
+            "question": "How many books are in the Quran?",
+            "answer": 114
+        },
+        {
+            "id": 17,
+            "question": "How many Norse gods live in Asgard?",
+            "answer": 12
+        },
+        {
+            "id": 18,
+            "question": "In what year did the Protestant Reformation begin?",
+            "answer": 1517
+        },
+        {
+            "id": 19,
+            "question": "How many main schools of Hindu philosophy are there?",
+            "answer": 6
+        },
+        {
+            "id": 20,
+            "question": "How many plagues were inflicted upon Egypt according to the Book of Exodus?",
+            "answer": 10
+        },
+        {
+            "id": 21,
+            "question": "How many Fates are there in Greek mythology?",
+            "answer": 3
+        },
+        {
+            "id": 22,
+            "question": "In what year was the First Council of Nicaea held?",
+            "answer": 325
+        },
+        {
+            "id": 23,
+            "question": "How many noble truths are there in Buddhism?",
+            "answer": 4
+        },
+        {
+            "id": 24,
+            "question": "How many disciples did Jesus have according to Christian tradition?",
+            "answer": 12
+        },
+        {
+            "id": 25,
+            "question": "How many heads does Cerberus, the guardian of the underworld, have in Greek mythology?",
+            "answer": 3
+        },
+        {
+            "id": 26,
+            "question": "In what year was the Baha'i Faith founded?",
+            "answer": 1844
+        },
+        {
+            "id": 27,
+            "question": "How many pillars of Islam are there?",
+            "answer": 5
+        },
+        {
+            "id": 28,
+            "question": "How many books are in the Catholic Old Testament?",
+            "answer": 46
+        },
+        {
+            "id": 29,
+            "question": "How many Graces are there in Greek mythology?",
+            "answer": 3
+        },
+        {
+            "id": 30,
+            "question": "In what year was the Second Vatican Council opened?",
+            "answer": 1962
+        },
+        {
+            "id": 31,
+            "question": "How many main sects are there in Islam?",
+            "answer": 2
+        },
+        {
+            "id": 32,
+            "question": "How many commandments are there in Judaism and Christianity?",
+            "answer": 10
+        },
+        {
+            "id": 33,
+            "question": "How many rivers are there in the Greek underworld?",
+            "answer": 5
+        },
+        {
+            "id": 34,
+            "question": "In what year was the Church of Scientology founded?",
+            "answer": 1954
+        },
+        {
+            "id": 35,
+            "question": "How many main types of Yoga are there in Hinduism?",
+            "answer": 4
+        },
+        {
+            "id": 36,
+            "question": "How many books are in the Torah?",
+            "answer": 5
+        },
+        {
+            "id": 37,
+            "question": "How many gates of hell are there according to Dante's Inferno?",
+            "answer": 9
+        },
+        {
+            "id": 38,
+            "question": "In what year did the East-West Schism in Christianity occur?",
+            "answer": 1054
+        },
+        {
+            "id": 39,
+            "question": "How many heavens are there in Islamic cosmology?",
+            "answer": 7
+        },
+        {
+            "id": 40,
+            "question": "How many books are in the Protestant Old Testament?",
+            "answer": 39
+        },
+        {
+            "id": 41,
+            "question": "How many Vedas are there in Hinduism?",
+            "answer": 4
+        },
+        {
+            "id": 42,
+            "question": "In what year was the First Vatican Council held?",
+            "answer": 1869
+        },
+        {
+            "id": 43,
+            "question": "How many major Archangels are there in Christian and Jewish traditions?",
+            "answer": 7
+        },
+        {
+            "id": 44,
+            "question": "How many years did the Israelites wander in the desert according to the Bible?",
+            "answer": 40
+        },
+        {
+            "id": 45,
+            "question": "How many main Norse worlds are there in mythology?",
+            "answer": 9
+        },
+        {
+            "id": 46,
+            "question": "In what year was the Nicene Creed formulated?",
+            "answer": 325
+        },
+        {
+            "id": 47,
+            "question": "How many precepts are there in Buddhism?",
+            "answer": 5
+        },
+        {
+            "id": 48,
+            "question": "How many books are in the Pentateuch?",
+            "answer": 5
+        },
+        {
+            "id": 49,
+            "question": "How many Stations of the Cross are there in Catholic tradition?",
+            "answer": 14
+        },
+        {
+            "id": 50,
+            "question": "In what year was the Ecumenical Patriarchate of Constantinople established?",
+            "answer": 330
+        },
+        {
+            "id": 51,
+            "question": "How many main gods are there in the Shinto religion?",
+            "answer": 8
+        },
+        {
+            "id": 52,
+            "question": "How many books are in the Book of Mormon?",
+            "answer": 15
+        },
+        {
+            "id": 53,
+            "question": "How many horsemen of the Apocalypse are there in Christian eschatology?",
+            "answer": 4
+        },
+        {
+            "id": 54,
+            "question": "In what year was the Yazidi religion founded?",
+            "answer": 1162
+        },
+        {
+            "id": 55,
+            "question": "How many main chakras are there in Hindu tradition?",
+            "answer": 7
+        },
+        {
+            "id": 56,
+            "question": "How many books are in the Catholic Bible?",
+            "answer": 73
+        },
+        {
+            "id": 57,
+            "question": "How many Olympian goddesses are there in Greek mythology?",
+            "answer": 6
+        },
+        {
+            "id": 58,
+            "question": "In what year was the Sikh religion founded?",
+            "answer": 1469
+        },
+        {
+            "id": 59,
+            "question": "How many main branches of Shia Islam are there?",
+            "answer": 3
+        },
+        {
+            "id": 60,
+            "question": "How many days did Jesus fast in the wilderness according to the Bible?",
+            "answer": 40
+        },
+        {
+            "id": 61,
+            "question": "How many main Hindu deities are there?",
+            "answer": 3
+        },
+        {
+            "id": 62,
+            "question": "In what year was the Jehovah's Witnesses organization founded?",
+            "answer": 1870
+        },
+        {
+            "id": 63,
+            "question": "How many sacred mountains are there in Chinese mythology?",
+            "answer": 5
+        },
+        {
+            "id": 64,
+            "question": "How many books are in the Tanakh (Hebrew Bible)?",
+            "answer": 24
+        },
+        {
+            "id": 65,
+            "question": "How many Adityas (solar deities) are there in Hindu mythology?",
+            "answer": 12
+        },
+        {
+            "id": 66,
+            "question": "In what year was the first Ecumenical Council of Constantinople held?",
+            "answer": 381
+        },
+        {
+            "id": 67,
+            "question": "How many main sects are there in Jainism?",
+            "answer": 2
+        },
+        {
+            "id": 68,
+            "question": "How many books are in the Ethiopian Orthodox Bible?",
+            "answer": 81
+        },
+        {
+            "id": 69,
+            "question": "How many primary Celtic gods are there?",
+            "answer": 7
+        },
+        {
+            "id": 70,
+            "question": "In what year was the Cao Dai religion founded in Vietnam?",
+            "answer": 1926
+        },
+        {
+            "id": 71,
+            "question": "How many main schools of Tibetan Buddhism are there?",
+            "answer": 4
+        },
+        {
+            "id": 72,
+            "question": "How many books are in the Apocrypha?",
+            "answer": 14
+        },
+        {
+            "id": 73,
+            "question": "How many main Aztec gods were there?",
+            "answer": 13
+        },
+        {
+            "id": 74,
+            "question": "In what year was the Seventh-day Adventist Church officially founded?",
+            "answer": 1863
+        },
+        {
+            "id": 75,
+            "question": "How many main Chinese zodiac animals are there?",
+            "answer": 12
+        },
+        {
+            "id": 76,
+            "question": "How many books are in the Avesta, the primary collection of religious texts of Zoroastrianism?",
+            "answer": 21
+        },
+        {
+            "id": 77,
+            "question": "How many main Egyptian gods were there in ancient times?",
+            "answer": 8
+        },
+        {
+            "id": 78,
+            "question": "In what year was the Rastafari movement founded?",
+            "answer": 1930
+        },
+        {
+            "id": 79,
+            "question": "How many main types of angels are there in the angelic hierarchy according to Pseudo-Dionysius?",
+            "answer": 9
+        },
+        {
+            "id": 80,
+            "question": "How many books are in the Guru Granth Sahib, the holy scripture of Sikhism?",
+            "answer": 1430
+        },
+        {
+            "id": 81,
+            "question": "How many main Norse gods are there?",
+            "answer": 12
+        },
+        {
+            "id": 82,
+            "question": "In what year was the Unification Church (Moonies) founded?",
+            "answer": 1954
+        },
+        {
+            "id": 83,
+            "question": "How many main Shinto shrines (Jingu) are there in Japan?",
+            "answer": 4
+        },
+        {
+            "id": 84,
+            "question": "How many books are in the Nag Hammadi library?",
+            "answer": 52
+        },
+        {
+            "id": 85,
+            "question": "How many main Incan gods were there?",
+            "answer": 4
+        },
+        {
+            "id": 86,
+            "question": "In what year was the Ahmadiyya Muslim Community founded?",
+            "answer": 1889
+        },
+        {
+            "id": 87,
+            "question": "How many main Zoroastrian texts are there?",
+            "answer": 5
+        },
+        {
+            "id": 88,
+            "question": "How many books are in the Dead Sea Scrolls?",
+            "answer": 981
+        },
+        {
+            "id": 89,
+            "question": "How many main Sumerian gods were there?",
+            "answer": 7
+        },
+        {
+            "id": 90,
+            "question": "In what year was the Falun Gong spiritual practice first taught publicly in China?",
+            "answer": 1992
+        },
+        {
+            "question": "How many books are in the Protestant Bible?",
+            "answer": 66
+        },
+        {
+            "question": "In what year was the First Council of Nicaea held?",
+            "answer": 325
+        },
+        {
+            "question": "How many Noble Truths are there in Buddhism?",
+            "answer": 4
+        },
+        {
+            "question": "How many pillars of Islam are there?",
+            "answer": 5
+        },
+        {
+            "question": "In what year did the Great Schism between the Eastern Orthodox and Roman Catholic churches occur?",
+            "answer": 1054
+        },
+        {
+            "question": "How many books are in the Hebrew Bible (Tanakh)?",
+            "answer": 24
+        },
+        {
+            "question": "How many days does Hanukkah last?",
+            "answer": 8
+        },
+        {
+            "question": "How many canonical Gospels are there in the New Testament?",
+            "answer": 4
+        },
+        {
+            "question": "How many disciples did Jesus have according to Christian tradition?",
+            "answer": 12
+        },
+        {
+            "question": "In what year did Martin Luther post his 95 Theses?",
+            "answer": 1517
+        },
+        {
+            "question": "How many days does Ramadan typically last?",
+            "answer": 30
+        },
+        {
+            "question": "How many chapters (suras) are in the Quran?",
+            "answer": 114
+        },
+        {
+            "question": "How many main branches are there in Sikhism?",
+            "answer": 2
+        },
+        {
+            "question": "In Buddhism, how many realms of existence are there?",
+            "answer": 6
+        },
+        {
+            "question": "How many major denominations are there in Judaism?",
+            "answer": 3
+        },
+        {
+            "question": "How many days does the Jewish holiday of Passover last?",
+            "answer": 7
+        },
+        {
+            "question": "How many sacred texts are there in Sikhism?",
+            "answer": 11
+        },
+        {
+            "question": "In what year was the Church of Jesus Christ of Latter-day Saints founded?",
+            "answer": 1830
+        },
+        {
+            "question": "How many main sects are there in Islam?",
+            "answer": 2
+        },
+        {
+            "question": "How many precepts are observed by lay Buddhists?",
+            "answer": 5
+        },
+        {
+            "question": "How many books are in the Catholic Bible?",
+            "answer": 73
+        },
+        {
+            "question": "How many tribes of Israel were there originally?",
+            "answer": 12
+        },
+        {
+            "question": "In what year did the Protestant Reformation begin?",
+            "answer": 1517
+        },
+        {
+            "question": "How many main types of Yoga are there in Hinduism?",
+            "answer": 4
+        },
+        {
+            "question": "How many days does the Muslim holiday of Eid al-Fitr last?",
+            "answer": 3
+        },
+        {
+            "question": "How many books are in the Torah?",
+            "answer": 5
+        },
+        {
+            "question": "How many commandments are there in Judaism and Christianity?",
+            "answer": 10
+        },
+        {
+            "question": "In what year was the First Vatican Council held?",
+            "answer": 1869
+        },
+        {
+            "question": "How many main schools of Buddhist thought are there?",
+            "answer": 2
+        },
+        {
+            "question": "How many days does the Festival of Sacrifice (Eid al-Adha) last in Islam?",
+            "answer": 4
+        },
+        {
+            "question": "How many sections are there in the Vedas?",
+            "answer": 4
+        },
+        {
+            "question": "In what year was the Second Vatican Council concluded?",
+            "answer": 1965
+        },
+        {
+            "question": "How many major branches of Christianity are there?",
+            "answer": 3
+        },
+        {
+            "question": "How many main philosophical schools are there in Hinduism?",
+            "answer": 6
+        },
+        {
+            "question": "How many prophets are mentioned by name in the Quran?",
+            "answer": 25
+        },
+        {
+            "question": "In what year was the Nicene Creed formulated?",
+            "answer": 325
+        },
+        {
+            "question": "How many main denominations are there in Shinto?",
+            "answer": 13
+        },
+        {
+            "question": "How many days does the Jewish holiday of Sukkot last?",
+            "answer": 7
+        },
+        {
+            "question": "How many main sects are there in Jainism?",
+            "answer": 2
+        },
+        {
+            "question": "In what year was the Baha'i Faith founded?",
+            "answer": 1844
+        },
+        {
+            "question": "How many major divisions are there in the Christian Bible?",
+            "answer": 2
+        },
+        {
+            "question": "How many main deities are there in Zoroastrianism?",
+            "answer": 2
+        },
+        {
+            "question": "How many books are in the New Testament?",
+            "answer": 27
+        },
+        {
+            "question": "In what year did the East-West Schism in Christianity occur?",
+            "answer": 1054
+        },
+        {
+            "question": "How many main paths to liberation are there in Hinduism?",
+            "answer": 4
+        },
+        {
+            "question": "How many days does Diwali typically last?",
+            "answer": 5
+        },
+        {
+            "question": "How many main branches are there in Taoism?",
+            "answer": 2
+        },
+        {
+            "question": "In Buddhism, how many primary schools of thought are there?",
+            "answer": 2
+        },
+        {
+            "question": "How many main sects are there in Sikhism?",
+            "answer": 2
+        },
+        {
+            "question": "How many days does the Muslim pilgrimage (Hajj) typically last?",
+            "answer": 5
+        },
+        {
+            "question": "In what year was the Church of England established?",
+            "answer": 1534
+        },
+        {
+            "question": "How many main branches are there in Judaism?",
+            "answer": 3
+        },
+        {
+            "question": "How many books are in the Old Testament of the Protestant Bible?",
+            "answer": 39
+        },
+        {
+            "question": "In Hinduism, how many main stages of life (ashramas) are there?",
+            "answer": 4
+        },
+        {
+            "question": "How many days does the Chinese New Year festival typically last?",
+            "answer": 15
+        },
+        {
+            "question": "How many main schools of Islamic jurisprudence are there in Sunni Islam?",
+            "answer": 4
+        },
+        {
+            "question": "In what year was the World Council of Churches founded?",
+            "answer": 1948
+        },
+        {
+            "question": "How many major festivals are there in the Baha'i Faith?",
+            "answer": 9
+        },
+        {
+            "question": "How many books are in the Apocrypha of the Catholic Bible?",
+            "answer": 7
+        },
+        {
+            "question": "In Buddhism, how many noble eightfold paths are there?",
+            "answer": 8
+        },
+        {
+            "question": "How many main denominations are there in Mormonism?",
+            "answer": 2
+        },
+        {
+            "question": "In what year was the Edict of Milan issued, legalizing Christianity in the Roman Empire?",
+            "answer": 313
+        },
+        {
+            "question": "How many main philosophical schools are there in Buddhism?",
+            "answer": 4
+        },
+        {
+            "question": "How many days does the Jewish holiday of Shavuot last?",
+            "answer": 1
+        },
+        {
+            "question": "How many main sects are there in Zoroastrianism?",
+            "answer": 3
+        },
+        {
+            "question": "In what year was the First Council of Constantinople held?",
+            "answer": 381
+        },
+        {
+            "question": "How many main divisions are there in the Shia branch of Islam?",
+            "answer": 3
+        },
+        {
+            "question": "How many books are in the Nevi'im (Prophets) section of the Hebrew Bible?",
+            "answer": 8
+        },
+        {
+            "question": "In Hinduism, how many main philosophical systems (darshanas) are there?",
+            "answer": 6
+        },
+        {
+            "question": "How many days does the Buddhist holiday of Vesak typically last?",
+            "answer": 1
+        },
+        {
+            "question": "How many main schools of thought are there in Confucianism?",
+            "answer": 8
+        },
+        {
+            "question": "In what year was the Second Council of Constantinople held?",
+            "answer": 553
+        },
+        {
+            "question": "How many main branches are there in Shinto?",
+            "answer": 4
+        },
+        {
+            "question": "How many books are in the Ketuvim (Writings) section of the Hebrew Bible?",
+            "answer": 11
+        },
+        {
+            "question": "In Islam, how many major angels are mentioned by name in the Quran?",
+            "answer": 4
+        },
+        {
+            "question": "How many days does the Hindu festival of Navaratri typically last?",
+            "answer": 9
+        },
+        {
+            "question": "How many main schools of thought are there in Zen Buddhism?",
+            "answer": 2
+        },
+        {
+            "question": "In what year was the Council of Trent concluded?",
+            "answer": 1563
+        },
+        {
+            "question": "How many main denominations are there in Eastern Orthodox Christianity?",
+            "answer": 15
+        },
+        {
+            "question": "How many books are in the deuterocanonical section of the Catholic Bible?",
+            "answer": 7
+        },
+        {
+            "question": "In Sikhism, how many Gurus were there in human form?",
+            "answer": 10
+        },
+        {
+            "question": "How many days does the Jewish holiday of Rosh Hashanah last?",
+            "answer": 2
+        },
+        {
+            "question": "How many main schools of Islamic theology are there?",
+            "answer": 3
+        },
+        {
+            "question": "In what year was the First Council of Ephesus held?",
+            "answer": 431
+        },
+        {
+            "question": "How many main divisions are there in Mahayana Buddhism?",
+            "answer": 2
+        },
+        {
+            "question": "How many books are in the Major Prophets section of the Old Testament?",
+            "answer": 5
+        },
+        {
+            "question": "In Jainism, how many main principles (tattvas) are there?",
+            "answer": 7
+        },
+        {
+            "question": "How many days does the Baha'i festival of Ridvan last?",
+            "answer": 12
+        }
+    ]
+}

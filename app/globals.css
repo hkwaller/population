@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 100% 97%;
+    --foreground: 0 0% 5%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
+
+    --primary: 221 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 0 0% 5%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 4 100% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 100% 50%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+html,
+body {
+  color: #171214;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ish-bg {
+  background-color: #FFF8EC;
+  background-image: radial-gradient(#0D0D0D 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+
+/* ---------- Sticker Pop ---------- */
+
+/* Hard offset text shadow for big display type */
+.pop-textshadow {
+  text-shadow: 0 10px 0 rgba(0, 0, 0, 0.15);
+}
+.pop-textshadow-sm {
+  text-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Sticker: white border + hard shadow, used with a rotation utility */
+.pop-sticker {
+  border: 4px solid #fff;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Gentle idle bob for floating category chips */
+@keyframes pop-bob {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(-10px) rotate(calc(var(--rot, 0deg) * -1)); }
+}
+.pop-bob {
+  animation: pop-bob 6s ease-in-out infinite;
+}
+
+/* Full-bleed background-color wipe on route entry (navigation signature) */
+@keyframes pop-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.pop-wipe {
+  animation: pop-wipe 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-bob { animation: none; }
+  .pop-wipe { animation: pop-fade 0.15s ease-out both; }
+  .animate-float-slow,
+  .animate-float-medium,
+  .animate-float-fast { animation: none !important; }
+}
+
+@keyframes pop-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Hide scrollbars on the full-bleed pop shells but keep scrollability */
+.pop-scroll {
+  scrollbar-width: none;
+}
+.pop-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(95vw, 45vh) rotate(72deg); }
+  40% { transform: translate(45vw, 95vh) rotate(144deg); }
+  60% { transform: translate(-45vw, 95vh) rotate(216deg); }
+  80% { transform: translate(-95vw, 45vh) rotate(288deg); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-70vw, 70vh) rotate(-90deg); }
+  50% { transform: translate(95vw, -20vh) rotate(180deg); }
+  75% { transform: translate(20vw, 95vh) rotate(270deg); }
+}
+
+@keyframes float-fast {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(70vw, 95vh) rotate(120deg); }
+  66% { transform: translate(-70vw, 95vh) rotate(240deg); }
+}
+
+.animate-float-slow  { animation: float-slow  30s infinite linear; }
+.animate-float-medium { animation: float-medium 25s infinite linear; }
+.animate-float-fast  { animation: float-fast  20s infinite linear; }

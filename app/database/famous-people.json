@@ -1,0 +1,605 @@
+{
+    "name": "famous-people",
+    "questions": [
+        {
+            "question": "In what year was Leonardo da Vinci born?",
+            "answer": 1452
+        },
+        {
+            "question": "How many siblings did Michael Jackson have?",
+            "answer": 9
+        },
+        {
+            "question": "What is the estimated net worth of Oprah Winfrey in billions of dollars?",
+            "answer": 4
+        },
+        {
+            "question": "In what year was Albert Einstein born?",
+            "answer": 1879
+        },
+        {
+            "question": "How many Academy Awards has Meryl Streep won?",
+            "answer": 3
+        },
+        {
+            "question": "What is the height of Shaquille O'Neal in inches?",
+            "answer": 84
+        },
+        {
+            "question": "In what year was Vincent van Gogh born?",
+            "answer": 1853
+        },
+        {
+            "question": "How many Grand Slam singles titles has Serena Williams won?",
+            "answer": 23
+        },
+        {
+            "question": "What is the estimated net worth of Bill Gates in billions of dollars?",
+            "answer": 130
+        },
+        {
+            "question": "In what year was William Shakespeare born?",
+            "answer": 1564
+        },
+        {
+            "question": "How many Academy Awards has Tom Hanks won?",
+            "answer": 2
+        },
+        {
+            "question": "What is the height of Michael Jordan in inches?",
+            "answer": 78
+        },
+        {
+            "question": "In what year was Pablo Picasso born?",
+            "answer": 1881
+        },
+        {
+            "question": "How many Grammy Awards has Taylor Swift won?",
+            "answer": 11
+        },
+        {
+            "question": "What is the estimated net worth of Jeff Bezos in billions of dollars?",
+            "answer": 131
+        },
+        {
+            "question": "In what year was Mahatma Gandhi born?",
+            "answer": 1869
+        },
+        {
+            "question": "How many Academy Awards has Katharine Hepburn won?",
+            "answer": 4
+        },
+        {
+            "question": "What is the height of Yao Ming in inches?",
+            "answer": 92
+        },
+        {
+            "question": "In what year was Frida Kahlo born?",
+            "answer": 1907
+        },
+        {
+            "question": "How many Grand Slam singles titles has Roger Federer won?",
+            "answer": 20
+        },
+        {
+            "question": "What is the estimated net worth of Elon Musk in billions of dollars?",
+            "answer": 219
+        },
+        {
+            "question": "In what year was Martin Luther King Jr. born?",
+            "answer": 1929
+        },
+        {
+            "question": "How many Academy Awards has Jack Nicholson won?",
+            "answer": 3
+        },
+        {
+            "question": "What is the height of Muggsy Bogues in inches?",
+            "answer": 60
+        },
+        {
+            "question": "In what year was Salvador Dali born?",
+            "answer": 1904
+        },
+        {
+            "question": "How many Grand Slam singles titles has Rafael Nadal won?",
+            "answer": 22
+        },
+        {
+            "question": "What is the estimated net worth of Warren Buffett in billions of dollars?",
+            "answer": 96
+        },
+        {
+            "question": "In what year was Nelson Mandela born?",
+            "answer": 1918
+        },
+        {
+            "question": "How many Academy Awards has Daniel Day-Lewis won?",
+            "answer": 3
+        },
+        {
+            "question": "What is the height of Wilt Chamberlain in inches?",
+            "answer": 86
+        },
+        {
+            "question": "In what year was Claude Monet born?",
+            "answer": 1840
+        },
+        {
+            "question": "How many Grand Slam singles titles has Novak Djokovic won?",
+            "answer": 20
+        },
+        {
+            "question": "What is the estimated net worth of Mark Zuckerberg in billions of dollars?",
+            "answer": 63
+        },
+        {
+            "question": "In what year was Mother Teresa born?",
+            "answer": 1910
+        },
+        {
+            "question": "How many Academy Awards has Ingrid Bergman won?",
+            "answer": 3
+        },
+        {
+            "question": "What is the height of LeBron James in inches?",
+            "answer": 80
+        },
+        {
+            "question": "In what year was Andy Warhol born?",
+            "answer": 1928
+        },
+        {
+            "question": "How many Super Bowl championships has Tom Brady won?",
+            "answer": 7
+        },
+        {
+            "question": "What is the estimated net worth of Larry Ellison in billions of dollars?",
+            "answer": 109
+        },
+        {
+            "question": "In what year was Marie Curie born?",
+            "answer": 1867
+        },
+        {
+            "question": "How many Academy Awards has Vivien Leigh won?",
+            "answer": 2
+        },
+        {
+            "question": "What is the height of Kevin Hart in inches?",
+            "answer": 63
+        },
+        {
+            "question": "In what year was Henri Matisse born?",
+            "answer": 1869
+        },
+        {
+            "question": "How many Olympic gold medals has Usain Bolt won?",
+            "answer": 8
+        },
+        {
+            "question": "What is the estimated net worth of Michael Bloomberg in billions of dollars?",
+            "answer": 65
+        },
+        {
+            "question": "In what year was Winston Churchill born?",
+            "answer": 1874
+        },
+        {
+            "question": "How many Academy Awards has Jack Lemmon won?",
+            "answer": 2
+        },
+        {
+            "question": "What is the height of Kareem Abdul-Jabbar in inches?",
+            "answer": 89
+        },
+        {
+            "question": "In what year was Diego Rivera born?",
+            "answer": 1886
+        },
+        {
+            "question": "How many Wimbledon singles titles has Serena Williams won?",
+            "answer": 7
+        },
+        {
+            "question": "What is the estimated net worth of Steve Ballmer in billions of dollars?",
+            "answer": 83
+        },
+        {
+            "question": "In what year was Ernest Hemingway born?",
+            "answer": 1899
+        },
+        {
+            "question": "How many Academy Awards has Marlon Brando won?",
+            "answer": 2
+        },
+        {
+            "question": "What is the height of Charles Barkley in inches?",
+            "answer": 76
+        },
+        {
+            "question": "In what year was Georgia O'Keeffe born?",
+            "answer": 1887
+        },
+        {
+            "question": "How many Grand Slam singles titles has Pete Sampras won?",
+            "answer": 14
+        },
+        {
+            "question": "What is the estimated net worth of Phil Knight in billions of dollars?",
+            "answer": 47
+        },
+        {
+            "question": "In what year was John F. Kennedy born?",
+            "answer": 1917
+        },
+        {
+            "question": "How many Academy Awards has Elizabeth Taylor won?",
+            "answer": 2
+        },
+        {
+            "question": "What is the height of Kobe Bryant in inches?",
+            "answer": 78
+        },
+        {
+            "question": "In what year was Jackson Pollock born?",
+            "answer": 1912
+        },
+        {
+            "question": "How many Academy Awards has Meryl Streep won?",
+            "answer": 3
+        },
+        {
+            "question": "How many times has Tom Cruise been married?",
+            "answer": 3
+        },
+        {
+            "question": "How many children does Angelina Jolie have?",
+            "answer": 6
+        },
+        {
+            "question": "How many Grammy Awards has Taylor Swift won?",
+            "answer": 12
+        },
+        {
+            "question": "How many movies has Samuel L. Jackson appeared in?",
+            "answer": 150
+        },
+        {
+            "question": "How many Grammy Awards has Beyoncé won?",
+            "answer": 32
+        },
+        {
+            "question": "How many episodes are there in the TV show 'Friends'?",
+            "answer": 236
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Madonna have?",
+            "answer": 12
+        },
+        {
+            "question": "How many episodes of 'The Simpsons' have aired as of 2023?",
+            "answer": 750
+        },
+        {
+            "question": "How many children does Mick Jagger have?",
+            "answer": 8
+        },
+        {
+            "question": "How many weeks was 'Old Town Road' by Lil Nas X at number one on the Billboard Hot 100?",
+            "answer": 19
+        },
+        {
+            "question": "How many movies has Clint Eastwood directed?",
+            "answer": 41
+        },
+        {
+            "question": "How many albums has Elvis Presley released?",
+            "answer": 60
+        },
+        {
+            "question": "How many Academy Award nominations has Meryl Streep received?",
+            "answer": 21
+        },
+        {
+            "question": "How many novels did Agatha Christie write?",
+            "answer": 66
+        },
+        {
+            "question": "How many weeks did 'Thriller' by Michael Jackson spend on the Billboard 200?",
+            "answer": 37
+        },
+        {
+            "question": "How many times has Steven Spielberg directed a movie?",
+            "answer": 34
+        },
+        {
+            "question": "How many studio albums has Taylor Swift released as of 2023?",
+            "answer": 10
+        },
+        {
+            "question": "How many children does Eddie Murphy have?",
+            "answer": 10
+        },
+        {
+            "question": "How many Grammy Awards has Kanye West won?",
+            "answer": 24
+        },
+        {
+            "question": "How many episodes are there in the TV show 'Breaking Bad'?",
+            "answer": 62
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Drake have?",
+            "answer": 11
+        },
+        {
+            "question": "How many movies has Robert De Niro appeared in?",
+            "answer": 100
+        },
+        {
+            "question": "How many episodes are there in the TV show 'The Office' (US)?",
+            "answer": 201
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Rihanna have?",
+            "answer": 14
+        },
+        {
+            "question": "How many seasons does the TV show 'Grey's Anatomy' have as of 2023?",
+            "answer": 19
+        },
+        {
+            "question": "How many episodes are there in the TV show 'Game of Thrones'?",
+            "answer": 73
+        },
+        {
+            "question": "How many children does Alec Baldwin have?",
+            "answer": 8
+        },
+        {
+            "question": "How many Grammy Awards has Quincy Jones won?",
+            "answer": 28
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does The Beatles have?",
+            "answer": 20
+        },
+        {
+            "question": "How many movies has Tom Hanks appeared in?",
+            "answer": 80
+        },
+        {
+            "question": "How many seasons does the TV show 'Supernatural' have?",
+            "answer": 15
+        },
+        {
+            "question": "How many children does Bob Marley have?",
+            "answer": 11
+        },
+        {
+            "question": "How many Grammy Awards has U2 won?",
+            "answer": 22
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Whitney Houston have?",
+            "answer": 11
+        },
+        {
+            "question": "How many movies has Morgan Freeman appeared in?",
+            "answer": 100
+        },
+        {
+            "question": "How many seasons does the TV show 'NCIS' have as of 2023?",
+            "answer": 21
+        },
+        {
+            "question": "How many children does Mel Gibson have?",
+            "answer": 9
+        },
+        {
+            "question": "How many Grammy Awards has Stevie Wonder won?",
+            "answer": 25
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Janet Jackson have?",
+            "answer": 10
+        },
+        {
+            "question": "How many movies has Johnny Depp appeared in?",
+            "answer": 60
+        },
+        {
+            "question": "How many seasons does the TV show 'Law & Order: SVU' have as of 2023?",
+            "answer": 24
+        },
+        {
+            "question": "How many children does Paul McCartney have?",
+            "answer": 5
+        },
+        {
+            "question": "How many Grammy Awards has Michael Jackson won?",
+            "answer": 13
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Elton John have?",
+            "answer": 9
+        },
+        {
+            "question": "How many movies has Bruce Willis appeared in?",
+            "answer": 70
+        },
+        {
+            "question": "How many seasons does the TV show 'The Simpsons' have as of 2023?",
+            "answer": 35
+        },
+        {
+            "question": "How many children does Kris Jenner have?",
+            "answer": 6
+        },
+        {
+            "question": "How many Grammy Awards has Bruce Springsteen won?",
+            "answer": 20
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Mariah Carey have?",
+            "answer": 19
+        },
+        {
+            "question": "How many movies has Denzel Washington appeared in?",
+            "answer": 60
+        },
+        {
+            "question": "How many seasons does the TV show 'Family Guy' have as of 2023?",
+            "answer": 21
+        },
+        {
+            "question": "How many children does Mick Jagger have?",
+            "answer": 8
+        },
+        {
+            "question": "How many Grammy Awards has Paul Simon won?",
+            "answer": 16
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Usher have?",
+            "answer": 9
+        },
+        {
+            "question": "How many movies has Will Smith appeared in?",
+            "answer": 30
+        },
+        {
+            "question": "How many seasons does the TV show 'Friends' have?",
+            "answer": 10
+        },
+        {
+            "question": "How many children does Rod Stewart have?",
+            "answer": 8
+        },
+        {
+            "question": "How many Grammy Awards has Jay-Z won?",
+            "answer": 24
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Paul McCartney have?",
+            "answer": 9
+        },
+        {
+            "question": "How many movies has Leonardo DiCaprio appeared in?",
+            "answer": 30
+        },
+        {
+            "question": "How many seasons does the TV show 'The Big Bang Theory' have?",
+            "answer": 12
+        },
+        {
+            "question": "How many children does Eddie Murphy have?",
+            "answer": 10
+        },
+        {
+            "question": "How many Grammy Awards has Ella Fitzgerald won?",
+            "answer": 13
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does The Rolling Stones have?",
+            "answer": 8
+        },
+        {
+            "question": "How many movies has Robert Downey Jr. appeared in?",
+            "answer": 55
+        },
+        {
+            "question": "How many seasons does the TV show 'ER' have?",
+            "answer": 15
+        },
+        {
+            "question": "How many children does Mel B have?",
+            "answer": 3
+        },
+        {
+            "question": "How many Grammy Awards has David Bowie won?",
+            "answer": 6
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Justin Bieber have?",
+            "answer": 7
+        },
+        {
+            "question": "How many movies has Julia Roberts appeared in?",
+            "answer": 50
+        },
+        {
+            "question": "How many seasons does the TV show '24' have?",
+            "answer": 9
+        },
+        {
+            "question": "How many children does Steven Spielberg have?",
+            "answer": 7
+        },
+        {
+            "question": "How many Grammy Awards has Tony Bennett won?",
+            "answer": 19
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Ariana Grande have?",
+            "answer": 7
+        },
+        {
+            "question": "How many movies has Nicole Kidman appeared in?",
+            "answer": 80
+        },
+        {
+            "question": "How many seasons does the TV show 'CSI: Crime Scene Investigation' have?",
+            "answer": 15
+        },
+        {
+            "question": "How many children does Charlie Chaplin have?",
+            "answer": 11
+        },
+        {
+            "question": "How many Grammy Awards has John Williams won?",
+            "answer": 25
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does George Michael have?",
+            "answer": 8
+        },
+        {
+            "question": "How many movies has Matt Damon appeared in?",
+            "answer": 50
+        },
+        {
+            "question": "How many seasons does the TV show 'The Walking Dead' have as of 2023?",
+            "answer": 11
+        },
+        {
+            "question": "How many children does Clint Eastwood have?",
+            "answer": 8
+        },
+        {
+            "question": "How many Grammy Awards has Celine Dion won?",
+            "answer": 5
+        },
+        {
+            "question": "How many Billboard Hot 100 number-one hits does Whitney Houston have?",
+            "answer": 11
+        },
+        {
+            "question": "How many movies has Sandra Bullock appeared in?",
+            "answer": 50
+        },
+        {
+            "question": "How many seasons does the TV show 'Modern Family' have?",
+            "answer": 11
+        },
+        {
+            "question": "How many children does Kris Jenner have?",
+            "answer": 6
+        },
+        {
+            "question": "How many Grammy Awards has B.B. King won?",
+            "answer": 15
+        }
+    ]
+}

@@ -1,0 +1,2418 @@
+{
+    "name": "history",
+    "questions": [
+        {
+            "question": "In what year did the Roman Empire fall?",
+            "answer": 476,
+            "category": "Ancient History"
+        },
+        {
+            "question": "When did the American Civil War end?",
+            "answer": 1865,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the French Revolution begin?",
+            "answer": 1789,
+            "category": "European History"
+        },
+        {
+            "question": "When did the Berlin Wall fall? ",
+            "answer": 1989,
+            "category": "Modern History"
+        },
+        {
+            "question": "In what year did World War I begin? ",
+            "answer": 1914,
+            "category": "World History"
+        },
+        {
+            "question": "When was the United Nations founded? ",
+            "answer": 1945,
+            "category": "World History"
+        },
+        {
+            "question": "When did Christopher Columbus first voyage to the Americas?",
+            "answer": 1492,
+            "category": "Exploration History"
+        },
+        {
+            "question": "When did the Magna Carta get signed?",
+            "answer": 1215,
+            "category": "Medieval History"
+        },
+        {
+            "question": "In what year did the Korean War start? ",
+            "answer": 1950,
+            "category": "Asian History"
+        },
+        {
+            "question": "When did the Soviet Union dissolve? ",
+            "answer": 1991,
+            "category": "Modern History"
+        },
+        {
+            "question": "In what year did Napoleon Bonaparte become Emperor of France?",
+            "answer": 1804,
+            "category": "European History"
+        },
+        {
+            "question": "When did India gain independence from Britain? ",
+            "answer": 1947,
+            "category": "Colonial History"
+        },
+        {
+            "question": "When did the first man land on the moon? ",
+            "answer": 1969,
+            "category": "Space History"
+        },
+        {
+            "question": "In what year did the Wright brothers fly the first airplane? ",
+            "answer": 1903,
+            "category": "Technological History"
+        },
+        {
+            "question": "When did the Wall Street Crash occur? ",
+            "answer": 1929,
+            "category": "Economic History"
+        },
+
+        {
+            "question": "When was the Declaration of Independence signed?",
+            "answer": 1776,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Cuban Missile Crisis occur? ",
+            "answer": 1962,
+            "category": "Cold War History"
+        },
+        {
+            "question": "When did the Great Fire of London happen?",
+            "answer": 1666,
+            "category": "European History"
+        },
+        {
+            "question": "In what year was the first modern Olympic Games held?",
+            "answer": 1896,
+            "category": "Sports History"
+        },
+        {
+            "question": "When was the United States Constitution ratified?",
+            "answer": 1788,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Spanish Armada take place?",
+            "answer": 1588,
+            "category": "European History"
+        },
+        {
+            "question": "When was the first successful printing press created by Gutenberg?",
+            "answer": 1440,
+            "category": "Technological History"
+        },
+        {
+            "question": "In what year did the Renaissance begin?",
+            "answer": 1400,
+            "category": "Cultural History"
+        },
+        {
+            "question": "When did the first World Cup take place? ",
+            "answer": 1930,
+            "category": "Sports History"
+        },
+        {
+            "question": "In what year did Martin Luther King Jr. give his 'I Have a Dream' speech? ",
+            "answer": 1963,
+            "category": "American History"
+        },
+        {
+            "question": "When did the Black Death peak in Europe?",
+            "answer": 1347,
+            "category": "Medieval History"
+        },
+        {
+            "question": "In what year was the Eiffel Tower completed?",
+            "answer": 1889,
+            "category": "Architectural History"
+        },
+        {
+            "question": "When did Alexander the Great die? (3xx BC)",
+            "answer": 323,
+            "category": "Ancient History"
+        },
+        {
+            "question": "In what year did the British Empire reach its greatest extent? ",
+            "answer": 1921,
+            "category": "Colonial History"
+        },
+        {
+            "question": "When did the fall of Constantinople occur?",
+            "answer": 1453,
+            "category": "Medieval History"
+        },
+        {
+            "question": "In what year did the Boston Tea Party occur?",
+            "answer": 1773,
+            "category": "American History"
+        },
+        {
+            "question": "When did the Soviet Union launch Sputnik? ",
+            "answer": 1957,
+            "category": "Space History"
+        },
+        {
+            "question": "In what year did Queen Victoria become Queen of the United Kingdom?",
+            "answer": 1837,
+            "category": "British History"
+        },
+        {
+            "question": "When was the Treaty of Versailles signed? ",
+            "answer": 1919,
+            "category": "World History"
+        },
+        {
+            "question": "In what year was Nelson Mandela released from prison? ",
+            "answer": 1990,
+            "category": "African History"
+        },
+        {
+            "question": "When did the Battle of Waterloo occur?",
+            "answer": 1815,
+            "category": "European History"
+        },
+        {
+            "question": "In what year was the first Nobel Prize awarded? ",
+            "answer": 1901,
+            "category": "General History"
+        },
+        {
+            "question": "When did the Salem Witch Trials take place?",
+            "answer": 1692,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Russian Revolution begin? ",
+            "answer": 1917,
+            "category": "World History"
+        },
+        {
+            "question": "When was the first telephone invented by Alexander Graham Bell?",
+            "answer": 1876,
+            "category": "Technological History"
+        },
+        {
+            "question": "In what year did the Spanish Civil War start? ",
+            "answer": 1936,
+            "category": "European History"
+        },
+        {
+            "question": "When did the Battle of Gettysburg occur?",
+            "answer": 1863,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Iran-Iraq War begin? ",
+            "answer": 1980,
+            "category": "Middle Eastern History"
+        },
+        {
+            "question": "When was the Emancipation Proclamation issued?",
+            "answer": 1863,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the US enter World War I? ",
+            "answer": 1917,
+            "category": "World History"
+        },
+        {
+            "question": "When did the first artificial heart transplant take place? ",
+            "answer": 1982,
+            "category": "Medical History"
+        },
+        {
+            "question": "In what year did Hawaii become a US state? ",
+            "answer": 1959,
+            "category": "American History"
+        },
+        {
+            "question": "In what year was the first email sent? ",
+            "answer": 1971,
+            "category": "Technological History"
+        },
+        {
+            "question": "When did the Great Depression begin? ",
+            "answer": 1929,
+            "category": "Economic History"
+        },
+        {
+            "question": "In what year did the Apollo 11 mission land on the moon? ",
+            "answer": 1969,
+            "category": "Space History"
+        },
+        {
+            "question": "When did the Vietnam War end? ",
+            "answer": 1975,
+            "category": "World History"
+        },
+        {
+            "question": "In what year did the first World War I Armistice take effect? ",
+            "answer": 1918,
+            "category": "World History"
+        },
+        {
+            "question": "When was the first successful heart transplant performed? ",
+            "answer": 1967,
+            "category": "Medical History"
+        },
+        {
+            "question": "In what year did the Gold Rush in California start?",
+            "answer": 1848,
+            "category": "American History"
+        },
+        {
+            "question": "When did the first transcontinental railroad in the US complete?",
+            "answer": 1869,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Lusitania sink? ",
+            "answer": 1915,
+            "category": "Maritime History"
+        },
+        {
+            "question": "When did the Battle of the Alamo take place?",
+            "answer": 1836,
+            "category": "American History"
+        },
+        {
+            "question": "In what year was the first computer, ENIAC, completed? ",
+            "answer": 1945,
+            "category": "Technological History"
+        },
+        {
+            "question": "When did the Yalta Conference take place? ",
+            "answer": 1945,
+            "category": "World History"
+        },
+        {
+            "question": "In what year did the Chernobyl disaster occur? ",
+            "answer": 1986,
+            "category": "World History"
+        },
+        {
+            "question": "When did the Marshall Plan get initiated? ",
+            "answer": 1948,
+            "category": "World History"
+        },
+        {
+            "question": "In what year did the Indian Removal Act get signed into law?",
+            "answer": 1830,
+            "category": "American History"
+        },
+        {
+            "question": "When did the first televised presidential debate occur? ",
+            "answer": 1960,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Treaty of Paris end the American Revolutionary War?",
+            "answer": 1783,
+            "category": "American History"
+        },
+        {
+            "question": "When did the Mayflower land at Plymouth?",
+            "answer": 1620,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Boer War begin?",
+            "answer": 1899,
+            "category": "Colonial History"
+        },
+        {
+            "question": "When was the Great Wall of China primarily built during the Ming Dynasty?",
+            "answer": 1512,
+            "category": "Asian History"
+        },
+        {
+            "question": "In what year did Ghana gain independence from Britain? ",
+            "answer": 1957,
+            "category": "African History"
+        },
+        {
+            "question": "When did the first human heart transplant take place? ",
+            "answer": 1967,
+            "category": "Medical History"
+        },
+        {
+            "question": "In what year did the Indian Mutiny, also known as the Sepoy Mutiny, begin?",
+            "answer": 1857,
+            "category": "Colonial History"
+        },
+        {
+            "question": "When was the US Declaration of Independence adopted?",
+            "answer": 1776,
+            "category": "American History"
+        },
+        {
+            "question": "In what year was the first transatlantic flight completed by Charles Lindbergh? ",
+            "answer": 1927,
+            "category": "Aviation History"
+        },
+        {
+            "question": "When did the first powered flight by the Wright brothers take place? ",
+            "answer": 1903,
+            "category": "Aviation History"
+        },
+        {
+            "question": "In what year did the English Civil War begin?",
+            "answer": 1642,
+            "category": "British History"
+        },
+        {
+            "question": "When was the first photograph taken?",
+            "answer": 1826,
+            "category": "Technological History"
+        },
+        {
+            "question": "In what year was the first polio vaccine developed by Jonas Salk? ",
+            "answer": 1955,
+            "category": "Medical History"
+        },
+        {
+            "question": "When was the first use of the electric telegraph by Samuel Morse? ",
+            "answer": 1837,
+            "category": "Technological History"
+        },
+        {
+            "question": "In what year did the Battle of Agincourt take place?",
+            "answer": 1415,
+            "category": "Medieval History"
+        },
+        {
+            "question": "When was the first discovery of gold in California?",
+            "answer": 1848,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Great Chicago Fire occur?",
+            "answer": 1871,
+            "category": "American History"
+        },
+        {
+            "question": "When did the first human spaceflight by Yuri Gagarin occur? ",
+            "answer": 1961,
+            "category": "Space History"
+        },
+        {
+            "question": "In what year did the European Union officially form? ",
+            "answer": 1993,
+            "category": "Modern History"
+        },
+        {
+            "question": "When did the first successful cloning of a mammal (Dolly the sheep) occur? ",
+            "answer": 1996,
+            "category": "Scientific History"
+        },
+        {
+            "question": "In what year did the first permanent English settlement in America get established in Jamestown?",
+            "answer": 1607,
+            "category": "American History"
+        },
+        {
+            "question": "When was the Magna Carta signed?",
+            "answer": 1215,
+            "category": "Medieval History"
+        },
+        {
+            "question": "In what year did the Boston Massacre occur?",
+            "answer": 1770,
+            "category": "American History"
+        },
+        {
+            "question": "When did the US Constitution become effective?",
+            "answer": 1789,
+            "category": "American History"
+        },
+        {
+            "question": "In what year did the Battle of Britain take place? ",
+            "answer": 1940,
+            "category": "World History"
+        },
+        {
+            "question": "When did the Norman Conquest of England occur?",
+            "answer": 1066,
+            "category": "Medieval History"
+        },
+        {
+            "question": "In what year did the first modern Olympics take place?",
+            "answer": 1896,
+            "category": "Sports History"
+        },
+        {
+            "question": "In what year did the French Revolution begin?",
+            "answer": 1789
+        },
+        {
+            "question": "How many wives did King Henry VIII of England have?",
+            "answer": 6
+        },
+        {
+            "question": "How many years did the Hundred Years' War between England and France last?",
+            "answer": 116
+        },
+        {
+            "question": "How many Crusades were there?",
+            "answer": 9
+        },
+        {
+            "question": "In what year did World War I begin?",
+            "answer": 1914
+        },
+        {
+            "question": "How many years did the Thirty Years' War last?",
+            "answer": 30
+        },
+        {
+            "question": "How many states made up the Holy Roman Empire at its peak?",
+            "answer": 300
+        },
+        {
+            "question": "How many European countries were members of the Triple Entente in World War I?",
+            "answer": 3
+        },
+        {
+            "question": "How many years did the Byzantine Empire last?",
+            "answer": 1123
+        },
+        {
+            "question": "How many decades did the Cold War last?",
+            "answer": 5
+        },
+        {
+            "question": "How many Popes have there been?",
+            "answer": 266
+        },
+        {
+            "question": "How many countries were in the European Union before the 2004 enlargement?",
+            "answer": 15
+        },
+        {
+            "question": "How many members were in the Triple Alliance of World War I?",
+            "answer": 3
+        },
+        {
+            "question": "How many Dutch provinces revolted against Spanish rule in the 16th century?",
+            "answer": 7
+        },
+        {
+            "question": "How many Russian Tsars were there from the Romanov dynasty?",
+            "answer": 18
+        },
+        {
+            "question": "How many years did the English Civil War last?",
+            "answer": 9
+        },
+        {
+            "question": "How many states made up the German Empire under Otto von Bismarck?",
+            "answer": 25
+        },
+        {
+            "question": "How many Allied countries took part in the D-Day invasion of Normandy?",
+            "answer": 12
+        },
+        {
+            "question": "How many decades did the Soviet Union exist for?",
+            "answer": 7
+        },
+        {
+            "question": "How many Republics made up the former Yugoslavia?",
+            "answer": 6
+        },
+        {
+            "question": "How many years did the Portuguese Empire last?",
+            "answer": 600
+        },
+        {
+            "question": "How many states were in the Hanseatic League at its peak?",
+            "answer": 200
+        },
+        {
+            "question": "How many English Monarchs were from the House of Tudor?",
+            "answer": 5
+        },
+        {
+            "question": "How many years did the Napoleonic Wars last?",
+            "answer": 12
+        },
+        {
+            "question": "How many Kings of France were from the House of Bourbon?",
+            "answer": 16
+        },
+        {
+            "question": "How many years did the Polish-Lithuanian Commonwealth last?",
+            "answer": 226
+        },
+        {
+            "question": "How many Russian Czars were there from the Romanov dynasty?",
+            "answer": 18
+        },
+        {
+            "question": "How many territories made up the British East India Company at its peak?",
+            "answer": 18
+        },
+        {
+            "question": "How many European countries sent troops to participate in the Crimean War?",
+            "answer": 6
+        },
+        {
+            "question": "How many years did the Spanish Inquisition last?",
+            "answer": 356
+        },
+        {
+            "question": "How many Russian revolutions were there in 1917?",
+            "answer": 2
+        },
+        {
+            "question": "How many volumes are in Winston Churchill's book 'The Second World War'?",
+            "answer": 6
+        },
+        {
+            "question": "How many months did the Siege of Leningrad last during World War II?",
+            "answer": 29
+        },
+        {
+            "question": "How many Allied countries signed the Treaty of Versailles after World War I?",
+            "answer": 5
+        },
+        {
+            "question": "How many months did the Berlin Airlift last during the Cold War?",
+            "answer": 15
+        },
+        {
+            "question": "How many republics made up the former Soviet Union?",
+            "answer": 15
+        },
+        {
+            "question": "How many signatories were there to the Treaty of Rome that founded the European Economic Community?",
+            "answer": 6
+        },
+        {
+            "question": "How many years did the Spanish Civil War last?",
+            "answer": 3
+        },
+        {
+            "question": "How many months did the Cuban Missile Crisis last in 1962?",
+            "answer": 5
+        },
+        {
+            "question": "How many official languages are recognized by the European Union?",
+            "answer": 24
+        },
+        {
+            "question": "How many years did the Troubles conflict last in Northern Ireland?",
+            "answer": 30
+        },
+        {
+            "question": "How many books are in Voltaire's famous Philosophical Dictionary?",
+            "answer": 118
+        },
+        {
+            "question": "How many years did the Reconquista last in the Iberian Peninsula?",
+            "answer": 781
+        },
+        {
+            "question": "How many Dutch cities were burned by the Spanish during the Eighty Years' War?",
+            "answer": 24
+        },
+        {
+            "question": "How many official languages does Switzerland have?",
+            "answer": 4
+        },
+        {
+            "question": "How many children did Queen Victoria have?",
+            "answer": 9
+        },
+        {
+            "question": "How many German states unified to form the German Empire in 1871?",
+            "answer": 25
+        },
+        {
+            "question": "How many years did the War of the Spanish Succession last?",
+            "answer": 14
+        },
+        {
+            "question": "How many empires have ruled over modern-day Romania?",
+            "answer": 5
+        },
+        {
+            "question": "How many volumes are in Edward Gibbon's 'The History of the Decline and Fall of the Roman Empire'?",
+            "answer": 6
+        },
+        {
+            "question": "How many members were in the Congress of Vienna in 1815?",
+            "answer": 216
+        },
+        {
+            "question": "How many French Kings were from the House of Valois?",
+            "answer": 13
+        },
+        {
+            "question": "How many children did Tsar Nicholas II and Alexandra have?",
+            "answer": 5
+        },
+        {
+            "question": "How many major European countries participated in the Suez Crisis of 1956?",
+            "answer": 4
+        },
+        {
+            "question": "How many official languages does Belgium have?",
+            "answer": 3
+        },
+        {
+            "question": "How many ruling houses made up the House of Habsburg?",
+            "answer": 3
+        },
+        {
+            "question": "How many cantons are there in Switzerland?",
+            "answer": 26
+        },
+        {
+            "question": "How many countries were part of the Warsaw Pact during the Cold War?",
+            "answer": 8
+        },
+        {
+            "question": "How many official languages does Ireland have?",
+            "answer": 2
+        },
+        {
+            "question": "How many volumes comprise Robert Massie's historical work 'Peter the Great: His Life and World'?",
+            "answer": 3
+        },
+
+        {
+            "question": "How many years did the Hundred Years' War last?",
+            "answer": 116,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the Treaty of Versailles signed?",
+            "answer": 1919,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Berlin Wall fall?",
+            "answer": 1989,
+            "category": "european history"
+        },
+        {
+            "question": "How many theses did Martin Luther nail to the church door in Wittenberg?",
+            "answer": 95,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the French Revolution begin?",
+            "answer": 1789,
+            "category": "european history"
+        },
+        {
+            "question": "How many countries are in the European Union as of 2021?",
+            "answer": 27,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the Magna Carta signed?",
+            "answer": 1215,
+            "category": "european history"
+        },
+        {
+            "question": "How many wives did Henry VIII have?",
+            "answer": 6,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did World War I begin?",
+            "answer": 1914,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Spanish Armada take place?",
+            "answer": 1588,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Napoleonic Wars last?",
+            "answer": 12,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Black Death reach Europe?",
+            "answer": 1347,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Thirty Years' War last?",
+            "answer": 30,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Russian Revolution take place?",
+            "answer": 1917,
+            "category": "european history"
+        },
+        {
+            "question": "How many times was Winston Churchill Prime Minister of the UK?",
+            "answer": 2,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Treaty of Rome establish the EEC?",
+            "answer": 1957,
+            "category": "european history"
+        },
+        {
+            "question": "How many people were executed during the Reign of Terror in France?",
+            "answer": 17000,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Irish Potato Famine begin?",
+            "answer": 1845,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did Queen Victoria reign?",
+            "answer": 63,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Battle of Waterloo take place?",
+            "answer": 1815,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the Euro introduced as physical currency?",
+            "answer": 2002,
+            "category": "european history"
+        },
+        {
+            "question": "How many people were killed in the Great Fire of London?",
+            "answer": 6,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the first modern Olympic Games held in Athens?",
+            "answer": 1896,
+            "category": "european history"
+        },
+        {
+            "question": "How many days did the Great Fire of London last?",
+            "answer": 4,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did Christopher Columbus first reach the Americas?",
+            "answer": 1492,
+            "category": "european history"
+        },
+        {
+            "question": "How many original members were in the European Economic Community (EEC)?",
+            "answer": 6,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Glorious Revolution take place?",
+            "answer": 1688,
+            "category": "european history"
+        },
+        {
+            "question": "How many articles are there in the Treaty of Versailles?",
+            "answer": 440,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the fall of Constantinople occur?",
+            "answer": 1453,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Spanish Civil War last?",
+            "answer": 3,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the Battle of the Somme fought?",
+            "answer": 1916,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Berlin Wall stand?",
+            "answer": 28,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Maastricht Treaty establish the European Union?",
+            "answer": 1993,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Cold War last?",
+            "answer": 44,
+            "category": "european history"
+        },
+        {
+            "question": "How many sovereign states are there in Europe?",
+            "answer": 44,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the Council of Europe founded?",
+            "answer": 1949,
+            "category": "european history"
+        },
+        {
+            "question": "How many troops were involved in the D-Day landings?",
+            "answer": 156000,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Battle of Agincourt take place?",
+            "answer": 1415,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the reign of Louis XIV of France last?",
+            "answer": 72,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the German reunification occur?",
+            "answer": 1990,
+            "category": "european history"
+        },
+        {
+            "question": "How many days did the Cuban Missile Crisis last?",
+            "answer": 13,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Suez Crisis take place?",
+            "answer": 1956,
+            "category": "european history"
+        },
+        {
+            "question": "How many countries formed the original NATO alliance?",
+            "answer": 12,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the first Euro banknote introduced?",
+            "answer": 2002,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Anglo-Spanish War last?",
+            "answer": 19,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Battle of Trafalgar take place?",
+            "answer": 1805,
+            "category": "european history"
+        },
+        {
+            "question": "How many people were killed during the French Revolution?",
+            "answer": 40000,
+            "category": "european history"
+        },
+        {
+            "question": "In which year was the League of Nations established?",
+            "answer": 1920,
+            "category": "european history"
+        },
+        {
+            "question": "How many people were killed during the London Blitz?",
+            "answer": 43000,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Norman Conquest of England occur?",
+            "answer": 1066,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Hundred Years' War last?",
+            "answer": 116,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the French Revolution end?",
+            "answer": 1799,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Habsburg Monarchy last?",
+            "answer": 640,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Crimean War begin?",
+            "answer": 1853,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Italian Renaissance last?",
+            "answer": 200,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Battle of Lepanto take place?",
+            "answer": 1571,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Roman Empire last?",
+            "answer": 507,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the War of the Roses begin?",
+            "answer": 1455,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Reconquista last?",
+            "answer": 781,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Glorious Revolution take place?",
+            "answer": 1688,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Protestant Reformation last?",
+            "answer": 131,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Siege of Vienna occur?",
+            "answer": 1683,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Byzantine Empire last?",
+            "answer": 1123,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Edict of Nantes get revoked?",
+            "answer": 1685,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Franco-Prussian War last?",
+            "answer": 1,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Holy Roman Empire dissolve?",
+            "answer": 1806,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Viking Age last?",
+            "answer": 250,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Anschluss occur?",
+            "answer": 1938,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Spanish Inquisition last?",
+            "answer": 356,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Lisbon earthquake occur?",
+            "answer": 1755,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Italian Wars last?",
+            "answer": 65,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Council of Trent begin?",
+            "answer": 1545,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the First Crusade last?",
+            "answer": 4,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Battle of Bosworth Field take place?",
+            "answer": 1485,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Baroque period last?",
+            "answer": 150,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Maastricht Treaty establish the European Union?",
+            "answer": 1993,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Great Northern War last?",
+            "answer": 21,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the St. Bartholomew's Day Massacre occur?",
+            "answer": 1572,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Bourbon Restoration last?",
+            "answer": 16,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Storming of the Bastille take place?",
+            "answer": 1789,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Enlightenment last?",
+            "answer": 100,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Franco-Prussian War end?",
+            "answer": 1871,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Reign of Terror last?",
+            "answer": 1,
+            "category": "european history"
+        },
+        {
+            "question": "In which year did the Spanish Civil War end?",
+            "answer": 1939,
+            "category": "european history"
+        },
+        {
+            "question": "How many years did the Soviet Union last?",
+            "answer": 69,
+            "category": "european history"
+        },
+        {
+            "question": "In what year did the Titanic sink?",
+            "answer": 1912
+        },
+        {
+            "question": "How many years did World War II last?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Berlin Wall fall?",
+            "answer": 1989
+        },
+        {
+            "question": "How many US Presidents have been assassinated?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did the Wright brothers first fly?",
+            "answer": 1903
+        },
+        {
+            "question": "How many days did the Cuban Missile Crisis last?",
+            "answer": 13
+        },
+        {
+            "question": "In what year did the American Civil War end?",
+            "answer": 1865
+        },
+        {
+            "question": "How many original colonies were there in the United States?",
+            "answer": 13
+        },
+        {
+            "question": "In what year did the French Revolution begin?",
+            "answer": 1789
+        },
+        {
+            "question": "How many people signed the Declaration of Independence?",
+            "answer": 56
+        },
+        {
+            "question": "In what year did the Soviet Union collapse?",
+            "answer": 1991
+        },
+        {
+            "question": "How many US Presidents have served two terms?",
+            "answer": 21
+        },
+        {
+            "question": "In what year was the Magna Carta signed?",
+            "answer": 1215
+        },
+        {
+            "question": "How many amendments does the US Constitution have?",
+            "answer": 27
+        },
+        {
+            "question": "In what year did the Great Fire of London occur?",
+            "answer": 1666
+        },
+        {
+            "question": "How many years did the Hundred Years' War last?",
+            "answer": 116
+        },
+        {
+            "question": "In what year did the United Nations officially form?",
+            "answer": 1945
+        },
+        {
+            "question": "How many voyages did Christopher Columbus make to the New World?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did Nelson Mandela become President of South Africa?",
+            "answer": 1994
+        },
+        {
+            "question": "How many people were killed in the 9/11 attacks?",
+            "answer": 2977
+        },
+        {
+            "question": "In what year was the first moon landing?",
+            "answer": 1969
+        },
+        {
+            "question": "How many ships were part of the Spanish Armada?",
+            "answer": 130
+        },
+        {
+            "question": "In what year did the Black Death peak in Europe?",
+            "answer": 1347
+        },
+        {
+            "question": "How many US Presidents have been impeached?",
+            "answer": 3
+        },
+        {
+            "question": "In what year did India gain independence from Britain?",
+            "answer": 1947
+        },
+        {
+            "question": "How many states were in the Confederate States of America?",
+            "answer": 11
+        },
+   
+        {
+            "question": "How many wives did Henry VIII have?",
+            "answer": 6
+        },
+        {
+            "question": "In what year was the United States Constitution ratified?",
+            "answer": 1788
+        },
+        {
+            "question": "How many people died in the Great Fire of London?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Roman Empire fall?",
+            "answer": 476
+        },
+        {
+            "question": "How many times was Napoleon exiled?",
+            "answer": 2
+        },
+        {
+            "question": "In what year did the Wall Street Crash occur?",
+            "answer": 1929
+        },
+        {
+            "question": "How many US Presidents have there been?",
+            "answer": 46
+        },
+        {
+            "question": "In what year did the first World War start?",
+            "answer": 1914
+        },
+        {
+            "question": "How many days was William Henry Harrison President?",
+            "answer": 31
+        },
+        {
+            "question": "In what year did the Emancipation Proclamation take effect?",
+            "answer": 1863
+        },
+        {
+            "question": "How many Olympiads were canceled due to World War II?",
+            "answer": 2
+        },
+        {
+            "question": "In what year did the Korean War begin?",
+            "answer": 1950
+        },
+        {
+            "question": "How many articles are in the US Constitution?",
+            "answer": 7
+        },
+        {
+            "question": "In what year was John F. Kennedy assassinated?",
+            "answer": 1963
+        },
+        {
+            "question": "How many years did the Ming Dynasty rule China?",
+            "answer": 276
+        },
+        {
+            "question": "In what year did World War I end?",
+            "answer": 1918
+        },
+        {
+            "question": "How many years did Nelson Mandela spend in prison?",
+            "answer": 27
+        },
+        {
+            "question": "In what year did the Russian Revolution begin?",
+            "answer": 1917
+        },
+        {
+            "question": "How many passengers were on the Mayflower?",
+            "answer": 102
+        },
+        {
+            "question": "In what year was Martin Luther King Jr.'s 'I Have a Dream' speech?",
+            "answer": 1963
+        },
+        {
+            "question": "How many people died in the Battle of Gettysburg?",
+            "answer": 51000
+        },
+        {
+            "question": "In what year was the Treaty of Versailles signed?",
+            "answer": 1919
+        },
+        {
+            "question": "How many countries were part of the original NATO alliance?",
+            "answer": 12
+        },
+        {
+            "question": "In what year did the Hindenburg disaster occur?",
+            "answer": 1937
+        },
+        {
+            "question": "How many years did Queen Victoria reign?",
+            "answer": 63
+        },
+        {
+            "question": "In what year did the Chernobyl disaster happen?",
+            "answer": 1986
+        },
+        {
+            "question": "How many people died in the eruption of Mount Vesuvius in 79 AD?",
+            "answer": 16000
+        },
+        {
+            "question": "In what year did the Spanish Civil War start?",
+            "answer": 1936
+        },
+        {
+            "question": "How many days did the Apollo 11 mission last?",
+            "answer": 8
+        },
+        {
+            "question": "In what year was the first transatlantic flight?",
+            "answer": 1919
+        },
+        {
+            "question": "How many years did it take to build the Great Wall of China?",
+            "answer": 2000
+        },
+        {
+            "question": "In what year did the Battle of Waterloo occur?",
+            "answer": 1815
+        },
+        {
+            "question": "How many Popes have there been?",
+            "answer": 266
+        },
+        {
+            "question": "In what year did the sinking of the Lusitania happen?",
+            "answer": 1915
+        },
+        {
+            "question": "How many soldiers were killed in the Vietnam War?",
+            "answer": 58000
+        },
+        {
+            "question": "In what year did the USA enter World War I?",
+            "answer": 1917
+        },
+        {
+            "question": "How many months did the Siege of Leningrad last?",
+            "answer": 29
+        },
+        {
+            "question": "In what year did the first human heart transplant take place?",
+            "answer": 1967
+        },
+        {
+            "question": "How many people died during the construction of the Panama Canal?",
+            "answer": 27500
+        },
+        {
+            "question": "In what year was the fall of Constantinople?",
+            "answer": 1453
+        },
+        {
+            "question": "How many ships did Vasco da Gama command on his first voyage to India?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did the first manned spaceflight occur?",
+            "answer": 1961
+        },
+        {
+            "question": "How many pharaohs ruled ancient Egypt?",
+            "answer": 170
+        },
+        {
+            "question": "How many people were accused during the Salem witch trials?",
+            "answer": 200
+        },
+        {
+            "question": "In what year was the Battle of the Alamo?",
+            "answer": 1836
+        },
+        {
+            "question": "How many years did the Trojan War last?",
+            "answer": 10
+        },
+        {
+            "question": "In what year was the first modern Olympic Games held?",
+            "answer": 1896
+        },
+        {
+            "question": "How many dynasties ruled ancient China?",
+            "answer": 13
+        },
+        {
+            "question": "In what year did Hawaii become a state?",
+            "answer": 1959
+        },
+        {
+            "question": "How many planes were hijacked during the 9/11 attacks?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did the Renaissance begin?",
+            "answer": 1300
+        },
+        {
+            "question": "How many ships were in the First Fleet to Australia?",
+            "answer": 11
+        },
+        {
+            "question": "In what year did Alexander the Great die?",
+            "answer": 323
+        },
+        {
+            "question": "How many children did Queen Victoria have?",
+            "answer": 9
+        },
+        {
+            "question": "How many years did the Ottoman Empire last?",
+            "answer": 623
+        },
+        {
+            "question": "In what year did the Great Chicago Fire occur?",
+            "answer": 1871
+        },
+        {
+            "question": "How many times was Franklin D. Roosevelt elected President?",
+            "answer": 4
+        },
+        {
+            "question": "In what year was the Rosetta Stone discovered?",
+            "answer": 1799
+        },
+        {
+            "question": "How many people died during the Irish Potato Famine?",
+            "answer": 1000000
+        },
+        {
+            "question": "In what year did the Falklands War begin?",
+            "answer": 1982
+        },
+        {
+            "question": "In what year did the first World War end?",
+            "answer": 1918
+        },
+        {
+            "question": "How many days did the Cuban Missile Crisis last?",
+            "answer": 13
+        },
+        {
+            "question": "In what year did the United Nations officially form?",
+            "answer": 1945
+        },
+        {
+            "question": "How many voyages did Christopher Columbus make to the New World?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did Nelson Mandela become President of South Africa?",
+            "answer": 1994
+        },
+        {
+            "question": "How many people were killed in the 9/11 attacks?",
+            "answer": 2977
+        },
+        {
+            "question": "In what year was the first moon landing?",
+            "answer": 1969
+        },
+        {
+            "question": "How many ships were part of the Spanish Armada?",
+            "answer": 130
+        },
+        {
+            "question": "In what year did the Black Death peak in Europe?",
+            "answer": 1347
+        },
+        {
+            "question": "How many US Presidents have been impeached?",
+            "answer": 3
+        },
+        {
+            "question": "In what year did India gain independence from Britain?",
+            "answer": 1947
+        },
+        {
+            "question": "How many states were in the Confederate States of America?",
+            "answer": 11
+        },
+     
+        {
+            "question": "How many wives did Henry VIII have?",
+            "answer": 6
+        },
+        {
+            "question": "In what year was the United States Constitution ratified?",
+            "answer": 1788
+        },
+        {
+            "question": "How many people died in the Great Fire of London?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Roman Empire fall?",
+            "answer": 476
+        },
+        {
+            "question": "How many times was Napoleon exiled?",
+            "answer": 2
+        },
+        {
+            "question": "In what year did the Wall Street Crash occur?",
+            "answer": 1929
+        },
+        {
+            "question": "How many US Presidents have there been?",
+            "answer": 46
+        },
+        {
+            "question": "In what year did the first World War start?",
+            "answer": 1914
+        },
+        {
+            "question": "How many days was William Henry Harrison President?",
+            "answer": 31
+        },
+        {
+            "question": "In what year did the Emancipation Proclamation take effect?",
+            "answer": 1863
+        },
+        {
+            "question": "How many Olympiads were canceled due to World War II?",
+            "answer": 2
+        },
+        {
+            "question": "In what year did the Korean War begin?",
+            "answer": 1950
+        },
+        {
+            "question": "How many articles are in the US Constitution?",
+            "answer": 7
+        },
+        {
+            "question": "In what year was John F. Kennedy assassinated?",
+            "answer": 1963
+        },
+        {
+            "question": "How many years did the Ming Dynasty rule China?",
+            "answer": 276
+        },
+        {
+            "question": "In what year did World War I end?",
+            "answer": 1918
+        },
+        {
+            "question": "How many years did Nelson Mandela spend in prison?",
+            "answer": 27
+        },
+        {
+            "question": "In what year did the Russian Revolution begin?",
+            "answer": 1917
+        },
+        {
+            "question": "How many passengers were on the Mayflower?",
+            "answer": 102
+        },
+        {
+            "question": "In what year was Martin Luther King Jr.'s 'I Have a Dream' speech?",
+            "answer": 1963
+        },
+        {
+            "question": "How many people died in the Battle of Gettysburg?",
+            "answer": 51000
+        },
+        {
+            "question": "In what year was the Treaty of Versailles signed?",
+            "answer": 1919
+        },
+        {
+            "question": "How many countries were part of the original NATO alliance?",
+            "answer": 12
+        },
+        {
+            "question": "In what year did the Hindenburg disaster occur?",
+            "answer": 1937
+        },
+        {
+            "question": "How many years did Queen Victoria reign?",
+            "answer": 63
+        },
+        {
+            "question": "In what year did the Chernobyl disaster happen?",
+            "answer": 1986
+        },
+        {
+            "question": "How many people died in the eruption of Mount Vesuvius in 79 AD?",
+            "answer": 16000
+        },
+        {
+            "question": "In what year did the Spanish Civil War start?",
+            "answer": 1936
+        },
+        {
+            "question": "How many days did the Apollo 11 mission last?",
+            "answer": 8
+        },
+        {
+            "question": "In what year was the first transatlantic flight?",
+            "answer": 1919
+        },
+        {
+            "question": "How many years did it take to build the Great Wall of China?",
+            "answer": 2000
+        },
+        {
+            "question": "In what year did the Battle of Waterloo occur?",
+            "answer": 1815
+        },
+        {
+            "question": "How many Popes have there been?",
+            "answer": 266
+        },
+        {
+            "question": "In what year did the sinking of the Lusitania happen?",
+            "answer": 1915
+        },
+        {
+            "question": "How many soldiers were killed in the Vietnam War?",
+            "answer": 58000
+        },
+        {
+            "question": "In what year did the USA enter World War I?",
+            "answer": 1917
+        },
+        {
+            "question": "How many months did the Siege of Leningrad last?",
+            "answer": 29
+        },
+        {
+            "question": "In what year did the first human heart transplant take place?",
+            "answer": 1967
+        },
+        {
+            "question": "How many people died during the construction of the Panama Canal?",
+            "answer": 27500
+        },
+        {
+            "question": "In what year was the fall of Constantinople?",
+            "answer": 1453
+        },
+        {
+            "question": "How many ships did Vasco da Gama command on his first voyage to India?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did the first manned spaceflight occur?",
+            "answer": 1961
+        },
+        {
+            "question": "How many pharaohs ruled ancient Egypt?",
+            "answer": 170
+        },
+        {
+            "question": "In what year did the Boston Tea Party occur?",
+            "answer": 1773
+        },
+        {
+            "question": "How many people were accused during the Salem witch trials?",
+            "answer": 200
+        },
+        {
+            "question": "In what year was the Battle of the Alamo?",
+            "answer": 1836
+        },
+        {
+            "question": "How many years did the Trojan War last?",
+            "answer": 10
+        },
+        {
+            "question": "In what year was the first modern Olympic Games held?",
+            "answer": 1896
+        },
+        {
+            "question": "How many dynasties ruled ancient China?",
+            "answer": 13
+        },
+        {
+            "question": "In what year did Hawaii become a state?",
+            "answer": 1959
+        },
+        {
+            "question": "How many planes were hijacked during the 9/11 attacks?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did the Renaissance begin?",
+            "answer": 1300
+        },
+        {
+            "question": "How many ships were in the First Fleet to Australia?",
+            "answer": 11
+        },
+        {
+            "question": "In what year did Alexander the Great die?",
+            "answer": 323
+        },
+        {
+            "question": "How many children did Queen Victoria have?",
+            "answer": 9
+        },
+        {
+            "question": "In what year was the Statue of Liberty dedicated?",
+            "answer": 1886
+        },
+        {
+            "question": "How many years did the Ottoman Empire last?",
+            "answer": 623
+        },
+        {
+            "question": "In what year did the Great Chicago Fire occur?",
+            "answer": 1871
+        },
+        {
+            "question": "How many times was Franklin D. Roosevelt elected President?",
+            "answer": 4
+        },
+        {
+            "question": "In what year was the Rosetta Stone discovered?",
+            "answer": 1799
+        },
+        {
+            "question": "How many people died during the Irish Potato Famine?",
+            "answer": 1000000
+        },
+        {
+            "question": "In what year did the Falklands War begin?",
+            "answer": 1982
+        },
+        {
+            "question": "How many years did the Byzantine Empire last?",
+            "answer": 1123
+        },
+        {
+            "question": "In what year did the Industrial Revolution start?",
+            "answer": 1760
+        },
+        {
+            "question": "How many days did the Battle of Stalingrad last?",
+            "answer": 199
+        },
+        {
+            "question": "In what year did the Louisiana Purchase occur?",
+            "answer": 1803
+        },
+        {
+            "question": "How many years did the Pax Romana last?",
+            "answer": 200
+        },
+        {
+            "question": "In what year was the Berlin Conference held?",
+            "answer": 1884
+        },
+        {
+            "question": "How many amendments were in the original Bill of Rights?",
+            "answer": 10
+        },
+        {
+            "question": "In what year did the Battle of Actium occur?",
+            "answer": 31
+        },
+        {
+            "question": "How many delegates signed the US Constitution?",
+            "answer": 39
+        },
+        {
+            "question": "In what year did the Spanish-American War start?",
+            "answer": 1898
+        },
+        {
+            "question": "How many years did the Weimar Republic last?",
+            "answer": 14
+        },
+        {
+            "question": "In what year was the Magna Carta signed?",
+            "answer": 1215
+        },
+        {
+            "question": "How many years did the Hundred Years' War last?",
+            "answer": 116
+        },
+        {
+            "question": "In what year did the Byzantine Empire fall?",
+            "answer": 1453
+        },
+        {
+            "question": "How many theses did Martin Luther nail to the church door?",
+            "answer": 95
+        },
+        {
+            "question": "In what year was the Spanish Armada defeated?",
+            "answer": 1588
+        },
+        {
+            "question": "How many days did the Battle of Stalingrad last?",
+            "answer": 200
+        },
+        {
+            "question": "In what year was the Suez Canal opened?",
+            "answer": 1869
+        },
+        {
+            "question": "How many states were there in the Holy Roman Empire at its peak?",
+            "answer": 300
+        },
+        {
+            "question": "In what year did the Meiji Restoration begin in Japan?",
+            "answer": 1868
+        },
+        {
+            "question": "How many years did the Ottoman Empire last?",
+            "answer": 624
+        },
+        {
+            "question": "In what year was the first Crusade launched?",
+            "answer": 1096
+        },
+        {
+            "question": "How many consuls were there in the Roman Republic at any given time?",
+            "answer": 2
+        },
+        {
+            "question": "In what year did the Taiping Rebellion begin?",
+            "answer": 1850
+        },
+        {
+            "question": "How many countries were part of the League of Nations when it was founded?",
+            "answer": 42
+        },
+        {
+            "question": "In what year did the Treaty of Westphalia end the Thirty Years' War?",
+            "answer": 1648
+        },
+        {
+            "question": "How many original American colonies were there?",
+            "answer": 13
+        },
+        {
+            "question": "In what year was the Battle of Hastings fought?",
+            "answer": 1066
+        },
+        {
+            "question": "How many pyramids are there in the Giza pyramid complex?",
+            "answer": 3
+        },
+        {
+            "question": "In what year did the Russo-Japanese War end?",
+            "answer": 1905
+        },
+        {
+            "question": "How many people signed the US Declaration of Independence?",
+            "answer": 56
+        },
+        {
+            "question": "In what year did the Sepoy Mutiny take place in India?",
+            "answer": 1857
+        },
+        {
+            "question": "How many soldiers were estimated to have fought in the Battle of Gettysburg?",
+            "answer": 165000
+        },
+        {
+            "question": "In what year did the Great Fire of London occur?",
+            "answer": 1666
+        },
+        {
+            "question": "How many voyages did Christopher Columbus make to the New World?",
+            "answer": 4
+        },
+        {
+            "question": "In what year was the first telegraph line completed in the United States?",
+            "answer": 1844
+        },
+        {
+            "question": "How many people were executed during the Salem witch trials?",
+            "answer": 20
+        },
+        {
+            "question": "In what year did the War of the Roses begin?",
+            "answer": 1455
+        },
+        {
+            "question": "How many articles are there in the US Constitution?",
+            "answer": 7
+        },
+        {
+            "question": "In what year was the Berlin Conference held to divide Africa among European powers?",
+            "answer": 1884
+        },
+        {
+            "question": "How many French Huguenots were estimated to be killed in the St. Bartholomew's Day Massacre?",
+            "answer": 3000
+        },
+        {
+            "question": "In what year did the Battle of Waterloo take place?",
+            "answer": 1815
+        },
+        {
+            "question": "How many days did the Cuban Missile Crisis last?",
+            "answer": 13
+        },
+        {
+            "question": "In what year was the Treaty of Versailles signed to end World War I?",
+            "answer": 1919
+        },
+        {
+            "question": "How many years did Queen Victoria reign over the United Kingdom?",
+            "answer": 63
+        },
+        {
+            "question": "In what year did the Falklands War take place?",
+            "answer": 1982
+        },
+        {
+            "question": "How many states seceded from the Union during the American Civil War?",
+            "answer": 11
+        },
+        {
+            "question": "In what year was the Louisiana Purchase made?",
+            "answer": 1803
+        },
+        {
+            "question": "How many British colonies formed Australia in 1901?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Boxer Rebellion begin in China?",
+            "answer": 1899
+        },
+        {
+            "question": "How many years did the Tokugawa shogunate rule Japan?",
+            "answer": 268
+        },
+        {
+            "question": "In what year did the Treaty of Tordesillas divide the New World between Spain and Portugal?",
+            "answer": 1494
+        },
+        {
+            "question": "How many days did the Iranian hostage crisis last?",
+            "answer": 444
+        },
+        {
+            "question": "In what year was the United Nations founded?",
+            "answer": 1945
+        },
+        {
+            "question": "How many articles are there in the Universal Declaration of Human Rights?",
+            "answer": 30
+        },
+        {
+            "question": "In what year did the Balfour Declaration express British support for a Jewish homeland in Palestine?",
+            "answer": 1917
+        },
+        {
+            "question": "How many ships did Ferdinand Magellan set out with on his circumnavigation of the globe?",
+            "answer": 5
+        },
+        {
+            "question": "In what year was the first transcontinental railroad completed in the United States?",
+            "answer": 1869
+        },
+        {
+            "question": "How many members did the original European Economic Community (EEC) have?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Glorious Revolution take place in England?",
+            "answer": 1688
+        },
+        {
+            "question": "How many presidents have been impeached in US history?",
+            "answer": 3
+        },
+        {
+            "question": "In what year did the Battle of Agincourt take place?",
+            "answer": 1415
+        },
+        {
+            "question": "How many states were in the Confederacy during the American Civil War?",
+            "answer": 11
+        },
+        {
+            "question": "In what year was the Chinese Cultural Revolution launched?",
+            "answer": 1966
+        },
+        {
+            "question": "How many states joined the United States during the 20th century?",
+            "answer": 3
+        },
+        {
+            "question": "In what year did the Battle of the Bulge begin?",
+            "answer": 1944
+        },
+        {
+            "question": "How many million people were estimated to have died in the Black Death pandemic?",
+            "answer": 75
+        },
+        {
+            "question": "In what year was the League of Nations established?",
+            "answer": 1920
+        },
+        {
+            "question": "How many days did the Great Fire of Rome last?",
+            "answer": 6
+        },
+        {
+            "question": "In what year was the Treaty of Paris signed to end the American Revolutionary War?",
+            "answer": 1783
+        },
+        {
+            "question": "How many countries were involved in World War I?",
+            "answer": 32
+        },
+        {
+            "question": "In what year did the Indian Rebellion (Sepoy Mutiny) occur?",
+            "answer": 1857
+        },
+        {
+            "question": "How many men signed the Magna Carta?",
+            "answer": 25
+        },
+        {
+            "question": "In what year did the French Revolution end?",
+            "answer": 1799
+        },
+        {
+            "question": "How many years did the Ming Dynasty rule China?",
+            "answer": 276
+        },
+        {
+            "question": "In what year was the first Battle of Bull Run?",
+            "answer": 1861
+        },
+        {
+            "question": "How many ships did the Spanish Armada consist of?",
+            "answer": 130
+        },
+        {
+            "question": "In what year was the Battle of Saratoga?",
+            "answer": 1777
+        },
+        {
+            "question": "How many days did the Siege of Leningrad last?",
+            "answer": 872
+        },
+        {
+            "question": "In what year did the Great Chicago Fire occur?",
+            "answer": 1871
+        },
+        {
+            "question": "How many dynasties ruled ancient China?",
+            "answer": 13
+        },
+        {
+            "question": "In what year was the Mayflower Compact signed?",
+            "answer": 1620
+        },
+        {
+            "question": "How many emperors ruled Rome during the Year of the Four Emperors?",
+            "answer": 4
+        },
+        {
+            "question": "In what year did the Spanish Civil War end?",
+            "answer": 1939
+        },
+        {
+            "question": "How many ships did Zheng He command on his voyages?",
+            "answer": 317
+        },
+        {
+            "question": "In what year did the Great Depression begin?",
+            "answer": 1929
+        },
+        {
+            "question": "How many men were executed during the Reign of Terror in France?",
+            "answer": 17000
+        },
+        {
+            "question": "In what year was the Treaty of Brest-Litovsk signed?",
+            "answer": 1918
+        },
+        {
+            "question": "How many members are there in the UN Security Council?",
+            "answer": 15
+        },
+        {
+            "question": "In what year did the Treaty of Ghent end the War of 1812?",
+            "answer": 1814
+        },
+        {
+            "question": "In what year was the Ottoman Empire founded?",
+            "answer": 1299
+        },
+        {
+            "question": "How many wives did King Henry VIII have?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Potsdam Conference take place?",
+            "answer": 1945
+        },
+        {
+            "question": "How many days did it take to build the Berlin Wall?",
+            "answer": 2
+        },
+        {
+            "question": "In what year did the Alamo take place?",
+            "answer": 1836
+        },
+        {
+            "question": "How many treaties were signed at the Paris Peace Conference of 1919?",
+            "answer": 5
+        },
+        {
+            "question": "In what year did the Titanic sink?",
+            "answer": 1912
+        },
+        {
+            "question": "How many volumes are there in Edward Gibbon's 'The History of the Decline and Fall of the Roman Empire'?",
+            "answer": 6
+        },
+        {
+            "question": "In what year did the Boston Tea Party occur?",
+            "answer": 1773
+        },
+        {
+            "question": "How many articles are there in the United States Constitution?",
+            "answer": 7
+        },
+        {
+            "question": "In what year did the Gunpowder Plot take place?",
+            "answer": 1605
+        },
+        {
+            "id": 1,
+            "question": "How many days did the shortest war in history last?",
+            "answer": 38
+        },
+        {
+            "id": 2,
+            "question": "In what year was the first email sent?",
+            "answer": 1971
+        },
+        {
+            "id": 3,
+            "question": "How many people were in the crew of Columbus's first voyage to the Americas?",
+            "answer": 90
+        },
+        {
+            "id": 4,
+            "question": "How many years did the construction of the Great Wall of China take?",
+            "answer": 2000
+        },
+        {
+            "id": 5,
+            "question": "In what year was the first hot air balloon flight?",
+            "answer": 1783
+        },
+        {
+            "id": 6,
+            "question": "How many days did the Woodstock festival last?",
+            "answer": 3
+        },
+        {
+            "id": 7,
+            "question": "In what year was the first Olympic torch relay?",
+            "answer": 1936
+        },
+        {
+            "id": 8,
+            "question": "How many people were aboard the Mayflower when it sailed to North America?",
+            "answer": 102
+        },
+        {
+            "id": 9,
+            "question": "How many years did the Hundred Years' War actually last?",
+            "answer": 116
+        },
+        {
+            "id": 10,
+            "question": "In what year was the first successful human-to-human heart transplant performed?",
+            "answer": 1967
+        },
+        {
+            "id": 11,
+            "question": "How many US states ratified the 18th Amendment (Prohibition)?",
+            "answer": 46
+        },
+        {
+            "id": 12,
+            "question": "In what year did the last execution by guillotine take place in France?",
+            "answer": 1977
+        },
+        {
+            "id": 13,
+            "question": "How many days did the Cuban Missile Crisis last?",
+            "answer": 13
+        },
+        {
+            "id": 14,
+            "question": "In what year was the first crossword puzzle published?",
+            "answer": 1913
+        },
+        {
+            "id": 15,
+            "question": "How many people signed the US Declaration of Independence?",
+            "answer": 56
+        },
+        {
+            "id": 16,
+            "question": "In what year was the first Nobel Prize awarded?",
+            "answer": 1901
+        },
+        {
+            "id": 17,
+            "question": "How many years did Nelson Mandela spend in prison?",
+            "answer": 27
+        },
+        {
+            "id": 18,
+            "question": "In what year was the first successful summit of Mount Everest?",
+            "answer": 1953
+        },
+        {
+            "id": 19,
+            "question": "How many days did the Battle of Stalingrad last?",
+            "answer": 199
+        },
+        {
+            "id": 20,
+            "question": "In what year was the first commercially successful typewriter patented?",
+            "answer": 1868
+        },
+        {
+            "id": 21,
+            "question": "How many people were aboard the Titanic when it set sail?",
+            "answer": 2224
+        },
+        {
+            "id": 22,
+            "question": "In what year did the Chernobyl disaster occur?",
+            "answer": 1986
+        },
+        {
+            "id": 23,
+            "question": "How many US presidents have been assassinated while in office?",
+            "answer": 4
+        },
+        {
+            "id": 24,
+            "question": "In what year was the first successful submarine built?",
+            "answer": 1620
+        },
+        {
+            "id": 25,
+            "question": "How many years did the construction of the Panama Canal take?",
+            "answer": 10
+        },
+        {
+            "id": 26,
+            "question": "In what year was the first successful human blood transfusion performed?",
+            "answer": 1818
+        },
+        {
+            "id": 27,
+            "question": "How many days did the Montgomery Bus Boycott last?",
+            "answer": 381
+        },
+        {
+            "id": 28,
+            "question": "In what year was the first modern Olympic Games held?",
+            "answer": 1896
+        },
+        {
+            "id": 29,
+            "question": "How many people were executed during the Salem witch trials?",
+            "answer": 20
+        },
+        {
+            "id": 30,
+            "question": "In what year was the first successful kidney transplant performed?",
+            "answer": 1954
+        },
+        {
+            "id": 31,
+            "question": "How many years did the construction of the Taj Mahal take?",
+            "answer": 22
+        },
+        {
+            "id": 32,
+            "question": "In what year was the first successful human powered flight?",
+            "answer": 1961
+        },
+        {
+            "id": 33,
+            "question": "How many days did the Battle of Gettysburg last?",
+            "answer": 3
+        },
+        {
+            "id": 34,
+            "question": "In what year was the first successful organ transplant (corneal) performed?",
+            "answer": 1905
+        },
+        {
+            "id": 35,
+            "question": "How many people were killed in the eruption of Mount Vesuvius that destroyed Pompeii?",
+            "answer": 2000
+        },
+        {
+            "id": 36,
+            "question": "In what year was the first successful human clone of an adult mammal (Dolly the sheep)?",
+            "answer": 1996
+        },
+        {
+            "id": 37,
+            "question": "How many years did the Siege of Leningrad last during World War II?",
+            "answer": 2
+        },
+        {
+            "id": 38,
+            "question": "In what year was the first successful voyage around the world completed?",
+            "answer": 1522
+        },
+        {
+            "id": 39,
+            "question": "How many people were in Lewis and Clark's Corps of Discovery when they set out?",
+            "answer": 33
+        },
+        {
+            "id": 40,
+            "question": "In what year was the first successful liver transplant performed?",
+            "answer": 1963
+        },
+        {
+            "id": 41,
+            "question": "How many years did the construction of the Colosseum in Rome take?",
+            "answer": 8
+        },
+        {
+            "id": 42,
+            "question": "In what year was the first successful in vitro fertilization resulting in a live birth?",
+            "answer": 1978
+        },
+        {
+            "id": 43,
+            "question": "How many days did the Siege of Vicksburg last during the American Civil War?",
+            "answer": 47
+        },
+        {
+            "id": 44,
+            "question": "In what year was the first successful powered aircraft flight by the Wright brothers?",
+            "answer": 1903
+        },
+        {
+            "id": 45,
+            "question": "How many years did the Vietnam War last?",
+            "answer": 19
+        },
+        {
+            "id": 46,
+            "question": "In what year was the first successful human spaceflight?",
+            "answer": 1961
+        },
+        {
+            "id": 47,
+            "question": "How many days did the Battle of the Somme last during World War I?",
+            "answer": 141
+        },
+        {
+            "id": 48,
+            "question": "In what year was the first successful bone marrow transplant performed?",
+            "answer": 1968
+        },
+        {
+            "id": 49,
+            "question": "How many years did the construction of the Suez Canal take?",
+            "answer": 10
+        },
+        {
+            "id": 50,
+            "question": "In what year was the first successful face transplant performed?",
+            "answer": 2005
+        }
+    ]
+}
