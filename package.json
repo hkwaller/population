@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "start-dev": "next dev"
+    "start-dev": "next dev",
+    "reseed": "npx tsx --env-file=.env.local scripts/migrate-questions.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.12",

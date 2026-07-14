@@ -14,6 +14,7 @@ import { Command, CommandType, LatLng } from '../types'
 import { PopButton } from './pop/PopButton'
 import { POP, stickerFill } from './pop/theme'
 import { WorldMap, type MapPin } from './geo/WorldMap'
+import { RankReveal } from './geo/RankReveal'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
 
@@ -100,6 +101,8 @@ export default function QuestionResultModal({
                     interactive={false}
                   />
                 </div>
+              ) : currentQuestion?.type === 'rank' ? (
+                <RankReveal question={currentQuestion} />
               ) : (
                 <span
                   className="block font-black leading-none tracking-[-0.03em]"

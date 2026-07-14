@@ -46,8 +46,12 @@ function shuffle(arr, rand) {
 /** Pick n distractor items, preferring same-region for difficulty. */
 function distractors(target, pool, n, keyFn, seed) {
   const rand = rng(seed)
-  const same = pool.filter((c) => c.region === target.region && keyFn(c) && keyFn(c) !== keyFn(target))
-  const other = pool.filter((c) => c.region !== target.region && keyFn(c) && keyFn(c) !== keyFn(target))
+  const same = pool.filter(
+    (c) => c.region === target.region && keyFn(c) && keyFn(c) !== keyFn(target),
+  )
+  const other = pool.filter(
+    (c) => c.region !== target.region && keyFn(c) && keyFn(c) !== keyFn(target),
+  )
   const ordered = [...shuffle(same, rand), ...shuffle(other, rand)]
   const seen = new Set([keyFn(target)])
   const out = []
@@ -100,7 +104,10 @@ const obscurity = (c) => 1 - fame(c)
 const q = []
 /** Push a question tagged with a 0..1 difficulty (a `tier` is assigned later). */
 const push = (question, difficulty) =>
-  q.push({ ...question, difficulty: Math.round(Math.max(0, Math.min(1, difficulty)) * 1000) / 1000 })
+  q.push({
+    ...question,
+    difficulty: Math.round(Math.max(0, Math.min(1, difficulty)) * 1000) / 1000,
+  })
 
 /**
  * Deterministically build up to `partnersPer` distinct partners per country,
@@ -165,9 +172,7 @@ for (const c of withBorders) {
   const neighbourNames = c.borders.map((b) => byCca3.get(b)?.name).filter(Boolean)
   if (neighbourNames.length === 0) continue
   // distractors: countries that do NOT border c and aren't c
-  const notNeighbour = countries.filter(
-    (x) => x.cca3 !== c.cca3 && !c.borders.includes(x.cca3),
-  )
+  const notNeighbour = countries.filter((x) => x.cca3 !== c.cca3 && !c.borders.includes(x.cca3))
   const d = distractors(c, notNeighbour, 3, (x) => x.name, `borders:${c.cca3}`)
   push(
     choice(
@@ -262,7 +267,9 @@ function haversine(a, b) {
 }
 // Each capital pairs with 3 partners (deduped) instead of being used once → ~3× more.
 for (const [a, b] of makePairs(withCapCoords, 2, 'distance-pairs')) {
-  const dist = Math.round(haversine({ lat: a.capitalLat, lng: a.capitalLng }, { lat: b.capitalLat, lng: b.capitalLng }))
+  const dist = Math.round(
+    haversine({ lat: a.capitalLat, lng: a.capitalLng }, { lat: b.capitalLat, lng: b.capitalLng }),
+  )
   push(
     {
       id: id(`dist:${a.cca3}:${b.cca3}`),
@@ -370,7 +377,10 @@ for (const c of withLang) {
   const regions = [...new Set(countries.map((c) => c.region).filter(Boolean))]
   for (const c of countries) {
     if (!c.region) continue
-    const others = shuffle(regions.filter((r) => r !== c.region), rng(`cont:${c.cca3}`)).slice(0, 3)
+    const others = shuffle(
+      regions.filter((r) => r !== c.region),
+      rng(`cont:${c.cca3}`),
+    ).slice(0, 3)
     push(
       {
         id: id(`cont:${c.cca3}`),
@@ -386,21 +396,74 @@ for (const c of withLang) {
   }
 }
 
-// --- assign difficulty tiers (per-category tertiles) ---------------------
-// Ranking WITHIN each category guarantees every category offers easy/medium/hard
-// options, so a difficulty filter never empties a single-category selection.
-const byCat = new Map()
-for (const item of q) {
-  const list = byCat.get(item.category) ?? []
-  list.push(item)
-  byCat.set(item.category, list)
+// 13. ranking — put N countries in order by population (rank / reorder).
+// Item count IS the difficulty lever: easy=3, medium=4, hard=5. Tier is set
+// explicitly here (the threshold pass below leaves already-tiered questions alone).
+{
+  const byFame = [...withPop].sort((a, b) => fame(b) - fame(a))
+  const famousPool = byFame.slice(0, 70) // most-recognised third-ish
+  const obscurePool = byFame.slice(55) // lean toward the less-famous for hard
+  const seen = new Set()
+
+  const genTier = (tier, count, pool, n, difficulty, requireSpread) => {
+    let made = 0
+    for (let attempt = 0; made < count && attempt < count * 50; attempt++) {
+      const pick = shuffle(pool, rng(`rank:${tier}:${attempt}`)).slice(0, n)
+      if (pick.length < n) break
+      const key = pick
+        .map((c) => c.cca3)
+        .sort()
+        .join('-')
+      if (seen.has(key)) continue
+      const sorted = [...pick].sort((a, b) => b.population - a.population)
+      // reject exact ties (ambiguous) and, for easy, near-ties (too subtle)
+      let ok = true
+      for (let i = 1; i < sorted.length; i++) {
+        const ratio = sorted[i - 1].population / sorted[i].population
+        if (ratio === 1 || (requireSpread && ratio < 1.3)) {
+          ok = false
+          break
+        }
+      }
+      if (!ok) continue
+      seen.add(key)
+      push(
+        {
+          id: id(`rank:${tier}:${key}`),
+          type: 'rank',
+          category: 'ranking',
+          question: `Sort these by population - largest first`,
+          prompt: { kind: 'text', text: `Sort these by population - largest first` },
+          // items live in `options` (array of {label,value}); shuffled presentation order
+          options: shuffle(pick, rng(`rank:${tier}:${attempt}:o`)).map((c) => ({
+            label: c.name,
+            value: c.population,
+          })),
+          answer: sorted.map((c) => c.name),
+          unit: 'people',
+          tier,
+        },
+        difficulty,
+      )
+      made++
+    }
+  }
+  genTier('easy', 100, famousPool, 3, 0.2, true)
+  genTier('medium', 100, withPop, 4, 0.5, false)
+  genTier('hard', 100, obscurePool, 5, 0.8, false)
 }
-for (const list of byCat.values()) {
-  list.sort((a, b) => a.difficulty - b.difficulty)
-  list.forEach((item, i) => {
-    const pct = list.length <= 1 ? 0 : i / (list.length - 1)
-    item.tier = pct < 1 / 3 ? 'easy' : pct < 2 / 3 ? 'medium' : 'hard'
-  })
+
+// --- assign difficulty tiers (absolute thresholds) -----------------------
+// Fixed cutoffs, NOT per-category tertiles: a tertile makes "easy" the least-obscure
+// *third* of all 195 countries, which still reaches country ~#65 by fame and sweeps
+// in mid-obscurity places like Burkina Faso. Absolute thresholds mean "easy" is a
+// genuinely famous country everywhere. Categories that set their own tier (ranking,
+// where item count drives difficulty) keep it.
+const EASY_MAX = 0.5
+const HARD_MIN = 0.72
+const tierFor = (d) => (d < EASY_MAX ? 'easy' : d < HARD_MIN ? 'medium' : 'hard')
+for (const item of q) {
+  if (!item.tier) item.tier = tierFor(item.difficulty)
 }
 
 // --- write outputs ---

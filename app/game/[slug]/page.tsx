@@ -10,6 +10,7 @@ import { asSlider } from '@/lib/utils'
 import { LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { WorldMap } from '@/app/components/geo/WorldMap'
+import { RankInput } from '@/app/components/geo/RankInput'
 import { Player } from '@/app/components/Player'
 import { Question } from '@/app/components/Question'
 import { Category } from '@/app/components/Category'
@@ -132,13 +133,27 @@ function GamePageContent({ params }: { params: { slug: string } }) {
               />
             </div>
           )}
+          {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (
+            <div className="mb-4">
+              <RankInput
+                question={currentQuestion}
+                onAnswer={(v, ms) =>
+                  send('answer', { id: me?.id, answer: v, questionId: currentQuestion.id, elapsedMs: ms })
+                }
+              />
+            </div>
+          )}
 
           <div className="flex items-center justify-center gap-3">
             <PopButton variant="ghostLight" size="sm" onClick={() => send('replace')}>
               <RefreshCw size={20} /> Replace
             </PopButton>
 
-            {me?.localPlayer && !myAnswered && currentQuestion && currentQuestion.type !== 'choice' && (
+            {me?.localPlayer &&
+              !myAnswered &&
+              currentQuestion &&
+              currentQuestion.type !== 'choice' &&
+              currentQuestion.type !== 'rank' && (
               <PopButton
                 variant="primary"
                 size="lg"

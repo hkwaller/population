@@ -2,8 +2,11 @@ import { icons } from './icons'
 
 export type LatLng = { lat: number; lng: number }
 
-/** A player's raw guess: a number (slider), a chosen option string (choice), or a point (map). */
-export type AnswerValue = number | string | LatLng
+/**
+ * A player's raw guess: a number (slider), a chosen option string (choice), a
+ * point (map), or an ordered list of labels (rank).
+ */
+export type AnswerValue = number | string | LatLng | string[]
 
 /** How a question's stimulus is presented. Defaults to plain text when omitted. */
 export type PromptSpec =
@@ -12,7 +15,7 @@ export type PromptSpec =
   | { kind: 'outline'; code: string } // render country silhouette from geometry
   | { kind: 'borders'; codes: string[] } // "which country borders these?"
 
-export type QuestionType = 'slider' | 'choice' | 'map'
+export type QuestionType = 'slider' | 'choice' | 'map' | 'rank'
 
 /** Difficulty bucket derived from country "fame" (Wikipedia pageviews). */
 export type Difficulty = 'easy' | 'medium' | 'hard'
@@ -56,7 +59,21 @@ export type MapQuestion = QuestionBase & {
   ccn3?: string
 }
 
-export type TQuestion = SliderQuestion | ChoiceQuestion | MapQuestion
+/** One orderable item in a rank question, carrying the metric it's sorted by. */
+export type RankItem = { label: string; value: number }
+
+export type RankQuestion = QuestionBase & {
+  type: 'rank'
+  /** Items in their presented (shuffled) order. */
+  items: RankItem[]
+  /** Correct ordering of the item labels ('desc' = largest value first). */
+  answer: string[]
+  order: 'asc' | 'desc'
+  /** Display unit for the metric (e.g. "people"). */
+  unit?: string
+}
+
+export type TQuestion = SliderQuestion | ChoiceQuestion | MapQuestion | RankQuestion
 
 type Answer = {
   answer: AnswerValue

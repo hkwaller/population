@@ -25,6 +25,22 @@ const SAMPLES: TQuestion[] = [
     answer: 'Japan',
   },
   {
+    id: 's-rank',
+    type: 'rank',
+    category: 'ranking',
+    question: 'Sort these by population - largest first',
+    prompt: { kind: 'text', text: 'Sort these by population - largest first' },
+    order: 'desc',
+    unit: 'people',
+    items: [
+      { label: 'Nigeria', value: 223_000_000 },
+      { label: 'Argentina', value: 45_000_000 },
+      { label: 'Portugal', value: 10_300_000 },
+      { label: 'Iceland', value: 375_000 },
+    ],
+    answer: ['Nigeria', 'Argentina', 'Portugal', 'Iceland'],
+  },
+  {
     id: 's-outline',
     type: 'choice',
     category: 'outline',
@@ -124,7 +140,11 @@ function RevealDemo() {
       <div className="mb-4 text-xs font-black uppercase tracking-wide text-pop-ink/40">
         reveal states
       </div>
-      <ChoiceOptions options={['Italy', 'Greece', 'Croatia', 'Spain']} selected="Greece" correct="Italy" />
+      <ChoiceOptions
+        options={['Italy', 'Greece', 'Croatia', 'Spain']}
+        selected="Greece"
+        correct="Italy"
+      />
       <div className="mt-6 overflow-hidden rounded-[24px] border-4 border-pop-ink">
         <WorldMap value={guess} answer={answer} interactive={false} />
       </div>

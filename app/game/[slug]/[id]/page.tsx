@@ -16,6 +16,7 @@ import { asSlider, formatAnswerValue } from '@/lib/utils'
 import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { WorldMap } from '@/app/components/geo/WorldMap'
+import { RankInput } from '@/app/components/geo/RankInput'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
@@ -144,6 +145,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                     onSelect={(opt) => submit(opt)}
                   />
                 )}
+                {currentQuestion.type === 'rank' && (
+                  <RankInput question={currentQuestion} onAnswer={(v, ms) => submit(v, ms)} />
+                )}
                 <div className="mt-4 flex items-center gap-3">
                   <CircleBtn color={POP.mint} onClick={() => send('replace')} label="Replace question">
                     <RefreshCw size={22} strokeWidth={2.5} />
@@ -153,7 +157,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       <SkipForward size={22} strokeWidth={2.5} color="#fff" />
                     </CircleBtn>
                   )}
-                  {currentQuestion.type !== 'choice' && (
+                  {currentQuestion.type !== 'choice' && currentQuestion.type !== 'rank' && (
                     <PopButton
                       variant="primary"
                       size="lg"

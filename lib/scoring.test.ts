@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { scoreAnswer, haversineKm, MAX_SCORE, MAP_FALLOFF_KM } from './utils'
-import type { ChoiceQuestion, MapQuestion, SliderQuestion } from '@/app/types'
+import type { ChoiceQuestion, MapQuestion, RankQuestion, SliderQuestion } from '@/app/types'
 
 const slider: SliderQuestion = {
   id: 's',
@@ -82,6 +82,39 @@ describe('scoreAnswer — map', () => {
     const outside = scoreAnswer(map, { lat: 5, lng: 5 }, undefined, false)
     expect(outside).toBeGreaterThan(0)
     expect(outside).toBeLessThan(MAX_SCORE)
+  })
+})
+
+const rank: RankQuestion = {
+  id: 'r',
+  type: 'rank',
+  category: 'ranking',
+  question: 'sort by pop',
+  order: 'desc',
+  items: [
+    { label: 'A', value: 300 },
+    { label: 'B', value: 200 },
+    { label: 'C', value: 100 },
+  ],
+  answer: ['A', 'B', 'C'], // correct order, largest first
+}
+
+describe('scoreAnswer — rank', () => {
+  it('exact order scores max', () => {
+    expect(scoreAnswer(rank, ['A', 'B', 'C'])).toBe(MAX_SCORE)
+  })
+  it('fully reversed scores 0', () => {
+    expect(scoreAnswer(rank, ['C', 'B', 'A'])).toBe(0)
+  })
+  it('one swap gives partial credit between 0 and max', () => {
+    const oneSwap = scoreAnswer(rank, ['A', 'C', 'B']) // 1 of 3 pairs inverted
+    expect(oneSwap).toBeGreaterThan(0)
+    expect(oneSwap).toBeLessThan(MAX_SCORE)
+  })
+  it('closer orderings score higher', () => {
+    const closer = scoreAnswer(rank, ['A', 'C', 'B']) // 1 inversion
+    const worse = scoreAnswer(rank, ['B', 'C', 'A']) // 2 inversions
+    expect(closer).toBeGreaterThan(worse)
   })
 })
 

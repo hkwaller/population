@@ -8,6 +8,7 @@ import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 import { ChoiceOptions } from './ChoiceOptions'
 import { WorldMap } from './WorldMap'
+import { RankInput } from './RankInput'
 
 /**
  * Per-type answer input, shared by the multiplayer game and the solo/daily mode.
@@ -53,6 +54,10 @@ export function QuestionInput({
         onSelect={(opt) => onAnswer(opt, elapsed())}
       />
     )
+  }
+
+  if (question.type === 'rank') {
+    return <RankInput question={question} onAnswer={(v, ms) => onAnswer(v, ms)} disabled={disabled} />
   }
 
   if (question.type === 'map') {

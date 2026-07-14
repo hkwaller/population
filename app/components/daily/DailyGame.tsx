@@ -14,6 +14,7 @@ import { POP } from '@/app/components/pop/theme'
 import { Question } from '@/app/components/Question'
 import { QuestionInput } from '@/app/components/geo/QuestionInput'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { RankReveal } from '@/app/components/geo/RankReveal'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 
 const STORE_KEY = 'population-daily'
@@ -150,6 +151,9 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
           selected={attempt.value as string}
           correct={question.answer}
         />
+      )}
+      {question.type === 'rank' && (
+        <RankReveal question={question} guess={attempt.value as string[]} />
       )}
       {question.type === 'slider' && (
         <p className="text-center text-xl font-black text-pop-ink">

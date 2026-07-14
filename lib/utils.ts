@@ -6,6 +6,7 @@ import {
   type ChoiceQuestion,
   type LatLng,
   type MapQuestion,
+  type RankQuestion,
   type SliderQuestion,
   TQuestion,
 } from '@/app/types'
@@ -87,6 +88,31 @@ function scoreChoice(question: ChoiceQuestion, guess: string, elapsedMs?: number
 }
 
 /**
+ * Score a reordering by (normalised) Kendall-tau: full marks for the exact order,
+ * partial credit for getting most pairs right, 0 for fully reversed. Rewards being
+ * close, in keeping with the slider/map estimation rounds.
+ */
+function scoreRank(question: RankQuestion, guess: string[]) {
+  const correct = question.answer
+  const n = correct.length
+  if (n < 2) return MAX_SCORE
+  const pos = new Map(guess.map((label, i) => [label, i]))
+  let inversions = 0
+  let comparable = 0
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      const pa = pos.get(correct[i])
+      const pb = pos.get(correct[j])
+      if (pa == null || pb == null) continue
+      comparable++
+      if (pa > pb) inversions++ // correct[i] should precede correct[j] but doesn't
+    }
+  }
+  if (comparable === 0) return 0
+  return Math.max(0, Math.round(MAX_SCORE * (1 - inversions / comparable)))
+}
+
+/**
  * Score a guess against a question. Higher is better; range 0..MAX_SCORE.
  * For map questions, `insideCountry` (whether the guess landed within the target
  * country's borders) is computed by the caller from the map geometry — see
@@ -105,6 +131,8 @@ export function scoreAnswer(
       return scoreChoice(question, guess as string, elapsedMs)
     case 'map':
       return scoreMap(question, guess as LatLng, insideCountry)
+    case 'rank':
+      return scoreRank(question, guess as string[])
     default:
       return 0
   }
@@ -153,6 +181,19 @@ export function normalizeQuestionRow(row: any): TQuestion {
     }
   }
 
+  if (type === 'rank') {
+    const parse = (v: any) => (typeof v === 'string' ? JSON.parse(v) : (v ?? []))
+    // items are stored in the `options` column (array of {label, value} objects)
+    return {
+      ...base,
+      type: 'rank',
+      items: parse(row.options),
+      answer: parse(row.answer),
+      order: 'desc',
+      unit: row.unit ?? undefined,
+    }
+  }
+
   return {
     ...base,
     type: 'slider',
@@ -163,11 +204,12 @@ export function normalizeQuestionRow(row: any): TQuestion {
   }
 }
 
-/** Render any answer value (number / option / point) as a display string. */
+/** Render any answer value (number / option / point / ordering) as a display string. */
 export function formatAnswerValue(v: AnswerValue | undefined): string {
   if (v == null) return ''
   if (typeof v === 'number') return v.toLocaleString()
   if (typeof v === 'string') return v
+  if (Array.isArray(v)) return v.join(' › ')
   return `${v.lat.toFixed(1)}°, ${v.lng.toFixed(1)}°`
 }
 
@@ -263,4 +305,5 @@ export const categories = [
   { id: 'currency', name: 'Currencies', icon: 'Coins', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[9], count: stat('currency') },
   { id: 'language', name: 'Languages', icon: 'Languages', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[10], count: stat('language') },
   { id: 'continent', name: 'Continents', icon: 'Globe', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[11], count: stat('continent') },
+  { id: 'ranking', name: 'Rank by Population', icon: 'ArrowDownWideNarrow', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[12], count: stat('ranking') },
 ] as const
