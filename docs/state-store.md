@@ -14,7 +14,7 @@ Defined in `liveblocks.config.ts` (`GameState`). This is what every player in a 
 the host mutates to drive the game forward:
 
 `command`, `boss`, `currentQuestion`, `answeredQuestions`, `skippedQuestions`,
-`customQuestionsAnswered`, `players`, `endedAt` (plus the game config fields the host sets at setup).
+`players`, `endedAt` (plus the game config fields the host sets at setup).
 
 Liveblocks storage must be JSON-serializable — that's why `players` is typed `any[]` (player icons
 carry symbol indices). Don't tighten that type without a serialization plan.
@@ -25,7 +25,7 @@ Defined in `app/state.ts`. Persisted to `localStorage` under the key **`populati
 (`persist` + `createJSONStorage`). Holds things that are *this device's* concern:
 
 `selectedCategories`, `amountQuestions`, `capAnswers`, `hideQuestions`, `showQuestions`,
-`customQuestions`, `customQuestionCategory`, `me`, `preferences`, plus local UI flags
+`me`, `preferences`, plus local UI flags
 (`showScoreModal`, `showQuestionResultModal`, `playingOnSameDevice`).
 
 ## The bug this split fixes

@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
-import { icons as lucideIcons, Minus, Plus, Sparkles, ArrowRight } from 'lucide-react'
+import { icons as lucideIcons, Minus, Plus, ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@clerk/nextjs'
 
 import { usePopStore } from '../state'
 import { GameRoomProvider } from '../providers'
@@ -21,21 +20,25 @@ const CHIP_CYCLE: string[] = [POP.sunshine, POP.coral, POP.cobalt, POP.grape, PO
 // Cobalt/coral/grape need light text; sunshine/bubblegum/white keep ink text.
 const DARK_FILLS = new Set<string>([POP.coral, POP.cobalt, POP.grape])
 
+const DIFFICULTY_OPTIONS = [
+  { id: 'all', label: 'Any', fill: POP.ink, light: true },
+  { id: 'easy', label: 'Easy', fill: POP.mint, light: false },
+  { id: 'medium', label: 'Medium', fill: POP.sunshine, light: false },
+  { id: 'hard', label: 'Hard', fill: POP.coral, light: true },
+] as const
+
 function NewGamePageContent({ gameId }: { gameId: string }) {
   const router = useRouter()
   const refId = useRef(gameId)
   const storageLoaded = useStorage((root) => root.game) !== null
-  const { isSignedIn } = useAuth()
-  const { amountQuestions, selectedCategories, showQuestions, updateGame } = usePopStore()
+  const { amountQuestions, selectedCategories, selectedDifficulty, showQuestions, updateGame } =
+    usePopStore()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     updateGame({
       me: undefined,
       players: [],
-      customQuestions: [],
-      customQuestionCategory: undefined,
-      customQuestionsAnswered: [],
     })
     setVisible(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,6 +95,35 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           </div>
         </div>
 
+        {/* Difficulty */}
+        <div className="mx-auto mt-6 flex max-w-xl flex-col gap-3 rounded-3xl bg-white px-7 py-5 shadow-pop-card">
+          <span className="text-xl font-black text-pop-ink md:text-2xl">Difficulty</span>
+          <div className="flex flex-wrap gap-2.5">
+            {DIFFICULTY_OPTIONS.map((opt) => {
+              const active = selectedDifficulty === opt.id
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => updateGame({ selectedDifficulty: opt.id })}
+                  className={`flex-1 rounded-pill px-4 py-2.5 text-base font-black transition-colors ${
+                    active ? 'border-4 border-white shadow-pop' : 'border-2 border-pop-ink/15'
+                  }`}
+                  style={
+                    active
+                      ? { background: opt.fill, color: opt.light ? '#fff' : POP.ink }
+                      : { background: 'rgba(255,255,255,0.6)', color: 'rgba(23,18,20,0.5)' }
+                  }
+                >
+                  {opt.label}
+                </button>
+              )
+            })}
+          </div>
+          <p className="text-sm font-bold text-pop-ink/60">
+            Difficulty scales with how well-known each country is — Hard leans on the obscure ones.
+          </p>
+        </div>
+
         {/* Categories */}
         <h2 className="mt-14 text-center text-[44px] font-black leading-none text-pop-ink">
           Pick your categories
@@ -117,24 +149,13 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           visible={visible}
         />
 
-        {/* Toggles + pro entry */}
+        {/* Toggles */}
         <div className="mx-auto mt-12 flex max-w-xl flex-col gap-4">
           <TogglePill
             label="Questions on host screen only"
             checked={!showQuestions}
             onChange={() => updateGame({ showQuestions: !showQuestions })}
           />
-          {isSignedIn && (
-            <PopButton
-              variant="ghost"
-              size="sm"
-              rotate={-1}
-              className="self-center"
-              onClick={() => router.push(`/generate/${refId.current}`)}
-            >
-              <Sparkles size={18} /> Custom questions ✨
-            </PopButton>
-          )}
         </div>
       </div>
 
@@ -253,7 +274,9 @@ function TogglePill({
 }
 
 export default function NewGamePage() {
-  const gameId = useRef(makeId()).current
+  // Stable per-mount id, computed once via a lazy initializer (reading a ref's
+  // .current during render is disallowed by react-hooks rules).
+  const [gameId] = useState(() => makeId())
   return (
     <GameRoomProvider gameId={gameId}>
       <NewGamePageContent gameId={gameId} />

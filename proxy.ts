@@ -17,7 +17,6 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in',
   '/sign-up',
   '/api/liveblocks-auth',
-  '/api/generate',
 ])
 
 export default clerkMiddleware(async (auth, req) => {

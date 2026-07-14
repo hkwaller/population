@@ -6,8 +6,7 @@ Guidance for working in this repo. Read this before making changes.
 
 A real-time, multiplayer **geography/trivia guessing game**. Players answer numeric,
 multiple-choice, and map-pin questions; scoring rewards being *close* — **lowest score wins**.
-Modes: live multiplayer rooms, a shared **daily** puzzle, solo/same-device, and AI-generated
-custom questions.
+Modes: live multiplayer rooms, a shared **daily** puzzle, and solo/same-device.
 
 > History: the product started as a number-guessing quiz called "Ish" and evolved into a
 > geography-first game. The package, store, and user-facing copy are now all **Population**;
@@ -21,7 +20,6 @@ custom questions.
 - **Supabase** — question bank + player/game stats (Postgres)
 - **Clerk** — auth; anonymous guests play without signing in
 - **Tailwind** + Radix + `motion` (Framer Motion) for UI/animation
-- **Anthropic SDK** — AI custom-question generation (`/api/generate`)
 - **Vitest** — unit tests
 
 ## Commands
@@ -54,10 +52,9 @@ node scripts/build-countries.mjs   # writes lib/geo/countries.json
 `hooks/useGame.ts` is the **single canonical boundary hook** — always use it. It merges:
 
 - **Liveblocks (room-shared, authoritative for a live game):** `command`, `currentQuestion`,
-  `players`, `boss`, `answeredQuestions`, `skippedQuestions`, `customQuestionsAnswered`, `endedAt`
+  `players`, `boss`, `answeredQuestions`, `skippedQuestions`, `endedAt`
 - **Zustand / `usePopStore` (device-local, per player):** `selectedCategories`, `amountQuestions`,
-  `capAnswers`, `hideQuestions`, `showQuestions`, `customQuestions`, `customQuestionCategory`,
-  `me`, `preferences`
+  `capAnswers`, `hideQuestions`, `showQuestions`, `me`, `preferences`
 - **Derived (no store):** `showQuestionResultModal`
 
 `useGame` deliberately does **not** sync the Zustand-owned config fields back from Liveblocks —
@@ -92,7 +89,7 @@ everyone worldwide gets the same `DAILY_SIZE` questions for a given day. Keep it
 ### Routing & auth
 
 App Router routes: `/`, `/new-game`, `/setup/[id]`, `/join/[slug]`, `/game/[slug]/[id]`,
-`/game/[slug]/end`, `/daily`, `/highscores`, `/profile`, `/admin/*`, `/generate/[gameId]`.
+`/game/[slug]/end`, `/daily`, `/highscores`, `/profile`, `/admin/*`.
 
 Auth middleware is **`proxy.ts`** (Next 16's renamed middleware entry), not `middleware.ts`.
 Public routes are allow-listed there — **add any new public route to `isPublicRoute`** or Clerk
@@ -101,8 +98,6 @@ will gate it.
 ### API routes
 
 - `app/api/liveblocks-auth/route.ts` — issues Liveblocks room tokens (Clerk-aware; guests allowed)
-- `app/api/generate/route.ts` — Anthropic-backed custom question generation
-- `app/api/admin/questions/route.ts` — admin question management
 
 ## Conventions
 

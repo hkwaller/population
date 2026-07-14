@@ -1,21 +1,12 @@
 
 import { usePopStore } from '@/app/state'
-import { flatMap, sample, uniqBy } from 'lodash'
-import { generateQuestions } from '@/lib/utils'
+import { sample, uniqBy } from 'lodash'
 import { TQuestion } from '@/app/types'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useRematch = () => {
-  const {
-    players,
-    amountQuestions,
-    capAnswers,
-    hideQuestions,
-    customQuestions,
-    customQuestionsAnswered,
-    selectedCategories,
-    questions,
-  } = usePopStore()
+  const { players, amountQuestions, capAnswers, hideQuestions, selectedCategories, questions } =
+    usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const rematch = async (payload: undefined) => {
@@ -29,42 +20,15 @@ export const useRematch = () => {
       players: players.map((p) => ({ ...p, answers: [], score: 0 })),
     }
 
-    if (customQuestions?.length && customQuestions.length > 0) {
-      const customQuestionsAnsweredLocal = flatMap([
-        customQuestionsAnswered,
-        customQuestions,
-      ]).filter(Boolean)
+    const pool = uniqBy(questions, 'id')
+    const firstQuestion = sample(pool) as TQuestion
 
-      const newCustomQuestions = await generateQuestions(
-        customQuestions[0].category,
-        amountQuestions,
-        customQuestionsAnsweredLocal,
-      )
-
-      await updateGameState({
-        ...updatedGameData,
-        currentQuestion: newCustomQuestions.questions[0],
-        customQuestions: newCustomQuestions.questions,
-        customQuestionCategory: newCustomQuestions.category,
-        customQuestionsAnswered: customQuestionsAnsweredLocal,
-        amountQuestions: newCustomQuestions.questions.length,
-        players: players.map((p) => ({ ...p, answers: [], score: 0 })),
-      })
-
-      return
-    } else {
-      const pool = uniqBy(questions, 'id')
-      const firstQuestion = sample(pool) as TQuestion
-
-      await updateGameState({
-        ...updatedGameData,
-        currentQuestion: firstQuestion,
-        customQuestions: [],
-        customQuestionsAnswered: [],
-        selectedCategories: selectedCategories,
-        players: players.map((p) => ({ ...p, answers: [], score: 0 })),
-      })
-    }
+    await updateGameState({
+      ...updatedGameData,
+      currentQuestion: firstQuestion,
+      selectedCategories: selectedCategories,
+      players: players.map((p) => ({ ...p, answers: [], score: 0 })),
+    })
   }
 
   return { rematch }

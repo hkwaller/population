@@ -38,11 +38,15 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
   const [alreadyPlayed, setAlreadyPlayed] = useState(false)
 
   // If the player already did today's quiz, jump straight to their result.
+  // This reads localStorage *after* mount on purpose: doing it during render
+  // (or via a lazy initializer) would diverge from the server HTML and cause a
+  // hydration mismatch, so the setState-in-effect here is intentional.
   useEffect(() => {
     try {
       const store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}')
       const play = store.plays?.[dateKey]
       if (play) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration-safe restore from localStorage
         setSaved({ total: play.total, buckets: play.buckets, streak: store.streak ?? 1 })
         setAlreadyPlayed(true)
       }

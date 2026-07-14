@@ -18,17 +18,19 @@ export default function Profile() {
   const { signOut } = useClerk()
   const { updateGame, preferences } = usePopStore()
   const [games, setGames] = useState<TGame[]>([])
-  const [isRedirecting, setIsRedirecting] = useState(false)
 
   const { loading, fetchGamesFromSupabase, updatePlayerPreferences, fetchPlayerPreferences } =
     useSupabase()
 
+  // Signed-out visitors are bounced home. Derived from auth state (not stored)
+  // so we don't setState inside an effect.
+  const isRedirecting = isLoaded && !user
+
   useEffect(() => {
-    if (isLoaded && !user) {
-      setIsRedirecting(true)
+    if (isRedirecting) {
       window.location.href = '/'
     }
-  }, [isLoaded, user])
+  }, [isRedirecting])
 
   useEffect(() => {
     async function getGames() {

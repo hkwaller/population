@@ -68,7 +68,6 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   const myAnswered = myPlayerInfo?.answers?.some((a) => a.questionId === currentQuestion?.id)
   const myScore = myPlayerInfo?.answers?.reduce((acc, a) => acc + a.score, 0) ?? 0
   const isBoss = boss === playerId
-  const showReplace = (game.customQuestions?.length || 0) === 0
 
   const waiting = !currentQuestion || command === 'idle'
 
@@ -146,11 +145,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                   />
                 )}
                 <div className="mt-4 flex items-center gap-3">
-                  {showReplace && (
-                    <CircleBtn color={POP.mint} onClick={() => send('replace')} label="Replace question">
-                      <RefreshCw size={22} strokeWidth={2.5} />
-                    </CircleBtn>
-                  )}
+                  <CircleBtn color={POP.mint} onClick={() => send('replace')} label="Replace question">
+                    <RefreshCw size={22} strokeWidth={2.5} />
+                  </CircleBtn>
                   {isBoss && (
                     <CircleBtn color={POP.grape} onClick={() => send('next')} label="Next question">
                       <SkipForward size={22} strokeWidth={2.5} color="#fff" />

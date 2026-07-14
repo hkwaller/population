@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import { motion } from 'motion/react'
 
@@ -25,18 +25,13 @@ const Slider = ({
 
   const [dragDirection, setDragDirection] = useState<'left' | 'right' | null>(null)
 
-  const prevValueRef = useRef(value)
-
-  useEffect(() => {
-    if (value > prevValueRef.current) {
-      setDragDirection('right')
-    } else if (value < prevValueRef.current) {
-      setDragDirection('left')
-    } else {
-      setDragDirection(null)
-    }
-    prevValueRef.current = value
-  }, [value])
+  // Track drag direction by comparing to the previous value during render
+  // (the React-recommended alternative to adjusting state in an effect).
+  const [prevValue, setPrevValue] = useState(value)
+  if (value !== prevValue) {
+    setDragDirection(value > prevValue ? 'right' : 'left')
+    setPrevValue(value)
+  }
 
   if (isNaN(value)) {
     return null

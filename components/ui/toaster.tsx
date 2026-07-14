@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import {
   Toast,
   ToastClose,
@@ -10,14 +9,11 @@ import {
   ToastViewport,
 } from '@/components/ui/toast'
 import { useToast } from '@/hooks/use-toast'
+import { useHydrated } from '@/hooks/useHydrated'
 
 export function Toaster() {
   const { toasts } = useToast()
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isMounted = useHydrated()
 
   if (!isMounted) {
     return null

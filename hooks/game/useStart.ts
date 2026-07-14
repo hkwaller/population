@@ -11,22 +11,26 @@ export const useStart = () => {
     capAnswers,
     hideQuestions,
     selectedCategories,
-    customQuestions,
+    selectedDifficulty,
     updateGame,
   } = usePopStore()
   const { updateGameState } = useUpdateGameState()
   const { fetchQuestionsByCategories } = useSupabase()
 
   const start = async (payload: StartPayload) => {
-    if (customQuestions?.length && customQuestions.length > 0) {
-      await updateGameState({
-        command: 'start',
-        selectedCategories: [],
-      })
-      return
-    }
+    const fetched = await fetchQuestionsByCategories(selectedCategories, amountQuestions)
 
-    const pool = await fetchQuestionsByCategories(selectedCategories, amountQuestions)
+    // Apply the difficulty filter, but only per-category and only when it leaves
+    // enough to fill the round — otherwise fall back to that category's full set so
+    // an aggressive filter never starves the game of questions.
+    const pool =
+      selectedDifficulty === 'all'
+        ? fetched
+        : selectedCategories.flatMap((cat) => {
+            const inCat = fetched.filter((q) => q.category === cat)
+            const matching = inCat.filter((q) => q.tier === selectedDifficulty)
+            return matching.length >= amountQuestions ? matching : inCat
+          })
 
     if (pool.length === 0) {
       console.error('[useStart] No questions returned from Supabase for categories:', selectedCategories)

@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import stats from '../app/database/stats.json'
-import * as uuid from 'uuid'
 import {
   type AnswerValue,
   type ChoiceQuestion,
@@ -15,92 +14,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function calculateBounds(question: string, answer: number) {
-  if (answer >= 0 && answer <= 100) {
-    return { lower_bound: 0, upper_bound: 100 }
-  }
-
-  if (question.toLowerCase().includes('year') || question.includes('? (')) {
-    const century = Math.floor(answer / 100) * 100
-    const currentYear = new Date().getFullYear()
-    const isCurrentDecade = century + 100 > currentYear
-
-    return {
-      lower_bound: isCurrentDecade ? century - 100 : century,
-      upper_bound: Math.min(century + 100, currentYear),
-    }
-  }
-
-  const order_of_magnitude = Math.floor(Math.log10(answer))
-  const lower_bound = Math.pow(10, order_of_magnitude)
-  const upper_bound = Math.pow(10, order_of_magnitude + 1)
-  return { lower_bound, upper_bound }
-}
-export type GenerateQuestionsResponse = {
-  questions: TQuestion[]
-  category: string
-  error?: string
-}
-
-export async function generateQuestions(
-  prompt: string,
-  amount: number = 5,
-  previousQuestions: TQuestion[] = [],
-  category?: string,
-): Promise<GenerateQuestionsResponse> {
-  try {
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        topic: prompt,
-        category: category ?? '',
-        amount,
-        previousQuestions: previousQuestions.map((q) => q.question),
-      }),
-    })
-    const { questions: data } = await response.json()
-
-    if (data.error) {
-      return {
-        questions: [],
-        category: '',
-        error: data.error,
-      }
-    }
-
-    const resolvedCategory = category ?? data.category
-
-    const mappedQuestions = data.questions.map((q: any) => {
-      const { lower_bound, upper_bound } = calculateBounds(q.question, q.answer)
-      const id = uuid.v5(q.question, uuid.v5.URL)
-
-      return {
-        type: 'slider' as const,
-        question: q.question.replace(/the year/gi, ''),
-        id: id,
-        answer: Math.round(q.answer),
-        lower_bound,
-        upper_bound,
-        category: resolvedCategory,
-      }
-    })
-
-    const validQuestions = mappedQuestions.filter(
-      (q: SliderQuestion) => q.lower_bound <= q.upper_bound,
-    )
-
-    return {
-      questions: validQuestions,
-      category: resolvedCategory,
-    } as GenerateQuestionsResponse
-  } catch (error) {
-    console.error('Error generating questions:', error)
-    throw error
-  }
-}
 
 import { sample } from 'lodash'
 import { animals, adjectives } from '@/app/mockData'
@@ -215,6 +128,8 @@ export function normalizeQuestionRow(row: any): TQuestion {
     category: row.category,
     question: row.question,
     prompt: row.prompt ?? undefined,
+    difficulty: row.difficulty != null ? Number(row.difficulty) : undefined,
+    tier: row.tier ?? undefined,
   }
   const type = (row.type ?? 'slider') as TQuestion['type']
 

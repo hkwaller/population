@@ -1,6 +1,6 @@
 'use client'
 
-import { createElement, useRef } from 'react'
+import { createElement } from 'react'
 import { motion } from 'motion/react'
 import {
   ContextMenu,
@@ -41,7 +41,6 @@ export const Player = ({
   send?: SendFn
 } & Omit<TPlayer, 'answers' | 'score'>) => {
   const { boss, currentQuestion, command } = usePopStore()
-  const previousScore = useRef(0)
 
   const answers = usePopStore((state) => state.players.find((p) => p.id === id))?.answers
   const hasAnsweredCurrentQuestion = answers?.some((a) => a.questionId === currentQuestion?.id)
@@ -88,7 +87,7 @@ export const Player = ({
 
           {showScore && (
             <CountUp
-              start={previousScore.current}
+              start={0}
               end={score || 0}
               className="text-3xl font-black text-pop-ink"
               duration={0.5 * ((index || 0) + 1)}

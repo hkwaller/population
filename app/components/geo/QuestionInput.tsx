@@ -37,10 +37,13 @@ export function QuestionInput({
   const [sliderValue, setSliderValue] = useState(midpoint)
   const [pin, setPin] = useState<LatLng | null>(null)
 
-  useEffect(() => {
+  // Reset the input when the question changes (during render, not in an effect).
+  const [prevQuestionId, setPrevQuestionId] = useState(question.id)
+  if (question.id !== prevQuestionId) {
+    setPrevQuestionId(question.id)
     setSliderValue(midpoint)
     setPin(null)
-  }, [question.id, midpoint])
+  }
 
   if (question.type === 'choice') {
     return (

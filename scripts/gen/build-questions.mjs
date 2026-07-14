@@ -86,12 +86,52 @@ const withLang = countries.filter((c) => c.languages.length > 0)
 const withLatLng = countries.filter((c) => c.lat != null && c.lng != null)
 const byCca3 = new Map(countries.map((c) => [c.cca3, c]))
 
+// --- fame → difficulty ---------------------------------------------------
+// Wikipedia pageviews are heavily skewed (India 47M vs Timor-Leste 320k), so we
+// log-scale them into a 0..1 "fame" score. Obscurity (1 - fame) drives per-question
+// difficulty: it's much harder to name Vanuatu's flag/capital/currency than the US's.
+const pvs = countries.map((c) => c.pageviews).filter((v) => v > 0)
+const logMin = Math.log(Math.min(...pvs))
+const logMax = Math.log(Math.max(...pvs))
+const fame = (c) =>
+  !c.pageviews || c.pageviews <= 0 ? 0 : (Math.log(c.pageviews) - logMin) / (logMax - logMin)
+const obscurity = (c) => 1 - fame(c)
+
 const q = []
+/** Push a question tagged with a 0..1 difficulty (a `tier` is assigned later). */
+const push = (question, difficulty) =>
+  q.push({ ...question, difficulty: Math.round(Math.max(0, Math.min(1, difficulty)) * 1000) / 1000 })
+
+/**
+ * Deterministically build up to `partnersPer` distinct partners per country,
+ * de-duplicating unordered pairs. Lets distance/which-bigger use every country
+ * several times instead of pairing them off once and discarding half.
+ */
+function makePairs(pool, partnersPer, seedBase) {
+  const seen = new Set()
+  const pairs = []
+  for (const a of pool) {
+    const others = shuffle(
+      pool.filter((x) => x.cca3 !== a.cca3),
+      rng(`${seedBase}:${a.cca3}`),
+    )
+    let added = 0
+    for (const b of others) {
+      if (added >= partnersPer) break
+      const key = [a.cca3, b.cca3].sort().join('-')
+      if (seen.has(key)) continue
+      seen.add(key)
+      pairs.push([a, b])
+      added++
+    }
+  }
+  return pairs
+}
 
 // 1. flags — flag → country (choice)
 for (const c of countries) {
   const d = distractors(c, countries, 3, (x) => x.name, `flag:${c.cca3}`)
-  q.push(
+  push(
     choice(
       'flags',
       `Which country's flag is this?`,
@@ -100,13 +140,14 @@ for (const c of countries) {
       d.map((x) => x.name),
       `flag:${c.cca3}`,
     ),
+    obscurity(c),
   )
 }
 
 // 2. outline — silhouette → country (choice), only countries with geometry
 for (const c of withOutline) {
   const d = distractors(c, withOutline, 3, (x) => x.name, `outline:${c.cca3}`)
-  q.push(
+  push(
     choice(
       'outline',
       `Which country has this shape?`,
@@ -115,6 +156,7 @@ for (const c of withOutline) {
       d.map((x) => x.name),
       `outline:${c.cca3}`,
     ),
+    obscurity(c),
   )
 }
 
@@ -127,7 +169,7 @@ for (const c of withBorders) {
     (x) => x.cca3 !== c.cca3 && !c.borders.includes(x.cca3),
   )
   const d = distractors(c, notNeighbour, 3, (x) => x.name, `borders:${c.cca3}`)
-  q.push(
+  push(
     choice(
       'borders',
       `Which country borders ${neighbourNames.slice(0, 4).join(', ')}?`,
@@ -136,13 +178,14 @@ for (const c of withBorders) {
       d.map((x) => x.name),
       `borders:${c.cca3}`,
     ),
+    obscurity(c),
   )
 }
 
-// 4. capitals — capital of X (choice)
+// 4. capitals — capital of X (choice), plus the reverse (capital → country)
 for (const c of withCap) {
   const d = distractors(c, withCap, 3, (x) => x.capital, `capital:${c.cca3}`)
-  q.push(
+  push(
     choice(
       'capitals',
       `What is the capital of ${c.name}?`,
@@ -151,39 +194,59 @@ for (const c of withCap) {
       d.map((x) => x.capital),
       `capital:${c.cca3}`,
     ),
+    obscurity(c),
+  )
+  // reverse: name the country from its capital — doubles the category
+  const dr = distractors(c, withCap, 3, (x) => x.name, `caprev:${c.cca3}`)
+  push(
+    choice(
+      'capitals',
+      `Which country's capital is ${c.capital}?`,
+      { kind: 'text', text: `Which country's capital is ${c.capital}?` },
+      c.name,
+      dr.map((x) => x.name),
+      `caprev:${c.cca3}`,
+    ),
+    obscurity(c),
   )
 }
 
 // 5. population — slider
 for (const c of withPop) {
   const { lower_bound, upper_bound } = magnitudeBounds(c.population)
-  q.push({
-    id: id(`pop:${c.cca3}`),
-    type: 'slider',
-    category: 'population',
-    question: `What is the population of ${c.name}?`,
-    prompt: { kind: 'text', text: `What is the population of ${c.name}?` },
-    answer: c.population,
-    lower_bound,
-    upper_bound,
-    unit: 'people',
-  })
+  push(
+    {
+      id: id(`pop:${c.cca3}`),
+      type: 'slider',
+      category: 'population',
+      question: `What is the population of ${c.name}?`,
+      prompt: { kind: 'text', text: `What is the population of ${c.name}?` },
+      answer: c.population,
+      lower_bound,
+      upper_bound,
+      unit: 'people',
+    },
+    obscurity(c),
+  )
 }
 
 // 6. area — slider (km²)
 for (const c of withArea) {
   const { lower_bound, upper_bound } = magnitudeBounds(c.area)
-  q.push({
-    id: id(`area:${c.cca3}`),
-    type: 'slider',
-    category: 'area',
-    question: `What is the land area of ${c.name}? (km²)`,
-    prompt: { kind: 'text', text: `What is the land area of ${c.name}? (km²)` },
-    answer: Math.round(c.area),
-    lower_bound,
-    upper_bound,
-    unit: 'km²',
-  })
+  push(
+    {
+      id: id(`area:${c.cca3}`),
+      type: 'slider',
+      category: 'area',
+      question: `What is the land area of ${c.name}? (km²)`,
+      prompt: { kind: 'text', text: `What is the land area of ${c.name}? (km²)` },
+      answer: Math.round(c.area),
+      lower_bound,
+      upper_bound,
+      unit: 'km²',
+    },
+    obscurity(c),
+  )
 }
 
 // 7. distance — capital-to-capital great-circle distance (slider)
@@ -197,14 +260,11 @@ function haversine(a, b) {
     Math.sin(dLng / 2) ** 2 * Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat))
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)))
 }
-{
-  const rand = rng('distance-pairs')
-  const pool = shuffle(withCapCoords, rand)
-  for (let i = 0; i + 1 < pool.length; i += 2) {
-    const a = pool[i]
-    const b = pool[i + 1]
-    const dist = Math.round(haversine({ lat: a.capitalLat, lng: a.capitalLng }, { lat: b.capitalLat, lng: b.capitalLng }))
-    q.push({
+// Each capital pairs with 3 partners (deduped) instead of being used once → ~3× more.
+for (const [a, b] of makePairs(withCapCoords, 2, 'distance-pairs')) {
+  const dist = Math.round(haversine({ lat: a.capitalLat, lng: a.capitalLng }, { lat: b.capitalLat, lng: b.capitalLng }))
+  push(
+    {
       id: id(`dist:${a.cca3}:${b.cca3}`),
       type: 'slider',
       category: 'distance',
@@ -214,33 +274,36 @@ function haversine(a, b) {
       lower_bound: 0,
       upper_bound: 20000,
       unit: 'km',
-    })
-  }
+    },
+    (obscurity(a) + obscurity(b)) / 2,
+  )
 }
 
 // 8. locate — locate the country on the map (map)
 for (const c of withLatLng) {
-  q.push({
-    id: id(`locate:${c.cca3}`),
-    type: 'map',
-    category: 'locate',
-    question: `Where in the world is ${c.name}?`,
-    prompt: { kind: 'text', text: `Tap where ${c.name} is on the map.` },
-    answer: { lat: c.lat, lng: c.lng },
-    // ccn3 links the guess back to the country's borders for point-in-polygon scoring.
-    ...(c.ccn3 != null ? { ccn3: String(c.ccn3) } : {}),
-  })
+  push(
+    {
+      id: id(`locate:${c.cca3}`),
+      type: 'map',
+      category: 'locate',
+      question: `Where in the world is ${c.name}?`,
+      prompt: { kind: 'text', text: `Tap where ${c.name} is on the map.` },
+      answer: { lat: c.lat, lng: c.lng },
+      // ccn3 links the guess back to the country's borders for point-in-polygon scoring.
+      ...(c.ccn3 != null ? { ccn3: String(c.ccn3) } : {}),
+    },
+    obscurity(c),
+  )
 }
 
 // 9. which-bigger — larger population (choice, binary)
-{
-  const rand = rng('bigger-pairs')
-  const pool = shuffle(withPop, rand)
-  for (let i = 0; i + 1 < pool.length; i += 2) {
-    const a = pool[i]
-    const b = pool[i + 1]
-    const bigger = a.population >= b.population ? a : b
-    q.push({
+// Difficulty blends how CLOSE the two populations are (a near-tie is hard) with
+// how obscure the pair is. China vs Tuvalu is easy; China vs India is hard.
+for (const [a, b] of makePairs(withPop, 2, 'bigger-pairs')) {
+  const bigger = a.population >= b.population ? a : b
+  const closeness = Math.min(a.population, b.population) / Math.max(a.population, b.population, 1)
+  push(
+    {
       id: id(`bigger:${a.cca3}:${b.cca3}`),
       type: 'choice',
       category: 'which-bigger',
@@ -248,8 +311,9 @@ for (const c of withLatLng) {
       prompt: { kind: 'text', text: `Which has the larger population?` },
       options: shuffle([a.name, b.name], rng(`bigger:${a.cca3}:${b.cca3}:o`)),
       answer: bigger.name,
-    })
-  }
+    },
+    0.6 * closeness + 0.4 * ((obscurity(a) + obscurity(b)) / 2),
+  )
 }
 
 // 10. currency — currency of X (choice)
@@ -271,7 +335,7 @@ for (const c of withLatLng) {
   for (const c of safe) {
     const d = distractors(c, safe, 3, (x) => x.currency, `currency:${c.cca3}`)
     if (d.length < 3) continue // not enough distinct safe currencies
-    q.push(
+    push(
       choice(
         'currency',
         `What currency is used in ${c.name}?`,
@@ -280,6 +344,7 @@ for (const c of withLatLng) {
         d.map((x) => x.currency),
         `currency:${c.cca3}`,
       ),
+      obscurity(c),
     )
   }
 }
@@ -287,7 +352,7 @@ for (const c of withLatLng) {
 // 11. language — primary language of X (choice)
 for (const c of withLang) {
   const d = distractors(c, withLang, 3, (x) => x.languages[0], `lang:${c.cca3}`)
-  q.push(
+  push(
     choice(
       'language',
       `Which language is (an) official language of ${c.name}?`,
@@ -296,6 +361,7 @@ for (const c of withLang) {
       d.map((x) => x.languages[0]),
       `lang:${c.cca3}`,
     ),
+    obscurity(c),
   )
 }
 
@@ -305,25 +371,51 @@ for (const c of withLang) {
   for (const c of countries) {
     if (!c.region) continue
     const others = shuffle(regions.filter((r) => r !== c.region), rng(`cont:${c.cca3}`)).slice(0, 3)
-    q.push({
-      id: id(`cont:${c.cca3}`),
-      type: 'choice',
-      category: 'continent',
-      question: `Which region is ${c.name} in?`,
-      prompt: { kind: 'text', text: `Which region is ${c.name} in?` },
-      options: shuffle([c.region, ...others], rng(`cont:${c.cca3}:o`)),
-      answer: c.region,
-    })
+    push(
+      {
+        id: id(`cont:${c.cca3}`),
+        type: 'choice',
+        category: 'continent',
+        question: `Which region is ${c.name} in?`,
+        prompt: { kind: 'text', text: `Which region is ${c.name} in?` },
+        options: shuffle([c.region, ...others], rng(`cont:${c.cca3}:o`)),
+        answer: c.region,
+      },
+      obscurity(c),
+    )
   }
+}
+
+// --- assign difficulty tiers (per-category tertiles) ---------------------
+// Ranking WITHIN each category guarantees every category offers easy/medium/hard
+// options, so a difficulty filter never empties a single-category selection.
+const byCat = new Map()
+for (const item of q) {
+  const list = byCat.get(item.category) ?? []
+  list.push(item)
+  byCat.set(item.category, list)
+}
+for (const list of byCat.values()) {
+  list.sort((a, b) => a.difficulty - b.difficulty)
+  list.forEach((item, i) => {
+    const pct = list.length <= 1 ? 0 : i / (list.length - 1)
+    item.tier = pct < 1 / 3 ? 'easy' : pct < 2 / 3 ? 'medium' : 'hard'
+  })
 }
 
 // --- write outputs ---
 writeFileSync(join(root, 'app/database/geo-questions.json'), JSON.stringify(q, null, 0))
 
 const stats = {}
-for (const item of q) stats[item.category] = (stats[item.category] ?? 0) + 1
+const tierStats = {}
+for (const item of q) {
+  stats[item.category] = (stats[item.category] ?? 0) + 1
+  tierStats[item.tier] = (tierStats[item.tier] ?? 0) + 1
+}
 stats.total = q.length
 writeFileSync(join(root, 'app/database/stats.json'), JSON.stringify(stats, null, 2))
 
 console.log(`generated ${q.length} questions`)
+console.log('per category:', JSON.stringify(stats, null, 0))
+console.log('by tier:', JSON.stringify(tierStats))
 for (const [k, v] of Object.entries(stats).sort()) console.log(`  ${k}: ${v}`)

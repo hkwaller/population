@@ -59,5 +59,7 @@ export function pickDaily(all: TQuestion[], dateKey: string, size = DAILY_SIZE):
     if (pool.length) picked.push(pool.pop()!)
     step++
   }
+  // Ramp the day's run from easiest to hardest (deterministic; undefined → 0).
+  picked.sort((a, b) => (a.difficulty ?? 0) - (b.difficulty ?? 0))
   return picked
 }

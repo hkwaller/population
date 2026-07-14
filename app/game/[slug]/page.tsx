@@ -31,7 +31,6 @@ function GamePageContent({ params }: { params: { slug: string } }) {
     answeredQuestions,
     amountQuestions,
     me,
-    customQuestions,
     capAnswers,
   } = game
 
@@ -71,8 +70,6 @@ function GamePageContent({ params }: { params: { slug: string } }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [command])
-
-  const showReplace = (customQuestions?.length || 0) === 0
 
   return (
     <PopShell bg={POP.cobalt}>
@@ -137,11 +134,9 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           )}
 
           <div className="flex items-center justify-center gap-3">
-            {showReplace && (
-              <PopButton variant="ghostLight" size="sm" onClick={() => send('replace')}>
-                <RefreshCw size={20} /> Replace
-              </PopButton>
-            )}
+            <PopButton variant="ghostLight" size="sm" onClick={() => send('replace')}>
+              <RefreshCw size={20} /> Replace
+            </PopButton>
 
             {me?.localPlayer && !myAnswered && currentQuestion && currentQuestion.type !== 'choice' && (
               <PopButton

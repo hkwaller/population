@@ -6,7 +6,7 @@
 // `any` types this project uses on purpose (e.g. Liveblocks `players: any[]`).
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
 
-export default [
+const config = [
   {
     ignores: [
       '.next/**',
@@ -20,3 +20,5 @@ export default [
   },
   ...nextCoreWebVitals,
 ]
+
+export default config

@@ -13,6 +13,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { fetchCountryPageviews } from './gen/pageviews.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const KEY = process.env.RESTCOUNTRIES_API_KEY
@@ -101,9 +102,15 @@ const countries = raw
       flag: c.flag?.emoji ?? null,
       population: typeof c.population === 'number' ? c.population : null,
       hasOutline: geomCodes.has(parseInt(String(c.codes.ccn3), 10)),
+      pageviews: 0, // filled in below from Wikipedia
     }
   })
   .sort((a, b) => a.name.localeCompare(b.name))
+
+// Wikipedia pageviews — a "fame" proxy consumed by build-questions.mjs for difficulty.
+console.log('fetching Wikipedia pageviews…')
+const views = await fetchCountryPageviews(countries, (m) => console.log(m))
+for (const c of countries) c.pageviews = views.get(c.cca3) ?? 0
 
 mkdirSync(join(root, 'lib/geo'), { recursive: true })
 writeFileSync(join(root, 'lib/geo/countries.json'), JSON.stringify(countries, null, 0))

@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { usePopStore } from '../state'
 import { TQuestion } from '../types'
 import { categories } from '@/lib/utils'
 import { cn } from '@/lib/utils'
@@ -14,15 +13,10 @@ export const Category = ({
   bg?: string
   className?: string
 }) => {
-  const { customQuestions, customQuestionCategory } = usePopStore()
-
   const categoryName = useMemo(() => {
     if (!question) return
-    if (customQuestions?.length || 0 > 0) {
-      return customQuestionCategory
-    }
     return categories.find((c) => c.id === question.category)?.name
-  }, [customQuestionCategory, customQuestions?.length, question])
+  }, [question])
 
   if (!categoryName) return null
 

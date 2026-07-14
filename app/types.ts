@@ -14,6 +14,9 @@ export type PromptSpec =
 
 export type QuestionType = 'slider' | 'choice' | 'map'
 
+/** Difficulty bucket derived from country "fame" (Wikipedia pageviews). */
+export type Difficulty = 'easy' | 'medium' | 'hard'
+
 type QuestionBase = {
   id: string
   category: string
@@ -21,6 +24,10 @@ type QuestionBase = {
   question: string
   /** Optional rich stimulus; when omitted the UI falls back to `question` text. */
   prompt?: PromptSpec
+  /** 0..1 difficulty from country fame; higher = more obscure. Optional (AI/custom questions omit it). */
+  difficulty?: number
+  /** Coarse difficulty bucket for filtering/labelling. */
+  tier?: Difficulty
 }
 
 export type SliderQuestion = QuestionBase & {

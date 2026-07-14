@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { sample, uniqBy } from 'lodash'
 
-import { AnswerValue, Command, CommandType, TPlayer, TPreferences, TQuestion } from './types'
+import { AnswerValue, Command, CommandType, Difficulty, TPlayer, TPreferences, TQuestion } from './types'
 import { scoreGuess } from '@/lib/geo/score'
 
 export type State = {
@@ -23,9 +23,6 @@ export type State = {
   hideQuestions: boolean
   command: Command | CommandType
   currentQuestion: TQuestion
-  customQuestionCategory: string
-  customQuestions?: TQuestion[]
-  customQuestionsAnswered: TQuestion[]
   endedAt?: string
   gameId?: string
   gameStartedAt?: string
@@ -38,6 +35,8 @@ export type State = {
   replaceQuestion: () => TQuestion
   resetGame: () => void
   selectedCategories: string[]
+  /** Difficulty filter for question selection; 'all' = no filter. */
+  selectedDifficulty: Difficulty | 'all'
   setLocalJoinInfo: ({
     player,
     gameId,
@@ -61,9 +60,9 @@ const initialState = {
   showQuestions: false,
   hideQuestions: false,
   currentQuestion: undefined,
-  customQuestionsAnswered: [],
   answeredQuestions: [],
   selectedCategories: [],
+  selectedDifficulty: 'all',
   playingOnSameDevice: false,
   skippedQuestions: [],
   showScoreModal: false,
@@ -88,6 +87,7 @@ export const usePopStore = create<State>()(
       command: 'start',
       answeredQuestions: [],
       selectedCategories: [],
+      selectedDifficulty: 'all',
       playingOnSameDevice: false,
       showScoreModal: false,
       showQuestionResultModal: false,
@@ -135,17 +135,6 @@ export const usePopStore = create<State>()(
       },
       nextQuestion: (options?: { replace?: boolean }) => {
         const replace = options?.replace ?? false
-
-        if ((get().customQuestions?.length ?? 0) > 0) {
-          const currentQuestionIndex =
-            get().customQuestions!.findIndex(
-              (question) => question.id === get().currentQuestion?.id,
-            ) ?? -1
-
-          const nextQuestion = get().customQuestions?.[currentQuestionIndex + 1]!
-
-          return nextQuestion
-        }
 
         const excludedIds = new Set([
           ...get().answeredQuestions.filter(Boolean).map((q) => q.id),

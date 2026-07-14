@@ -1,22 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import CountUp from 'react-countup'
 
 import stats from '../database/stats.json'
 import { categories } from '@/lib/utils'
 import { sampleSize } from 'lodash'
+import { useHydrated } from '@/hooks/useHydrated'
 
 export const GameInfo = () => {
-  const [mounted, setMounted] = useState(false)
+  const mounted = useHydrated()
   const keys = Object.keys(stats)
 
   const selectedCategories = sampleSize(categories, 2)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   if (!mounted) {
     return null

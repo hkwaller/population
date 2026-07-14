@@ -21,6 +21,8 @@ export type Country = {
   flag: string | null
   population: number | null
   hasOutline: boolean
+  /** English-Wikipedia annual pageviews — a "fame" proxy for difficulty scoring. */
+  pageviews: number
 }
 
 export const COUNTRIES = raw as Country[]

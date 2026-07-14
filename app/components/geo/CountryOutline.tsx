@@ -22,10 +22,18 @@ export function CountryOutline({
   const [failed, setFailed] = useState(false)
   const ccn3 = byCca3.get(code)?.ccn3
 
-  useEffect(() => {
-    let alive = true
+  // Reset to the loading state when the target country changes (during render,
+  // not synchronously inside the effect). The async results below still set
+  // state from the .then/.catch callbacks, which is allowed.
+  const [loadedCcn3, setLoadedCcn3] = useState(ccn3)
+  if (ccn3 !== loadedCcn3) {
+    setLoadedCcn3(ccn3)
     setFeature(null)
     setFailed(false)
+  }
+
+  useEffect(() => {
+    let alive = true
     loadCountryGeometry()
       .then(({ byCcn3 }) => {
         if (!alive) return

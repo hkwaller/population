@@ -18,9 +18,6 @@ export type GameState = {
   hideQuestions: boolean
   showQuestions: boolean
   selectedCategories: string[]
-  customQuestions: TQuestion[]
-  customQuestionsAnswered: TQuestion[]
-  customQuestionCategory: string | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   players: any[]
   endedAt: string | undefined

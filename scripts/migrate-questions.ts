@@ -43,6 +43,8 @@ type GeoQuestion = {
   unit?: string
   falloffKm?: number
   ccn3?: string
+  difficulty?: number
+  tier?: string
 }
 
 const CHUNK_SIZE = 500
@@ -64,6 +66,8 @@ async function main() {
     unit: q.unit ?? null,
     falloff_km: q.falloffKm ?? null,
     ccn3: q.ccn3 ?? null,
+    difficulty: q.difficulty ?? null,
+    tier: q.tier ?? null,
     source: 'geo',
   }))
 

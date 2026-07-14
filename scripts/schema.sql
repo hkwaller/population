@@ -20,11 +20,16 @@ create table if not exists public.population_questions (
   unit          text,                              -- slider display unit
   falloff_km    double precision,                  -- map scoring falloff override
   ccn3          text,                              -- map: numeric ISO code → borders for scoring
+  difficulty    double precision,                  -- 0..1, from country "fame" (Wikipedia pageviews)
+  tier          text,                              -- 'easy' | 'medium' | 'hard' (per-category tertile)
   source        text default 'geo'
 );
--- Existing projects: add the column without a full re-create.
+-- Existing projects: add the columns without a full re-create.
 alter table public.population_questions add column if not exists ccn3 text;
+alter table public.population_questions add column if not exists difficulty double precision;
+alter table public.population_questions add column if not exists tier text;
 create index if not exists population_questions_category_idx on public.population_questions (category);
+create index if not exists population_questions_tier_idx on public.population_questions (tier);
 
 -- ---------------------------------------------------------------------------
 -- population_games: finished-game history for stats / highscores

@@ -5,11 +5,9 @@
  *
  * Source-of-truth split:
  *   Liveblocks (room-shared):  command, currentQuestion, players, boss,
- *                              answeredQuestions, skippedQuestions,
- *                              customQuestionsAnswered, endedAt
+ *                              answeredQuestions, skippedQuestions, endedAt
  *   Zustand (device-local):    selectedCategories, amountQuestions, capAnswers,
- *                              hideQuestions, showQuestions, customQuestions,
- *                              customQuestionCategory, me, preferences
+ *                              hideQuestions, showQuestions, me, preferences
  *   Derived (no store):        showQuestionResultModal
  *
  * The previous useLiveGame synced ALL Liveblocks fields including
@@ -43,8 +41,8 @@ export const useGame = (gameId?: string) => {
 
   // ── Selective sync: only Liveblocks-authoritative fields ──────────────────
   // selectedCategories, amountQuestions, capAnswers, hideQuestions,
-  // showQuestions, customQuestions, customQuestionCategory are Zustand-owned
-  // and must NOT be overwritten from Liveblocks initial storage.
+  // showQuestions are Zustand-owned and must NOT be overwritten from
+  // Liveblocks initial storage.
   useEffect(() => {
     if (!gameStorage) return
 
@@ -56,7 +54,6 @@ export const useGame = (gameId?: string) => {
       answeredQuestions: gameStorage.answeredQuestions,
       skippedQuestions: gameStorage.skippedQuestions,
       questions: gameStorage.questions as any,
-      customQuestionsAnswered: gameStorage.customQuestionsAnswered,
       endedAt: gameStorage.endedAt,
       gameId: gameId,
     }
@@ -147,7 +144,6 @@ export const useGame = (gameId?: string) => {
     boss: zustand.boss,
     answeredQuestions: zustand.answeredQuestions,
     skippedQuestions: zustand.skippedQuestions,
-    customQuestionsAnswered: zustand.customQuestionsAnswered,
     endedAt: zustand.endedAt,
     // Zustand-owned (never overwritten by Liveblocks)
     selectedCategories: zustand.selectedCategories,
@@ -155,8 +151,6 @@ export const useGame = (gameId?: string) => {
     capAnswers: zustand.capAnswers,
     hideQuestions: zustand.hideQuestions,
     showQuestions: zustand.showQuestions,
-    customQuestions: zustand.customQuestions,
-    customQuestionCategory: zustand.customQuestionCategory,
     me: zustand.me,
     preferences: zustand.preferences,
     gameId: zustand.gameId,
