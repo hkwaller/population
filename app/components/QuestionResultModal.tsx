@@ -10,9 +10,10 @@ import { useIshStore } from '../state'
 import { PlayerResult } from './PlayerResult'
 import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
-import { Command, CommandType } from '../types'
+import { Command, CommandType, LatLng } from '../types'
 import { PopButton } from './pop/PopButton'
-import { POP } from './pop/theme'
+import { POP, stickerFill } from './pop/theme'
+import { WorldMap, type MapPin } from './geo/WorldMap'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
 
@@ -38,6 +39,13 @@ export default function QuestionResultModal({
 
   const isBoss = boss === me?.id
   const showControls = isBoss || (players.filter((p) => p.localPlayer).length === 0 && !me)
+
+  // Size the big answer to fit the card — long numbers (populations, areas)
+  // would otherwise overflow horizontally.
+  const answerText = asSlider(currentQuestion)
+    ? asSlider(currentQuestion)!.answer.toLocaleString()
+    : formatAnswerValue(currentQuestion?.answer)
+  const answerFontSize = `min(${Math.floor(640 / Math.max(answerText.length, 3))}px, 16vw)`
 
   const ranked = players
     .map((player) => ({
@@ -78,16 +86,32 @@ export default function QuestionResultModal({
               transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.15 }}
               className="mt-8 w-full max-w-2xl rounded-[48px] bg-white px-6 py-10 shadow-pop-card"
             >
-              <span
-                className="block font-black leading-none tracking-[-0.03em]"
-                style={{ color: POP.coral, fontSize: 'clamp(80px, 20vw, 180px)' }}
-              >
-                {asSlider(currentQuestion) ? (
-                  <CountUp end={asSlider(currentQuestion)!.answer} duration={0.7} separator="," />
-                ) : (
-                  formatAnswerValue(currentQuestion?.answer)
-                )}
-              </span>
+              {currentQuestion?.type === 'map' ? (
+                <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink">
+                  <WorldMap
+                    answer={currentQuestion.answer}
+                    pins={ranked
+                      .map(({ player, answer }) =>
+                        answer && typeof answer.answer === 'object'
+                          ? { point: answer.answer as LatLng, color: stickerFill(player.color) }
+                          : null,
+                      )
+                      .filter(Boolean) as MapPin[]}
+                    interactive={false}
+                  />
+                </div>
+              ) : (
+                <span
+                  className="block font-black leading-none tracking-[-0.03em]"
+                  style={{ color: POP.coral, fontSize: answerFontSize, whiteSpace: 'nowrap' }}
+                >
+                  {asSlider(currentQuestion) ? (
+                    <CountUp end={asSlider(currentQuestion)!.answer} duration={0.7} separator="," />
+                  ) : (
+                    formatAnswerValue(currentQuestion?.answer)
+                  )}
+                </span>
+              )}
               <p className="mt-4 text-lg font-bold text-pop-ink/60 md:text-xl">
                 {currentQuestion?.question}
               </p>

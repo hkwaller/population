@@ -178,7 +178,7 @@ for (const c of withArea) {
     type: 'slider',
     category: 'area',
     question: `What is the land area of ${c.name}? (km²)`,
-    prompt: { kind: 'text', text: `What is the land area of ${c.name}?` },
+    prompt: { kind: 'text', text: `What is the land area of ${c.name}? (km²)` },
     answer: Math.round(c.area),
     lower_bound,
     upper_bound,
@@ -209,7 +209,7 @@ function haversine(a, b) {
       type: 'slider',
       category: 'distance',
       question: `How far apart are ${a.capital} and ${b.capital}? (km)`,
-      prompt: { kind: 'text', text: `How far apart are ${a.capital} and ${b.capital}?` },
+      prompt: { kind: 'text', text: `How far apart are ${a.capital} and ${b.capital}? (km)` },
       answer: dist,
       lower_bound: 0,
       upper_bound: 20000,
@@ -251,18 +251,35 @@ for (const c of withLatLng) {
 }
 
 // 10. currency — currency of X (choice)
-for (const c of withCurrency) {
-  const d = distractors(c, withCurrency, 3, (x) => x.currency, `currency:${c.cca3}`)
-  q.push(
-    choice(
-      'currency',
-      `What currency is used in ${c.name}?`,
-      { kind: 'text', text: `What currency is used in ${c.name}?` },
-      c.currency,
-      d.map((x) => x.currency),
-      `currency:${c.cca3}`,
-    ),
-  )
+// Only use GENERIC multi-country currencies (USD, Euro, CFA francs, East
+// Caribbean/CFP franc). Currencies named after a country (Swiss franc, Honduran
+// lempira) would give the answer away. We also drop the country a currency is
+// literally named after (e.g. don't ask "currency of United States?" → "US
+// dollar"), so no option ever contains the asked country's own name.
+{
+  const SAFE_CODES = new Set(['USD', 'EUR', 'XOF', 'XAF', 'XCD', 'XPF'])
+  // exclude if any country-name word (4+ chars) appears in the currency name
+  const namesItself = (c) =>
+    c.name
+      .toLowerCase()
+      .split(/[^a-z]+/)
+      .filter((w) => w.length >= 4)
+      .some((w) => c.currency.toLowerCase().includes(w))
+  const safe = withCurrency.filter((c) => SAFE_CODES.has(c.currencyCode) && !namesItself(c))
+  for (const c of safe) {
+    const d = distractors(c, safe, 3, (x) => x.currency, `currency:${c.cca3}`)
+    if (d.length < 3) continue // not enough distinct safe currencies
+    q.push(
+      choice(
+        'currency',
+        `What currency is used in ${c.name}?`,
+        { kind: 'text', text: `What currency is used in ${c.name}?` },
+        c.currency,
+        d.map((x) => x.currency),
+        `currency:${c.cca3}`,
+      ),
+    )
+  }
 }
 
 // 11. language — primary language of X (choice)

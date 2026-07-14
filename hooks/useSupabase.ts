@@ -79,12 +79,15 @@ export function useSupabase() {
   }, [])
 
   const fetchQuestionsByCategories = useCallback(
-    async (categories: string[], limit: number): Promise<TQuestion[]> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async (categories: string[], _limit: number): Promise<TQuestion[]> => {
+      // Fetch the full matching set (rows come back clustered by category) so the
+      // caller's sampleSize can spread evenly across the selected categories.
       const { data, error } = await supabase
         .from('population_questions')
         .select('*')
         .in('category', categories)
-        .limit(limit * 3)
+        .limit(5000)
       if (error) {
         console.error('[fetchQuestionsByCategories] Supabase error:', error)
         throw error

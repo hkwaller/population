@@ -1,0 +1,90 @@
+import { describe, it, expect } from 'vitest'
+
+import { scoreAnswer, haversineKm, MAX_SCORE, MAP_FALLOFF_KM } from './utils'
+import type { ChoiceQuestion, MapQuestion, SliderQuestion } from '@/app/types'
+
+const slider: SliderQuestion = {
+  id: 's',
+  type: 'slider',
+  category: 'population',
+  question: 'pop?',
+  answer: 500,
+  lower_bound: 0,
+  upper_bound: 1000,
+}
+
+const choice: ChoiceQuestion = {
+  id: 'c',
+  type: 'choice',
+  category: 'flags',
+  question: 'flag?',
+  options: ['A', 'B', 'C', 'D'],
+  answer: 'B',
+}
+
+const map: MapQuestion = {
+  id: 'm',
+  type: 'map',
+  category: 'locate',
+  question: 'where?',
+  answer: { lat: 0, lng: 0 },
+}
+
+describe('scoreAnswer — slider', () => {
+  it('exact hit scores max', () => {
+    expect(scoreAnswer(slider, 500)).toBe(MAX_SCORE)
+  })
+  it('scores by proximity, higher = closer', () => {
+    const near = scoreAnswer(slider, 550) // 5% off
+    const far = scoreAnswer(slider, 900) // 40% off
+    expect(near).toBeGreaterThan(far)
+    expect(near).toBeLessThan(MAX_SCORE)
+  })
+  it('never negative even when way off', () => {
+    expect(scoreAnswer(slider, 100000)).toBe(0)
+  })
+})
+
+describe('scoreAnswer — choice', () => {
+  it('wrong answer scores 0', () => {
+    expect(scoreAnswer(choice, 'A')).toBe(0)
+  })
+  it('correct + fast beats correct + slow', () => {
+    const fast = scoreAnswer(choice, 'B', 500)
+    const slow = scoreAnswer(choice, 'B', 14000)
+    expect(fast).toBeGreaterThan(slow)
+    expect(slow).toBeGreaterThanOrEqual(700) // base
+  })
+  it('correct with no timing gets full base + bonus', () => {
+    expect(scoreAnswer(choice, 'B')).toBe(1000)
+  })
+})
+
+describe('scoreAnswer — map', () => {
+  it('exact location scores max', () => {
+    expect(scoreAnswer(map, { lat: 0, lng: 0 })).toBe(MAX_SCORE)
+  })
+  it('closer guess scores higher', () => {
+    const near = scoreAnswer(map, { lat: 1, lng: 1 })
+    const far = scoreAnswer(map, { lat: 40, lng: 40 })
+    expect(near).toBeGreaterThan(far)
+  })
+  it('beyond the falloff distance scores 0', () => {
+    // antipode is ~20,000 km away, well past MAP_FALLOFF_KM
+    expect(scoreAnswer(map, { lat: 0, lng: 179 })).toBe(0)
+  })
+})
+
+describe('haversineKm', () => {
+  it('is zero for identical points', () => {
+    expect(haversineKm({ lat: 10, lng: 20 }, { lat: 10, lng: 20 })).toBe(0)
+  })
+  it('roughly matches a known distance (London↔Paris ~344 km)', () => {
+    const d = haversineKm({ lat: 51.5074, lng: -0.1278 }, { lat: 48.8566, lng: 2.3522 })
+    expect(d).toBeGreaterThan(300)
+    expect(d).toBeLessThan(400)
+  })
+  it('falloff constant is a sane positive distance', () => {
+    expect(MAP_FALLOFF_KM).toBeGreaterThan(0)
+  })
+})

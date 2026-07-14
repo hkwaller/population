@@ -9,7 +9,9 @@ export const useNext = () => {
   const next = async (payload: undefined) => {
     const upcoming = nextQuestion()
 
-    updateGame({ showQuestionResultModal: true })
+    // Advancing always hides the reveal; useGame re-derives it to true once
+    // every player has answered the new question.
+    updateGame({ showQuestionResultModal: false })
 
     const newAnswered = currentQuestion
       ? [...answeredQuestions.filter(Boolean), currentQuestion]

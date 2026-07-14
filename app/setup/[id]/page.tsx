@@ -10,7 +10,7 @@ import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
 
 import { GameRoomProvider } from '@/app/providers'
-import { isDevelopment, makeId } from '@/lib/utils'
+import { makeId } from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
 import { icons } from '@/app/icons'
 import { Player } from '@/app/components/Player'
@@ -28,9 +28,10 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const [isStarting, setIsStarting] = useState(false)
   const router = useRouter()
 
-  const url = isDevelopment
-    ? `http://localhost:3000/join/${params.id}`
-    : `https://www.ish.boats/join/${params.id}`
+  const url =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/join/${params.id}`
+      : `/join/${params.id}`
 
   const handleContinue = async () => {
     if (!players.length || isStarting) return
@@ -47,7 +48,13 @@ function SetupPageContent({ params }: { params: { id: string } }) {
       id: id!,
       ...(type === 'user'
         ? {
-            name: preferences.display_name ?? user?.fullName ?? '',
+            name:
+              preferences.display_name ||
+              user?.fullName ||
+              user?.firstName ||
+              user?.username ||
+              user?.primaryEmailAddress?.emailAddress?.split('@')[0] ||
+              'Player',
             color: preferences.preferred_color ?? sample(stickerColors)!.id,
             localPlayer: true,
             icon: preferences.icon ?? sample(icons)?.name,
@@ -77,7 +84,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
           Get in here!
         </h1>
         <p className="mt-4 text-center text-xl font-bold text-pop-ink/70">
-          Scan the code or type it in at ish.boats/join
+          Scan the code, or head to the join page and enter it
         </p>
 
         <div className="mt-12 grid grid-cols-1 items-start gap-8 md:grid-cols-2">

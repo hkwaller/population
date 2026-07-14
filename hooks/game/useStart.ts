@@ -33,7 +33,29 @@ export const useStart = () => {
       return
     }
 
-    const sampled = sampleSize(pool, Math.min(amountQuestions * 3, pool.length))
+    // Stratified sample: round-robin across the selected categories so a round
+    // always mixes types instead of clustering on whichever category the DB
+    // happened to return first.
+    const target = Math.min(amountQuestions * 3, pool.length)
+    const byCategory = new Map<string, typeof pool>()
+    for (const question of pool) {
+      const list = byCategory.get(question.category) ?? []
+      list.push(question)
+      byCategory.set(question.category, list)
+    }
+    // shuffle each category's questions AND the order categories are visited
+    const buckets = sampleSize(
+      [...byCategory.values()].map((list) => sampleSize(list, list.length)),
+      byCategory.size,
+    )
+    const sampled: typeof pool = []
+    let i = 0
+    while (sampled.length < target && buckets.some((b) => b.length > 0)) {
+      const bucket = buckets[i % buckets.length]
+      const picked = bucket.pop()
+      if (picked) sampled.push(picked)
+      i++
+    }
     const [first, ...rest] = sampled
 
     updateGame({ questions: sampled })
