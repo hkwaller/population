@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { TQuestion } from '../types'
 import { categories } from '@/lib/utils'
 import { cn } from '@/lib/utils'
@@ -14,7 +14,7 @@ export const Category = ({
   bg?: string
   className?: string
 }) => {
-  const { customQuestions, customQuestionCategory } = useIshStore()
+  const { customQuestions, customQuestionCategory } = usePopStore()
 
   const categoryName = useMemo(() => {
     if (!question) return

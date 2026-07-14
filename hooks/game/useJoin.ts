@@ -23,8 +23,7 @@ export const useJoin = () => {
   }, [])
 
   const join = async (payload: JoinPayload) => {
-    // Current game state is already synced via useStorage in useLiveGame.
-    // We use useMutation to safely append the player against the latest storage state.
+    // useMutation appends the player against the latest Liveblocks storage state.
     addPlayer(payload)
   }
 

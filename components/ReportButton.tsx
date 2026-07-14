@@ -3,10 +3,10 @@ import { Button } from './ui/button'
 import { AlertCircle } from 'lucide-react'
 import { useSupabase } from '@/hooks/useSupabase'
 import { useToast } from '@/hooks/use-toast'
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 
 export function ReportButton() {
-  const { currentQuestion } = useIshStore()
+  const { currentQuestion } = usePopStore()
   const [isReporting, setIsReporting] = useState(false)
   const { reportQuestion } = useSupabase()
   const { toast } = useToast()

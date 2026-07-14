@@ -1,5 +1,5 @@
 
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { flatMap, sample, uniqBy } from 'lodash'
 import { generateQuestions } from '@/lib/utils'
 import { TQuestion } from '@/app/types'
@@ -15,7 +15,7 @@ export const useRematch = () => {
     customQuestionsAnswered,
     selectedCategories,
     questions,
-  } = useIshStore()
+  } = usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const rematch = async (payload: undefined) => {

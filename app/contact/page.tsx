@@ -16,7 +16,7 @@ export default function ContactPage() {
               Got a question, found a bug, or just want to say hi? We&apos;d love to hear from you.
             </p>
             <p className="text-lg md:text-xl">
-              Ish is made by{' '}
+              Population is made by{' '}
               <a
                 href="https://amaliesutviklingsfabrikk.no"
                 target="_blank"
@@ -72,7 +72,7 @@ export default function ContactPage() {
 
         <footer className="bg-ish-ink text-white p-6 mt-20">
           <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Ish.</div>
+            <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Population.</div>
             <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-md md:text-xl">
               <Link href="/about" className="text-xl hover:underline">
                 About

@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
 import type { AnswerValue, TQuestion } from '@/app/types'
-import { MAX_SCORE, formatAnswerValue, scoreAnswer } from '@/lib/utils'
+import { MAX_SCORE, formatAnswerValue } from '@/lib/utils'
+import { scoreGuess } from '@/lib/geo/score'
 import { dateKeyUTC } from '@/lib/daily'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
@@ -72,7 +73,7 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
 
   const onAnswer = (value: AnswerValue, elapsedMs: number) => {
     const q = questions[index]
-    setRevealing({ value, score: scoreAnswer(q, value, elapsedMs) })
+    setRevealing({ value, score: scoreGuess(q, value, elapsedMs) })
   }
 
   const next = () => {

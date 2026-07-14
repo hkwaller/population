@@ -42,6 +42,7 @@ type GeoQuestion = {
   upper_bound?: number
   unit?: string
   falloffKm?: number
+  ccn3?: string
 }
 
 const CHUNK_SIZE = 500
@@ -62,6 +63,7 @@ async function main() {
     upper_bound: q.upper_bound ?? null,
     unit: q.unit ?? null,
     falloff_km: q.falloffKm ?? null,
+    ccn3: q.ccn3 ?? null,
     source: 'geo',
   }))
 

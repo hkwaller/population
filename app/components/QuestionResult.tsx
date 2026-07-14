@@ -43,6 +43,7 @@ export const QuestionResult = ({
               player={player}
               score={answer.score}
               answer={answer.answer}
+              question={question}
               isClosest={i === 0}
             />
           )

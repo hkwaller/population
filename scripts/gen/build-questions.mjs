@@ -227,6 +227,8 @@ for (const c of withLatLng) {
     question: `Where in the world is ${c.name}?`,
     prompt: { kind: 'text', text: `Tap where ${c.name} is on the map.` },
     answer: { lat: c.lat, lng: c.lng },
+    // ccn3 links the guess back to the country's borders for point-in-polygon scoring.
+    ...(c.ccn3 != null ? { ccn3: String(c.ccn3) } : {}),
   })
 }
 

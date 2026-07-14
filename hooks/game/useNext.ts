@@ -1,9 +1,9 @@
 
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useNext = () => {
-  const { nextQuestion, answeredQuestions, currentQuestion, players, updateGame } = useIshStore()
+  const { nextQuestion, answeredQuestions, currentQuestion, players, updateGame } = usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const next = async (payload: undefined) => {

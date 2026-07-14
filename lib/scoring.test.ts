@@ -73,6 +73,16 @@ describe('scoreAnswer — map', () => {
     // antipode is ~20,000 km away, well past MAP_FALLOFF_KM
     expect(scoreAnswer(map, { lat: 0, lng: 179 })).toBe(0)
   })
+  it('a guess flagged inside the country scores max even when far from the centroid', () => {
+    // insideCountry is decided by the caller (point-in-polygon against real borders).
+    const farButInside = scoreAnswer(map, { lat: 30, lng: 30 }, undefined, true)
+    expect(farButInside).toBe(MAX_SCORE)
+  })
+  it('when not inside the country, falls back to distance-based partial credit', () => {
+    const outside = scoreAnswer(map, { lat: 5, lng: 5 }, undefined, false)
+    expect(outside).toBeGreaterThan(0)
+    expect(outside).toBeLessThan(MAX_SCORE)
+  })
 })
 
 describe('haversineKm', () => {

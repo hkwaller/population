@@ -10,7 +10,8 @@ import { QuestionPrompt } from '@/app/components/geo/QuestionPrompt'
 import { QuestionInput } from '@/app/components/geo/QuestionInput'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
-import { formatAnswerValue, scoreAnswer } from '@/lib/utils'
+import { formatAnswerValue } from '@/lib/utils'
+import { scoreGuess } from '@/lib/geo/score'
 import { POP } from '@/app/components/pop/theme'
 
 const SAMPLES: TQuestion[] = [
@@ -99,7 +100,7 @@ function PreviewCard({ question }: { question: TQuestion }) {
         question={question}
         disabled={!!answered}
         onAnswer={(value, elapsedMs) =>
-          setAnswered({ value, score: scoreAnswer(question, value, elapsedMs) })
+          setAnswered({ value, score: scoreGuess(question, value, elapsedMs) })
         }
       />
       {answered && (

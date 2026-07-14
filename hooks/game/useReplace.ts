@@ -1,9 +1,9 @@
 
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useReplace = () => {
-  const { replaceQuestion, skippedQuestions, currentQuestion } = useIshStore()
+  const { replaceQuestion, skippedQuestions, currentQuestion } = usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const replace = async (payload: undefined) => {

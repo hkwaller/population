@@ -20,7 +20,7 @@ export const Logo = () => {
       md:border-8 md:p-4"
         onClick={() => router.push('/')}
       >
-        <span className="text-xl font-extrabold md:text-2xl tracking-tighter">Ish.</span>
+        <span className="text-xl font-extrabold md:text-2xl tracking-tighter">Population.</span>
       </div>
       <LoginAndProfile />
     </div>

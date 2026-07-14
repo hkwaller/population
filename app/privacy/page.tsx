@@ -14,7 +14,7 @@ export default function PrivacyPage() {
             </h1>
             <p className="text-base md:text-lg text-ish-ink/60 mb-6">Last updated: April 2025</p>
             <p className="text-lg md:text-xl">
-              Ish is made by Amalies Utviklingsfabrikk. This policy explains what data we collect,
+              Population is made by Amalies Utviklingsfabrikk. This policy explains what data we collect,
               why we collect it, and how we use it. We keep things simple — we only collect what we
               need.
             </p>
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
               Third-Party Services
             </h2>
             <p className="text-lg md:text-xl mb-4">
-              Ish uses the following third-party services, each with their own privacy policies:
+              Population uses the following third-party services, each with their own privacy policies:
             </p>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-2">
               <li>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Changes</h2>
             <p className="text-lg md:text-xl">
               We may update this policy occasionally. When we do, we&apos;ll update the date at the
-              top of this page. Continued use of Ish after changes means you accept the updated
+              top of this page. Continued use of Population after changes means you accept the updated
               policy.
             </p>
           </div>
@@ -127,7 +127,7 @@ export default function PrivacyPage() {
 
         <footer className="bg-ish-ink text-white p-6 mt-20">
           <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Ish.</div>
+            <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Population.</div>
             <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-md md:text-xl">
               <Link href="/about" className="text-xl hover:underline">
                 About

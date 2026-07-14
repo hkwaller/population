@@ -1,5 +1,5 @@
 {
-  "name": "ish",
+  "name": "population",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,8 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "test": "vitest",
+    "test:run": "vitest run",
     "start-dev": "next dev"
   },
   "dependencies": {
@@ -60,7 +62,7 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.6.0",
     "@vitest/ui": "^3.2.4",
-    "eslint": "10.2.0",
+    "eslint": "^9.39.5",
     "eslint-config-next": "16.2.3",
     "jsdom": "^26.1.0",
     "postcss": "^8",

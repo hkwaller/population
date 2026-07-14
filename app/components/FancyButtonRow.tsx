@@ -1,4 +1,4 @@
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import Slider from './Slider'
 
 export type TFancyButton = {
@@ -50,7 +50,7 @@ export function FancyButton({
 }
 
 function FancyButtonRow({ buttons, rounded = false, topComponent }: Props) {
-  const state = useIshStore()
+  const state = usePopStore()
 
   return (
     <div className="absolute bottom-0 left-0 right-0 z-[21] bg-white flex flex-col p-2 sm:p-4 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.3)]">

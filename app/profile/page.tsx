@@ -4,7 +4,7 @@ import { createElement, useEffect, useState } from 'react'
 import { icons as lucideIcons } from 'lucide-react'
 import { useUser, useClerk } from '@clerk/nextjs'
 
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { icons } from '@/app/icons'
 import { TGame } from '../types'
 import { useSupabase } from '@/hooks/useSupabase'
@@ -16,7 +16,7 @@ import { POP, stickerColors, stickerFill } from '../components/pop/theme'
 export default function Profile() {
   const { user, isLoaded } = useUser()
   const { signOut } = useClerk()
-  const { updateGame, preferences } = useIshStore()
+  const { updateGame, preferences } = usePopStore()
   const [games, setGames] = useState<TGame[]>([])
   const [isRedirecting, setIsRedirecting] = useState(false)
 

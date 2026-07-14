@@ -1,7 +1,7 @@
 import { SkipBack, SkipForward } from 'lucide-react'
 import Button from './Button'
 import { SpringModal } from './SpringModal'
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { asSlider } from '@/lib/utils'
 
 export function ManualAnswerModal({
@@ -15,7 +15,7 @@ export function ManualAnswerModal({
   currentAnswer: number
   setCurrentAnswer: (currentAnswer: number) => void
 }) {
-  const { currentQuestion } = useIshStore()
+  const { currentQuestion } = usePopStore()
   const slider = asSlider(currentQuestion)
 
   return (

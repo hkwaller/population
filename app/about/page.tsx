@@ -10,10 +10,10 @@ export default function AboutPage() {
         <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-8 max-w-[800px]">
           <div className="w-full bg-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h1 className="text-3xl md:text-5xl font-extrabold mb-6 uppercase tracking-tight text-ish-coral">
-              About Ish
+              About Population
             </h1>
             <p className="text-lg md:text-xl mb-4">
-              Ish is a real-time multiplayer quiz game with a twist — the goal is to score as{' '}
+              Population is a real-time multiplayer quiz game with a twist — the goal is to score as{' '}
               <span className="font-extrabold">low</span> as possible. Every answer you give earns
               you points, but the closer you are to the correct answer, the fewer points you get.
             </p>
@@ -37,7 +37,7 @@ export default function AboutPage() {
           <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">The Categories</h2>
             <p className="text-lg md:text-xl mb-4">
-              Ish has a large and growing question bank spanning categories like TV &amp; Movies,
+              Population has a large and growing question bank spanning categories like TV &amp; Movies,
               Animals, History, Science, Geography, Sports, and more.
             </p>
             <p className="text-lg md:text-xl">
@@ -49,7 +49,7 @@ export default function AboutPage() {
           <div className="w-full bg-ish-violet text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Who Made This?</h2>
             <p className="text-lg md:text-xl mb-4">
-              Ish was built by{' '}
+              Population was built by{' '}
               <a
                 href="https://amaliesutviklingsfabrikk.no"
                 target="_blank"
@@ -72,7 +72,7 @@ export default function AboutPage() {
 
         <footer className="bg-ish-ink text-white p-6 mt-20">
           <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Ish.</div>
+            <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Population.</div>
             <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-md md:text-xl">
               <Link href="/about" className="text-xl hover:underline">
                 About

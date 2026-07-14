@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { sample, uniqBy } from 'lodash'
 
 import { AnswerValue, Command, CommandType, TPlayer, TPreferences, TQuestion } from './types'
-import { scoreAnswer } from '@/lib/utils'
+import { scoreGuess } from '@/lib/geo/score'
 
 export type State = {
   addOrRemoveCategory: (category: string) => void
@@ -73,7 +73,7 @@ const initialState = {
   gameStartedAt: undefined,
 }
 
-export const useIshStore = create<State>()(
+export const usePopStore = create<State>()(
   persist(
     (set, get) => ({
       amountQuestions: 10,
@@ -107,7 +107,7 @@ export const useIshStore = create<State>()(
         const updatedPlayers = get().players.map((player) => {
           if (player.id === id) {
             if (!get().currentQuestion) return player
-            const score = scoreAnswer(get().currentQuestion, answer, elapsedMs)
+            const score = scoreGuess(get().currentQuestion, answer, elapsedMs)
             const existingAnswerIndex = player.answers.findIndex((a) => a.questionId === questionId)
             if (existingAnswerIndex !== -1) {
               player.answers[existingAnswerIndex] = {
@@ -187,7 +187,7 @@ export const useIshStore = create<State>()(
       },
     }),
     {
-      name: 'ish-store',
+      name: 'population-store',
       storage: createJSONStorage(() => localStorage),
     },
   ),

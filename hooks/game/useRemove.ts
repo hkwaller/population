@@ -1,9 +1,9 @@
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { RemovePayload } from '@/app/types'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useRemove = () => {
-  const { players } = useIshStore()
+  const { players } = usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const remove = async (payload: RemovePayload) => {

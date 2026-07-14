@@ -11,6 +11,9 @@ const isPublicRoute = createRouteMatcher([
   '/preview',
   '/geo/(.*)', // public static geometry (.json is otherwise caught by the matcher)
   '/highscores',
+  '/about',
+  '/contact',
+  '/privacy',
   '/sign-in',
   '/sign-up',
   '/api/liveblocks-auth',

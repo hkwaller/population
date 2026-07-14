@@ -6,7 +6,7 @@ import { sampleSize, uniq } from 'lodash'
 import { motion } from 'motion/react'
 import { Sparkles, RefreshCw, ArrowRight } from 'lucide-react'
 
-import { useIshStore } from '../../state'
+import { usePopStore } from '../../state'
 import { generateQuestions, formatAnswerValue } from '@/lib/utils'
 import { useSupabase } from '@/hooks/useSupabase'
 import { useGame } from '@/hooks/useGame'
@@ -26,7 +26,7 @@ const LOADING_MESSAGES = [
 ]
 
 function GenerateContent({ params }: { params: { gameId: string } }) {
-  const { updateGame, amountQuestions, customQuestionsAnswered } = useIshStore()
+  const { updateGame, amountQuestions, customQuestionsAnswered } = usePopStore()
   const [prompt, setPrompt] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')

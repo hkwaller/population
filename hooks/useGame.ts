@@ -1,5 +1,5 @@
 /**
- * useGame — unified hook that replaces the dual useIshStore + useLiveGame pattern.
+ * useGame — unified hook that replaces the dual usePopStore + useLiveGame pattern.
  *
  * Design C: single boundary hook.
  *
@@ -20,7 +20,7 @@
 
 import { useEffect, useMemo } from 'react'
 
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { Command, CommandType } from '@/app/types'
 import { useStorage } from '@/liveblocks.config'
 
@@ -38,7 +38,7 @@ import { useShow } from './game/useShow'
 import { useStart } from './game/useStart'
 
 export const useGame = (gameId?: string) => {
-  const zustand = useIshStore()
+  const zustand = usePopStore()
   const gameStorage = useStorage((root) => root.game)
 
   // ── Selective sync: only Liveblocks-authoritative fields ──────────────────
@@ -130,7 +130,7 @@ export const useGame = (gameId?: string) => {
     )
   }, [zustand.players, zustand.currentQuestion])
 
-  // Keep Zustand store in sync so components that read directly from useIshStore
+  // Keep Zustand store in sync so components that read directly from usePopStore
   // (e.g. QuestionResultModal) see the correct derived value without needing
   // each page to manage their own useEffect for this.
   useEffect(() => {

@@ -6,7 +6,7 @@ import { icons as lucideIcons, Minus, Plus, Sparkles, ArrowRight } from 'lucide-
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
 
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { GameRoomProvider } from '../providers'
 import { PopShell } from '../components/pop/PopShell'
 import { PopHeader, PopAuth } from '../components/pop/PopHeader'
@@ -26,8 +26,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
   const refId = useRef(gameId)
   const storageLoaded = useStorage((root) => root.game) !== null
   const { isSignedIn } = useAuth()
-  const { amountQuestions, capAnswers, selectedCategories, showQuestions, updateGame } =
-    useIshStore()
+  const { amountQuestions, selectedCategories, showQuestions, updateGame } = usePopStore()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -49,6 +48,16 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
       selectedCategories: selectedCategories.includes(id)
         ? selectedCategories.filter((c) => c !== id)
         : [...selectedCategories, id],
+    })
+  }
+
+  // Bulk toggle for a tier: select all if any are off, otherwise clear the tier.
+  const toggleAll = (ids: string[]) => {
+    const allOn = ids.every((id) => selectedCategories.includes(id))
+    updateGame({
+      selectedCategories: allOn
+        ? selectedCategories.filter((id) => !ids.includes(id))
+        : [...new Set([...selectedCategories, ...ids])],
     })
   }
 
@@ -91,43 +100,25 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           Tap to toggle — greyed-out stickers sit this round out.
         </p>
 
-        <div className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-3.5">
-          {categories.map((cat, i) => {
-            const Icon = lucideIcons[cat.icon as keyof typeof lucideIcons]
-            const selected = selectedCategories.includes(cat.id)
-            const fill = CHIP_CYCLE[i % CHIP_CYCLE.length]
-            const light = DARK_FILLS.has(fill)
-            return (
-              <motion.button
-                key={cat.id}
-                initial={{ scale: 0 }}
-                animate={{ scale: visible ? 1 : 0, rotate: selected ? (i % 2 ? 3 : -3) : 0 }}
-                transition={{ ...POP_SPRING, delay: i * 0.03 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => toggleCategory(cat.id)}
-                className={`inline-flex items-center gap-2 rounded-pill px-5 py-3 text-[22px] font-black ${
-                  selected ? 'border-4 border-white shadow-pop' : ''
-                }`}
-                style={
-                  selected
-                    ? { background: fill, color: light ? '#fff' : POP.ink }
-                    : { background: 'rgba(255,255,255,0.45)', color: 'rgba(23,18,20,0.45)' }
-                }
-              >
-                {Icon && <Icon size={22} strokeWidth={2.5} />}
-                {cat.name}
-              </motion.button>
-            )
-          })}
-        </div>
+        <CategorySection
+          title="Main"
+          cats={categories.filter((c) => c.tier === 'main')}
+          selectedCategories={selectedCategories}
+          onToggle={toggleCategory}
+          onToggleAll={toggleAll}
+          visible={visible}
+        />
+        <CategorySection
+          title="Special"
+          cats={categories.filter((c) => c.tier === 'special')}
+          selectedCategories={selectedCategories}
+          onToggle={toggleCategory}
+          onToggleAll={toggleAll}
+          visible={visible}
+        />
 
         {/* Toggles + pro entry */}
         <div className="mx-auto mt-12 flex max-w-xl flex-col gap-4">
-          <TogglePill
-            label="Cap wild guesses at 25 pts"
-            checked={capAnswers}
-            onChange={() => updateGame({ capAnswers: !capAnswers })}
-          />
           <TogglePill
             label="Questions on host screen only"
             checked={!showQuestions}
@@ -164,6 +155,71 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
         </PopButton>
       </div>
     </PopShell>
+  )
+}
+
+type Cat = (typeof categories)[number]
+
+function CategorySection({
+  title,
+  cats,
+  selectedCategories,
+  onToggle,
+  onToggleAll,
+  visible,
+}: {
+  title: string
+  cats: readonly Cat[]
+  selectedCategories: string[]
+  onToggle: (id: string) => void
+  onToggleAll: (ids: string[]) => void
+  visible: boolean
+}) {
+  const ids = cats.map((c) => c.id)
+  const allOn = ids.every((id) => selectedCategories.includes(id))
+
+  return (
+    <div className="mx-auto mt-10 max-w-3xl">
+      <div className="flex items-center justify-center gap-3">
+        <h3 className="text-2xl font-black text-pop-ink">{title}</h3>
+        <button
+          onClick={() => onToggleAll(ids)}
+          className="rounded-pill border-2 border-pop-ink bg-white px-3 py-1 text-sm font-black text-pop-ink shadow-pop-sm"
+        >
+          {allOn ? 'Deselect all' : 'Select all'}
+        </button>
+      </div>
+
+      <div className="mt-5 flex flex-wrap justify-center gap-3.5">
+        {cats.map((cat, i) => {
+          const Icon = lucideIcons[cat.icon as keyof typeof lucideIcons]
+          const selected = selectedCategories.includes(cat.id)
+          const fill = CHIP_CYCLE[i % CHIP_CYCLE.length]
+          const light = DARK_FILLS.has(fill)
+          return (
+            <motion.button
+              key={cat.id}
+              initial={{ scale: 0 }}
+              animate={{ scale: visible ? 1 : 0, rotate: selected ? (i % 2 ? 3 : -3) : 0 }}
+              transition={{ ...POP_SPRING, delay: i * 0.03 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onToggle(cat.id)}
+              className={`inline-flex items-center gap-2 rounded-pill px-5 py-3 text-[22px] font-black ${
+                selected ? 'border-4 border-white shadow-pop' : ''
+              }`}
+              style={
+                selected
+                  ? { background: fill, color: light ? '#fff' : POP.ink }
+                  : { background: 'rgba(255,255,255,0.45)', color: 'rgba(23,18,20,0.45)' }
+              }
+            >
+              {Icon && <Icon size={22} strokeWidth={2.5} />}
+              {cat.name}
+            </motion.button>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 

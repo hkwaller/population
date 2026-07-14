@@ -42,6 +42,11 @@ export type MapQuestion = QuestionBase & {
   answer: LatLng
   /** Distance (km) at which score reaches 0. Defaults to MAP_FALLOFF_KM. */
   falloffKm?: number
+  /**
+   * Numeric ISO country code (ccn3) of the target. Used to point-in-polygon test a
+   * guess against the country's real borders — land anywhere inside = full marks.
+   */
+  ccn3?: string
 }
 
 export type TQuestion = SliderQuestion | ChoiceQuestion | MapQuestion

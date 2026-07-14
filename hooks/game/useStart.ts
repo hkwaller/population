@@ -1,5 +1,5 @@
 import { sampleSize } from 'lodash'
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 import { useSupabase } from '../useSupabase'
 import { StartPayload } from '@/app/types'
@@ -13,7 +13,7 @@ export const useStart = () => {
     selectedCategories,
     customQuestions,
     updateGame,
-  } = useIshStore()
+  } = usePopStore()
   const { updateGameState } = useUpdateGameState()
   const { fetchQuestionsByCategories } = useSupabase()
 

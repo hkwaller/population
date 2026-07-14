@@ -1,58 +1,59 @@
-# Ish - The Quiz Game
+# Population
 
-Ish is a real-time multiplayer quiz game where the goal is to have the lowest score. Test your knowledge across a wide variety of categories, compete with your friends, and see who can get the closest (or furthest!) from the correct answer.
+A real-time, multiplayer **geography guessing game**. Answer numeric, multiple-choice, and
+map-pin questions about the world — flags, capitals, borders, and a few billion people. Scoring
+rewards being *close*, and the **lowest score wins**.
 
-## How to Play
+> Population began life as a number-guessing quiz called "Ish" and grew into a geography-first
+> game. You may still see "Ish" in old git history; the codebase is now Population throughout.
 
-The rules of Ish are simple:
+## Modes
 
-1.  **Start a new game:** One player creates a new game and shares the link with friends.
-2.  **Join a game:** Players can join the game using the shared link.
-3.  **Answer questions:** For each question, players provide a numerical answer using a slider.
-4.  **Scoring:** Points are awarded based on how far your answer is from the correct one. The further away you are, the more points you get.
-5.  **Lowest score wins:** At the end of the game, the player with the lowest total score is the winner!
+- **Live multiplayer** — one player creates a room and shares the link; everyone plays in real time.
+- **Daily** — a shared, deterministic puzzle; everyone worldwide gets the same set for a given day.
+- **Solo / same-device** — pass-and-play on one device.
+- **Custom (AI-generated)** — generate a question set on any topic via the Anthropic API.
 
-## Features
+## Stack
 
-*   **Real-time multiplayer:** Play with your friends in real-time, with live updates on scores and answers.
-*   **Multiple categories:** A wide range of categories to choose from, including TV & Movies, Animals, History, and more.
-*   **Solo and team play:** Play against each other individually or team up for a cooperative challenge.
-*   **Customizable games:** Choose the number of questions and other game settings.
-*   **Responsive design:** Play on any device, from your phone to your desktop.
+- **Next.js 16** (App Router, RSC) + React 18 + TypeScript (strict)
+- **Liveblocks** — realtime room state (multiplayer source of truth)
+- **Zustand** — device-local state (`usePopStore`)
+- **Supabase** — question bank + player/game stats
+- **Clerk** — auth (anonymous guests can play without signing in)
+- **Tailwind** + Radix + Framer Motion (`motion`)
+- **Anthropic SDK** — AI custom-question generation
+- **Vitest** — unit tests
 
-## Tech Stack
+## Getting started
 
-*   **Framework:** [Next.js](https://nextjs.org/)
-*   **Backend and Database:** [Supabase](https://supabase.io/)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
-*   **Animation:** [Framer Motion](https://www.framer.com/motion/)
+```sh
+npm install
+cp .env.example .env.local   # then fill in — provision your OWN Liveblocks/Supabase/Clerk projects
+npm run dev                  # http://localhost:3000
+```
 
-## Getting Started
+Seed the question bank (after applying `scripts/schema.sql` in your Supabase project):
 
-To get a local copy up and running, follow these simple steps.
+```sh
+npx tsx --env-file=.env.local scripts/migrate-questions.ts
+```
 
-### Prerequisites
+## Commands
 
-*   npm
-    ```sh
-    npm install npm@latest -g
-    ```
+```sh
+npm run dev        # dev server on :3000
+npm run build      # production build
+npm run lint       # next lint
+npm run typecheck  # tsc --noEmit
+npm run test:run   # vitest once   (npm test runs in watch mode)
+```
 
-### Installation
+## Where things live
 
-1.  Clone the repo
-    ```sh
-    git clone https://github.com/your_username_/your_project_name.git
-    ```
-2.  Install NPM packages
-    ```sh
-    npm install
-    ```
-3.  Set up your Supabase project and add your environment variables to a `.env.local` file.
-4.  Run the development server
-    ```sh
-    npm run dev
-    ```
+- Architecture, conventions, and gotchas: **[CLAUDE.md](CLAUDE.md)**
+- The two-layer state model (Liveblocks vs. Zustand): **[docs/state-store.md](docs/state-store.md)**
 
-Now you can open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+## License
+
+Private project. All rights reserved.

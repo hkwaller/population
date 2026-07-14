@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Delete } from 'lucide-react'
 
-import { useIshStore } from '../state'
-import { asSlider } from '@/lib/utils'
+import { usePopStore } from '../state'
+import { asSlider, formatCompactNumber } from '@/lib/utils'
 import { PopButton } from './pop/PopButton'
 import { POP } from './pop/theme'
 
@@ -17,7 +17,7 @@ type AnswerInputModalProps = {
 
 // "Type it instead" keypad — spring-in card with a big coral display + 3×4 pad.
 export const AnswerInputModal: React.FC<AnswerInputModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const { currentQuestion } = useIshStore()
+  const { currentQuestion } = usePopStore()
   const [raw, setRaw] = useState('')
   const [negative, setNegative] = useState(false)
 
@@ -79,7 +79,9 @@ export const AnswerInputModal: React.FC<AnswerInputModalProps> = ({ isOpen, onCl
                 {display}
               </span>
               <span className="mt-1 block text-sm font-bold text-[rgba(23,18,20,0.5)]">
-                {lower.toLocaleString()} – {upper.toLocaleString()}
+                {upper >= 1_000_000
+                  ? `${formatCompactNumber(lower)} – ${formatCompactNumber(upper)}`
+                  : `${lower.toLocaleString()} – ${upper.toLocaleString()}`}
               </span>
             </div>
 

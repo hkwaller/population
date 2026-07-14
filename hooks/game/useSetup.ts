@@ -1,5 +1,5 @@
 
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useSetup = () => {
@@ -11,7 +11,7 @@ export const useSetup = () => {
     selectedCategories,
     customQuestions,
     customQuestionCategory,
-  } = useIshStore()
+  } = usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const setup = async (payload: undefined) => {

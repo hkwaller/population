@@ -11,7 +11,7 @@ import {
 import CountUp from 'react-countup'
 import { icons } from 'lucide-react'
 
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { TPlayer, Command, CommandType } from '../types'
 import { stickerFill, POP } from './pop/theme'
 
@@ -40,10 +40,10 @@ export const Player = ({
   setBoss?: () => void
   send?: SendFn
 } & Omit<TPlayer, 'answers' | 'score'>) => {
-  const { boss, currentQuestion, command } = useIshStore()
+  const { boss, currentQuestion, command } = usePopStore()
   const previousScore = useRef(0)
 
-  const answers = useIshStore((state) => state.players.find((p) => p.id === id))?.answers
+  const answers = usePopStore((state) => state.players.find((p) => p.id === id))?.answers
   const hasAnsweredCurrentQuestion = answers?.some((a) => a.questionId === currentQuestion?.id)
   const isHost = id === boss
 

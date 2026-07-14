@@ -155,7 +155,12 @@ function scoreSlider(question: SliderQuestion, guess: number) {
   return Math.max(0, Math.round(MAX_SCORE * (1 - normError)))
 }
 
-function scoreMap(question: MapQuestion, guess: LatLng) {
+function scoreMap(question: MapQuestion, guess: LatLng, insideCountry?: boolean) {
+  // Locate-the-country is right/wrong-ish: a guess that lands anywhere inside the
+  // country's actual borders is correct. Containment is decided by the caller (it
+  // needs the map geometry); we only fall back to distance-based partial credit
+  // when the guess misses the country entirely.
+  if (insideCountry) return MAX_SCORE
   const d = haversineKm(guess, question.answer)
   const falloff = question.falloffKm ?? MAP_FALLOFF_KM
   return Math.max(0, Math.round(MAX_SCORE * (1 - d / falloff)))
@@ -168,11 +173,17 @@ function scoreChoice(question: ChoiceQuestion, guess: string, elapsedMs?: number
   return CHOICE_BASE + Math.round(CHOICE_SPEED_BONUS * speed)
 }
 
-/** Score a guess against a question. Higher is better; range 0..MAX_SCORE. */
+/**
+ * Score a guess against a question. Higher is better; range 0..MAX_SCORE.
+ * For map questions, `insideCountry` (whether the guess landed within the target
+ * country's borders) is computed by the caller from the map geometry — see
+ * `scoreGuess` in lib/geo/score.ts, which app code should use instead of this.
+ */
 export function scoreAnswer(
   question: TQuestion,
   guess: AnswerValue,
   elapsedMs?: number,
+  insideCountry?: boolean,
 ): number {
   switch (question.type) {
     case 'slider':
@@ -180,7 +191,7 @@ export function scoreAnswer(
     case 'choice':
       return scoreChoice(question, guess as string, elapsedMs)
     case 'map':
-      return scoreMap(question, guess as LatLng)
+      return scoreMap(question, guess as LatLng, insideCountry)
     default:
       return 0
   }
@@ -223,6 +234,7 @@ export function normalizeQuestionRow(row: any): TQuestion {
       type: 'map',
       answer: { lat: Number(a.lat), lng: Number(a.lng) },
       falloffKm: row.falloff_km != null ? Number(row.falloff_km) : undefined,
+      ccn3: row.ccn3 != null ? String(row.ccn3) : undefined,
     }
   }
 
@@ -242,6 +254,19 @@ export function formatAnswerValue(v: AnswerValue | undefined): string {
   if (typeof v === 'number') return v.toLocaleString()
   if (typeof v === 'string') return v
   return `${v.lat.toFixed(1)}°, ${v.lng.toFixed(1)}°`
+}
+
+/**
+ * Compact number for slider labels: 55_000_000 → "55M", 1_400_000_000 → "1.4B".
+ * Keeps small numbers (years, percentages, distances < 1M) exactly as typed so we
+ * never show "1,990" for a year. One decimal, trailing ".0" trimmed.
+ */
+export function formatCompactNumber(n: number): string {
+  const abs = Math.abs(n)
+  const trim = (v: number) => Number(v.toFixed(1)).toString()
+  if (abs >= 1_000_000_000) return `${trim(n / 1_000_000_000)}B`
+  if (abs >= 1_000_000) return `${trim(n / 1_000_000)}M`
+  return n.toString()
 }
 
 export function makeId() {
@@ -307,19 +332,20 @@ export const categoryBackgroundColors = [
 
 const stat = (key: string): number => (stats as Record<string, number>)[key] ?? 0
 
-// Geography categories. `group` drives the opt-in/out sections; ids match the
-// generator output in scripts/gen/build-questions.mjs and the stats.json keys.
+// Geography categories. `group` drives internal grouping; `tier` splits the
+// category picker into Main (the crowd-pleasers) and Special (the deep cuts).
+// ids match the generator output in scripts/gen/build-questions.mjs and stats.json.
 export const categories = [
-  { id: 'flags', name: 'Flags', icon: 'Flag', group: 'core', bg: categoryBackgroundColors[0], count: stat('flags') },
-  { id: 'outline', name: 'Country Shapes', icon: 'Map', group: 'core', bg: categoryBackgroundColors[1], count: stat('outline') },
-  { id: 'borders', name: 'Borders', icon: 'Waypoints', group: 'core', bg: categoryBackgroundColors[2], count: stat('borders') },
-  { id: 'capitals', name: 'Capitals', icon: 'Landmark', group: 'core', bg: categoryBackgroundColors[3], count: stat('capitals') },
-  { id: 'population', name: 'Population', icon: 'Users', group: 'core', bg: categoryBackgroundColors[4], count: stat('population') },
-  { id: 'locate', name: 'Locate It', icon: 'MapPin', group: 'map', bg: categoryBackgroundColors[5], count: stat('locate') },
-  { id: 'area', name: 'Land Area', icon: 'Maximize2', group: 'sliders', bg: categoryBackgroundColors[6], count: stat('area') },
-  { id: 'distance', name: 'Distances', icon: 'Ruler', group: 'sliders', bg: categoryBackgroundColors[7], count: stat('distance') },
-  { id: 'which-bigger', name: 'Which is Bigger?', icon: 'Scale', group: 'quickfire', bg: categoryBackgroundColors[8], count: stat('which-bigger') },
-  { id: 'currency', name: 'Currencies', icon: 'Coins', group: 'quickfire', bg: categoryBackgroundColors[9], count: stat('currency') },
-  { id: 'language', name: 'Languages', icon: 'Languages', group: 'quickfire', bg: categoryBackgroundColors[10], count: stat('language') },
-  { id: 'continent', name: 'Continents', icon: 'Globe', group: 'quickfire', bg: categoryBackgroundColors[11], count: stat('continent') },
-]
+  { id: 'flags', name: 'Flags', icon: 'Flag', group: 'core', tier: 'main', bg: categoryBackgroundColors[0], count: stat('flags') },
+  { id: 'outline', name: 'Country Shapes', icon: 'Map', group: 'core', tier: 'main', bg: categoryBackgroundColors[1], count: stat('outline') },
+  { id: 'borders', name: 'Borders', icon: 'Waypoints', group: 'core', tier: 'main', bg: categoryBackgroundColors[2], count: stat('borders') },
+  { id: 'capitals', name: 'Capitals', icon: 'Landmark', group: 'core', tier: 'main', bg: categoryBackgroundColors[3], count: stat('capitals') },
+  { id: 'population', name: 'Population', icon: 'Users', group: 'core', tier: 'main', bg: categoryBackgroundColors[4], count: stat('population') },
+  { id: 'locate', name: 'Locate It', icon: 'MapPin', group: 'map', tier: 'main', bg: categoryBackgroundColors[5], count: stat('locate') },
+  { id: 'which-bigger', name: 'Which is Bigger?', icon: 'Scale', group: 'quickfire', tier: 'main', bg: categoryBackgroundColors[8], count: stat('which-bigger') },
+  { id: 'area', name: 'Land Area', icon: 'Maximize2', group: 'sliders', tier: 'special', bg: categoryBackgroundColors[6], count: stat('area') },
+  { id: 'distance', name: 'Distances', icon: 'Ruler', group: 'sliders', tier: 'special', bg: categoryBackgroundColors[7], count: stat('distance') },
+  { id: 'currency', name: 'Currencies', icon: 'Coins', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[9], count: stat('currency') },
+  { id: 'language', name: 'Languages', icon: 'Languages', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[10], count: stat('language') },
+  { id: 'continent', name: 'Continents', icon: 'Globe', group: 'quickfire', tier: 'special', bg: categoryBackgroundColors[11], count: stat('continent') },
+] as const

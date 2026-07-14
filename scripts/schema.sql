@@ -19,8 +19,11 @@ create table if not exists public.population_questions (
   upper_bound   double precision,                  -- slider
   unit          text,                              -- slider display unit
   falloff_km    double precision,                  -- map scoring falloff override
+  ccn3          text,                              -- map: numeric ISO code → borders for scoring
   source        text default 'geo'
 );
+-- Existing projects: add the column without a full re-create.
+alter table public.population_questions add column if not exists ccn3 text;
 create index if not exists population_questions_category_idx on public.population_questions (category);
 
 -- ---------------------------------------------------------------------------

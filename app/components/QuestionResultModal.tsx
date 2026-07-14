@@ -6,7 +6,7 @@ import Confetti from 'react-confetti'
 import CountUp from 'react-countup'
 import { ArrowRight, ListEnd } from 'lucide-react'
 
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { PlayerResult } from './PlayerResult'
 import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
@@ -25,7 +25,7 @@ export default function QuestionResultModal({
   canEndGame: boolean
   send?: SendFn
 }) {
-  const { currentQuestion, updateGame, players, boss, me, showQuestionResultModal } = useIshStore()
+  const { currentQuestion, updateGame, players, boss, me, showQuestionResultModal } = usePopStore()
   const { postGameToSupabase } = useSupabase()
   const [isEnding, setIsEnding] = useState(false)
   const [size, setSize] = useState({ width: 0, height: 0 })
@@ -125,6 +125,7 @@ export default function QuestionResultModal({
                   player={player}
                   score={answer?.score || 0}
                   answer={answer?.answer}
+                  question={currentQuestion}
                   isClosest={index === 0}
                 />
               ))}

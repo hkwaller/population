@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { TQuestion } from '@/app/types'
 import { MAX_SCORE, normalizeQuestionRow } from '@/lib/utils'
-import { useIshStore } from '@/app/state'
+import { usePopStore } from '@/app/state'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -28,7 +28,7 @@ export function useSupabase() {
     capAnswers,
     showQuestions,
     answeredQuestions,
-  } = useIshStore()
+  } = usePopStore()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)

@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation'
-import { useIshStore } from '../state'
+import { usePopStore } from '../state'
 import { Button } from '@/components/ui/button'
 
 export const Reconnect = () => {
   const router = useRouter()
-  const { me, gameId } = useIshStore()
+  const { me, gameId } = usePopStore()
 
   return (
     <div className="py-8 mx-auto w-full flex items-center justify-center">
