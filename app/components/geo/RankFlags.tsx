@@ -1,5 +1,8 @@
 'use client'
 
+import { Fragment } from 'react'
+import { Check, ChevronRight, X } from 'lucide-react'
+
 import { byName } from '@/lib/geo/countries'
 import { POP } from '../pop/theme'
 
@@ -7,17 +10,14 @@ import { POP } from '../pop/theme'
 export function CountryFlag({
   label,
   size = 44,
-  borderColor,
   title,
 }: {
   label: string
   size?: number
-  /** Overrides the default ink border — used to mark a guess right/wrong. */
-  borderColor?: string
   title?: string
 }) {
   const cca2 = byName.get(label)?.cca2
-  const border = borderColor ?? POP.ink
+  const border = POP.ink
   const common = {
     width: size,
     height: Math.round(size * 0.68),
@@ -45,22 +45,54 @@ export function CountryFlag({
 }
 
 /**
- * A player's rank guess as flags only — each flag bordered green (right slot) or
- * red (wrong slot) against the correct order. Easier to scan than reading names.
+ * The correct rank order as a compact flag row, separated by chevrons. Used where
+ * space is tight (e.g. the end-page recap) — flags + names, no population values.
+ */
+export function RankAnswerFlags({ answer, size = 34 }: { answer: string[]; size?: number }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
+      {answer.map((label, i) => (
+        <Fragment key={label}>
+          {i > 0 && (
+            <ChevronRight size={16} className="flex-none" color={POP.ink} strokeWidth={3} />
+          )}
+          <div className="flex flex-col items-center gap-1">
+            <CountryFlag label={label} size={size} />
+            <span className="max-w-[72px] text-center text-[11px] font-black leading-tight text-pop-ink">
+              {label}
+            </span>
+          </div>
+        </Fragment>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * A player's rank guess as flags only. Each flag carries a small badge — a green
+ * check (right slot) or red cross (wrong slot) — in the corner. A badge reads more
+ * clearly than a coloured border, since the flags themselves are full of red/green.
  */
 export function RankGuessFlags({ guess, answer }: { guess: string[]; answer: string[] }) {
   return (
-    <div className="flex flex-wrap justify-center gap-1.5">
+    <div className="flex flex-wrap justify-center gap-2">
       {guess.map((label, i) => {
         const correct = answer[i] === label
         return (
-          <CountryFlag
-            key={`${label}-${i}`}
-            label={label}
-            size={30}
-            borderColor={correct ? POP.mint : POP.coral}
-            title={`${i + 1}. ${label} — ${correct ? 'correct' : 'wrong'}`}
-          />
+          <div key={`${label}-${i}`} className="relative flex-none leading-none">
+            <CountryFlag label={label} size={30} title={`${i + 1}. ${label}`} />
+            <span
+              className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white"
+              style={{ background: correct ? POP.mint : POP.coral }}
+              title={correct ? 'correct' : 'wrong'}
+            >
+              {correct ? (
+                <Check size={9} strokeWidth={4} color="#fff" />
+              ) : (
+                <X size={9} strokeWidth={4} color="#fff" />
+              )}
+            </span>
+          </div>
         )
       })}
     </div>

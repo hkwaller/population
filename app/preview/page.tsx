@@ -11,6 +11,7 @@ import { QuestionInput } from '@/app/components/geo/QuestionInput'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 import { RankReveal } from '@/app/components/geo/RankReveal'
+import { RankAnswerFlags } from '@/app/components/geo/RankFlags'
 import { formatAnswerValue } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { POP } from '@/app/components/pop/theme'
@@ -157,6 +158,9 @@ function RevealDemo() {
           question={SAMPLES.find((q) => q.id === 's-rank') as RankQuestion}
           guess={['Nigeria', 'Portugal', 'Argentina', 'Iceland']}
         />
+      </div>
+      <div className="mt-8" data-testid="rank-answer-flags">
+        <RankAnswerFlags answer={['Nigeria', 'Argentina', 'Portugal', 'Iceland']} />
       </div>
     </section>
   )

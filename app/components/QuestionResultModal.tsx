@@ -10,11 +10,12 @@ import { usePopStore } from '../state'
 import { PlayerResult } from './PlayerResult'
 import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
-import { Command, CommandType, LatLng } from '../types'
+import { Command, CommandType, LatLng, TQuestion } from '../types'
 import { PopButton } from './pop/PopButton'
 import { POP, stickerFill } from './pop/theme'
 import { WorldMap, type MapPin } from './geo/WorldMap'
 import { RankReveal } from './geo/RankReveal'
+import { byName } from '@/lib/geo/countries'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
 
@@ -118,6 +119,7 @@ export default function QuestionResultModal({
               <p className="mt-4 text-lg font-bold text-pop-ink/60 md:text-xl">
                 {currentQuestion?.question}
               </p>
+              {currentQuestion && <PopulationCompare question={currentQuestion} />}
             </motion.div>
 
             <div className="mt-12 flex flex-wrap justify-center gap-5">
@@ -161,5 +163,42 @@ export default function QuestionResultModal({
         </motion.div>
       )}
     </AnimatePresence>
+  )
+}
+
+/**
+ * For "which has the larger population?" choice questions, list every option with
+ * its actual population (answer highlighted) so players learn the real numbers,
+ * not just which name was right. No-op for any other question.
+ */
+function PopulationCompare({ question }: { question: TQuestion }) {
+  if (question.type !== 'choice' || question.category !== 'which-bigger') return null
+  const rows = question.options
+    .map((name) => {
+      const pop = byName.get(name)?.population
+      return pop != null ? { name, pop } : null
+    })
+    .filter(Boolean) as { name: string; pop: number }[]
+  if (rows.length < 2) return null
+  rows.sort((a, b) => b.pop - a.pop)
+
+  return (
+    <div className="mt-6 flex flex-col gap-2">
+      {rows.map(({ name, pop }) => {
+        const isAnswer = name === question.answer
+        return (
+          <div
+            key={name}
+            className="flex items-center justify-between rounded-pill border-2 border-pop-ink px-4 py-2.5 text-left"
+            style={{ background: isAnswer ? POP.mint : '#fff' }}
+          >
+            <span className="text-base font-black text-pop-ink md:text-lg">{name}</span>
+            <span className="text-base font-black tabular-nums text-pop-ink md:text-lg">
+              {pop.toLocaleString('en-US')}
+            </span>
+          </div>
+        )
+      })}
+    </div>
   )
 }

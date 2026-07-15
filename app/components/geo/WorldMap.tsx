@@ -280,7 +280,7 @@ export function WorldMap({
       >
         <path d={path({ type: 'Sphere' }) ?? ''} fill="#BFE3E8" />
         {features.map((f, i) => (
-          <path key={i} d={path(f) ?? ''} fill="#E7D9BC" stroke="#B9A47E" strokeWidth={0.5 * k} />
+          <path key={i} d={path(f) ?? ''} fill="#E7D9BC" stroke="#211812" strokeWidth={0.5 * k} />
         ))}
 
         {guessXY && answerXY && (

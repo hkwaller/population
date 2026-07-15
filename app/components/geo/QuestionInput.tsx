@@ -7,7 +7,7 @@ import { PopSlider } from '../pop/PopSlider'
 import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 import { ChoiceOptions } from './ChoiceOptions'
-import { WorldMap } from './WorldMap'
+import { MapPicker } from './MapPicker'
 import { RankInput } from './RankInput'
 
 /**
@@ -62,19 +62,12 @@ export function QuestionInput({
 
   if (question.type === 'map') {
     return (
-      <div className="flex flex-col gap-3">
-        <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink shadow-pop-card">
-          <WorldMap value={pin} onPick={setPin} interactive={!disabled} />
-        </div>
-        <PopButton
-          variant="primary"
-          size="lg"
-          disabled={disabled || !pin}
-          onClick={() => pin && onAnswer(pin, elapsed())}
-        >
-          {pin ? 'Lock it in ✊' : 'Tap the map to guess'}
-        </PopButton>
-      </div>
+      <MapPicker
+        value={pin}
+        onPick={setPin}
+        onConfirm={() => pin && onAnswer(pin, elapsed())}
+        disabled={disabled}
+      />
     )
   }
 

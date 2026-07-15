@@ -4,6 +4,7 @@ import { TPlayer, TQuestion } from '../types'
 import { formatAnswerValue } from '@/lib/utils'
 import { PlayerResult } from './PlayerResult'
 import { Category } from './Category'
+import { RankAnswerFlags } from './geo/RankFlags'
 import { POP } from './pop/theme'
 
 export const QuestionResult = ({
@@ -26,12 +27,16 @@ export const QuestionResult = ({
         <Category question={question} />
       </div>
       <p className="mb-4 text-xl font-bold text-pop-ink">{question.question}</p>
-      <span
-        className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"
-        style={{ background: POP.sunshine }}
-      >
-        Answer: {formatAnswerValue(question.answer)}
-      </span>
+      {question.type === 'rank' ? (
+        <RankAnswerFlags answer={question.answer} />
+      ) : (
+        <span
+          className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"
+          style={{ background: POP.sunshine }}
+        >
+          Answer: {formatAnswerValue(question.answer)}
+        </span>
+      )}
       <div className="mt-6 flex flex-wrap justify-center gap-4">
         {players.map((player, i) => {
           const answer = player.answers.find((a) => a.questionId === question.id)
