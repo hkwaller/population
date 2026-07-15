@@ -65,7 +65,7 @@ const config = {
         'ish-sun': '#E0A63C',
         'ish-mint': '#4F9E6A',
         'ish-ink': '#211812',
-        // Earthy / topographic palette (parallel to POP in theme.ts — keep in sync)
+        // Earthy / topographic palette (parallel to POP in theme.ts - keep in sync)
         'pop-coral': '#CC6B49',
         'pop-cobalt': '#1F6E7B',
         'pop-sunshine': '#E0A63C',

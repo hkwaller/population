@@ -11,7 +11,7 @@ import { WorldMap } from './WorldMap'
 
 /**
  * Map answering UI. The inline map is small, so it offers two ways to get a
- * bigger canvas to aim on: an explicit "Expand" button, and — on phones —
+ * bigger canvas to aim on: an explicit "Expand" button, and - on phones -
  * auto-expanding to fullscreen when the device is rotated to landscape. Both
  * lead to the same fullscreen overlay where you pan/zoom/tap to drop a pin and
  * confirm. The pin is shared between the inline and fullscreen views.
@@ -31,7 +31,7 @@ export function MapPicker({
 
   // Phones only: rotating into landscape opens the fullscreen map. Firing on the
   // change (not the current state) means closing it while still landscape won't
-  // immediately reopen — you'd rotate again. Desktops (fine pointer) are excluded.
+  // immediately reopen - you'd rotate again. Desktops (fine pointer) are excluded.
   useEffect(() => {
     if (disabled) return
     if (typeof window === 'undefined' || !window.matchMedia) return

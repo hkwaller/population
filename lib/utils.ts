@@ -113,7 +113,7 @@ function scoreRank(question: RankQuestion, guess: string[]) {
 /**
  * Score a guess against a question. Higher is better; range 0..MAX_SCORE.
  * For map questions, `insideCountry` (whether the guess landed within the target
- * country's borders) is computed by the caller from the map geometry — see
+ * country's borders) is computed by the caller from the map geometry - see
  * `scoreGuess` in lib/geo/score.ts, which app code should use instead of this.
  */
 export function scoreAnswer(

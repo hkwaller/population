@@ -101,7 +101,9 @@ export default function Highscores() {
                   <div className="truncate text-[28px] font-black leading-tight text-pop-ink">
                     {player.display_name}
                   </div>
-                  <div className="text-sm font-bold text-pop-ink/55">{player.games_played} games</div>
+                  <div className="text-sm font-bold text-pop-ink/55">
+                    {player.games_played} games
+                  </div>
                 </div>
                 <span className="shrink-0 rounded-pill bg-pop-ink px-4 py-2 text-lg font-black text-white">
                   {scoreFor(player)}
@@ -110,7 +112,9 @@ export default function Highscores() {
             )
           })}
           {highScores.length === 0 && (
-            <p className="text-center text-xl font-bold text-pop-ink/50">No scores yet — go make history.</p>
+            <p className="text-center text-xl font-bold text-pop-ink/50">
+              No scores yet - go make history.
+            </p>
           )}
         </div>
       </div>

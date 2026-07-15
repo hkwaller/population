@@ -3,18 +3,18 @@
 // re-tints automatically; the palette is now an atlas of terracotta, ocean,
 // ochre, moss and parchment.
 export const POP = {
-  coral: '#CC6B49', // terracotta — primary accent / home
-  cobalt: '#1F6E7B', // deep ocean teal — game
-  sunshine: '#E0A63C', // ochre / gold — reveal, badges
-  grape: '#8B5E3C', // highland brown — game over / generate
-  mint: '#4F9E6A', // moss green — correct / locked / positive
+  coral: '#CC6B49', // terracotta - primary accent / home
+  cobalt: '#1F6E7B', // deep ocean teal - game
+  sunshine: '#E0A63C', // ochre / gold - reveal, badges
+  grape: '#8B5E3C', // highland brown - game over / generate
+  mint: '#4F9E6A', // moss green - correct / locked / positive
   bubblegum: '#D98E77', // clay rose
   ink: '#211812', // warm espresso near-black
   paper: '#F4E8D2', // parchment
   sky: '#A7D4D0', // glacial pale aqua
 } as const
 
-// Each route owns one background color — this is the navigation signature.
+// Each route owns one background color - this is the navigation signature.
 export const ROUTE_BG: Record<string, string> = {
   home: POP.coral,
   newGame: POP.mint,

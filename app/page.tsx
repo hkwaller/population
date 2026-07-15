@@ -37,7 +37,7 @@ export default function StartPage() {
         </motion.h1>
 
         <p className="mx-auto mt-6 max-w-[620px] text-xl font-bold text-white/90 md:text-[28px] md:leading-tight">
-          Flags, capitals, borders and a few billion people. Guess the world — closest wins.
+          Flags, capitals, borders and a few billion people. Guess the world - closest wins.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

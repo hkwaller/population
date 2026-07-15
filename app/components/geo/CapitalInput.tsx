@@ -28,7 +28,7 @@ function norm(s: string): string {
 
 /**
  * Pick the right suggestion pool from the question wording. The generator emits
- * two shapes for the `capitals` category — "What is the capital of X?" (answer =
+ * two shapes for the `capitals` category - "What is the capital of X?" (answer =
  * a capital) and "Which country's capital is Y?" (answer = a country). Fall back
  * to the combined list for anything phrased differently.
  */

@@ -1,4 +1,4 @@
--- Geography game — Supabase schema. All objects are prefixed `population_` so they
+-- Geography game - Supabase schema. All objects are prefixed `population_` so they
 -- can live alongside other tables in a shared project.
 --
 -- Run this in the Supabase SQL editor (or `supabase db execute`) on your project,

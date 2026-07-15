@@ -115,7 +115,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
         )}
       </main>
 
-      {/* Bottom stack — extra bottom clearance on the host view so answer
+      {/* Bottom stack - extra bottom clearance on the host view so answer
           content sits above the floating Dock. */}
       {!waiting && (
         <div className={`fixed inset-x-0 bottom-0 z-20 px-5 ${isBoss ? 'pb-28' : 'pb-6'}`}>

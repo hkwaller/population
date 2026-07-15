@@ -1,5 +1,5 @@
 /**
- * Fetches English-Wikipedia pageviews per country — a proxy for how well-known a
+ * Fetches English-Wikipedia pageviews per country - a proxy for how well-known a
  * country is ("fame"), used to derive per-question difficulty in build-questions.mjs.
  *
  * Source: Wikimedia REST pageviews API (public, no key). We sum monthly views over
@@ -58,7 +58,7 @@ async function fetchOne(title, attempt = 0) {
 export async function fetchCountryPageviews(countries, log = () => {}) {
   const out = new Map()
   const suspicious = []
-  // Sequential with a small delay — the pageviews API throttles bursts (HTTP 429).
+  // Sequential with a small delay - the pageviews API throttles bursts (HTTP 429).
   for (let i = 0; i < countries.length; i++) {
     const c = countries[i]
     const title = WIKI_TITLE_OVERRIDES[c.name] ?? c.name

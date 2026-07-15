@@ -49,7 +49,7 @@ describe('sampleQuestions', () => {
   })
 
   it('ignores the exclusion when it would starve the round', () => {
-    // Exclude all but 3 — fewer than amountQuestions — so it must fall back.
+    // Exclude all but 3 - fewer than amountQuestions - so it must fall back.
     const excludeIds = new Set(bank.slice(3).map((q) => q.id))
     const sampled = sampleQuestions(bank, { ...base, excludeIds })
     expect(sampled.length).toBeGreaterThanOrEqual(base.amountQuestions)

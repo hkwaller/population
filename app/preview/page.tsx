@@ -112,7 +112,7 @@ export default function PreviewPage() {
 }
 
 /**
- * Round-by-round breakdown cards as they render on the end/results page — a map
+ * Round-by-round breakdown cards as they render on the end/results page - a map
  * question (guesses + answer on the map) and a rank question (perfect vs partial
  * order), each with mock players so the pills and layout are easy to eyeball.
  */

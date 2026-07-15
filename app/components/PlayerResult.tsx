@@ -30,17 +30,23 @@ export const PlayerResult = ({
   const Icon = icons[player.icon as keyof typeof icons]
   const bullseye = score >= MAX_SCORE
 
-  // Exact-answer rounds (choice) are simply right or wrong — there's no "closest".
+  // Exact-answer rounds (choice) are simply right or wrong - there's no "closest".
   const isExact = question?.type === 'choice'
   const isCorrect = isExact && score > 0
-  // Estimation rounds (slider/map/rank) can still be nailed exactly — a full score
+  // Estimation rounds (slider/map/rank) can still be nailed exactly - a full score
   // means "perfect", not merely "closest".
   const isPerfect = !isExact && bullseye
 
   // Pill: "CORRECT!" nailed an exact round, "PERFECT!" nailed an estimation round,
   // "CLOSEST!" only for the top proximity guess that wasn't perfect.
   const positive = isCorrect || isPerfect
-  const pill = positive ? (isExact ? 'CORRECT!' : 'PERFECT!') : !isExact && isClosest ? 'CLOSEST!' : null
+  const pill = positive
+    ? isExact
+      ? 'CORRECT!'
+      : 'PERFECT!'
+    : !isExact && isClosest
+      ? 'CLOSEST!'
+      : null
   const pillBg = positive ? POP.mint : POP.coral
   const highlight = positive || isWinner || isClosest
   const pointsBg = highlight ? (positive ? POP.mint : POP.coral) : POP.ink
@@ -84,9 +90,7 @@ export const PlayerResult = ({
       {isRank && question?.type === 'rank' && (
         <RankGuessFlags guess={answer as string[]} answer={question.answer} />
       )}
-      {guessLine && (
-        <span className="text-[17px] font-bold text-pop-ink/60">{guessLine}</span>
-      )}
+      {guessLine && <span className="text-[17px] font-bold text-pop-ink/60">{guessLine}</span>}
       <span
         className="rounded-pill px-4 py-1.5 text-lg font-black text-white"
         style={{ background: pointsBg }}

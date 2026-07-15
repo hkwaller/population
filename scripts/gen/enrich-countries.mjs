@@ -1,8 +1,8 @@
 /**
  * Enriches the committed lib/geo/countries.json with a `pageviews` field
- * (English-Wikipedia annual pageviews — a "fame" proxy for difficulty scoring).
+ * (English-Wikipedia annual pageviews - a "fame" proxy for difficulty scoring).
  *
- * Unlike scripts/build-countries.mjs this needs NO RESTCountries key — it only
+ * Unlike scripts/build-countries.mjs this needs NO RESTCountries key - it only
  * patches the existing dataset in place. Idempotent. Run:
  *   node scripts/gen/enrich-countries.mjs
  *
@@ -26,5 +26,17 @@ writeFileSync(file, JSON.stringify(countries, null, 0))
 
 const sorted = [...countries].sort((a, b) => b.pageviews - a.pageviews)
 console.log(`\nwrote pageviews to ${countries.length} countries`)
-console.log('  most viewed: ', sorted.slice(0, 5).map((c) => `${c.name} ${c.pageviews.toLocaleString()}`).join(', '))
-console.log('  least viewed:', sorted.slice(-5).map((c) => `${c.name} ${c.pageviews.toLocaleString()}`).join(', '))
+console.log(
+  '  most viewed: ',
+  sorted
+    .slice(0, 5)
+    .map((c) => `${c.name} ${c.pageviews.toLocaleString()}`)
+    .join(', '),
+)
+console.log(
+  '  least viewed:',
+  sorted
+    .slice(-5)
+    .map((c) => `${c.name} ${c.pageviews.toLocaleString()}`)
+    .join(', '),
+)

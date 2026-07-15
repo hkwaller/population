@@ -46,7 +46,7 @@ export function CountryFlag({
 
 /**
  * The correct rank order as a compact flag row, separated by chevrons. Used where
- * space is tight (e.g. the end-page recap) — flags + names, no population values.
+ * space is tight (e.g. the end-page recap) - flags + names, no population values.
  */
 export function RankAnswerFlags({ answer, size = 34 }: { answer: string[]; size?: number }) {
   return (
@@ -69,8 +69,8 @@ export function RankAnswerFlags({ answer, size = 34 }: { answer: string[]; size?
 }
 
 /**
- * A player's rank guess as flags only. Each flag carries a small badge — a green
- * check (right slot) or red cross (wrong slot) — in the corner. A badge reads more
+ * A player's rank guess as flags only. Each flag carries a small badge - a green
+ * check (right slot) or red cross (wrong slot) - in the corner. A badge reads more
  * clearly than a coloured border, since the flags themselves are full of red/green.
  */
 export function RankGuessFlags({ guess, answer }: { guess: string[]; answer: string[] }) {

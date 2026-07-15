@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { POP } from './theme'
 
 // Host-only floating control dock. Pinned to the bottom on its own layer so
-// tall question content (WorldMap, choice lists) can never push it off-screen —
+// tall question content (WorldMap, choice lists) can never push it off-screen -
 // the problem the old inline control row had. Sits *below* the reveal modal
 // (z-40 vs the modal's z-50) so the modal keeps its own CTA during the reveal.
 export function Dock({

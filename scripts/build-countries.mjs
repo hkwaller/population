@@ -1,5 +1,5 @@
 /**
- * Builds lib/geo/countries.json — the canonical, committed country dataset.
+ * Builds lib/geo/countries.json - the canonical, committed country dataset.
  *
  * Source: REST Countries v5 (https://api.restcountries.com/countries/v5), the
  * single source of truth for names, ISO codes, capital (+coords), area,
@@ -18,7 +18,9 @@ import { fetchCountryPageviews } from './gen/pageviews.mjs'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const KEY = process.env.RESTCOUNTRIES_API_KEY
 if (!KEY) {
-  console.error('Missing RESTCOUNTRIES_API_KEY. Add it to .env.local and run with --env-file=.env.local')
+  console.error(
+    'Missing RESTCOUNTRIES_API_KEY. Add it to .env.local and run with --env-file=.env.local',
+  )
   process.exit(1)
 }
 
@@ -64,9 +66,7 @@ console.log(`fetched ${raw.length} entries from REST Countries v5`)
 
 // outline availability from world-atlas (numeric ISO code join)
 const atlas = JSON.parse(readFileSync(join(root, 'data/raw/countries-110m.json'), 'utf-8'))
-const geomCodes = new Set(
-  atlas.objects.countries.geometries.map((g) => parseInt(String(g.id), 10)),
-)
+const geomCodes = new Set(atlas.objects.countries.geometries.map((g) => parseInt(String(g.id), 10)))
 
 const pickCapital = (caps) =>
   (Array.isArray(caps) && (caps.find((c) => c.attributes?.primary) ?? caps[0])) || null
@@ -84,7 +84,7 @@ const countries = raw
     return {
       cca2: c.codes.alpha_2,
       cca3: c.codes.alpha_3,
-      ccn3: c.codes.ccn3, // numeric ISO code — joins to world-atlas geometry id
+      ccn3: c.codes.ccn3, // numeric ISO code - joins to world-atlas geometry id
       name: c.names.common,
       official: c.names.official ?? null,
       capital: cap?.name ?? null,
@@ -107,7 +107,7 @@ const countries = raw
   })
   .sort((a, b) => a.name.localeCompare(b.name))
 
-// Wikipedia pageviews — a "fame" proxy consumed by build-questions.mjs for difficulty.
+// Wikipedia pageviews - a "fame" proxy consumed by build-questions.mjs for difficulty.
 console.log('fetching Wikipedia pageviews…')
 const views = await fetchCountryPageviews(countries, (m) => console.log(m))
 for (const c of countries) c.pageviews = views.get(c.cca3) ?? 0

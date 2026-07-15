@@ -30,7 +30,7 @@ const map: MapQuestion = {
   answer: { lat: 0, lng: 0 },
 }
 
-describe('scoreAnswer — slider', () => {
+describe('scoreAnswer - slider', () => {
   it('exact hit scores max', () => {
     expect(scoreAnswer(slider, 500)).toBe(MAX_SCORE)
   })
@@ -45,7 +45,7 @@ describe('scoreAnswer — slider', () => {
   })
 })
 
-describe('scoreAnswer — choice', () => {
+describe('scoreAnswer - choice', () => {
   it('wrong answer scores 0', () => {
     expect(scoreAnswer(choice, 'A')).toBe(0)
   })
@@ -60,7 +60,7 @@ describe('scoreAnswer — choice', () => {
   })
 })
 
-describe('scoreAnswer — map', () => {
+describe('scoreAnswer - map', () => {
   it('exact location scores max', () => {
     expect(scoreAnswer(map, { lat: 0, lng: 0 })).toBe(MAX_SCORE)
   })
@@ -99,7 +99,7 @@ const rank: RankQuestion = {
   answer: ['A', 'B', 'C'], // correct order, largest first
 }
 
-describe('scoreAnswer — rank', () => {
+describe('scoreAnswer - rank', () => {
   it('exact order scores max', () => {
     expect(scoreAnswer(rank, ['A', 'B', 'C'])).toBe(MAX_SCORE)
   })

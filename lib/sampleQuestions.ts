@@ -23,7 +23,7 @@ export function sampleQuestions(
   { selectedCategories, selectedDifficulty, amountQuestions, excludeIds }: SampleOptions,
 ): TQuestion[] {
   // Apply the difficulty filter, but only per-category and only when it leaves
-  // enough to fill the round — otherwise fall back to that category's full set so
+  // enough to fill the round - otherwise fall back to that category's full set so
   // an aggressive filter never starves the game of questions.
   let pool =
     selectedDifficulty === 'all'

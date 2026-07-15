@@ -48,7 +48,7 @@ export default function ContactPage() {
               directly from inside the game while playing.
             </p>
             <p className="text-lg md:text-xl">
-              For anything else — bugs, feature ideas, or general feedback — email us and we&apos;ll
+              For anything else - bugs, feature ideas, or general feedback - email us and we&apos;ll
               look into it.
             </p>
           </div>

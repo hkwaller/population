@@ -102,7 +102,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
         </div>
       </main>
 
-      {/* Answer input area — host game-flow controls now live in <Dock />.
+      {/* Answer input area - host game-flow controls now live in <Dock />.
           Extra bottom clearance so inputs sit above the floating Dock. */}
       <div className="fixed inset-x-0 bottom-0 z-20 px-5 pb-28">
         <div className="mx-auto max-w-2xl">

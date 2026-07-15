@@ -6,7 +6,7 @@ import { guessInCountry } from './geometry'
 
 /**
  * Score a guess, resolving map "did they hit the country" against the loaded border
- * geometry. Use this everywhere the app scores an answer — `scoreAnswer` alone can't
+ * geometry. Use this everywhere the app scores an answer - `scoreAnswer` alone can't
  * see the geometry, so calling it directly for map questions loses the borders test.
  */
 export function scoreGuess(question: TQuestion, guess: AnswerValue, elapsedMs?: number): number {

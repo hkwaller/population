@@ -15,7 +15,7 @@ type Loaded = {
 
 let cache: Promise<Loaded> | null = null
 // Synchronous handle to the resolved geometry, so scoring can point-in-polygon test
-// without awaiting — by answer time the map has already rendered and loaded it.
+// without awaiting - by answer time the map has already rendered and loaded it.
 let loaded: Loaded | null = null
 
 /** Normalise a ccn3 code ("036" / 36) to the map key world-atlas uses ("36"). */
@@ -52,7 +52,7 @@ export function loadCountryGeometry() {
 /**
  * Is `guess` inside the country's real borders? Point-in-polygon against the same
  * 110m geometry we render. Returns null when the geometry isn't loaded yet or the
- * country is too small to appear in the atlas — callers then fall back to distance.
+ * country is too small to appear in the atlas - callers then fall back to distance.
  */
 export function guessInCountry(ccn3: string, guess: LatLng): boolean | null {
   if (!loaded) return null

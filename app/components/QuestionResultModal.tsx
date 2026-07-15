@@ -42,7 +42,7 @@ export default function QuestionResultModal({
   const isBoss = boss === me?.id
   const showControls = isBoss || (players.filter((p) => p.localPlayer).length === 0 && !me)
 
-  // Size the big answer to fit the card — long numbers (populations, areas)
+  // Size the big answer to fit the card - long numbers (populations, areas)
   // would otherwise overflow horizontally.
   const answerText = asSlider(currentQuestion)
     ? asSlider(currentQuestion)!.answer.toLocaleString()
@@ -69,7 +69,12 @@ export default function QuestionResultModal({
           style={{ background: POP.sunshine }}
         >
           {size.width > 0 && (
-            <Confetti width={size.width} height={size.height} recycle={false} numberOfPieces={280} />
+            <Confetti
+              width={size.width}
+              height={size.height}
+              recycle={false}
+              numberOfPieces={280}
+            />
           )}
 
           <div className="mx-auto flex min-h-full max-w-4xl flex-col items-center px-5 py-12 text-center">
@@ -92,13 +97,15 @@ export default function QuestionResultModal({
                 <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink">
                   <WorldMap
                     answer={currentQuestion.answer}
-                    pins={ranked
-                      .map(({ player, answer }) =>
-                        answer && typeof answer.answer === 'object'
-                          ? { point: answer.answer as LatLng, color: stickerFill(player.color) }
-                          : null,
-                      )
-                      .filter(Boolean) as MapPin[]}
+                    pins={
+                      ranked
+                        .map(({ player, answer }) =>
+                          answer && typeof answer.answer === 'object'
+                            ? { point: answer.answer as LatLng, color: stickerFill(player.color) }
+                            : null,
+                        )
+                        .filter(Boolean) as MapPin[]
+                    }
                     interactive={false}
                   />
                 </div>
@@ -150,7 +157,13 @@ export default function QuestionResultModal({
                       await send?.('end')
                     }}
                   >
-                    {isEnding ? 'Ending…' : <>See the results <ListEnd size={24} /></>}
+                    {isEnding ? (
+                      'Ending…'
+                    ) : (
+                      <>
+                        See the results <ListEnd size={24} />
+                      </>
+                    )}
                   </PopButton>
                 ) : (
                   <PopButton variant="primary" size="lg" rotate={-1} onClick={() => send?.('next')}>

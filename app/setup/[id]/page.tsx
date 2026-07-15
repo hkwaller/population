@@ -35,7 +35,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     } catch {
-      // Clipboard unavailable (e.g. insecure context) — silently ignore.
+      // Clipboard unavailable (e.g. insecure context) - silently ignore.
     }
   }
 
@@ -154,7 +154,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
 
             <p className="mt-6 text-lg font-bold text-pop-ink/70">
               {players.length === 0
-                ? 'Nobody yet — share that code!'
+                ? 'Nobody yet - share that code!'
                 : `${players.length} ${players.length === 1 ? 'player' : 'players'} in. Tap a sticker to crown the host.`}
             </p>
 
@@ -221,7 +221,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
             'Starting…'
           ) : (
             <>
-              Everyone&apos;s in — let&apos;s go! <ArrowRight size={26} />
+              Everyone&apos;s in - let&apos;s go! <ArrowRight size={26} />
             </>
           )}
         </PopButton>

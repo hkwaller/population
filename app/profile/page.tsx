@@ -54,14 +54,20 @@ export default function Profile() {
     (g) => g.winner?.display_name === name || (g.winner as any)?.id === user?.id,
   ).length
 
-  const set = (patch: Record<string, any>) => updateGame({ preferences: { ...preferences, ...patch } as any })
+  const set = (patch: Record<string, any>) =>
+    updateGame({ preferences: { ...preferences, ...patch } as any })
 
   return (
     <PopShell bg={POP.sunshine}>
       <PopHeader
         logoTone="ink"
         right={
-          <PopButton variant="ghost" size="sm" rotate={2} onClick={() => signOut({ redirectUrl: '/' })}>
+          <PopButton
+            variant="ghost"
+            size="sm"
+            rotate={2}
+            onClick={() => signOut({ redirectUrl: '/' })}
+          >
             Sign out
           </PopButton>
         }
@@ -143,14 +149,17 @@ export default function Profile() {
           {/* Preview + track record */}
           <div className="flex flex-col gap-6">
             <div className="rounded-[32px] bg-white/40 p-6">
-              <span className="text-sm font-black uppercase tracking-wide text-pop-ink/60">Live preview</span>
+              <span className="text-sm font-black uppercase tracking-wide text-pop-ink/60">
+                Live preview
+              </span>
               <div className="mt-4 flex justify-center">
                 <div
                   className="inline-flex min-w-[140px] flex-col items-center gap-1 rounded-sticker border-4 border-white px-6 py-5 shadow-pop"
                   style={{ background: stickerFill(colorId), rotate: '-2deg' }}
                 >
                   <div className="flex items-center gap-2">
-                    {PreviewIcon && createElement(PreviewIcon, { size: 26, className: 'text-pop-ink' })}
+                    {PreviewIcon &&
+                      createElement(PreviewIcon, { size: 26, className: 'text-pop-ink' })}
                     <span className="text-2xl font-black text-pop-ink">{name || 'you'}</span>
                   </div>
                 </div>
@@ -164,16 +173,22 @@ export default function Profile() {
               <div className="mt-4 flex gap-6">
                 <Stat value={games.length} label="games" />
                 <Stat value={wins} label="wins" />
-                <Stat value={games.reduce((a, g) => a + (g.players?.length ?? 0), 0)} label="rivals" />
+                <Stat
+                  value={games.reduce((a, g) => a + (g.players?.length ?? 0), 0)}
+                  label="rivals"
+                />
               </div>
 
               <div className="mt-5 flex flex-col gap-2.5">
                 {games
                   .slice()
-                  .sort((a, b) => new Date(b.finished_at).getTime() - new Date(a.finished_at).getTime())
+                  .sort(
+                    (a, b) => new Date(b.finished_at).getTime() - new Date(a.finished_at).getTime(),
+                  )
                   .slice(0, 8)
                   .map((game) => {
-                    const won = game.winner?.display_name === name || (game.winner as any)?.id === user?.id
+                    const won =
+                      game.winner?.display_name === name || (game.winner as any)?.id === user?.id
                     return (
                       <div
                         key={game.id}
@@ -181,9 +196,12 @@ export default function Profile() {
                         style={{ background: won ? POP.sunshine : POP.paper }}
                       >
                         <div className="min-w-0">
-                          <div className="truncate text-lg font-extrabold text-pop-ink">{game.gameId ?? game.id}</div>
+                          <div className="truncate text-lg font-extrabold text-pop-ink">
+                            {game.gameId ?? game.id}
+                          </div>
                           <div className="text-xs font-bold text-pop-ink/50">
-                            {new Date(game.finished_at).toLocaleDateString()} · {game.players?.length ?? 0} players
+                            {new Date(game.finished_at).toLocaleDateString()} ·{' '}
+                            {game.players?.length ?? 0} players
                           </div>
                         </div>
                         <span className="shrink-0 text-lg font-black text-pop-ink">
@@ -193,7 +211,7 @@ export default function Profile() {
                     )
                   })}
                 {games.length === 0 && (
-                  <p className="text-lg font-bold text-pop-ink/50">No games yet — start a party!</p>
+                  <p className="text-lg font-bold text-pop-ink/50">No games yet - start a party!</p>
                 )}
               </div>
             </div>

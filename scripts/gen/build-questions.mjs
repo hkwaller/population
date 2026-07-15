@@ -135,7 +135,7 @@ function makePairs(pool, partnersPer, seedBase) {
   return pairs
 }
 
-// 1. flags — flag → country (choice)
+// 1. flags - flag → country (choice)
 for (const c of countries) {
   const d = distractors(c, countries, 3, (x) => x.name, `flag:${c.cca3}`)
   push(
@@ -151,7 +151,7 @@ for (const c of countries) {
   )
 }
 
-// 2. outline — silhouette → country (choice), only countries with geometry
+// 2. outline - silhouette → country (choice), only countries with geometry
 for (const c of withOutline) {
   const d = distractors(c, withOutline, 3, (x) => x.name, `outline:${c.cca3}`)
   push(
@@ -167,7 +167,7 @@ for (const c of withOutline) {
   )
 }
 
-// 3. borders — which country borders these neighbours? (choice)
+// 3. borders - which country borders these neighbours? (choice)
 for (const c of withBorders) {
   const neighbourNames = c.borders.map((b) => byCca3.get(b)?.name).filter(Boolean)
   if (neighbourNames.length === 0) continue
@@ -187,7 +187,7 @@ for (const c of withBorders) {
   )
 }
 
-// 4. capitals — capital of X (choice), plus the reverse (capital → country)
+// 4. capitals - capital of X (choice), plus the reverse (capital → country)
 for (const c of withCap) {
   const d = distractors(c, withCap, 3, (x) => x.capital, `capital:${c.cca3}`)
   push(
@@ -201,7 +201,7 @@ for (const c of withCap) {
     ),
     obscurity(c),
   )
-  // reverse: name the country from its capital — doubles the category
+  // reverse: name the country from its capital - doubles the category
   const dr = distractors(c, withCap, 3, (x) => x.name, `caprev:${c.cca3}`)
   push(
     choice(
@@ -216,7 +216,7 @@ for (const c of withCap) {
   )
 }
 
-// 5. population — slider
+// 5. population - slider
 for (const c of withPop) {
   const { lower_bound, upper_bound } = magnitudeBounds(c.population)
   push(
@@ -235,7 +235,7 @@ for (const c of withPop) {
   )
 }
 
-// 6. area — slider (km²)
+// 6. area - slider (km²)
 for (const c of withArea) {
   const { lower_bound, upper_bound } = magnitudeBounds(c.area)
   push(
@@ -254,7 +254,7 @@ for (const c of withArea) {
   )
 }
 
-// 7. distance — capital-to-capital great-circle distance (slider)
+// 7. distance - capital-to-capital great-circle distance (slider)
 function haversine(a, b) {
   const R = 6371
   const toRad = (d) => (d * Math.PI) / 180
@@ -286,7 +286,7 @@ for (const [a, b] of makePairs(withCapCoords, 2, 'distance-pairs')) {
   )
 }
 
-// 8. locate — locate the country on the map (map)
+// 8. locate - locate the country on the map (map)
 for (const c of withLatLng) {
   push(
     {
@@ -303,7 +303,7 @@ for (const c of withLatLng) {
   )
 }
 
-// 9. which-bigger — larger population (choice, binary)
+// 9. which-bigger - larger population (choice, binary)
 // Difficulty blends how CLOSE the two populations are (a near-tie is hard) with
 // how obscure the pair is. China vs Tuvalu is easy; China vs India is hard.
 for (const [a, b] of makePairs(withPop, 2, 'bigger-pairs')) {
@@ -323,7 +323,7 @@ for (const [a, b] of makePairs(withPop, 2, 'bigger-pairs')) {
   )
 }
 
-// 10. currency — currency of X (choice)
+// 10. currency - currency of X (choice)
 // Only use GENERIC multi-country currencies (USD, Euro, CFA francs, East
 // Caribbean/CFP franc). Currencies named after a country (Swiss franc, Honduran
 // lempira) would give the answer away. We also drop the country a currency is
@@ -356,7 +356,7 @@ for (const [a, b] of makePairs(withPop, 2, 'bigger-pairs')) {
   }
 }
 
-// 11. language — primary language of X (choice)
+// 11. language - primary language of X (choice)
 for (const c of withLang) {
   const d = distractors(c, withLang, 3, (x) => x.languages[0], `lang:${c.cca3}`)
   push(
@@ -372,7 +372,7 @@ for (const c of withLang) {
   )
 }
 
-// 12. continent — which region is X in (choice)
+// 12. continent - which region is X in (choice)
 {
   const regions = [...new Set(countries.map((c) => c.region).filter(Boolean))]
   for (const c of countries) {
@@ -396,7 +396,7 @@ for (const c of withLang) {
   }
 }
 
-// 13. ranking — put N countries in order by population (rank / reorder).
+// 13. ranking - put N countries in order by population (rank / reorder).
 // Item count IS the difficulty lever: easy=3, medium=4, hard=5. Tier is set
 // explicitly here (the threshold pass below leaves already-tiered questions alone).
 {

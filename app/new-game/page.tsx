@@ -16,7 +16,14 @@ import { categories, makeId } from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
 import { useStorage } from '@/liveblocks.config'
 
-const CHIP_CYCLE: string[] = [POP.sunshine, POP.coral, POP.cobalt, POP.grape, POP.bubblegum, '#ffffff']
+const CHIP_CYCLE: string[] = [
+  POP.sunshine,
+  POP.coral,
+  POP.cobalt,
+  POP.grape,
+  POP.bubblegum,
+  '#ffffff',
+]
 // Cobalt/coral/grape need light text; sunshine/bubblegum/white keep ink text.
 const DARK_FILLS = new Set<string>([POP.coral, POP.cobalt, POP.grape])
 
@@ -31,8 +38,14 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
   const router = useRouter()
   const refId = useRef(gameId)
   const storageLoaded = useStorage((root) => root.game) !== null
-  const { amountQuestions, selectedCategories, selectedDifficulty, showQuestions, typeCapitals, updateGame } =
-    usePopStore()
+  const {
+    amountQuestions,
+    selectedCategories,
+    selectedDifficulty,
+    showQuestions,
+    typeCapitals,
+    updateGame,
+  } = usePopStore()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -86,7 +99,10 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
             <StepBtn onClick={() => setCount(amountQuestions - 1)}>
               <Minus size={24} strokeWidth={3.5} />
             </StepBtn>
-            <span className="w-14 text-center text-[52px] font-black leading-none" style={{ color: POP.coral }}>
+            <span
+              className="w-14 text-center text-[52px] font-black leading-none"
+              style={{ color: POP.coral }}
+            >
               {amountQuestions}
             </span>
             <StepBtn onClick={() => setCount(amountQuestions + 1)}>
@@ -120,7 +136,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
             })}
           </div>
           <p className="text-sm font-bold text-pop-ink/60">
-            Difficulty scales with how well-known each country is — Hard leans on the obscure ones.
+            Difficulty scales with how well-known each country is - Hard leans on the obscure ones.
           </p>
         </div>
 
@@ -129,7 +145,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           Pick your categories
         </h2>
         <p className="mt-3 text-center text-lg font-bold text-pop-ink/70">
-          Tap to toggle — greyed-out stickers sit this round out.
+          Tap to toggle - greyed-out stickers sit this round out.
         </p>
 
         <CategorySection

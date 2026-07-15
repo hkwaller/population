@@ -14,36 +14,32 @@ export default function PrivacyPage() {
             </h1>
             <p className="text-base md:text-lg text-ish-ink/60 mb-6">Last updated: April 2025</p>
             <p className="text-lg md:text-xl">
-              Population is made by Amalies Utviklingsfabrikk. This policy explains what data we collect,
-              why we collect it, and how we use it. We keep things simple — we only collect what we
-              need.
+              Population is made by Amalies Utviklingsfabrikk. This policy explains what data we
+              collect, why we collect it, and how we use it. We keep things simple - we only collect
+              what we need.
             </p>
           </div>
 
           <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
-              What We Collect
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">What We Collect</h2>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-3">
               <li>
-                <span className="font-bold">Account information</span> — if you sign in, we store
+                <span className="font-bold">Account information</span> - if you sign in, we store
                 your email address and display name via Clerk (our authentication provider).
               </li>
               <li>
-                <span className="font-bold">Game data</span> — answers, scores, and game history
-                are stored so you can view your results and highscores.
+                <span className="font-bold">Game data</span> - answers, scores, and game history are
+                stored so you can view your results and highscores.
               </li>
               <li>
-                <span className="font-bold">Usage data</span> — we use PostHog to understand how
-                the app is used in aggregate. This helps us improve the game.
+                <span className="font-bold">Usage data</span> - we use PostHog to understand how the
+                app is used in aggregate. This helps us improve the game.
               </li>
             </ul>
           </div>
 
           <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
-              How We Use It
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">How We Use It</h2>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-3">
               <li>To run and display the game correctly</li>
               <li>To show you your scores, highscores, and game history</li>
@@ -57,7 +53,8 @@ export default function PrivacyPage() {
               Third-Party Services
             </h2>
             <p className="text-lg md:text-xl mb-4">
-              Population uses the following third-party services, each with their own privacy policies:
+              Population uses the following third-party services, each with their own privacy
+              policies:
             </p>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-2">
               <li>
@@ -69,7 +66,7 @@ export default function PrivacyPage() {
                 >
                   Clerk
                 </a>{' '}
-                — authentication and user management
+                - authentication and user management
               </li>
               <li>
                 <a
@@ -80,7 +77,7 @@ export default function PrivacyPage() {
                 >
                   Supabase
                 </a>{' '}
-                — database and backend
+                - database and backend
               </li>
               <li>
                 <a
@@ -91,7 +88,7 @@ export default function PrivacyPage() {
                 >
                   PostHog
                 </a>{' '}
-                — product analytics
+                - product analytics
               </li>
             </ul>
           </div>
@@ -105,10 +102,7 @@ export default function PrivacyPage() {
             </p>
             <p className="text-lg md:text-xl">
               For any privacy-related questions, email us at{' '}
-              <a
-                href="mailto:hei@amaliesutviklingsfabrikk.no"
-                className="font-extrabold underline"
-              >
+              <a href="mailto:hei@amaliesutviklingsfabrikk.no" className="font-extrabold underline">
                 hei@amaliesutviklingsfabrikk.no
               </a>
               .
@@ -119,8 +113,8 @@ export default function PrivacyPage() {
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Changes</h2>
             <p className="text-lg md:text-xl">
               We may update this policy occasionally. When we do, we&apos;ll update the date at the
-              top of this page. Continued use of Population after changes means you accept the updated
-              policy.
+              top of this page. Continued use of Population after changes means you accept the
+              updated policy.
             </p>
           </div>
         </main>

@@ -13,7 +13,7 @@ export default function AboutPage() {
               About Population
             </h1>
             <p className="text-lg md:text-xl mb-4">
-              Population is a real-time multiplayer quiz game with a twist — the goal is to score as{' '}
+              Population is a real-time multiplayer quiz game with a twist - the goal is to score as{' '}
               <span className="font-extrabold">low</span> as possible. Every answer you give earns
               you points, but the closer you are to the correct answer, the fewer points you get.
             </p>
@@ -30,18 +30,18 @@ export default function AboutPage() {
               <li>Everyone joins and answers questions using a slider</li>
               <li>Points are based on distance from the correct answer</li>
               <li>The player with the fewest points at the end wins</li>
-              <li>Play solo or form teams — your call</li>
+              <li>Play solo or form teams - your call</li>
             </ul>
           </div>
 
           <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">The Categories</h2>
             <p className="text-lg md:text-xl mb-4">
-              Population has a large and growing question bank spanning categories like TV &amp; Movies,
-              Animals, History, Science, Geography, Sports, and more.
+              Population has a large and growing question bank spanning categories like TV &amp;
+              Movies, Animals, History, Science, Geography, Sports, and more.
             </p>
             <p className="text-lg md:text-xl">
-              Pro users can even create their own custom categories and questions — perfect for
+              Pro users can even create their own custom categories and questions - perfect for
               themed game nights or trivia nights with a personal touch.
             </p>
           </div>

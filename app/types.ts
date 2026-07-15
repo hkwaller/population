@@ -54,7 +54,7 @@ export type MapQuestion = QuestionBase & {
   falloffKm?: number
   /**
    * Numeric ISO country code (ccn3) of the target. Used to point-in-polygon test a
-   * guess against the country's real borders — land anywhere inside = full marks.
+   * guess against the country's real borders - land anywhere inside = full marks.
    */
   ccn3?: string
 }

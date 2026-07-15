@@ -37,7 +37,7 @@ export function WorldMap({
   answer?: LatLng | null
   pins?: MapPin[]
   interactive?: boolean
-  /** Fit the container's height too (letterboxed) instead of sizing by width — for fullscreen/landscape. */
+  /** Fit the container's height too (letterboxed) instead of sizing by width - for fullscreen/landscape. */
   fill?: boolean
   className?: string
 }) {
@@ -118,7 +118,7 @@ export function WorldMap({
   }, [answer, value, pins, project, clampView])
 
   const isReveal = !!answer
-  // Key off the actual coordinates (a stable string) rather than object identity —
+  // Key off the actual coordinates (a stable string) rather than object identity -
   // callers pass fresh literals each render, which would otherwise loop forever.
   const fitKey = isReveal
     ? JSON.stringify([answer, value ?? null, pins.map((p) => p.point)])
@@ -151,7 +151,7 @@ export function WorldMap({
   }, [clampView, contentBox])
 
   // Panning: in pin-placing mode a single drag would fight with dropping a pin, so
-  // panning needs an explicit gesture — hold Space (desktop) or use two fingers
+  // panning needs an explicit gesture - hold Space (desktop) or use two fingers
   // (touch). When there's no pin to place (reveal mode), a plain drag just pans.
   const [spaceHeld, setSpaceHeld] = useState(false)
   const hovering = useRef(false)
@@ -175,7 +175,13 @@ export function WorldMap({
 
   const pointers = useRef(new Map<number, { x: number; y: number }>())
   const pinch = useRef<{ dist: number; midX: number; midY: number } | null>(null)
-  const drag = useRef<{ id: number; lastX: number; lastY: number; moved: boolean; multi: boolean } | null>(null)
+  const drag = useRef<{
+    id: number
+    lastX: number
+    lastY: number
+    moved: boolean
+    multi: boolean
+  } | null>(null)
 
   // Two-finger gesture: zoom by the change in finger spread, pan by the midpoint drift.
   const twoFingerMove = () => {
@@ -213,7 +219,13 @@ export function WorldMap({
       pinch.current = null // re-seed on the next move
       if (drag.current) drag.current.multi = true
     } else {
-      drag.current = { id: e.pointerId, lastX: e.clientX, lastY: e.clientY, moved: false, multi: false }
+      drag.current = {
+        id: e.pointerId,
+        lastX: e.clientX,
+        lastY: e.clientY,
+        moved: false,
+        multi: false,
+      }
     }
   }
   const onPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
@@ -316,25 +328,61 @@ export function WorldMap({
           const xy = project(pin.point)
           if (!xy) return null
           return (
-            <circle key={i} cx={xy[0]} cy={xy[1]} r={5 * k} fill={pin.color} stroke="#fff" strokeWidth={1.5 * k} />
+            <circle
+              key={i}
+              cx={xy[0]}
+              cy={xy[1]}
+              r={5 * k}
+              fill={pin.color}
+              stroke="#fff"
+              strokeWidth={1.5 * k}
+            />
           )
         })}
 
         {guessXY && (
-          <circle cx={guessXY[0]} cy={guessXY[1]} r={7 * k} fill="#C96F4A" stroke="#fff" strokeWidth={2 * k} />
+          <circle
+            cx={guessXY[0]}
+            cy={guessXY[1]}
+            r={7 * k}
+            fill="#C96F4A"
+            stroke="#fff"
+            strokeWidth={2 * k}
+          />
         )}
 
         {answerXY && (
           <g>
-            <circle cx={answerXY[0]} cy={answerXY[1]} r={7 * k} fill="#2F5E4E" stroke="#fff" strokeWidth={2 * k} />
-            <circle cx={answerXY[0]} cy={answerXY[1]} r={12 * k} fill="none" stroke="#2F5E4E" strokeWidth={2 * k} />
+            <circle
+              cx={answerXY[0]}
+              cy={answerXY[1]}
+              r={7 * k}
+              fill="#2F5E4E"
+              stroke="#fff"
+              strokeWidth={2 * k}
+            />
+            <circle
+              cx={answerXY[0]}
+              cy={answerXY[1]}
+              r={12 * k}
+              fill="none"
+              stroke="#2F5E4E"
+              strokeWidth={2 * k}
+            />
           </g>
         )}
       </svg>
 
       {/* zoom controls */}
       <div
-        style={{ position: 'absolute', right: 8, bottom: 8, display: 'flex', flexDirection: 'column', gap: 6 }}
+        style={{
+          position: 'absolute',
+          right: 8,
+          bottom: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 6,
+        }}
       >
         <ZoomButton label="Zoom in" onClick={() => zoomAroundCenter(1 / 1.6)}>
           +

@@ -15,8 +15,12 @@ type AnswerInputModalProps = {
   onSubmit: (answer: number) => void
 }
 
-// "Type it instead" keypad — spring-in card with a big coral display + 3×4 pad.
-export const AnswerInputModal: React.FC<AnswerInputModalProps> = ({ isOpen, onClose, onSubmit }) => {
+// "Type it instead" keypad - spring-in card with a big coral display + 3×4 pad.
+export const AnswerInputModal: React.FC<AnswerInputModalProps> = ({
+  isOpen,
+  onClose,
+  onSubmit,
+}) => {
   const { currentQuestion } = usePopStore()
   const [raw, setRaw] = useState('')
   const [negative, setNegative] = useState(false)
@@ -35,7 +39,7 @@ export const AnswerInputModal: React.FC<AnswerInputModalProps> = ({ isOpen, onCl
     } else if (key === 'sign') {
       setNegative((n) => !n)
     } else {
-      setRaw((r) => (r.length >= 9 ? r : (r === '0' ? key : r + key)))
+      setRaw((r) => (r.length >= 9 ? r : r === '0' ? key : r + key))
     }
   }
 

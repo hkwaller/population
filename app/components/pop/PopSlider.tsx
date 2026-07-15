@@ -32,7 +32,7 @@ export function PopSlider({
   if (isNaN(value)) return null
 
   const fill = locked ? POP.mint : POP.sunshine
-  // Big ranges (populations, areas) get compact labels — "55M" not "55000000".
+  // Big ranges (populations, areas) get compact labels - "55M" not "55000000".
   // Small ranges (years, percentages) stay exact.
   const fmt = (v: number) => (max >= 1_000_000 ? formatCompactNumber(v) : v.toString())
   // Nudge by ~1% of the range so the buttons do something on huge ranges.
@@ -87,9 +87,7 @@ export function PopSlider({
               }
               className="flex items-center gap-1.5 rounded-pill bg-white px-3 py-1.5"
               style={{
-                boxShadow: dragging
-                  ? '0 8px 0 rgba(0,0,0,0.25)'
-                  : '0 5px 0 rgba(0,0,0,0.18)',
+                boxShadow: dragging ? '0 8px 0 rgba(0,0,0,0.25)' : '0 5px 0 rgba(0,0,0,0.18)',
               }}
             >
               <span
@@ -112,7 +110,7 @@ export function PopSlider({
         </button>
       </div>
 
-      {/* Keypad affordance lives below the track now — it used to crowd the thumb. */}
+      {/* Keypad affordance lives below the track now - it used to crowd the thumb. */}
       {onOpenKeypad && !locked && (
         <button
           onClick={onOpenKeypad}

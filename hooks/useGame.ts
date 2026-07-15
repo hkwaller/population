@@ -1,5 +1,5 @@
 /**
- * useGame — unified hook that replaces the dual usePopStore + useLiveGame pattern.
+ * useGame - unified hook that replaces the dual usePopStore + useLiveGame pattern.
  *
  * Design C: single boundary hook.
  *
@@ -114,7 +114,7 @@ export const useGame = (gameId?: string) => {
     idle: () => {},
   }
 
-  // ── send — polymorphic, accepts string shorthand or Command object ─────────
+  // ── send - polymorphic, accepts string shorthand or Command object ─────────
   const send = async (commandOrType: Command | CommandType, payload?: any) => {
     let type: CommandType
     let resolvedPayload: any

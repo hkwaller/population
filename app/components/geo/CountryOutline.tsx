@@ -37,7 +37,7 @@ export function CountryOutline({
     loadCountryGeometry()
       .then(({ byCcn3 }) => {
         if (!alive) return
-        const f = ccn3 ? byCcn3.get(String(parseInt(ccn3, 10))) ?? null : null
+        const f = ccn3 ? (byCcn3.get(String(parseInt(ccn3, 10))) ?? null) : null
         if (f) setFeature(f)
         else setFailed(true)
       })
@@ -61,7 +61,7 @@ export function CountryOutline({
   }, [feature, size])
 
   if (failed) {
-    // Geometry unavailable (tiny states) — caller should avoid outline questions
+    // Geometry unavailable (tiny states) - caller should avoid outline questions
     // for these, but fail gracefully just in case.
     return (
       <div
@@ -82,7 +82,15 @@ export function CountryOutline({
       role="img"
       aria-label="Country outline"
     >
-      {d && <path d={d} fill={fill} stroke="rgba(0,0,0,0.25)" strokeWidth={1.5} strokeLinejoin="round" />}
+      {d && (
+        <path
+          d={d}
+          fill={fill}
+          stroke="rgba(0,0,0,0.25)"
+          strokeWidth={1.5}
+          strokeLinejoin="round"
+        />
+      )}
     </svg>
   )
 }
