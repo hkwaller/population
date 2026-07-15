@@ -33,12 +33,17 @@ export const PlayerResult = ({
   // Exact-answer rounds (choice) are simply right or wrong — there's no "closest".
   const isExact = question?.type === 'choice'
   const isCorrect = isExact && score > 0
+  // Estimation rounds (slider/map/rank) can still be nailed exactly — a full score
+  // means "perfect", not merely "closest".
+  const isPerfect = !isExact && bullseye
 
-  // Pill: "CORRECT!" for exact rounds you nailed, "CLOSEST!" for the top proximity guess.
-  const pill = isExact ? (isCorrect ? 'CORRECT!' : null) : isClosest ? 'CLOSEST!' : null
-  const pillBg = isExact ? POP.mint : POP.coral
-  const highlight = isExact ? isCorrect : isWinner || isClosest
-  const pointsBg = highlight ? (isExact ? POP.mint : POP.coral) : POP.ink
+  // Pill: "CORRECT!" nailed an exact round, "PERFECT!" nailed an estimation round,
+  // "CLOSEST!" only for the top proximity guess that wasn't perfect.
+  const positive = isCorrect || isPerfect
+  const pill = positive ? (isExact ? 'CORRECT!' : 'PERFECT!') : !isExact && isClosest ? 'CLOSEST!' : null
+  const pillBg = positive ? POP.mint : POP.coral
+  const highlight = positive || isWinner || isClosest
+  const pointsBg = highlight ? (positive ? POP.mint : POP.coral) : POP.ink
 
   // Rank rounds: show the guessed order as flags only, bordered right/wrong.
   const isRank = question?.type === 'rank' && Array.isArray(answer)

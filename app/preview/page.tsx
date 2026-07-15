@@ -12,6 +12,8 @@ import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 import { RankReveal } from '@/app/components/geo/RankReveal'
 import { RankAnswerFlags } from '@/app/components/geo/RankFlags'
+import { QuestionResult } from '@/app/components/QuestionResult'
+import type { TPlayer } from '@/app/types'
 import { formatAnswerValue } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { POP } from '@/app/components/pop/theme'
@@ -99,8 +101,57 @@ export default function PreviewPage() {
           <PreviewCard key={q.id} question={q} />
         ))}
         <RevealDemo />
+
+        <h2 className="mt-4 text-center text-2xl font-black text-pop-ink/70">
+          Results breakdown (end page)
+        </h2>
+        <BreakdownDemo />
       </div>
     </div>
+  )
+}
+
+/**
+ * Round-by-round breakdown cards as they render on the end/results page — a map
+ * question (guesses + answer on the map) and a rank question (perfect vs partial
+ * order), each with mock players so the pills and layout are easy to eyeball.
+ */
+function BreakdownDemo() {
+  const mapQ = SAMPLES.find((q) => q.type === 'map')!
+  const rankQ = SAMPLES.find((q) => q.type === 'rank') as RankQuestion
+
+  const mkPlayer = (
+    id: string,
+    name: string,
+    color: string,
+    q: TQuestion,
+    guess: AnswerValue,
+  ): TPlayer => ({
+    id,
+    name,
+    color,
+    icon: 'Globe',
+    score: scoreGuess(q, guess),
+    answers: [{ questionId: q.id, answer: guess, score: scoreGuess(q, guess) }],
+  })
+
+  const byScore = (a: TPlayer, b: TPlayer) => b.score - a.score
+
+  const mapPlayers = [
+    mkPlayer('m1', 'Ada', 'clay', mapQ, { lat: 1, lng: 38 }), // exact → PERFECT!
+    mkPlayer('m2', 'Bo', 'lagoon', mapQ, { lat: 30, lng: 20 }), // off
+  ].sort(byScore)
+
+  const rankPlayers = [
+    mkPlayer('r1', 'Cy', 'sand', rankQ, ['Nigeria', 'Argentina', 'Portugal', 'Iceland']), // perfect
+    mkPlayer('r2', 'Di', 'sage', rankQ, ['Argentina', 'Nigeria', 'Iceland', 'Portugal']), // partial
+  ].sort(byScore)
+
+  return (
+    <>
+      <QuestionResult players={mapPlayers} question={mapQ} index={0} />
+      <QuestionResult players={rankPlayers} question={rankQ} index={1} />
+    </>
   )
 }
 

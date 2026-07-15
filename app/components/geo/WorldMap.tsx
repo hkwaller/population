@@ -29,6 +29,7 @@ export function WorldMap({
   answer,
   pins = [],
   interactive = true,
+  fill = false,
   className,
 }: {
   value?: LatLng | null
@@ -36,6 +37,8 @@ export function WorldMap({
   answer?: LatLng | null
   pins?: MapPin[]
   interactive?: boolean
+  /** Fit the container's height too (letterboxed) instead of sizing by width — for fullscreen/landscape. */
+  fill?: boolean
   className?: string
 }) {
   const [features, setFeatures] = useState<CountryFeature[]>([])
@@ -59,6 +62,20 @@ export function WorldMap({
     })
     return () => {
       alive = false
+    }
+  }, [])
+
+  // In fill mode the svg letterboxes inside its element (preserveAspectRatio
+  // "meet"), so pointer math must map against the rendered map area, not the
+  // element box. In width-driven mode the two are identical.
+  const contentBox = useCallback((rect: DOMRect) => {
+    const width = Math.min(rect.width, rect.height / ASPECT)
+    const height = width * ASPECT
+    return {
+      left: rect.left + (rect.width - width) / 2,
+      top: rect.top + (rect.height - height) / 2,
+      width,
+      height,
     }
   }, [])
 
@@ -117,9 +134,9 @@ export function WorldMap({
     if (!el) return
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
-      const rect = el.getBoundingClientRect()
-      const fx = (e.clientX - rect.left) / rect.width
-      const fy = (e.clientY - rect.top) / rect.height
+      const box = contentBox(el.getBoundingClientRect())
+      const fx = (e.clientX - box.left) / box.width
+      const fy = (e.clientY - box.top) / box.height
       setView((prev) => {
         const ax = prev.x + fx * prev.w
         const ay = prev.y + fy * prev.h
@@ -131,7 +148,7 @@ export function WorldMap({
     }
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
-  }, [clampView])
+  }, [clampView, contentBox])
 
   // Panning: in pin-placing mode a single drag would fight with dropping a pin, so
   // panning needs an explicit gesture — hold Space (desktop) or use two fingers
@@ -165,7 +182,7 @@ export function WorldMap({
     const pts = [...pointers.current.values()]
     if (pts.length < 2 || !svgRef.current) return
     const [p1, p2] = pts
-    const rect = svgRef.current.getBoundingClientRect()
+    const box = contentBox(svgRef.current.getBoundingClientRect())
     const midX = (p1.x + p2.x) / 2
     const midY = (p1.y + p2.y) / 2
     const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y) || 1
@@ -174,16 +191,16 @@ export function WorldMap({
       pinch.current = { dist, midX, midY }
       return
     }
-    const fx = (prev.midX - rect.left) / rect.width
-    const fy = (prev.midY - rect.top) / rect.height
+    const fx = (prev.midX - box.left) / box.width
+    const fy = (prev.midY - box.top) / box.height
     setView((v) => {
       const ax = v.x + fx * v.w
       const ay = v.y + fy * v.h
       const factor = prev.dist / dist // fingers spread → dist up → factor < 1 → zoom in
       const w = Math.min(VBW, Math.max(MIN_W, v.w * factor))
       const h = w * ASPECT
-      const panX = ((midX - prev.midX) / rect.width) * w
-      const panY = ((midY - prev.midY) / rect.height) * h
+      const panX = ((midX - prev.midX) / box.width) * w
+      const panY = ((midY - prev.midY) / box.height) * h
       return clampView({ x: ax - fx * w - panX, y: ay - fy * h - panY, w, h })
     })
     pinch.current = { dist, midX, midY }
@@ -209,7 +226,7 @@ export function WorldMap({
     }
     const d = drag.current
     if (!d || d.id !== e.pointerId || !svgRef.current) return
-    const rect = svgRef.current.getBoundingClientRect()
+    const box = contentBox(svgRef.current.getBoundingClientRect())
     const dx = e.clientX - d.lastX
     const dy = e.clientY - d.lastY
     if (Math.abs(dx) + Math.abs(dy) > 3) d.moved = true
@@ -220,8 +237,8 @@ export function WorldMap({
       setView((prev) =>
         clampView({
           ...prev,
-          x: prev.x - (dx / rect.width) * prev.w,
-          y: prev.y - (dy / rect.height) * prev.h,
+          x: prev.x - (dx / box.width) * prev.w,
+          y: prev.y - (dy / box.height) * prev.h,
         }),
       )
     }
