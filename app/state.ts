@@ -19,9 +19,7 @@ export type State = {
     elapsedMs?: number,
   ) => void
   boss?: string
-  capAnswers: boolean
   closeModals: () => void
-  hideQuestions: boolean
   command: Command | CommandType
   currentQuestion: TQuestion
   endedAt?: string
@@ -46,7 +44,10 @@ export type State = {
     gameId: string
   }) => void
   showQuestionResultModal: boolean
+  /** Show the question text on player screens too. When false, questions are on the host screen only. */
   showQuestions: boolean
+  /** Answer capital-category questions by typing (autocomplete) instead of picking one of four options. */
+  typeCapitals: boolean
   showScoreModal: boolean
   skippedQuestions: TQuestion[]
   /**
@@ -67,9 +68,8 @@ const initialState = {
   command: 'start',
   questions: [],
   players: [],
-  capAnswers: false,
   showQuestions: false,
-  hideQuestions: false,
+  typeCapitals: false,
   currentQuestion: undefined,
   answeredQuestions: [],
   selectedCategories: [],
@@ -89,9 +89,8 @@ export const usePopStore = create<State>()(
       amountQuestions: 10,
       questions: [],
       players: [],
-      capAnswers: false,
       showQuestions: false,
-      hideQuestions: false,
+      typeCapitals: false,
       boss: '',
       // @ts-ignore
       currentQuestion: undefined,

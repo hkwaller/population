@@ -7,6 +7,7 @@ import { useGame } from '@/hooks/useGame'
 import { asSlider } from '@/lib/utils'
 import { LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { CapitalInput } from '@/app/components/geo/CapitalInput'
 import { WorldMap } from '@/app/components/geo/WorldMap'
 import { RankInput } from '@/app/components/geo/RankInput'
 import { Player } from '@/app/components/Player'
@@ -31,7 +32,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
     answeredQuestions,
     amountQuestions,
     me,
-    capAnswers,
+    typeCapitals,
   } = game
 
   const [answerInputModalOpen, setAnswerInputModalOpen] = useState(false)
@@ -125,12 +126,21 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           )}
           {me?.localPlayer && !myAnswered && currentQuestion?.type === 'choice' && (
             <div className="mb-4">
-              <ChoiceOptions
-                options={currentQuestion.options}
-                onSelect={(opt) =>
-                  send('answer', { id: me?.id, answer: opt, questionId: currentQuestion.id })
-                }
-              />
+              {typeCapitals && currentQuestion.category === 'capitals' ? (
+                <CapitalInput
+                  question={currentQuestion}
+                  onAnswer={(v) =>
+                    send('answer', { id: me?.id, answer: v, questionId: currentQuestion.id })
+                  }
+                />
+              ) : (
+                <ChoiceOptions
+                  options={currentQuestion.options}
+                  onSelect={(opt) =>
+                    send('answer', { id: me?.id, answer: opt, questionId: currentQuestion.id })
+                  }
+                />
+              )}
             </div>
           )}
           {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (

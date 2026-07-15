@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import QRCode from 'react-qr-code'
 import { sample } from 'lodash'
 import { motion } from 'motion/react'
-import { UserPlus, ArrowRight, icons as lucideIcons } from 'lucide-react'
+import { UserPlus, ArrowRight, Copy, Check, icons as lucideIcons } from 'lucide-react'
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
 
@@ -26,7 +26,18 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const { players, preferences, boss, playingOnSameDevice } = game
   const [name, setName] = useState('')
   const [isStarting, setIsStarting] = useState(false)
+  const [copied, setCopied] = useState(false)
   const router = useRouter()
+
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(params.id)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // Clipboard unavailable (e.g. insecure context) — silently ignore.
+    }
+  }
 
   const url =
     typeof window !== 'undefined'
@@ -98,12 +109,21 @@ function SetupPageContent({ params }: { params: { id: string } }) {
             <div className="rounded-[20px] bg-white p-2">
               <QRCode value={url} size={240} />
             </div>
-            <span
-              className="mt-5 rounded-pill border-[3px] border-pop-ink px-5 py-2.5 text-xl font-black text-pop-ink"
-              style={{ background: POP.sunshine }}
-            >
-              {params.id}
-            </span>
+            <div className="mt-5 flex items-center gap-2">
+              <span
+                className="rounded-pill border-[3px] border-pop-ink px-5 py-2.5 text-xl font-black text-pop-ink"
+                style={{ background: POP.sunshine }}
+              >
+                {params.id}
+              </span>
+              <button
+                onClick={copyCode}
+                aria-label={copied ? 'Code copied' : 'Copy game code'}
+                className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
+              >
+                {copied ? <Check size={20} strokeWidth={3} /> : <Copy size={20} strokeWidth={3} />}
+              </button>
+            </div>
           </motion.div>
 
           {/* Players */}

@@ -25,7 +25,6 @@ export function useSupabase() {
     players,
     selectedCategories,
     amountQuestions,
-    capAnswers,
     showQuestions,
     answeredQuestions,
   } = usePopStore()
@@ -140,7 +139,6 @@ export function useSupabase() {
       categories: selectedCategories,
       amountQuestions: amountQuestions,
       players: decoratedPlayers,
-      capAnswers: capAnswers,
       showQuestions: showQuestions,
       questions: answeredQuestions,
       winner: maxBy(decoratedPlayers, 'score')!,
@@ -181,7 +179,6 @@ export function useSupabase() {
   }, [
     amountQuestions,
     answeredQuestions,
-    capAnswers,
     gameId,
     players,
     selectedCategories,

@@ -40,7 +40,7 @@ export function RankInput({
   return (
     <div className="flex flex-col gap-4">
       <p className="text-center text-base font-bold text-pop-ink/60">
-        Drag into order — most populous at the top
+        Drag into order - most populous at the top
       </p>
       <Reorder.Group axis="y" values={order} onReorder={setOrder} className="flex flex-col gap-2.5">
         {order.map((label, i) => (

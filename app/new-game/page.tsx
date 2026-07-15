@@ -31,7 +31,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
   const router = useRouter()
   const refId = useRef(gameId)
   const storageLoaded = useStorage((root) => root.game) !== null
-  const { amountQuestions, selectedCategories, selectedDifficulty, showQuestions, updateGame } =
+  const { amountQuestions, selectedCategories, selectedDifficulty, showQuestions, typeCapitals, updateGame } =
     usePopStore()
   const [visible, setVisible] = useState(false)
 
@@ -156,6 +156,12 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
             checked={!showQuestions}
             onChange={() => updateGame({ showQuestions: !showQuestions })}
           />
+          <TogglePill
+            label="Type capital answers"
+            sublabel="Autocomplete input instead of four options"
+            checked={typeCapitals}
+            onChange={() => updateGame({ typeCapitals: !typeCapitals })}
+          />
         </div>
       </div>
 
@@ -258,16 +264,21 @@ function StepBtn({ onClick, children }: { onClick: () => void; children: React.R
 
 function TogglePill({
   label,
+  sublabel,
   checked,
   onChange,
 }: {
   label: string
+  sublabel?: string
   checked: boolean
   onChange: () => void
 }) {
   return (
-    <div className="flex items-center justify-between rounded-pill bg-white px-6 py-4 shadow-pop">
-      <span className="text-lg font-black text-pop-ink md:text-xl">{label}</span>
+    <div className="flex items-center justify-between gap-4 rounded-3xl bg-white px-6 py-4 shadow-pop">
+      <div className="min-w-0">
+        <span className="block text-lg font-black text-pop-ink md:text-xl">{label}</span>
+        {sublabel && <span className="block text-sm font-bold text-pop-ink/55">{sublabel}</span>}
+      </div>
       <PopToggle checked={checked} onChange={onChange} />
     </div>
   )

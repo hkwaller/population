@@ -161,7 +161,6 @@ export type TGame = {
   players: TPlayer[]
   categories: string | string[]
   amountQuestions: number
-  capAnswers: boolean
   showQuestions: boolean
   questions: TQuestion[]
 }

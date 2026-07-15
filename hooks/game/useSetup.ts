@@ -3,7 +3,7 @@ import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useSetup = () => {
-  const { updateGame, amountQuestions, capAnswers, hideQuestions, selectedCategories } =
+  const { updateGame, amountQuestions, showQuestions, typeCapitals, selectedCategories } =
     usePopStore()
   const { updateGameState } = useUpdateGameState()
 
@@ -21,8 +21,8 @@ export const useSetup = () => {
       answeredQuestions: [],
       skippedQuestions: [],
       selectedCategories: selectedCategories,
-      capAnswers: capAnswers,
-      hideQuestions: hideQuestions,
+      showQuestions: showQuestions,
+      typeCapitals: typeCapitals,
       players: [],
     })
   }

@@ -42,7 +42,6 @@ create table if not exists public.population_games (
   created_at        timestamptz default now(),
   categories        jsonb,
   "amountQuestions" int,
-  "capAnswers"      boolean,
   "showQuestions"   boolean,
   questions         jsonb,
   players           jsonb,

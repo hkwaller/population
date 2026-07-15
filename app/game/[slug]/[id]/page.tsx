@@ -14,6 +14,7 @@ import { GameRoomProvider } from '@/app/providers'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
 import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { CapitalInput } from '@/app/components/geo/CapitalInput'
 import { WorldMap } from '@/app/components/geo/WorldMap'
 import { RankInput } from '@/app/components/geo/RankInput'
 import { PopShell } from '@/app/components/pop/PopShell'
@@ -34,8 +35,8 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
     boss,
     me,
     answeredQuestions,
-    capAnswers,
-    hideQuestions,
+    showQuestions,
+    typeCapitals,
   } = game
   const [answerInputModalOpen, setAnswerInputModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(0)
@@ -108,7 +109,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
           </div>
         ) : (
           <>
-            {!hideQuestions && <Question question={currentQuestion} compact />}
+            {showQuestions && <Question question={currentQuestion} compact />}
             <ReportLink question={currentQuestion?.question} />
           </>
         )}
@@ -143,12 +144,15 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                     <WorldMap value={mapPin} onPick={setMapPin} />
                   </div>
                 )}
-                {currentQuestion.type === 'choice' && (
-                  <ChoiceOptions
-                    options={currentQuestion.options}
-                    onSelect={(opt) => submit(opt)}
-                  />
-                )}
+                {currentQuestion.type === 'choice' &&
+                  (typeCapitals && currentQuestion.category === 'capitals' ? (
+                    <CapitalInput question={currentQuestion} onAnswer={(v) => submit(v)} />
+                  ) : (
+                    <ChoiceOptions
+                      options={currentQuestion.options}
+                      onSelect={(opt) => submit(opt)}
+                    />
+                  ))}
                 {currentQuestion.type === 'rank' && (
                   <RankInput question={currentQuestion} onAnswer={(v, ms) => submit(v, ms)} />
                 )}

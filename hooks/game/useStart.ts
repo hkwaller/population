@@ -8,8 +8,8 @@ export const useStart = () => {
   const {
     nextQuestion,
     amountQuestions,
-    capAnswers,
-    hideQuestions,
+    showQuestions,
+    typeCapitals,
     selectedCategories,
     selectedDifficulty,
     getSeenQuestionIds,
@@ -44,8 +44,8 @@ export const useStart = () => {
       skippedQuestions: [],
       questions: sampled,
       amountQuestions: amountQuestions,
-      capAnswers: capAnswers,
-      hideQuestions: hideQuestions,
+      showQuestions: showQuestions,
+      typeCapitals: typeCapitals,
       selectedCategories: selectedCategories,
     })
   }

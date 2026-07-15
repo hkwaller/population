@@ -6,8 +6,8 @@
  * Source-of-truth split:
  *   Liveblocks (room-shared):  command, currentQuestion, players, boss,
  *                              answeredQuestions, skippedQuestions, endedAt
- *   Zustand (device-local):    selectedCategories, amountQuestions, capAnswers,
- *                              hideQuestions, showQuestions, me, preferences
+ *   Zustand (device-local):    selectedCategories, amountQuestions, showQuestions,
+ *                              typeCapitals, me, preferences
  *   Derived (no store):        showQuestionResultModal
  *
  * The previous useLiveGame synced ALL Liveblocks fields including
@@ -40,9 +40,9 @@ export const useGame = (gameId?: string) => {
   const gameStorage = useStorage((root) => root.game)
 
   // ── Selective sync: only Liveblocks-authoritative fields ──────────────────
-  // selectedCategories, amountQuestions, capAnswers, hideQuestions,
-  // showQuestions are Zustand-owned and must NOT be overwritten from
-  // Liveblocks initial storage.
+  // selectedCategories is Zustand-owned and must NOT be overwritten from
+  // Liveblocks initial storage (it would wipe the host's category picks). The
+  // host-chosen game config below is synced once the game leaves 'idle'.
   useEffect(() => {
     if (!gameStorage) return
 
@@ -58,10 +58,13 @@ export const useGame = (gameId?: string) => {
       gameId: gameId,
     }
 
-    // Sync amountQuestions from Liveblocks once game has started.
-    // Excluded during 'idle' so the host's slider selection on new-game is not overwritten.
+    // Sync host-chosen config from Liveblocks once game has started, so joining
+    // players inherit it. Excluded during 'idle' so the host's own new-game
+    // selections aren't overwritten by initial storage.
     if (gameStorage.command !== 'idle') {
       patch.amountQuestions = gameStorage.amountQuestions
+      patch.typeCapitals = gameStorage.typeCapitals
+      patch.showQuestions = gameStorage.showQuestions
     }
 
     zustand.updateGame(patch)
@@ -159,9 +162,8 @@ export const useGame = (gameId?: string) => {
     // Zustand-owned (never overwritten by Liveblocks)
     selectedCategories: zustand.selectedCategories,
     amountQuestions: zustand.amountQuestions,
-    capAnswers: zustand.capAnswers,
-    hideQuestions: zustand.hideQuestions,
     showQuestions: zustand.showQuestions,
+    typeCapitals: zustand.typeCapitals,
     me: zustand.me,
     preferences: zustand.preferences,
     gameId: zustand.gameId,

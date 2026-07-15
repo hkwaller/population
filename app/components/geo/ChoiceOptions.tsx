@@ -22,7 +22,7 @@ export function ChoiceOptions({
   disabled?: boolean
 }) {
   return (
-    <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+    <div className="grid w-full grid-cols-2 gap-2.5 sm:gap-3">
       {options.map((opt, i) => {
         const isSelected = selected === opt
         const isCorrect = correct != null && opt === correct
@@ -50,7 +50,7 @@ export function ChoiceOptions({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -0.6 : 0.6 }}
             transition={{ delay: i * 0.04, type: 'spring', stiffness: 260, damping: 20 }}
-            className="rounded-pill border-4 border-pop-ink px-5 py-4 text-lg font-black shadow-pop-btn"
+            className="flex min-h-[64px] min-w-0 items-center justify-center text-balance break-words rounded-3xl border-4 border-pop-ink px-4 py-3 text-center text-base font-black leading-tight shadow-pop-btn sm:text-lg"
             style={{ background: bg, color }}
           >
             {opt}

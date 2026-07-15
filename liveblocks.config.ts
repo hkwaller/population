@@ -14,9 +14,8 @@ export type GameState = {
   skippedQuestions: TQuestion[]
   questions: TQuestion[]
   amountQuestions: number
-  capAnswers: boolean
-  hideQuestions: boolean
   showQuestions: boolean
+  typeCapitals: boolean
   selectedCategories: string[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   players: any[]
