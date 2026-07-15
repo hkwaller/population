@@ -58,10 +58,7 @@ export function MapPicker({
   const overlay =
     expanded && typeof document !== 'undefined'
       ? createPortal(
-          <div
-            className="fixed inset-0 z-[60] flex flex-col"
-            style={{ background: POP.paper }}
-          >
+          <div className="fixed inset-0 z-[60] flex flex-col" style={{ background: POP.paper }}>
             <div className="flex items-center justify-between px-4 py-3">
               <span className="rounded-pill bg-pop-ink px-4 py-2 text-sm font-black text-white">
                 {value ? 'Tap to adjust, then confirm' : 'Tap the map to guess'}
@@ -91,7 +88,7 @@ export function MapPicker({
                   onConfirm()
                 }}
               >
-                {value ? 'Lock it in ✊' : 'Tap the map to guess'}
+                {value ? 'Lock it in' : 'Tap the map to guess'}
               </PopButton>
             </div>
           </div>,
@@ -112,13 +109,8 @@ export function MapPicker({
           <Maximize2 size={16} /> Expand
         </button>
       </div>
-      <PopButton
-        variant="primary"
-        size="lg"
-        disabled={disabled || !value}
-        onClick={onConfirm}
-      >
-        {value ? 'Lock it in ✊' : 'Tap the map to guess'}
+      <PopButton variant="primary" size="lg" disabled={disabled || !value} onClick={onConfirm}>
+        {value ? 'Lock it in' : 'Tap the map to guess'}
       </PopButton>
       {overlay}
     </div>

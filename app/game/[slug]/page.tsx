@@ -148,7 +148,12 @@ function GamePageContent({ params }: { params: { slug: string } }) {
               <RankInput
                 question={currentQuestion}
                 onAnswer={(v, ms) =>
-                  send('answer', { id: me?.id, answer: v, questionId: currentQuestion.id, elapsedMs: ms })
+                  send('answer', {
+                    id: me?.id,
+                    answer: v,
+                    questionId: currentQuestion.id,
+                    elapsedMs: ms,
+                  })
                 }
               />
             </div>
@@ -173,7 +178,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
                   })
                 }
               >
-                Lock it in ✊
+                Lock it in
               </PopButton>
             )}
         </div>

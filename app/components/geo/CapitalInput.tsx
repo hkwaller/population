@@ -165,7 +165,7 @@ export function CapitalInput({
         disabled={disabled || !text.trim()}
         onClick={() => commit(text)}
       >
-        Lock it in ✊
+        Lock it in
       </PopButton>
     </div>
   )

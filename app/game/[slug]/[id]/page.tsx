@@ -124,7 +124,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
               <LockedState
                 players={players}
                 currentQuestionId={currentQuestion.id}
-                value={myPlayerInfo?.answers?.find((a) => a.questionId === currentQuestion.id)?.answer}
+                value={
+                  myPlayerInfo?.answers?.find((a) => a.questionId === currentQuestion.id)?.answer
+                }
               />
             ) : (
               <>
@@ -164,9 +166,11 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       rotate={-1}
                       className="w-full"
                       disabled={currentQuestion.type === 'map' && !mapPin}
-                      onClick={() => submit(currentQuestion.type === 'map' ? mapPin! : currentAnswer)}
+                      onClick={() =>
+                        submit(currentQuestion.type === 'map' ? mapPin! : currentAnswer)
+                      }
                     >
-                      Lock it in ✊
+                      Lock it in
                     </PopButton>
                   </div>
                 )}
@@ -198,7 +202,12 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
           submit(answer)
         }}
       />
-      <QuestionResultModal canEndGame={isBoss && everyoneHasAnswered && answeredQuestions?.length === amountQuestions - 1} send={send} />
+      <QuestionResultModal
+        canEndGame={
+          isBoss && everyoneHasAnswered && answeredQuestions?.length === amountQuestions - 1
+        }
+        send={send}
+      />
     </PopShell>
   )
 }
@@ -214,9 +223,18 @@ function ReportLink({ question }: { question?: string }) {
         setReporting(true)
         try {
           await reportQuestion(question!)
-          toast({ title: 'Reported', description: 'Thanks for helping improve the game.', duration: 2000 })
+          toast({
+            title: 'Reported',
+            description: 'Thanks for helping improve the game.',
+            duration: 2000,
+          })
         } catch {
-          toast({ title: 'Error', description: 'Could not report. Try again.', variant: 'destructive', duration: 2000 })
+          toast({
+            title: 'Error',
+            description: 'Could not report. Try again.',
+            variant: 'destructive',
+            duration: 2000,
+          })
         } finally {
           setReporting(false)
         }
@@ -237,7 +255,9 @@ function LockedState({
   currentQuestionId: string
   value: AnswerValue | undefined
 }) {
-  const waitingName = players.find((p) => !p.answers.some((a: any) => a.questionId === currentQuestionId))?.name
+  const waitingName = players.find(
+    (p) => !p.answers.some((a: any) => a.questionId === currentQuestionId),
+  )?.name
   return (
     <div className="flex flex-col items-center gap-3 rounded-card bg-white/15 p-6 text-center">
       <span
@@ -267,7 +287,9 @@ function LockedState({
           )
         })}
       </div>
-      {waitingName && <span className="text-base font-bold text-white/60">waiting for {waitingName}…</span>}
+      {waitingName && (
+        <span className="text-base font-bold text-white/60">waiting for {waitingName}…</span>
+      )}
     </div>
   )
 }

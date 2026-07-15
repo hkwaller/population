@@ -32,7 +32,10 @@ export function QuestionInput({
   const elapsed = () => Math.round(performance.now() - startedAt.current)
 
   const midpoint = useMemo(
-    () => (question.type === 'slider' ? Math.round((question.lower_bound + question.upper_bound) / 2) : 0),
+    () =>
+      question.type === 'slider'
+        ? Math.round((question.lower_bound + question.upper_bound) / 2)
+        : 0,
     [question],
   )
   const [sliderValue, setSliderValue] = useState(midpoint)
@@ -57,7 +60,9 @@ export function QuestionInput({
   }
 
   if (question.type === 'rank') {
-    return <RankInput question={question} onAnswer={(v, ms) => onAnswer(v, ms)} disabled={disabled} />
+    return (
+      <RankInput question={question} onAnswer={(v, ms) => onAnswer(v, ms)} disabled={disabled} />
+    )
   }
 
   if (question.type === 'map') {
@@ -88,7 +93,7 @@ export function QuestionInput({
         disabled={disabled}
         onClick={() => onAnswer(sliderValue, elapsed())}
       >
-        Lock it in ✊
+        Lock it in
       </PopButton>
     </div>
   )

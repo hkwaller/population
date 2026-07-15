@@ -70,7 +70,7 @@ export function RankInput({
         disabled={disabled}
         onClick={() => onAnswer(order, Math.round(performance.now() - startedAt.current))}
       >
-        Lock it in ✊
+        Lock it in
       </PopButton>
     </div>
   )
