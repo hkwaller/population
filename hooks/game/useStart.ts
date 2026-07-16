@@ -9,7 +9,7 @@ export const useStart = () => {
     nextQuestion,
     amountQuestions,
     showQuestions,
-    typeCapitals,
+    answerModes,
     selectedCategories,
     selectedDifficulty,
     getSeenQuestionIds,
@@ -45,7 +45,7 @@ export const useStart = () => {
       questions: sampled,
       amountQuestions: amountQuestions,
       showQuestions: showQuestions,
-      typeCapitals: typeCapitals,
+      answerModes: answerModes,
       selectedCategories: selectedCategories,
     })
   }

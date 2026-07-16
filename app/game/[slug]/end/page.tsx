@@ -114,26 +114,30 @@ const EndPageContent = ({ slug }: { slug: string }) => {
               {loading ? 'Loading…' : 'Rematch!'}
             </PopButton>
           )}
-          <PopButton variant="ghostLight" size="lg" rotate={1} onClick={() => setShowBreakdown((s) => !s)}>
-            {showBreakdown ? 'Hide breakdown' : 'Round by round'}
-          </PopButton>
         </div>
 
         {/* Breakdown */}
-        {showBreakdown && (
-          <div className="mt-12 flex flex-col gap-8">
-            {answeredQuestions.map((question, qIndex) => {
-              const hasAnswers = players.some((p) => p.answers.find((a) => a.questionId === question.id))
-              if (!hasAnswers) return null
-              const sortedForQ = [...players].sort((a, b) => {
-                const aA = a.answers.find((ans) => ans.questionId === question.id)
-                const bA = b.answers.find((ans) => ans.questionId === question.id)
-                return (bA?.score || 0) - (aA?.score || 0)
-              })
-              return <QuestionResult key={question.id} players={sortedForQ} question={question} index={qIndex} />
-            })}
-          </div>
-        )}
+        <div className="mt-12 flex flex-col gap-8">
+          {answeredQuestions.map((question, qIndex) => {
+            const hasAnswers = players.some((p) =>
+              p.answers.find((a) => a.questionId === question.id),
+            )
+            if (!hasAnswers) return null
+            const sortedForQ = [...players].sort((a, b) => {
+              const aA = a.answers.find((ans) => ans.questionId === question.id)
+              const bA = b.answers.find((ans) => ans.questionId === question.id)
+              return (bA?.score || 0) - (aA?.score || 0)
+            })
+            return (
+              <QuestionResult
+                key={question.id}
+                players={sortedForQ}
+                question={question}
+                index={qIndex}
+              />
+            )
+          })}
+        </div>
       </div>
     </PopShell>
   )

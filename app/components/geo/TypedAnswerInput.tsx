@@ -42,11 +42,13 @@ function poolFor(question: string): string[] {
 const MAX_SUGGESTIONS = 6
 
 /**
- * Autocomplete text input for capital-category questions, used when the host
- * enables "type capital answers". Filters a canonical list of capitals/countries
- * and submits the canonical spelling so scoring matches exactly.
+ * Autocomplete text input for `choice` questions whose answer is a country or
+ * capital name (capitals, flags, borders), used when the host sets that
+ * category's answer mode to "input". `poolFor` picks the right suggestion list
+ * from the question wording; we submit the canonical spelling so scoring matches
+ * exactly.
  */
-export function CapitalInput({
+export function TypedAnswerInput({
   question,
   onAnswer,
   disabled = false,

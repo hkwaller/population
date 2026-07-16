@@ -11,7 +11,10 @@
  * Usage:
  *   npx tsx --env-file=.env.local scripts/migrate-questions.ts
  *
- * Idempotent: upserts on `id`, so re-running is safe.
+ * Full sync: deletes all existing `source='geo'` rows first, then inserts the
+ * current bank. This keeps Supabase in lockstep with the JSON — questions removed
+ * from the generator (e.g. dropped distance pairs) are pruned, not left orphaned.
+ * Idempotent: re-running always reproduces exactly the JSON's contents.
  */
 
 import { createClient } from '@supabase/supabase-js'
@@ -73,16 +76,29 @@ async function main() {
 
   console.log(`Loaded ${rows.length} questions.`)
 
+  // Prune first: remove every existing geo row so questions dropped from the
+  // generator don't linger as orphans. The source filter satisfies Supabase's
+  // "delete requires a filter" rule; other sources are left untouched.
+  const { error: deleteError } = await supabase
+    .from('population_questions')
+    .delete()
+    .eq('source', 'geo')
+  if (deleteError) {
+    console.error('Error pruning existing geo questions:', deleteError.message)
+    process.exit(1)
+  }
+  console.log('Pruned existing geo questions.')
+
   let inserted = 0
   for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
     const chunk = rows.slice(i, i + CHUNK_SIZE)
-    const { error } = await supabase.from('population_questions').upsert(chunk, { onConflict: 'id' })
+    const { error } = await supabase.from('population_questions').insert(chunk)
     if (error) {
-      console.error(`Error upserting chunk ${i / CHUNK_SIZE + 1}:`, error.message)
+      console.error(`Error inserting chunk ${i / CHUNK_SIZE + 1}:`, error.message)
       process.exit(1)
     }
     inserted += chunk.length
-    console.log(`Upserted ${inserted}/${rows.length}`)
+    console.log(`Inserted ${inserted}/${rows.length}`)
   }
 
   const byCategory: Record<string, number> = {}

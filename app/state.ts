@@ -4,6 +4,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { sample, uniq, uniqBy } from 'lodash'
 
 import { AnswerValue, Command, CommandType, Difficulty, TPlayer, TPreferences, TQuestion } from './types'
+import { AnswerModes } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { dateKeyUTC } from '@/lib/daily'
 
@@ -46,8 +47,12 @@ export type State = {
   showQuestionResultModal: boolean
   /** Show the question text on player screens too. When false, questions are on the host screen only. */
   showQuestions: boolean
-  /** Answer capital-category questions by typing (autocomplete) instead of picking one of four options. */
-  typeCapitals: boolean
+  /**
+   * Per-category answer mode. Categories in INPUT_CAPABLE_CATEGORIES can be set
+   * to 'input' (autocomplete typing) instead of the default multiple-choice.
+   * Absent key = multiple choice.
+   */
+  answerModes: AnswerModes
   showScoreModal: boolean
   skippedQuestions: TQuestion[]
   /**
@@ -69,7 +74,7 @@ const initialState = {
   questions: [],
   players: [],
   showQuestions: false,
-  typeCapitals: false,
+  answerModes: {},
   currentQuestion: undefined,
   answeredQuestions: [],
   selectedCategories: [],
@@ -90,7 +95,7 @@ export const usePopStore = create<State>()(
       questions: [],
       players: [],
       showQuestions: false,
-      typeCapitals: false,
+      answerModes: {},
       boss: '',
       // @ts-ignore
       currentQuestion: undefined,

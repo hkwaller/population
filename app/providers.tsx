@@ -40,7 +40,7 @@ export function GameRoomProvider({
           questions: [],
           amountQuestions: 10,
           showQuestions: false,
-          typeCapitals: false,
+          answerModes: {},
           selectedCategories: [],
           players: [],
           endedAt: undefined,

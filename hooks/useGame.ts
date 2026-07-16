@@ -7,7 +7,7 @@
  *   Liveblocks (room-shared):  command, currentQuestion, players, boss,
  *                              answeredQuestions, skippedQuestions, endedAt
  *   Zustand (device-local):    selectedCategories, amountQuestions, showQuestions,
- *                              typeCapitals, me, preferences
+ *                              answerModes, me, preferences
  *   Derived (no store):        showQuestionResultModal
  *
  * The previous useLiveGame synced ALL Liveblocks fields including
@@ -63,7 +63,7 @@ export const useGame = (gameId?: string) => {
     // selections aren't overwritten by initial storage.
     if (gameStorage.command !== 'idle') {
       patch.amountQuestions = gameStorage.amountQuestions
-      patch.typeCapitals = gameStorage.typeCapitals
+      patch.answerModes = gameStorage.answerModes
       patch.showQuestions = gameStorage.showQuestions
     }
 
@@ -163,7 +163,7 @@ export const useGame = (gameId?: string) => {
     selectedCategories: zustand.selectedCategories,
     amountQuestions: zustand.amountQuestions,
     showQuestions: zustand.showQuestions,
-    typeCapitals: zustand.typeCapitals,
+    answerModes: zustand.answerModes,
     me: zustand.me,
     preferences: zustand.preferences,
     gameId: zustand.gameId,

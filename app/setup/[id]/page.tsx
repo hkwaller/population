@@ -18,6 +18,7 @@ import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { PopInput } from '@/app/components/pop/PopControls'
+import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
 import { POP, stickerColors } from '@/app/components/pop/theme'
 
 function SetupPageContent({ params }: { params: { id: string } }) {
@@ -27,6 +28,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const [name, setName] = useState('')
   const [isStarting, setIsStarting] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [howToOpen, setHowToOpen] = useState(false)
   const router = useRouter()
 
   const copyCode = async () => {
@@ -85,7 +87,15 @@ function SetupPageContent({ params }: { params: { id: string } }) {
 
   return (
     <PopShell bg={POP.bubblegum}>
-      <PopHeader logoTextColor={POP.bubblegum} right={<PopAuth tone="dark" />} />
+      <PopHeader
+        logoTextColor={POP.bubblegum}
+        right={
+          <div className="flex items-center gap-3">
+            <HowToPlayButton tone="dark" onClick={() => setHowToOpen(true)} />
+            <PopAuth tone="dark" />
+          </div>
+        }
+      />
 
       <div className="mx-auto max-w-5xl px-5 pb-40 pt-6 md:pt-10">
         <h1
@@ -226,6 +236,8 @@ function SetupPageContent({ params }: { params: { id: string } }) {
           )}
         </PopButton>
       </div>
+
+      <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>
   )
 }

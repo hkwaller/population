@@ -265,8 +265,14 @@ function haversine(a, b) {
     Math.sin(dLng / 2) ** 2 * Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat))
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)))
 }
-// Each capital pairs with 3 partners (deduped) instead of being used once → ~3× more.
-for (const [a, b] of makePairs(withCapCoords, 2, 'distance-pairs')) {
+// Only pair *well-known* capitals. Pairing every capital with arbitrary partners
+// produced meaningless questions (e.g. Palikir↔Ngerulmud) that players can't place.
+// Restrict the pool to countries above a fame threshold so both endpoints are
+// recognizable; obscurity still varies the difficulty within that pool.
+const DISTANCE_FAME_MIN = 0.5
+const wellKnownCaps = withCapCoords.filter((c) => fame(c) >= DISTANCE_FAME_MIN)
+// Each capital pairs with 3 partners (deduped) since the pool is now curated.
+for (const [a, b] of makePairs(wellKnownCaps, 3, 'distance-pairs')) {
   const dist = Math.round(
     haversine({ lat: a.capitalLat, lng: a.capitalLng }, { lat: b.capitalLat, lng: b.capitalLng }),
   )

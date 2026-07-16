@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'motion/react'
-import { icons as lucideIcons, Minus, Plus, ArrowRight } from 'lucide-react'
+import { AnimatePresence, motion } from 'motion/react'
+import { icons as lucideIcons, Minus, Plus, ArrowRight, Grid2x2, Keyboard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { usePopStore } from '../state'
@@ -11,8 +11,9 @@ import { PopShell } from '../components/pop/PopShell'
 import { PopHeader, PopAuth } from '../components/pop/PopHeader'
 import { PopButton } from '../components/pop/PopButton'
 import { PopToggle } from '../components/pop/PopControls'
+import { HowToPlayButton, HowToPlayModal } from '../components/HowToPlay'
 import { POP, POP_SPRING } from '../components/pop/theme'
-import { categories, makeId } from '@/lib/utils'
+import { categories, makeId, INPUT_CAPABLE_CATEGORIES, type AnswerMode, type AnswerModes } from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
 import { useStorage } from '@/liveblocks.config'
 
@@ -43,10 +44,11 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
     selectedCategories,
     selectedDifficulty,
     showQuestions,
-    typeCapitals,
+    answerModes,
     updateGame,
   } = usePopStore()
   const [visible, setVisible] = useState(false)
+  const [howToOpen, setHowToOpen] = useState(false)
 
   useEffect(() => {
     updateGame({
@@ -67,6 +69,10 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
     })
   }
 
+  const setMode = (id: string, mode: AnswerMode) => {
+    updateGame({ answerModes: { ...answerModes, [id]: mode } })
+  }
+
   // Bulk toggle for a tier: select all if any are off, otherwise clear the tier.
   const toggleAll = (ids: string[]) => {
     const allOn = ids.every((id) => selectedCategories.includes(id))
@@ -82,7 +88,15 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
 
   return (
     <PopShell bg={POP.mint}>
-      <PopHeader logoTextColor={POP.mint} right={<PopAuth tone="dark" />} />
+      <PopHeader
+        logoTextColor={POP.mint}
+        right={
+          <div className="flex items-center gap-3">
+            <HowToPlayButton tone="dark" onClick={() => setHowToOpen(true)} />
+            <PopAuth tone="dark" />
+          </div>
+        }
+      />
 
       <div className="mx-auto max-w-4xl px-5 pb-40 pt-6 md:pt-10">
         <h1
@@ -145,23 +159,28 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           Pick your categories
         </h2>
         <p className="mt-3 text-center text-lg font-bold text-pop-ink/70">
-          Tap to toggle - greyed-out stickers sit this round out.
+          Tap to toggle - greyed-out stickers sit this round out. Flags, Borders and Capitals let
+          you pick options or typing.
         </p>
 
         <CategorySection
           title="Main"
           cats={categories.filter((c) => c.tier === 'main')}
           selectedCategories={selectedCategories}
+          answerModes={answerModes}
           onToggle={toggleCategory}
           onToggleAll={toggleAll}
+          onSetMode={setMode}
           visible={visible}
         />
         <CategorySection
           title="Special"
           cats={categories.filter((c) => c.tier === 'special')}
           selectedCategories={selectedCategories}
+          answerModes={answerModes}
           onToggle={toggleCategory}
           onToggleAll={toggleAll}
+          onSetMode={setMode}
           visible={visible}
         />
 
@@ -171,12 +190,6 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
             label="Questions on host screen only"
             checked={!showQuestions}
             onChange={() => updateGame({ showQuestions: !showQuestions })}
-          />
-          <TogglePill
-            label="Type capital answers"
-            sublabel="Autocomplete input instead of four options"
-            checked={typeCapitals}
-            onChange={() => updateGame({ typeCapitals: !typeCapitals })}
           />
         </div>
       </div>
@@ -197,6 +210,8 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           Open the lobby <ArrowRight size={26} />
         </PopButton>
       </div>
+
+      <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>
   )
 }
@@ -207,19 +222,38 @@ function CategorySection({
   title,
   cats,
   selectedCategories,
+  answerModes,
   onToggle,
   onToggleAll,
+  onSetMode,
   visible,
 }: {
   title: string
   cats: readonly Cat[]
   selectedCategories: string[]
+  answerModes: AnswerModes
   onToggle: (id: string) => void
   onToggleAll: (ids: string[]) => void
+  onSetMode: (id: string, mode: AnswerMode) => void
   visible: boolean
 }) {
   const ids = cats.map((c) => c.id)
   const allOn = ids.every((id) => selectedCategories.includes(id))
+
+  // Which category's answer-mode popover is open (only one at a time).
+  const [openMode, setOpenMode] = useState<string | null>(null)
+
+  const handleChip = (cat: Cat) => {
+    const willSelect = !selectedCategories.includes(cat.id)
+    onToggle(cat.id)
+    if (INPUT_CAPABLE_CATEGORIES.has(cat.id)) {
+      // Every fresh selection starts on multiple choice (never remembers the last
+      // mode). The badge pulses in to invite an explicit tap; deselecting closes
+      // any open picker.
+      if (willSelect) onSetMode(cat.id, 'choice')
+      else if (openMode === cat.id) setOpenMode(null)
+    }
+  }
 
   return (
     <div className="mx-auto mt-10 max-w-3xl">
@@ -233,36 +267,123 @@ function CategorySection({
         </button>
       </div>
 
+      {/* Click-catcher: taps outside an open popover dismiss it. */}
+      {openMode && (
+        <button
+          aria-label="Close answer mode picker"
+          className="fixed inset-0 z-20 cursor-default"
+          onClick={() => setOpenMode(null)}
+        />
+      )}
+
       <div className="mt-5 flex flex-wrap justify-center gap-3.5">
         {cats.map((cat, i) => {
           const Icon = lucideIcons[cat.icon as keyof typeof lucideIcons]
           const selected = selectedCategories.includes(cat.id)
           const fill = CHIP_CYCLE[i % CHIP_CYCLE.length]
           const light = DARK_FILLS.has(fill)
+          const canInput = INPUT_CAPABLE_CATEGORIES.has(cat.id)
+          const mode: AnswerMode = answerModes[cat.id] === 'input' ? 'input' : 'choice'
+          const ModeIcon = mode === 'input' ? Keyboard : Grid2x2
           return (
-            <motion.button
-              key={cat.id}
-              initial={{ scale: 0 }}
-              animate={{ scale: visible ? 1 : 0, rotate: selected ? (i % 2 ? 3 : -3) : 0 }}
-              transition={{ ...POP_SPRING, delay: i * 0.03 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onToggle(cat.id)}
-              className={`inline-flex items-center gap-2 rounded-pill px-5 py-3 text-[22px] font-black ${
-                selected ? 'border-4 border-white shadow-pop' : ''
-              }`}
-              style={
-                selected
-                  ? { background: fill, color: light ? '#fff' : POP.ink }
-                  : { background: 'rgba(255,255,255,0.45)', color: 'rgba(23,18,20,0.45)' }
-              }
-            >
-              {Icon && <Icon size={22} strokeWidth={2.5} />}
-              {cat.name}
-            </motion.button>
+            <div key={cat.id} className="relative">
+              <motion.button
+                initial={{ scale: 0 }}
+                animate={{ scale: visible ? 1 : 0, rotate: selected ? (i % 2 ? 3 : -3) : 0 }}
+                transition={{ ...POP_SPRING, delay: i * 0.03 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleChip(cat)}
+                className={`inline-flex items-center gap-2 rounded-pill px-5 py-3 text-[22px] font-black ${
+                  selected ? 'border-4 border-white shadow-pop' : ''
+                }`}
+                style={
+                  selected
+                    ? { background: fill, color: light ? '#fff' : POP.ink }
+                    : { background: 'rgba(255,255,255,0.45)', color: 'rgba(23,18,20,0.45)' }
+                }
+              >
+                {Icon && <Icon size={22} strokeWidth={2.5} />}
+                {cat.name}
+                {canInput && selected && (
+                  <motion.span
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Answer mode: ${mode === 'input' ? 'typing' : 'multiple choice'}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setOpenMode((cur) => (cur === cat.id ? null : cat.id))
+                    }}
+                    // Badge mounts exactly when the category is selected, so this
+                    // pop-in + double pulse is the "you can change this" nudge.
+                    initial={{ scale: 0 }}
+                    animate={{ scale: [0, 1, 1.25, 1, 1.25, 1] }}
+                    transition={{ duration: 0.9, times: [0, 0.15, 0.35, 0.55, 0.75, 1], ease: 'easeInOut' }}
+                    className="ml-0.5 grid h-8 w-8 place-items-center rounded-full border-[3px] border-pop-ink/20 bg-white text-pop-ink"
+                  >
+                    <ModeIcon size={16} strokeWidth={2.75} />
+                  </motion.span>
+                )}
+              </motion.button>
+
+              <AnimatePresence>
+                {openMode === cat.id && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.9 }}
+                    transition={{ duration: 0.14 }}
+                    className="absolute left-1/2 top-full z-30 mt-2 flex -translate-x-1/2 gap-1 rounded-2xl border-4 border-pop-ink bg-white p-1.5 shadow-pop-card"
+                  >
+                    <ModePill
+                      active={mode === 'choice'}
+                      Icon={Grid2x2}
+                      label="Choose"
+                      onClick={() => {
+                        onSetMode(cat.id, 'choice')
+                        setOpenMode(null)
+                      }}
+                    />
+                    <ModePill
+                      active={mode === 'input'}
+                      Icon={Keyboard}
+                      label="Type"
+                      onClick={() => {
+                        onSetMode(cat.id, 'input')
+                        setOpenMode(null)
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           )
         })}
       </div>
     </div>
+  )
+}
+
+function ModePill({
+  active,
+  Icon,
+  label,
+  onClick,
+}: {
+  active: boolean
+  Icon: typeof Grid2x2
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-1.5 whitespace-nowrap rounded-pill px-3.5 py-2 text-base font-black transition-colors ${
+        active ? 'bg-pop-ink text-white' : 'bg-transparent text-pop-ink/60 hover:text-pop-ink'
+      }`}
+    >
+      <Icon size={17} strokeWidth={2.75} />
+      {label}
+    </button>
   )
 }
 

@@ -9,7 +9,7 @@ export function PopShell({
   bg,
   children,
   chips = false,
-  chipsOpacity = 1,
+  chipsOpacity = 0.5,
   className,
 }: {
   bg: string

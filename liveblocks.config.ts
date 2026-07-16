@@ -3,6 +3,7 @@ import { createRoomContext } from '@liveblocks/react'
 import { LiveObject } from '@liveblocks/client'
 
 import type { TPlayer, TQuestion, CommandType } from './app/types'
+import type { AnswerModes } from './lib/utils'
 
 // Liveblocks storage requires JSON-serializable types.
 // `players` uses `any[]` because TPlayer.icon has symbol indices from the icons array type.
@@ -15,7 +16,7 @@ export type GameState = {
   questions: TQuestion[]
   amountQuestions: number
   showQuestions: boolean
-  typeCapitals: boolean
+  answerModes: AnswerModes
   selectedCategories: string[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   players: any[]

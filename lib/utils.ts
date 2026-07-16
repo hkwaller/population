@@ -44,7 +44,8 @@ export const MAP_FALLOFF_KM = 2500
 /** A choice answered within this window earns the full speed bonus decay curve. */
 export const CHOICE_TIME_LIMIT_MS = 15000
 const CHOICE_BASE = 700
-const CHOICE_SPEED_BONUS = 300
+/** Max points a correct choice can earn on top of CHOICE_BASE, decaying to 0 over CHOICE_TIME_LIMIT_MS. */
+export const CHOICE_SPEED_BONUS = 300
 
 /** Great-circle distance between two lat/lng points, in kilometres. */
 export function haversineKm(a: LatLng, b: LatLng) {
@@ -409,3 +410,25 @@ export const categories = [
     count: stat('population'),
   },
 ] as const
+
+/** How a player answers a given category: pick one of four options, or type it. */
+export type AnswerMode = 'choice' | 'input'
+export type AnswerModes = Record<string, AnswerMode>
+
+/**
+ * Categories whose `choice` questions can also be answered by typing. All three
+ * resolve to a country/capital name, so `TypedAnswerInput` can autocomplete them
+ * against countries.json. Other choice categories (currency, language, …) have no
+ * such canonical pool, so they stay multiple-choice only.
+ */
+export const INPUT_CAPABLE_CATEGORIES = new Set(['capitals', 'flags', 'borders'])
+
+/** True when this question should render the typed-input UI instead of options. */
+export function isInputMode(
+  question: TQuestion | undefined,
+  answerModes: AnswerModes | undefined,
+): boolean {
+  if (!question || question.type !== 'choice') return false
+  if (!INPUT_CAPABLE_CATEGORIES.has(question.category)) return false
+  return answerModes?.[question.category] === 'input'
+}

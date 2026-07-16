@@ -70,7 +70,7 @@ export const PlayerResult = ({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1, rotate: index % 2 === 0 ? 2 : -2 }}
       transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.1 + index * 0.06 }}
-      className="relative flex w-[210px] max-w-full flex-col items-center gap-2 rounded-[28px] bg-white p-4 shadow-pop"
+      className="relative flex w-[210px] max-w-full flex-col items-center gap-2 rounded-[28px] bg-white p-4 shadow-pop border-2 border-black"
     >
       {pill && (
         <span

@@ -11,12 +11,14 @@ import { useGame } from '@/hooks/useGame'
 import { useSupabase } from '@/hooks/useSupabase'
 import { useToast } from '@/hooks/use-toast'
 import { GameRoomProvider } from '@/app/providers'
-import { asSlider, formatAnswerValue } from '@/lib/utils'
+import { asSlider, formatAnswerValue, isInputMode } from '@/lib/utils'
 import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
-import { CapitalInput } from '@/app/components/geo/CapitalInput'
+import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
 import { WorldMap } from '@/app/components/geo/WorldMap'
 import { RankInput } from '@/app/components/geo/RankInput'
+import { SpeedBonusMeter } from '@/app/components/geo/SpeedBonusMeter'
+import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
@@ -36,18 +38,22 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
     me,
     answeredQuestions,
     showQuestions,
-    typeCapitals,
+    answerModes,
   } = game
   const [answerInputModalOpen, setAnswerInputModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(0)
   const [isEnding, setIsEnding] = useState(false)
+  const [howToOpen, setHowToOpen] = useState(false)
   const router = useRouter()
 
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
+  // Timestamp the question was shown; drives the choice speed bonus + meter.
+  const [startedAt, setStartedAt] = useState(0)
 
   useEffect(() => {
     setMapPin(null)
+    setStartedAt(performance.now())
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -84,6 +90,8 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
       elapsedMs,
     })
 
+  const elapsed = () => Math.max(0, Math.round(performance.now() - startedAt))
+
   return (
     <PopShell bg={POP.cobalt}>
       <header className="flex items-center justify-between px-5 pt-5">
@@ -98,6 +106,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
           >
             {(answeredQuestions?.length ?? 0) + 1} of {amountQuestions}
           </span>
+          <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />
         </div>
       </header>
 
@@ -146,15 +155,22 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                     <WorldMap value={mapPin} onPick={setMapPin} />
                   </div>
                 )}
-                {currentQuestion.type === 'choice' &&
-                  (typeCapitals && currentQuestion.category === 'capitals' ? (
-                    <CapitalInput question={currentQuestion} onAnswer={(v) => submit(v)} />
-                  ) : (
-                    <ChoiceOptions
-                      options={currentQuestion.options}
-                      onSelect={(opt) => submit(opt)}
-                    />
-                  ))}
+                {currentQuestion.type === 'choice' && (
+                  <>
+                    <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+                    {isInputMode(currentQuestion, answerModes) ? (
+                      <TypedAnswerInput
+                        question={currentQuestion}
+                        onAnswer={(v) => submit(v, elapsed())}
+                      />
+                    ) : (
+                      <ChoiceOptions
+                        options={currentQuestion.options}
+                        onSelect={(opt) => submit(opt, elapsed())}
+                      />
+                    )}
+                  </>
+                )}
                 {currentQuestion.type === 'rank' && (
                   <RankInput question={currentQuestion} onAnswer={(v, ms) => submit(v, ms)} />
                 )}
@@ -208,6 +224,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
         }
         send={send}
       />
+      <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>
   )
 }
