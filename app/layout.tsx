@@ -14,6 +14,9 @@ const gabarito = Gabarito({
 export const metadata: Metadata = {
   title: 'Population - how well do you know the world?',
   description: 'Flags, capitals, borders and a few billion people. Guess the world - closest wins.',
+  icons: {
+    icon: '/favicon.png',
+  },
 }
 
 export default function RootLayout({
