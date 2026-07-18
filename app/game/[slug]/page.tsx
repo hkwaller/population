@@ -85,7 +85,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
             />
           )}
           <span className="rounded-pill bg-white px-4 py-2 text-base font-black text-pop-ink">
-            {(answeredQuestions?.length ?? 0) + 1} of {amountQuestions}
+            {(answeredQuestions?.length ?? 0) + 1}/{amountQuestions}
           </span>
           <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />
         </div>

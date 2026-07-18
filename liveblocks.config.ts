@@ -24,7 +24,7 @@ export type GameState = {
   /**
    * Whether the host (the device that started the game) is ad-free. Stamped by
    * the host at `start`; when true, in-game ads are suppressed for ALL players
-   * in the room — a perk that makes a host's Pro subscription benefit everyone.
+   * in the room - a perk that makes a host's Pro subscription benefit everyone.
    */
   hostAdFree: boolean
 }

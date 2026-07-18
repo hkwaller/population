@@ -30,7 +30,7 @@ export const Question = ({
       }`}
     >
       {/* Rank questions state the category in their prompt ("Sort these by
-          population…"), so the chip would just repeat it — hide it for rank. */}
+          population…"), so the chip would just repeat it - hide it for rank. */}
       {question.type !== 'rank' && (
         <div className="absolute -top-3.5 left-6">
           <Category question={question} className="rotate-[-3deg] shadow-pop-sm" />

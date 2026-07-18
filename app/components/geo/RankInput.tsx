@@ -32,9 +32,14 @@ export function RankList({
           tone === 'light' ? 'text-white/80' : 'text-pop-ink/60'
         }`}
       >
-        Drag into order — most populous at the top
+        Drag into order - most populous at the top
       </p>
-      <Reorder.Group axis="y" values={order} onReorder={onReorder} className="flex flex-col gap-2.5">
+      <Reorder.Group
+        axis="y"
+        values={order}
+        onReorder={onReorder}
+        className="flex flex-col gap-2.5"
+      >
         {order.map((label, i) => (
           <Reorder.Item
             key={label}

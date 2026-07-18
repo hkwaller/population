@@ -50,7 +50,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000  # fallback for Checkout return URLs
 
 ### Host perk: a Pro host makes the whole room ad-free
 
-If the host (the device that starts the game) is ad-free, **all players in that room** play without in-game ads. Ad-free status lives in per-user Clerk metadata, so a player device can't read the host's status directly — instead the host publishes a shared flag into the room:
+If the host (the device that starts the game) is ad-free, **all players in that room** play without in-game ads. Ad-free status lives in per-user Clerk metadata, so a player device can't read the host's status directly - instead the host publishes a shared flag into the room:
 
 - `GameState.hostAdFree: boolean` in `liveblocks.config.ts` (init `false` in `providers.tsx`).
 - `useStart` reads the starting device's own `useAdFree()` and stamps `hostAdFree` into room storage; `useSetup` resets it to `false` (so a rematch by a non-Pro host clears it).
@@ -59,7 +59,7 @@ If the host (the device that starts the game) is ad-free, **all players in that 
 Notes / gotchas:
 
 - Only **in-game** spots inherit the host perk. Home/highscores banners are outside any room and stay per-device (self-gating `<AdsterraBanner>`); `useStorage` can't run outside a `RoomProvider`, which is also why the modal takes an `adsSuppressed` **prop** rather than calling the hook itself (the preview page renders that modal without a room).
-- `hostAdFree` is captured **at game start** — a host buying Pro mid-game only applies from the next game.
+- `hostAdFree` is captured **at game start** - a host buying Pro mid-game only applies from the next game.
 
 ## 4. Wiring the Stripe webhook
 

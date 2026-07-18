@@ -11,7 +11,7 @@ import { PlayerResult } from './PlayerResult'
 import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
 import { Command, CommandType, LatLng, TQuestion } from '../types'
-import { PopButton } from './pop/PopButton'
+import { DockButton } from './pop/Dock'
 import { POP, stickerFill } from './pop/theme'
 import { WorldMap, type MapPin } from './geo/WorldMap'
 import { RankReveal } from './geo/RankReveal'
@@ -28,7 +28,7 @@ export default function QuestionResultModal({
 }: {
   canEndGame: boolean
   send?: SendFn
-  /** Hide the ad banner (local user is ad-free, or the host is — see useInGameAdsSuppressed). */
+  /** Hide the ad banner (local user is ad-free, or the host is - see useInGameAdsSuppressed). */
   adsSuppressed?: boolean
 }) {
   const { currentQuestion, updateGame, players, boss, me, showQuestionResultModal } = usePopStore()
@@ -81,7 +81,7 @@ export default function QuestionResultModal({
             />
           )}
 
-          <div className="mx-auto flex min-h-full max-w-4xl flex-col items-center px-5 py-12 text-center">
+          <div className="mx-auto flex min-h-full max-w-4xl flex-col items-center px-5 pt-12 pb-32 text-center">
             <motion.span
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1, rotate: -2 }}
@@ -152,37 +152,40 @@ export default function QuestionResultModal({
                 <AdsterraBanner />
               </div>
             )}
+          </div>
 
-            {showControls && (
-              <div className="mt-12">
+          {/* Pinned control so the host never has to scroll past the player
+              results + ad to advance. Mirrors the in-game Dock, on the reveal's
+              own z-50 layer. */}
+          {showControls && (
+            <motion.div
+              initial={{ y: 80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 24, delay: 0.2 }}
+              className="pointer-events-none fixed inset-x-0 bottom-5 z-10 flex justify-center px-4"
+            >
+              <div className="pointer-events-auto flex items-center gap-2 rounded-pill border-[3px] border-white bg-pop-ink/95 p-2 shadow-pop-card backdrop-blur">
                 {canEndGame ? (
-                  <PopButton
-                    variant="primary"
-                    size="lg"
-                    rotate={-1}
-                    disabled={isEnding}
+                  <DockButton
                     onClick={async () => {
                       setIsEnding(true)
                       postGameToSupabase()
                       await send?.('end')
                     }}
+                    label={isEnding ? 'Ending…' : 'See the results'}
+                    tone="primary"
+                    disabled={isEnding}
                   >
-                    {isEnding ? (
-                      'Ending…'
-                    ) : (
-                      <>
-                        See the results <ListEnd size={24} />
-                      </>
-                    )}
-                  </PopButton>
+                    <ListEnd size={18} strokeWidth={2.75} />
+                  </DockButton>
                 ) : (
-                  <PopButton variant="primary" size="lg" rotate={-1} onClick={() => send?.('next')}>
-                    Next question <ArrowRight size={24} />
-                  </PopButton>
+                  <DockButton onClick={() => send?.('next')} label="Next question" tone="primary">
+                    <ArrowRight size={18} strokeWidth={2.75} />
+                  </DockButton>
                 )}
               </div>
-            )}
-          </div>
+            </motion.div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
