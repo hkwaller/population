@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createElement, useEffect, useMemo, useState } from 'react'
-import { Flag, icons as lucideIcons } from 'lucide-react'
+import { Flag, Trophy, icons as lucideIcons } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import QuestionResultModal from '@/app/components/QuestionResultModal'
@@ -96,17 +96,23 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
 
   return (
     <PopShell bg={POP.cobalt}>
-      <header className="flex items-center justify-between px-5 pt-5">
+      <header className="flex items-center justify-between gap-2 px-5 pt-5">
         <PopLogo textColor={POP.cobalt} />
-        <div className="flex items-center gap-2">
-          <span className="rounded-pill bg-white/15 px-3 py-1.5 text-sm font-black text-white">
-            you: {myScore} pts
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <span className="inline-flex items-center gap-1 rounded-pill bg-white/15 px-2.5 py-1.5 text-sm font-black text-white sm:px-3">
+            <Trophy size={14} strokeWidth={2.75} className="sm:hidden" />
+            <span className="hidden sm:inline">you: </span>
+            {myScore}
+            <span className="hidden sm:inline"> pts</span>
           </span>
           <span
-            className="rounded-pill border-2 border-white px-3 py-1.5 text-sm font-black text-pop-ink"
+            className="rounded-pill border-2 border-white px-2.5 py-1.5 text-sm font-black text-pop-ink sm:px-3"
             style={{ background: POP.sunshine }}
           >
-            {(answeredQuestions?.length ?? 0) + 1} of {amountQuestions}
+            {(answeredQuestions?.length ?? 0) + 1}
+            <span className="hidden sm:inline"> of </span>
+            <span className="sm:hidden">/</span>
+            {amountQuestions}
           </span>
           <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />
         </div>
