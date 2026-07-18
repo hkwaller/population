@@ -122,6 +122,18 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
           <>
             {showQuestions && <Question question={currentQuestion} compact />}
             <ReportLink question={currentQuestion?.question} />
+            {/* Rank is a tall, variable-height list, so it lives in the scroll
+                flow here (not the compact bottom overlay). Its own Lock bar is a
+                fixed element rendered from inside RankInput. */}
+            {currentQuestion?.type === 'rank' && !myAnswered && (
+              <div className="mt-6 w-full max-w-md">
+                <RankInput
+                  question={currentQuestion}
+                  onAnswer={(v, ms) => submit(v, ms)}
+                  elevated={isBoss}
+                />
+              </div>
+            )}
           </>
         )}
       </main>
@@ -172,9 +184,6 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       />
                     )}
                   </>
-                )}
-                {currentQuestion.type === 'rank' && (
-                  <RankInput question={currentQuestion} onAnswer={(v, ms) => submit(v, ms)} />
                 )}
                 {currentQuestion.type !== 'choice' && currentQuestion.type !== 'rank' && (
                   <div className="mt-4">

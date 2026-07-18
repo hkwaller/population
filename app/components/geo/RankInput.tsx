@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Reorder } from 'motion/react'
-import { GripVertical } from 'lucide-react'
+import { GripVertical, Lock } from 'lucide-react'
 
 import type { RankQuestion } from '@/app/types'
 import { PopButton } from '../pop/PopButton'
@@ -10,17 +10,24 @@ import { POP } from '../pop/theme'
 
 /**
  * Drag-to-reorder input for a rank question. Every player arranges the items into
- * their guessed order and commits with "Lock it in". Reports the ordered labels
+ * their guessed order and commits with the "Lock" bar. Reports the ordered labels
  * (top = position 1) plus elapsedMs. Resets when the question changes.
+ *
+ * The list is normal-flow content (it's tall and variable-height, so it lives in
+ * <main>, not the compact bottom overlay other inputs use). The commit button is a
+ * fixed bar pinned to the bottom; `elevated` lifts it above the host Dock so the
+ * two never collide on a device that is both host and player.
  */
 export function RankInput({
   question,
   onAnswer,
   disabled = false,
+  elevated = false,
 }: {
   question: RankQuestion
   onAnswer: (value: string[], elapsedMs: number) => void
   disabled?: boolean
+  elevated?: boolean
 }) {
   const [order, setOrder] = useState<string[]>(() => question.items.map((i) => i.label))
   const startedAt = useRef<number>(0)
@@ -38,9 +45,9 @@ export function RankInput({
   }, [question.id])
 
   return (
-    <div className="flex flex-col gap-4">
-      <p className="text-center text-base font-bold text-pop-ink/60">
-        Drag into order - most populous at the top
+    <div className="flex w-full flex-col gap-4">
+      <p className="text-center text-base font-bold text-white/80">
+        Drag into order — most populous at the top
       </p>
       <Reorder.Group axis="y" values={order} onReorder={setOrder} className="flex flex-col gap-2.5">
         {order.map((label, i) => (
@@ -59,19 +66,30 @@ export function RankInput({
             >
               {i + 1}
             </span>
-            <span className="text-lg font-black text-pop-ink">{label}</span>
+            <span className="text-lg font-black leading-tight text-pop-ink">{label}</span>
             <GripVertical size={22} className="ml-auto flex-none text-pop-ink/35" />
           </Reorder.Item>
         ))}
       </Reorder.Group>
-      <PopButton
-        variant="primary"
-        size="lg"
-        disabled={disabled}
-        onClick={() => onAnswer(order, Math.round(performance.now() - startedAt.current))}
+
+      {/* Compact commit bar, fixed to the bottom. `elevated` lifts it clear of
+          the host Dock; a player-only device gets the same bar at the base. */}
+      <div
+        className={`pointer-events-none fixed inset-x-0 z-30 flex justify-center px-5 ${
+          elevated ? 'bottom-24' : 'bottom-6'
+        }`}
       >
-        Lock it in
-      </PopButton>
+        <PopButton
+          variant="primary"
+          size="md"
+          disabled={disabled}
+          className="pointer-events-auto shadow-pop-card"
+          onClick={() => onAnswer(order, Math.round(performance.now() - startedAt.current))}
+        >
+          <Lock size={20} strokeWidth={3} />
+          Lock
+        </PopButton>
+      </div>
     </div>
   )
 }
