@@ -24,6 +24,7 @@ export const useSetup = () => {
       showQuestions: showQuestions,
       answerModes: answerModes,
       players: [],
+      hostAdFree: false,
     })
   }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import QRCode from 'react-qr-code'
 import { sample } from 'lodash'
@@ -12,24 +12,50 @@ import { useUser } from '@clerk/nextjs'
 import { GameRoomProvider } from '@/app/providers'
 import { makeId } from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
+import { useSupabase } from '@/hooks/useSupabase'
 import { icons } from '@/app/icons'
 import { Player } from '@/app/components/Player'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
-import { PopInput } from '@/app/components/pop/PopControls'
+import { NamePromptModal } from '@/app/components/pop/NamePromptModal'
 import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
 import { POP, stickerColors } from '@/app/components/pop/theme'
 
 function SetupPageContent({ params }: { params: { id: string } }) {
   const { user } = useUser()
   const { game, send, closeModals, updateGame, setLocalJoinInfo } = useGame(params.id)
+  const { fetchPlayerPreferences, updatePlayerPreferences } = useSupabase()
   const { players, preferences, boss, playingOnSameDevice } = game
   const [name, setName] = useState('')
   const [isStarting, setIsStarting] = useState(false)
   const [copied, setCopied] = useState(false)
   const [howToOpen, setHowToOpen] = useState(false)
+  const [namePromptOpen, setNamePromptOpen] = useState(false)
+  const [savingName, setSavingName] = useState(false)
   const router = useRouter()
+
+  // Best-guess name from Clerk, used to seed the prompt when we have nothing saved.
+  const clerkName =
+    user?.fullName ||
+    user?.firstName ||
+    user?.username ||
+    user?.primaryEmailAddress?.emailAddress?.split('@')[0] ||
+    ''
+
+  // Pull saved preferences for a signed-in player if we don't already hold a
+  // display_name locally - so someone who set their name on another device
+  // isn't prompted again.
+  useEffect(() => {
+    if (!user?.id || preferences?.display_name) return
+    let active = true
+    fetchPlayerPreferences(user.id).then((prefs) => {
+      if (active && prefs?.display_name) updateGame({ preferences: prefs as any })
+    })
+    return () => {
+      active = false
+    }
+  }, [user?.id, preferences?.display_name, fetchPlayerPreferences, updateGame])
 
   const copyCode = async () => {
     try {
@@ -55,34 +81,73 @@ function SetupPageContent({ params }: { params: { id: string } }) {
     router.push(`/game/${params.id}`)
   }
 
-  const handleAddPlayer = ({ type }: { type: 'user' | 'local' }) => {
-    const id = type === 'user' ? user?.id : makeId()
+  const handleAddLocalPlayer = () => {
+    const id = makeId()
     const player = {
-      id: id!,
-      ...(type === 'user'
-        ? {
-            name:
-              preferences.display_name ||
-              user?.fullName ||
-              user?.firstName ||
-              user?.username ||
-              user?.primaryEmailAddress?.emailAddress?.split('@')[0] ||
-              'Player',
-            color: preferences.preferred_color ?? sample(stickerColors)!.id,
-            localPlayer: true,
-            icon: preferences.icon ?? sample(icons)?.name,
-          }
-        : {
-            name,
-            color: sample(stickerColors)!.id,
-            localPlayer: true,
-            icon: sample(Object.keys(lucideIcons))!,
-          }),
+      id,
+      name,
+      color: sample(stickerColors)!.id,
+      localPlayer: true,
+      icon: sample(Object.keys(lucideIcons))!,
     }
     send({ type: 'boss', payload: id })
     setLocalJoinInfo({ player: player as any, gameId: params.id! })
     send('join', { ...player, gameId: params.id! })
     setName('')
+  }
+
+  // Add the signed-in player to the room with a resolved display name + sticker.
+  const joinAsUser = ({
+    name,
+    color,
+    icon,
+  }: {
+    name: string
+    color: string
+    icon: string
+  }) => {
+    const id = user?.id
+    const player = { id: id!, name, color, localPlayer: true, icon }
+    send({ type: 'boss', payload: id })
+    setLocalJoinInfo({ player: player as any, gameId: params.id! })
+    send('join', { ...player, gameId: params.id! })
+  }
+
+  const handleAddMe = () => {
+    // Nothing saved yet - ask for a name before joining so we never fall back to
+    // the anonymous "Player" sticker.
+    if (!preferences?.display_name) {
+      setNamePromptOpen(true)
+      return
+    }
+    joinAsUser({
+      name: preferences.display_name,
+      color: preferences.preferred_color ?? sample(stickerColors)!.id,
+      icon: preferences.icon ?? sample(icons)!.name,
+    })
+  }
+
+  // Persist the chosen name (with a default sticker if none set) and join.
+  const handleSaveName = async (chosenName: string) => {
+    if (!user?.id || savingName) return
+    setSavingName(true)
+    const color = preferences?.preferred_color ?? sample(stickerColors)!.id
+    const icon = preferences?.icon ?? sample(icons)!.name
+    try {
+      await updatePlayerPreferences(user.id, color, icon, chosenName)
+      updateGame({
+        preferences: {
+          ...preferences,
+          preferred_color: color,
+          icon,
+          display_name: chosenName,
+        } as any,
+      })
+      joinAsUser({ name: chosenName, color, icon })
+      setNamePromptOpen(false)
+    } finally {
+      setSavingName(false)
+    }
   }
 
   return (
@@ -170,7 +235,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
 
             {user && !players.find((p) => p.id === user.id) && (
               <button
-                onClick={() => handleAddPlayer({ type: 'user' })}
+                onClick={handleAddMe}
                 className="mt-4 inline-flex items-center gap-3 rounded-pill bg-pop-ink px-5 py-3 text-lg font-black text-white"
               >
                 Add me
@@ -205,7 +270,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                       className="min-w-0 flex-1 bg-transparent text-xl font-black text-pop-ink outline-none placeholder:text-[rgba(23,18,20,0.35)]"
                     />
                     <button
-                      onClick={() => handleAddPlayer({ type: 'local' })}
+                      onClick={handleAddLocalPlayer}
                       className="shrink-0 rounded-pill px-5 py-2.5 text-lg font-black text-white"
                       style={{ background: POP.coral }}
                     >
@@ -238,6 +303,14 @@ function SetupPageContent({ params }: { params: { id: string } }) {
       </div>
 
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
+
+      <NamePromptModal
+        isOpen={namePromptOpen}
+        initialName={clerkName}
+        saving={savingName}
+        onSave={handleSaveName}
+        onClose={() => setNamePromptOpen(false)}
+      />
     </PopShell>
   )
 }

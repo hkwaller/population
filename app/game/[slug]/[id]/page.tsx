@@ -8,6 +8,7 @@ import QuestionResultModal from '@/app/components/QuestionResultModal'
 import { Question } from '@/app/components/Question'
 import { AnswerInputModal } from '@/app/components/AnswerInputModa'
 import { useGame } from '@/hooks/useGame'
+import { useInGameAdsSuppressed } from '@/hooks/useInGameAdsSuppressed'
 import { useSupabase } from '@/hooks/useSupabase'
 import { useToast } from '@/hooks/use-toast'
 import { GameRoomProvider } from '@/app/providers'
@@ -28,6 +29,7 @@ import { POP, stickerFill } from '@/app/components/pop/theme'
 
 function PlayerPageContent({ params }: { params: { slug: string; id: string } }) {
   const { game, send, closeModals } = useGame(params.slug)
+  const { suppressed: adsSuppressed } = useInGameAdsSuppressed()
   const { postGameToSupabase } = useSupabase()
   const {
     players,
@@ -223,6 +225,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
           isBoss && everyoneHasAnswered && answeredQuestions?.length === amountQuestions - 1
         }
         send={send}
+        adsSuppressed={adsSuppressed}
       />
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>

@@ -10,6 +10,7 @@ import { PopShell } from './components/pop/PopShell'
 import { PopHeader, PopAuth } from './components/pop/PopHeader'
 import { PopButton } from './components/pop/PopButton'
 import { POP, POP_SPRING } from './components/pop/theme'
+import { AdsterraBanner } from './components/AdsterraBanner'
 
 const STEPS = [
   { n: 1, bg: POP.coral, text: 'Host starts a party, friends scan the code' },
@@ -109,6 +110,10 @@ export default function StartPage() {
           </motion.div>
         </div>
       </main>
+
+      <div className="px-6 pb-10">
+        <AdsterraBanner />
+      </div>
 
       <Footer />
     </PopShell>

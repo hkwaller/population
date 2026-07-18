@@ -16,6 +16,7 @@ import { POP, stickerFill } from './pop/theme'
 import { WorldMap, type MapPin } from './geo/WorldMap'
 import { RankReveal } from './geo/RankReveal'
 import { byName } from '@/lib/geo/countries'
+import { AdsterraBanner } from './AdsterraBanner'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
 
@@ -23,9 +24,12 @@ type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<v
 export default function QuestionResultModal({
   canEndGame,
   send,
+  adsSuppressed = false,
 }: {
   canEndGame: boolean
   send?: SendFn
+  /** Hide the ad banner (local user is ad-free, or the host is — see useInGameAdsSuppressed). */
+  adsSuppressed?: boolean
 }) {
   const { currentQuestion, updateGame, players, boss, me, showQuestionResultModal } = usePopStore()
   const { postGameToSupabase } = useSupabase()
@@ -142,6 +146,12 @@ export default function QuestionResultModal({
                 />
               ))}
             </div>
+
+            {!adsSuppressed && (
+              <div className="mt-12 w-full">
+                <AdsterraBanner />
+              </div>
+            )}
 
             {showControls && (
               <div className="mt-12">

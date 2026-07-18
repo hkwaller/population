@@ -1,10 +1,14 @@
 import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 import { useSupabase } from '../useSupabase'
+import { useAdFree } from '../useAdFree'
 import { StartPayload } from '@/app/types'
 import { sampleQuestions } from '@/lib/sampleQuestions'
 
 export const useStart = () => {
+  // The device issuing `start` is the host; publish its ad-free status so the
+  // whole room inherits the perk (see GameState.hostAdFree).
+  const { adFree: hostAdFree } = useAdFree()
   const {
     nextQuestion,
     amountQuestions,
@@ -47,6 +51,7 @@ export const useStart = () => {
       showQuestions: showQuestions,
       answerModes: answerModes,
       selectedCategories: selectedCategories,
+      hostAdFree: hostAdFree,
     })
   }
 

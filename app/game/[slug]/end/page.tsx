@@ -8,17 +8,21 @@ import { useRouter } from 'next/navigation'
 
 import { QuestionResult } from '@/app/components/QuestionResult'
 import { useGame } from '@/hooks/useGame'
+import { useInGameAdsSuppressed } from '@/hooks/useInGameAdsSuppressed'
 import { GameRoomProvider } from '@/app/providers'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { POP, stickerFill } from '@/app/components/pop/theme'
+import { AdsterraBanner } from '@/app/components/AdsterraBanner'
+import { AdsterraPopunder } from '@/app/components/AdsterraPopunder'
 
 const EndPageContent = ({ slug }: { slug: string }) => {
   const [size, setSize] = useState({ width: 0, height: 0 })
   const [showBreakdown, setShowBreakdown] = useState(false)
   const { game, send } = useGame(slug)
   const { players, answeredQuestions, command, boss, me } = game
+  const { suppressed: adsSuppressed } = useInGameAdsSuppressed()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -115,6 +119,17 @@ const EndPageContent = ({ slug }: { slug: string }) => {
             </PopButton>
           )}
         </div>
+
+        {/* Ad banner + popunder (popunder only on player devices, per plan).
+            Suppressed when this device or the host is ad-free. */}
+        {!adsSuppressed && (
+          <>
+            <div className="mt-16">
+              <AdsterraBanner />
+            </div>
+            {me && <AdsterraPopunder />}
+          </>
+        )}
 
         {/* Breakdown */}
         <div className="mt-12 flex flex-col gap-8">

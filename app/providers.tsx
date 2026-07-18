@@ -44,6 +44,7 @@ export function GameRoomProvider({
           selectedCategories: [],
           players: [],
           endedAt: undefined,
+          hostAdFree: false,
         }),
       }}
     >

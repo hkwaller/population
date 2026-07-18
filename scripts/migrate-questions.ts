@@ -12,7 +12,7 @@
  *   npx tsx --env-file=.env.local scripts/migrate-questions.ts
  *
  * Full sync: deletes all existing `source='geo'` rows first, then inserts the
- * current bank. This keeps Supabase in lockstep with the JSON — questions removed
+ * current bank. This keeps Supabase in lockstep with the JSON - questions removed
  * from the generator (e.g. dropped distance pairs) are pruned, not left orphaned.
  * Idempotent: re-running always reproduces exactly the JSON's contents.
  */

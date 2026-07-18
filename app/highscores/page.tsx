@@ -9,6 +9,7 @@ import { TPlayer } from '../types'
 import { PopShell } from '../components/pop/PopShell'
 import { PopHeader, PopAuth } from '../components/pop/PopHeader'
 import { POP, stickerFill } from '../components/pop/theme'
+import { AdsterraBanner } from '../components/AdsterraBanner'
 
 type SortOption = 'overall' | 'perGame' | 'bullseyes'
 
@@ -116,6 +117,9 @@ export default function Highscores() {
               No scores yet - go make history.
             </p>
           )}
+        </div>
+        <div className="pb-10">
+          <AdsterraBanner />
         </div>
       </div>
     </PopShell>
