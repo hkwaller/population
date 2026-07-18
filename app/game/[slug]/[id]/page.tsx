@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createElement, useEffect, useMemo, useState } from 'react'
-import { Flag, Trophy, icons as lucideIcons } from 'lucide-react'
+import { Flag, Trophy, Lock, icons as lucideIcons } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import QuestionResultModal from '@/app/components/QuestionResultModal'
@@ -17,7 +17,7 @@ import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
 import { WorldMap } from '@/app/components/geo/WorldMap'
-import { RankInput } from '@/app/components/geo/RankInput'
+import { RankList } from '@/app/components/geo/RankInput'
 import { SpeedBonusMeter } from '@/app/components/geo/SpeedBonusMeter'
 import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
 import { PopShell } from '@/app/components/pop/PopShell'
@@ -50,12 +50,18 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
 
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
+  // Rank answer lives here (not in RankInput) so the Lock control can sit inside
+  // the host Dock, away from the list.
+  const [rankOrder, setRankOrder] = useState<string[]>([])
   // Timestamp the question was shown; drives the choice speed bonus + meter.
   const [startedAt, setStartedAt] = useState(0)
 
   useEffect(() => {
     setMapPin(null)
     setStartedAt(performance.now())
+    if (currentQuestion?.type === 'rank') {
+      setRankOrder(currentQuestion.items.map((i) => i.label))
+    }
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -133,11 +139,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 fixed element rendered from inside RankInput. */}
             {currentQuestion?.type === 'rank' && !myAnswered && (
               <div className="mt-6 w-full max-w-md">
-                <RankInput
-                  question={currentQuestion}
-                  onAnswer={(v, ms) => submit(v, ms)}
-                  elevated={isBoss}
-                />
+                <RankList order={rankOrder} onReorder={setRankOrder} tone="light" />
               </div>
             )}
           </>
@@ -222,9 +224,27 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
             postGameToSupabase()
             await send('end')
           }}
+          onLock={() => submit(rankOrder, elapsed())}
+          showLock={currentQuestion?.type === 'rank' && !myAnswered}
           canEndGame={canEndGame}
           ending={isEnding}
         />
+      )}
+
+      {/* Player-only devices have no Dock, so their rank Lock is a standalone
+          bottom bar. The host locks in from inside the Dock instead. */}
+      {!isBoss && !waiting && currentQuestion?.type === 'rank' && !myAnswered && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-5">
+          <PopButton
+            variant="primary"
+            size="md"
+            className="pointer-events-auto shadow-pop-card"
+            onClick={() => submit(rankOrder, elapsed())}
+          >
+            <Lock size={20} strokeWidth={3} />
+            Lock
+          </PopButton>
+        </div>
       )}
 
       <AnswerInputModal

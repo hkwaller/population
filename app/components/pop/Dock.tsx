@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { RefreshCw, SkipForward, ListEnd } from 'lucide-react'
+import { RefreshCw, SkipForward, ListEnd, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { POP } from './theme'
 
@@ -13,12 +13,20 @@ export function Dock({
   onReplace,
   onNext,
   onEnd,
+  onLock,
+  showLock = false,
+  lockDisabled = false,
   canEndGame = false,
   ending = false,
 }: {
   onReplace: () => void
   onNext: () => void
   onEnd?: () => void
+  onLock?: () => void
+  // When the host still owes an answer on a rank question, the primary CTA is
+  // Lock (their own answer), so Next/End step back to the subtle tone.
+  showLock?: boolean
+  lockDisabled?: boolean
   canEndGame?: boolean
   ending?: boolean
 }) {
@@ -37,14 +45,24 @@ export function Dock({
           <DockButton
             onClick={() => onEnd?.()}
             label={ending ? 'Ending…' : 'End game'}
-            tone="primary"
+            tone={showLock ? 'subtle' : 'primary'}
             disabled={ending}
           >
             <ListEnd size={18} strokeWidth={2.75} />
           </DockButton>
         ) : (
-          <DockButton onClick={onNext} label="Next" tone="primary">
+          <DockButton onClick={onNext} label="Next" tone={showLock ? 'subtle' : 'primary'}>
             <SkipForward size={18} strokeWidth={2.75} />
+          </DockButton>
+        )}
+        {showLock && (
+          <DockButton
+            onClick={() => onLock?.()}
+            label="Lock"
+            tone="primary"
+            disabled={lockDisabled}
+          >
+            <Lock size={18} strokeWidth={2.75} />
           </DockButton>
         )}
       </div>
@@ -52,7 +70,7 @@ export function Dock({
   )
 }
 
-function DockButton({
+export function DockButton({
   children,
   label,
   onClick,

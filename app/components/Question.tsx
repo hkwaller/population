@@ -29,9 +29,13 @@ export const Question = ({
           : 'max-w-[760px] rounded-[40px] px-8 py-12 md:px-[72px] md:py-14'
       }`}
     >
-      <div className="absolute -top-3.5 left-6">
-        <Category question={question} className="rotate-[-3deg] shadow-pop-sm" />
-      </div>
+      {/* Rank questions state the category in their prompt ("Sort these by
+          population…"), so the chip would just repeat it — hide it for rank. */}
+      {question.type !== 'rank' && (
+        <div className="absolute -top-3.5 left-6">
+          <Category question={question} className="rotate-[-3deg] shadow-pop-sm" />
+        </div>
+      )}
       <div className="flex flex-col items-center gap-4">
         <QuestionPrompt prompt={question.prompt} fallbackText={question.question} />
       </div>

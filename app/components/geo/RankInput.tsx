@@ -2,54 +2,39 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Reorder } from 'motion/react'
-import { GripVertical, Lock } from 'lucide-react'
+import { GripVertical } from 'lucide-react'
 
 import type { RankQuestion } from '@/app/types'
 import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 
 /**
- * Drag-to-reorder input for a rank question. Every player arranges the items into
- * their guessed order and commits with the "Lock" bar. Reports the ordered labels
- * (top = position 1) plus elapsedMs. Resets when the question changes.
- *
- * The list is normal-flow content (it's tall and variable-height, so it lives in
- * <main>, not the compact bottom overlay other inputs use). The commit button is a
- * fixed bar pinned to the bottom; `elevated` lifts it above the host Dock so the
- * two never collide on a device that is both host and player.
+ * Controlled drag-to-reorder list for a rank question (top = position 1). Dumb:
+ * the parent owns the order and supplies the commit control. Used directly by the
+ * multiplayer game, where "Lock" lives in the host Dock rather than under the list.
+ * `tone` sets the helper-text colour ('light' on dark backgrounds, 'dark' on cards).
  */
-export function RankInput({
-  question,
-  onAnswer,
+export function RankList({
+  order,
+  onReorder,
   disabled = false,
-  elevated = false,
+  tone = 'dark',
 }: {
-  question: RankQuestion
-  onAnswer: (value: string[], elapsedMs: number) => void
+  order: string[]
+  onReorder: (order: string[]) => void
   disabled?: boolean
-  elevated?: boolean
+  tone?: 'light' | 'dark'
 }) {
-  const [order, setOrder] = useState<string[]>(() => question.items.map((i) => i.label))
-  const startedAt = useRef<number>(0)
-
-  // Reset the order when the question changes (pure derived-state during render).
-  const [prevId, setPrevId] = useState(question.id)
-  if (question.id !== prevId) {
-    setPrevId(question.id)
-    setOrder(question.items.map((i) => i.label))
-  }
-
-  // Start the answer timer on mount and whenever the question changes.
-  useEffect(() => {
-    startedAt.current = performance.now()
-  }, [question.id])
-
   return (
     <div className="flex w-full flex-col gap-4">
-      <p className="text-center text-base font-bold text-white/80">
+      <p
+        className={`text-center text-base font-bold ${
+          tone === 'light' ? 'text-white/80' : 'text-pop-ink/60'
+        }`}
+      >
         Drag into order — most populous at the top
       </p>
-      <Reorder.Group axis="y" values={order} onReorder={setOrder} className="flex flex-col gap-2.5">
+      <Reorder.Group axis="y" values={order} onReorder={onReorder} className="flex flex-col gap-2.5">
         {order.map((label, i) => (
           <Reorder.Item
             key={label}
@@ -71,25 +56,50 @@ export function RankInput({
           </Reorder.Item>
         ))}
       </Reorder.Group>
+    </div>
+  )
+}
 
-      {/* Compact commit bar, fixed to the bottom. `elevated` lifts it clear of
-          the host Dock; a player-only device gets the same bar at the base. */}
-      <div
-        className={`pointer-events-none fixed inset-x-0 z-30 flex justify-center px-5 ${
-          elevated ? 'bottom-24' : 'bottom-6'
-        }`}
+/**
+ * Self-contained rank input: manages its own order + answer timer and commits with
+ * "Lock it in". Used by the shared per-type input (solo/daily) and the same-device
+ * game page. Resets when the question changes.
+ */
+export function RankInput({
+  question,
+  onAnswer,
+  disabled = false,
+}: {
+  question: RankQuestion
+  onAnswer: (value: string[], elapsedMs: number) => void
+  disabled?: boolean
+}) {
+  const [order, setOrder] = useState<string[]>(() => question.items.map((i) => i.label))
+  const startedAt = useRef<number>(0)
+
+  // Reset the order when the question changes (pure derived-state during render).
+  const [prevId, setPrevId] = useState(question.id)
+  if (question.id !== prevId) {
+    setPrevId(question.id)
+    setOrder(question.items.map((i) => i.label))
+  }
+
+  // Start the answer timer on mount and whenever the question changes.
+  useEffect(() => {
+    startedAt.current = performance.now()
+  }, [question.id])
+
+  return (
+    <div className="flex flex-col gap-4">
+      <RankList order={order} onReorder={setOrder} disabled={disabled} />
+      <PopButton
+        variant="primary"
+        size="lg"
+        disabled={disabled}
+        onClick={() => onAnswer(order, Math.round(performance.now() - startedAt.current))}
       >
-        <PopButton
-          variant="primary"
-          size="md"
-          disabled={disabled}
-          className="pointer-events-auto shadow-pop-card"
-          onClick={() => onAnswer(order, Math.round(performance.now() - startedAt.current))}
-        >
-          <Lock size={20} strokeWidth={3} />
-          Lock
-        </PopButton>
-      </div>
+        Lock it in
+      </PopButton>
     </div>
   )
 }

@@ -27,15 +27,8 @@ import { POP } from '@/app/components/pop/theme'
 
 function GamePageContent({ params }: { params: { slug: string } }) {
   const { game, send, closeModals } = useGame(params.slug)
-  const {
-    players,
-    currentQuestion,
-    command,
-    answeredQuestions,
-    amountQuestions,
-    me,
-    answerModes,
-  } = game
+  const { players, currentQuestion, command, answeredQuestions, amountQuestions, me, answerModes } =
+    game
 
   const [answerInputModalOpen, setAnswerInputModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(0)
