@@ -4,27 +4,46 @@ import { useEffect, useRef, useState } from 'react'
 import { Reorder } from 'motion/react'
 import { GripVertical } from 'lucide-react'
 
-import type { RankQuestion } from '@/app/types'
+import type { RankItem, RankQuestion } from '@/app/types'
 import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 
 /**
- * Controlled drag-to-reorder list for a rank question (top = position 1). Dumb:
- * the parent owns the order and supplies the commit control. Used directly by the
- * multiplayer game, where "Lock" lives in the host Dock rather than under the list.
- * `tone` sets the helper-text colour ('light' on dark backgrounds, 'dark' on cards).
+ * Drag-to-reorder list for a rank question (top = position 1). Owns its order as
+ * LOCAL state on purpose: the parent (a live game page) re-renders on every
+ * Liveblocks update, and a *controlled* Reorder resets the drag mid-gesture when
+ * new `values` arrive - the item snaps back. Local state keeps the drag smooth;
+ * the current order is mirrored up via `onChange` for whatever commits it (the
+ * Dock's Lock, or a standalone button). Re-inits when `resetKey` (the question id)
+ * changes. `tone` sets the helper-text colour for dark vs light backgrounds.
  */
 export function RankList({
-  order,
-  onReorder,
+  items,
+  resetKey,
+  onChange,
   disabled = false,
   tone = 'dark',
 }: {
-  order: string[]
-  onReorder: (order: string[]) => void
+  items: RankItem[]
+  resetKey: string
+  onChange: (order: string[]) => void
   disabled?: boolean
   tone?: 'light' | 'dark'
 }) {
+  const [order, setOrder] = useState<string[]>(() => items.map((i) => i.label))
+
+  // Re-init on question change (pure derived-state during render).
+  const [prevKey, setPrevKey] = useState(resetKey)
+  if (resetKey !== prevKey) {
+    setPrevKey(resetKey)
+    setOrder(items.map((i) => i.label))
+  }
+
+  const handleReorder = (next: string[]) => {
+    setOrder(next)
+    onChange(next)
+  }
+
   return (
     <div className="flex w-full flex-col gap-4">
       <p
@@ -32,12 +51,12 @@ export function RankList({
           tone === 'light' ? 'text-white/80' : 'text-pop-ink/60'
         }`}
       >
-        Drag into order - most populous at the top
+        Drag into order — most populous at the top
       </p>
       <Reorder.Group
         axis="y"
         values={order}
-        onReorder={onReorder}
+        onReorder={handleReorder}
         className="flex flex-col gap-2.5"
       >
         {order.map((label, i) => (
@@ -66,9 +85,9 @@ export function RankList({
 }
 
 /**
- * Self-contained rank input: manages its own order + answer timer and commits with
- * "Lock it in". Used by the shared per-type input (solo/daily) and the same-device
- * game page. Resets when the question changes.
+ * Self-contained rank input: the drag list plus its own "Lock it in" button and
+ * answer timer. Used by the shared per-type input (solo/daily). Live game pages
+ * use RankList directly and commit through the Dock instead.
  */
 export function RankInput({
   question,
@@ -82,21 +101,26 @@ export function RankInput({
   const [order, setOrder] = useState<string[]>(() => question.items.map((i) => i.label))
   const startedAt = useRef<number>(0)
 
-  // Reset the order when the question changes (pure derived-state during render).
+  // Keep the committed order in sync with the question (RankList resets its own
+  // copy on the same key; this mirror is what the Lock button submits).
   const [prevId, setPrevId] = useState(question.id)
   if (question.id !== prevId) {
     setPrevId(question.id)
     setOrder(question.items.map((i) => i.label))
   }
 
-  // Start the answer timer on mount and whenever the question changes.
   useEffect(() => {
     startedAt.current = performance.now()
   }, [question.id])
 
   return (
     <div className="flex flex-col gap-4">
-      <RankList order={order} onReorder={setOrder} disabled={disabled} />
+      <RankList
+        items={question.items}
+        resetKey={question.id}
+        onChange={setOrder}
+        disabled={disabled}
+      />
       <PopButton
         variant="primary"
         size="lg"

@@ -139,7 +139,12 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 fixed element rendered from inside RankInput. */}
             {currentQuestion?.type === 'rank' && !myAnswered && (
               <div className="mt-6 w-full max-w-md">
-                <RankList order={rankOrder} onReorder={setRankOrder} tone="light" />
+                <RankList
+                  items={currentQuestion.items}
+                  resetKey={currentQuestion.id}
+                  onChange={setRankOrder}
+                  tone="light"
+                />
               </div>
             )}
           </>

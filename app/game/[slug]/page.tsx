@@ -106,7 +106,12 @@ function GamePageContent({ params }: { params: { slug: string } }) {
             here (not the fixed bottom overlay). Lock lives in the Dock below. */}
         {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (
           <div className="mt-8 w-full max-w-md">
-            <RankList order={rankOrder} onReorder={setRankOrder} tone="light" />
+            <RankList
+              items={currentQuestion.items}
+              resetKey={currentQuestion.id}
+              onChange={setRankOrder}
+              tone="light"
+            />
           </div>
         )}
 
