@@ -10,11 +10,13 @@ import { POP } from '../pop/theme'
 import { WorldMap } from './WorldMap'
 
 /**
- * Map answering UI. The inline map is small, so it offers two ways to get a
- * bigger canvas to aim on: an explicit "Expand" button, and - on phones -
- * auto-expanding to fullscreen when the device is rotated to landscape. Both
- * lead to the same fullscreen overlay where you pan/zoom/tap to drop a pin and
- * confirm. The pin is shared between the inline and fullscreen views.
+ * Map answering UI. The inline map is too small to aim on, so it's a
+ * tap-anywhere launcher (a static preview of your current pin) that opens a
+ * fullscreen overlay - that overlay is where you pan/zoom/tap to drop the pin
+ * and confirm. Rotating a phone into landscape also opens it, but that's only a
+ * bonus: most people play with rotation lock on, so the OS never reports
+ * landscape and the tap target is the path that always works. The pin is shared
+ * between the preview and the fullscreen view.
  */
 export function MapPicker({
   value,
@@ -29,15 +31,20 @@ export function MapPicker({
 }) {
   const [expanded, setExpanded] = useState(false)
 
-  // Phones only: rotating into landscape opens the fullscreen map. Firing on the
-  // change (not the current state) means closing it while still landscape won't
-  // immediately reopen - you'd rotate again. Desktops (fine pointer) are excluded.
+  // Phones only: landscape opens the fullscreen map. We open both when the
+  // question already loads in landscape and when the device rotates into it.
+  // NOTE: with rotation lock on (the common case) the OS never enters landscape,
+  // so this never fires - that's why the tap-to-open target below is the primary
+  // path and this is only a shortcut for people who play unlocked. Firing on the
+  // change (not on every render) means closing it while still landscape won't
+  // immediately reopen. Desktops (fine pointer) are excluded.
   useEffect(() => {
     if (disabled) return
     if (typeof window === 'undefined' || !window.matchMedia) return
     const isPhone = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches
     if (!isPhone) return
     const landscape = window.matchMedia('(orientation: landscape)')
+    if (landscape.matches) setExpanded(true)
     const onChange = (e: MediaQueryListEvent) => {
       if (e.matches) setExpanded(true)
     }
@@ -98,19 +105,31 @@ export function MapPicker({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative overflow-hidden rounded-[24px] border-4 border-pop-ink shadow-pop-card">
-        <WorldMap value={value} onPick={onPick} interactive={!disabled} />
-        <button
-          type="button"
-          aria-label="Expand map"
-          onClick={() => setExpanded(true)}
-          className="absolute right-2 top-2 flex items-center gap-1.5 rounded-pill border-2 border-pop-ink bg-white px-3 py-2 text-sm font-black text-pop-ink shadow-pop-sm"
-        >
-          <Maximize2 size={16} /> Expand
-        </button>
-      </div>
+      {/* The inline map is a launcher, not an aiming surface - the whole card
+          opens the fullscreen map where you actually place the pin. It shows a
+          static preview of the current guess (pointer-events off so every tap
+          reaches the button). */}
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setExpanded(true)}
+        aria-label={value ? 'Open the map to adjust your guess' : 'Open the map to place your guess'}
+        className="relative block w-full overflow-hidden rounded-[24px] border-4 border-pop-ink shadow-pop-card disabled:opacity-60"
+      >
+        <div className="pointer-events-none">
+          <WorldMap value={value} interactive={false} />
+        </div>
+        {!disabled && (
+          <div className="absolute inset-0 flex items-center justify-center bg-pop-ink/15">
+            <span className="flex items-center gap-2 rounded-pill border-2 border-pop-ink bg-white px-4 py-2 text-sm font-black text-pop-ink shadow-pop-sm">
+              <Maximize2 size={16} />
+              {value ? 'Tap to adjust your guess' : 'Tap to open the map'}
+            </span>
+          </div>
+        )}
+      </button>
       <PopButton variant="primary" size="lg" disabled={disabled || !value} onClick={onConfirm}>
-        {value ? 'Lock it in' : 'Tap the map to guess'}
+        {value ? 'Lock it in' : 'Tap to open the map'}
       </PopButton>
       {overlay}
     </div>
