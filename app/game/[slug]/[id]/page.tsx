@@ -16,7 +16,7 @@ import { asSlider, formatAnswerValue, isInputMode } from '@/lib/utils'
 import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
-import { WorldMap } from '@/app/components/geo/WorldMap'
+import { MapPicker } from '@/app/components/geo/MapPicker'
 import { RankList } from '@/app/components/geo/RankInput'
 import { SpeedBonusMeter } from '@/app/components/geo/SpeedBonusMeter'
 import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
@@ -178,9 +178,11 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                   />
                 )}
                 {currentQuestion.type === 'map' && (
-                  <div className="overflow-hidden rounded-[20px] border-4 border-pop-ink">
-                    <WorldMap value={mapPin} onPick={setMapPin} />
-                  </div>
+                  <MapPicker
+                    value={mapPin}
+                    onPick={setMapPin}
+                    onConfirm={() => mapPin && submit(mapPin, elapsed())}
+                  />
                 )}
                 {currentQuestion.type === 'choice' && (
                   <>
@@ -198,17 +200,15 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                     )}
                   </>
                 )}
-                {currentQuestion.type !== 'choice' && currentQuestion.type !== 'rank' && (
+                {/* Map has its own Lock control inside MapPicker; this covers slider. */}
+                {currentQuestion.type === 'slider' && (
                   <div className="mt-4">
                     <PopButton
                       variant="primary"
                       size="lg"
                       rotate={-1}
                       className="w-full"
-                      disabled={currentQuestion.type === 'map' && !mapPin}
-                      onClick={() =>
-                        submit(currentQuestion.type === 'map' ? mapPin! : currentAnswer)
-                      }
+                      onClick={() => submit(currentAnswer)}
                     >
                       Lock it in
                     </PopButton>
