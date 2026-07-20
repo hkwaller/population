@@ -332,10 +332,10 @@ export function WorldMap({
               key={i}
               cx={xy[0]}
               cy={xy[1]}
-              r={5 * k}
+              r={10 * k}
               fill={pin.color}
               stroke="#fff"
-              strokeWidth={1.5 * k}
+              strokeWidth={2 * k}
             />
           )
         })}
