@@ -5,6 +5,7 @@ import { Reorder } from 'motion/react'
 import { GripVertical } from 'lucide-react'
 
 import type { RankItem, RankQuestion } from '@/app/types'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 
@@ -31,6 +32,11 @@ export function RankList({
   tone?: 'light' | 'dark'
 }) {
   const [order, setOrder] = useState<string[]>(() => items.map((i) => i.label))
+
+  // Lock page scroll while the list is interactive so a touch-drag can't be
+  // hijacked as a page scroll and drop the tile mid-gesture. The list fits on
+  // screen, so nothing is lost. Released once answered (disabled).
+  useLockBodyScroll(!disabled)
 
   // Re-init on question change (pure derived-state during render).
   const [prevKey, setPrevKey] = useState(resetKey)
