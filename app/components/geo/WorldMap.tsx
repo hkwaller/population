@@ -4,8 +4,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { geoNaturalEarth1, geoPath, type GeoProjection } from 'd3-geo'
 
 import { loadCountryGeometry, type CountryFeature } from '@/lib/geo/geometry'
+import { COUNTRIES } from '@/lib/geo/countries'
 import type { LatLng } from '@/app/types'
 import { haversineKm } from '@/lib/utils'
+
+// Countries too small to survive the 110m atlas (Maldives, Seychelles, Malta, …).
+// We can't draw their outline, but we still mark their location so they're visible.
+const TINY_COUNTRIES = COUNTRIES.filter(
+  (c) => !c.hasOutline && c.lat != null && c.lng != null,
+) as (typeof COUNTRIES[number] & { lat: number; lng: number })[]
 
 const VBW = 800
 const VBH = 411
@@ -155,6 +162,19 @@ export function WorldMap({
   // (touch). When there's no pin to place (reveal mode), a plain drag just pans.
   const [spaceHeld, setSpaceHeld] = useState(false)
   const hovering = useRef(false)
+
+  // The pan hint is a brief nudge for discoverability, not a permanent chrome:
+  // show it for 2s on mount, and never mention "hold space" on touch devices.
+  const [showHint, setShowHint] = useState(true)
+  const [isTouch, setIsTouch] = useState(false)
+  useEffect(() => {
+    setIsTouch(
+      typeof window !== 'undefined' &&
+        (window.matchMedia?.('(pointer: coarse)').matches || 'ontouchstart' in window),
+    )
+    const t = setTimeout(() => setShowHint(false), 60000)
+    return () => clearTimeout(t)
+  }, [])
   useEffect(() => {
     const isSpace = (e: KeyboardEvent) => e.code === 'Space' || e.key === ' '
     const down = (e: KeyboardEvent) => {
@@ -312,6 +332,23 @@ export function WorldMap({
           <path key={i} d={path(f) ?? ''} fill="#E7D9BC" stroke="#211812" strokeWidth={0.5 * k} />
         ))}
 
+        {/* Tiny countries the atlas drops: mark the spot so they're at least visible. */}
+        {TINY_COUNTRIES.map((c) => {
+          const xy = project({ lat: c.lat, lng: c.lng })
+          if (!xy) return null
+          return (
+            <circle
+              key={c.ccn3}
+              cx={xy[0]}
+              cy={xy[1]}
+              r={2.5 * k}
+              fill="#E7D9BC"
+              stroke="#211812"
+              strokeWidth={0.5 * k}
+            />
+          )
+        })}
+
         {guessXY && answerXY && (
           <line
             x1={guessXY[0]}
@@ -395,13 +432,14 @@ export function WorldMap({
         </ZoomButton>
       </div>
 
-      {/* Discoverability: panning needs a modifier so taps can place pins. */}
-      {onPick && (
+      {/* Discoverability: panning needs a modifier so taps can place pins. Fades
+          out after a couple seconds; touch devices never see "hold space". */}
+      {onPick && showHint && (
         <div
           style={{ position: 'absolute', left: 8, bottom: 8 }}
           className="pointer-events-none select-none rounded-pill bg-pop-ink/70 px-2.5 py-1 text-[11px] font-bold text-white"
         >
-          hold space or use two fingers to pan
+          {isTouch ? 'use two fingers to pan' : 'hold space to pan'}
         </div>
       )}
     </div>
