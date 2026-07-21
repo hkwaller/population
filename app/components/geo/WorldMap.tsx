@@ -172,7 +172,7 @@ export function WorldMap({
       typeof window !== 'undefined' &&
         (window.matchMedia?.('(pointer: coarse)').matches || 'ontouchstart' in window),
     )
-    const t = setTimeout(() => setShowHint(false), 60000)
+    const t = setTimeout(() => setShowHint(false), 2000)
     return () => clearTimeout(t)
   }, [])
   useEffect(() => {
