@@ -3,10 +3,15 @@ import { twMerge } from 'tailwind-merge'
 import stats from '../app/database/stats.json'
 import {
   type AnswerValue,
+  type BuildUpQuestion,
   type ChoiceQuestion,
+  type HigherLowerQuestion,
   type LatLng,
   type MapQuestion,
+  type OddOneOutQuestion,
   type RankQuestion,
+  type RouteQuestion,
+  type ScoreOpts,
   type SliderQuestion,
   TQuestion,
 } from '@/app/types'
@@ -59,28 +64,58 @@ export function haversineKm(a: LatLng, b: LatLng) {
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)))
 }
 
-function scoreSlider(question: SliderQuestion, guess: number) {
+function scoreSlider(question: SliderQuestion, guess: number, confidence?: number) {
   if (Number.isNaN(guess)) return 0
-  if (guess === question.answer) return MAX_SCORE
   const range = question.upper_bound - question.lower_bound
   if (range <= 0) return 0
+  // Confidence mode: the player commits a band [guess ± confidence]. A narrow band
+  // that CONTAINS the answer scores big; a wide band scores little; a band that
+  // misses the answer scores 0. Rewards calibration over a lucky point guess.
+  if (confidence != null) {
+    const inBand = Math.abs(guess - question.answer) <= confidence
+    if (!inBand) return 0
+    const normWidth = Math.min(1, confidence / range)
+    return Math.max(0, Math.round(MAX_SCORE * (1 - normWidth)))
+  }
+  if (guess === question.answer) return MAX_SCORE
   const normError = Math.min(1, Math.abs(guess - question.answer) / range)
   return Math.max(0, Math.round(MAX_SCORE * (1 - normError)))
 }
 
-function scoreMap(question: MapQuestion, guess: LatLng, insideCountry?: boolean) {
+function scoreMap(
+  question: MapQuestion,
+  guess: LatLng,
+  opts?: { insideCountry?: boolean; confidence?: number },
+) {
+  const falloff = question.falloffKm ?? MAP_FALLOFF_KM
+  const d = haversineKm(guess, question.answer)
+  // Confidence mode: the player commits a circle of radius `confidence` km around
+  // the pin. Tight circle covering the answer scores big; wide circle scores little;
+  // a circle that misses scores 0.
+  if (opts?.confidence != null) {
+    if (d > opts.confidence) return 0
+    const normRadius = Math.min(1, opts.confidence / falloff)
+    return Math.max(0, Math.round(MAX_SCORE * (1 - normRadius)))
+  }
   // Locate-the-country is right/wrong-ish: a guess that lands anywhere inside the
   // country's actual borders is correct. Containment is decided by the caller (it
   // needs the map geometry); we only fall back to distance-based partial credit
   // when the guess misses the country entirely.
-  if (insideCountry) return MAX_SCORE
-  const d = haversineKm(guess, question.answer)
-  const falloff = question.falloffKm ?? MAP_FALLOFF_KM
+  if (opts?.insideCountry) return MAX_SCORE
   return Math.max(0, Math.round(MAX_SCORE * (1 - d / falloff)))
 }
 
 function scoreChoice(question: ChoiceQuestion, guess: string, elapsedMs?: number) {
-  if (guess !== question.answer) return 0
+  return scoreExact(guess === question.answer, elapsedMs)
+}
+
+/**
+ * Shared right/wrong + speed-bonus scoring for the "pick one label" family
+ * (choice, higher-lower, odd-one-out). Wrong → 0; correct → base + a bonus that
+ * decays to 0 over CHOICE_TIME_LIMIT_MS. No timing → full base + bonus.
+ */
+function scoreExact(correct: boolean, elapsedMs?: number) {
+  if (!correct) return 0
   if (elapsedMs == null) return CHOICE_BASE + CHOICE_SPEED_BONUS
   const speed = Math.max(0, 1 - elapsedMs / CHOICE_TIME_LIMIT_MS)
   return CHOICE_BASE + Math.round(CHOICE_SPEED_BONUS * speed)
@@ -113,33 +148,90 @@ function scoreRank(question: RankQuestion, guess: string[]) {
 
 /**
  * Score a guess against a question. Higher is better; range 0..MAX_SCORE.
- * For map questions, `insideCountry` (whether the guess landed within the target
- * country's borders) is computed by the caller from the map geometry - see
- * `scoreGuess` in lib/geo/score.ts, which app code should use instead of this.
+ * `opts` carries scoring modifiers the raw question can't provide: `insideCountry`
+ * (map point-in-polygon, computed by the caller from geometry - see `scoreGuess` in
+ * lib/geo/score.ts, which app code should use instead of this), and `confidence`
+ * (the band/radius for confidence mode).
  */
 export function scoreAnswer(
   question: TQuestion,
   guess: AnswerValue,
   elapsedMs?: number,
-  insideCountry?: boolean,
+  opts?: ScoreOpts,
 ): number {
   switch (question.type) {
     case 'slider':
-      return scoreSlider(question, guess as number)
+      return scoreSlider(question, guess as number, opts?.confidence)
     case 'choice':
       return scoreChoice(question, guess as string, elapsedMs)
     case 'map':
-      return scoreMap(question, guess as LatLng, insideCountry)
+      return scoreMap(question, guess as LatLng, {
+        insideCountry: opts?.insideCountry,
+        confidence: opts?.confidence,
+      })
     case 'rank':
       return scoreRank(question, guess as string[])
+    case 'higher-lower':
+      return scoreExact(guess === question.answer, elapsedMs)
+    case 'odd-one-out':
+      return scoreExact(guess === question.answer, elapsedMs)
+    case 'build-up':
+      return scoreBuildUp(question, guess as string, opts?.cluesUsed)
+    case 'route':
+      return scoreRoute(question, guess as string[], opts?.routeValid)
     default:
       return 0
   }
 }
 
+/** Question families scored right/wrong + speed bonus - never a "bullseye". */
+const EXACT_TYPES = new Set<TQuestion['type']>(['choice', 'higher-lower', 'odd-one-out'])
+
+/** Normalize a free-text answer for fuzzy comparison (case/diacritics/punct-insensitive). */
+function normalizeText(s: string): string {
+  return s
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
+
+/**
+ * Score a build-up guess. Must match the answer (or an accepted alias); once
+ * correct, the score decays with how many clues were revealed at lock-in - guess
+ * early (few clues) for near-full marks, late (all clues) for a sliver.
+ */
+function scoreBuildUp(question: BuildUpQuestion, guess: string, cluesUsed?: number) {
+  const g = normalizeText(guess ?? '')
+  if (!g) return 0
+  const targets = [question.answer, ...(question.acceptable ?? [])].map(normalizeText)
+  if (!targets.includes(g)) return 0
+  const total = Math.max(1, question.clues.length)
+  const used = Math.min(total, Math.max(1, cluesUsed ?? total))
+  return Math.max(0, Math.round((MAX_SCORE * (total - used + 1)) / total))
+}
+
+/**
+ * Score a route guess. `routeValid` (endpoints match + every hop land-adjacent,
+ * computed against the adjacency graph by the caller - see scoreGuess) gates any
+ * credit. A valid route scores full at the optimal hop count and decays with each
+ * extra hop, reaching 0 once it uses the whole `maxSteps` headroom.
+ */
+function scoreRoute(question: RouteQuestion, guess: string[], routeValid?: boolean) {
+  if (!routeValid || !Array.isArray(guess) || guess.length < 2) return 0
+  const steps = guess.length - 1
+  const optimal = Math.max(1, question.optimalSteps)
+  if (steps <= optimal) return MAX_SCORE
+  const extra = steps - optimal
+  const headroom = Math.max(1, question.maxSteps - optimal)
+  return Math.max(0, Math.round(MAX_SCORE * (1 - extra / headroom)))
+}
+
 /** A near-perfect answer worth celebrating (exact slider hit / same-city map guess). */
 export function isBullseye(question: TQuestion, score: number) {
-  if (question.type === 'choice') return false
+  if (EXACT_TYPES.has(question.type)) return false
   return score >= MAX_SCORE
 }
 
@@ -159,6 +251,9 @@ export function normalizeQuestionRow(row: any): TQuestion {
     tier: row.tier ?? undefined,
   }
   const type = (row.type ?? 'slider') as TQuestion['type']
+  // Type-specific fields with no dedicated column live in the `extra` jsonb blob.
+  const extra: Record<string, any> =
+    typeof row.extra === 'string' ? JSON.parse(row.extra) : (row.extra ?? {})
 
   if (type === 'choice') {
     const options = Array.isArray(row.options)
@@ -188,8 +283,57 @@ export function normalizeQuestionRow(row: any): TQuestion {
       type: 'rank',
       items: parse(row.options),
       answer: parse(row.answer),
-      order: 'desc',
+      order: extra.order === 'asc' ? 'asc' : 'desc',
       unit: row.unit ?? undefined,
+    }
+  }
+
+  if (type === 'higher-lower') {
+    return {
+      ...base,
+      type: 'higher-lower',
+      left: extra.left,
+      right: extra.right,
+      metric: extra.metric ?? '',
+      answer: String(row.answer) === 'right' ? 'right' : 'left',
+    }
+  }
+
+  if (type === 'odd-one-out') {
+    const options = Array.isArray(row.options)
+      ? row.options
+      : typeof row.options === 'string'
+        ? JSON.parse(row.options)
+        : []
+    return {
+      ...base,
+      type: 'odd-one-out',
+      options,
+      answer: String(row.answer),
+      sharedProperty: extra.sharedProperty ?? '',
+      optionCodes: extra.optionCodes ?? undefined,
+    }
+  }
+
+  if (type === 'build-up') {
+    return {
+      ...base,
+      type: 'build-up',
+      clues: extra.clues ?? [],
+      answer: String(row.answer),
+      acceptable: extra.acceptable ?? undefined,
+      code: extra.code ?? undefined,
+    }
+  }
+
+  if (type === 'route') {
+    return {
+      ...base,
+      type: 'route',
+      from: extra.from,
+      to: extra.to,
+      maxSteps: Number(extra.maxSteps ?? 5),
+      optimalSteps: Number(extra.optimalSteps ?? 1),
     }
   }
 
@@ -284,6 +428,8 @@ export const categoryBackgroundColors = [
   'bg-blue-400',
   'bg-indigo-400',
   'bg-violet-400',
+  'bg-fuchsia-400',
+  'bg-pink-400',
 ]
 
 const stat = (key: string): number => (stats as Record<string, number>)[key] ?? 0
@@ -354,6 +500,42 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[8],
     count: stat('which-bigger'),
+  },
+  {
+    id: 'higher-lower',
+    name: 'Higher or Lower?',
+    icon: 'ArrowUpDown',
+    group: 'quickfire',
+    tier: 'main',
+    bg: categoryBackgroundColors[13],
+    count: stat('higher-lower'),
+  },
+  {
+    id: 'odd-one-out',
+    name: 'Odd One Out',
+    icon: 'Shuffle',
+    group: 'quickfire',
+    tier: 'main',
+    bg: categoryBackgroundColors[14],
+    count: stat('odd-one-out'),
+  },
+  {
+    id: 'build-up',
+    name: 'Name It',
+    icon: 'Lightbulb',
+    group: 'quickfire',
+    tier: 'main',
+    bg: categoryBackgroundColors[0],
+    count: stat('build-up'),
+  },
+  {
+    id: 'route',
+    name: 'Border Hopper',
+    icon: 'Route',
+    group: 'map',
+    tier: 'special',
+    bg: categoryBackgroundColors[5],
+    count: stat('route'),
   },
   {
     id: 'area',

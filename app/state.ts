@@ -18,7 +18,14 @@ export type State = {
     answer: AnswerValue,
     questionId: string,
     elapsedMs?: number,
+    opts?: { confidence?: number; cluesUsed?: number },
   ) => void
+  /**
+   * Confidence mode (device-local): slider/map answers also carry a band/radius;
+   * narrow-and-right scores big, wide scores little. Owned by Zustand, never synced
+   * from Liveblocks (see hooks/useGame.ts).
+   */
+  confidenceMode: boolean
   boss?: string
   closeModals: () => void
   command: Command | CommandType
@@ -74,6 +81,7 @@ const initialState = {
   questions: [],
   players: [],
   showQuestions: false,
+  confidenceMode: false,
   answerModes: {},
   currentQuestion: undefined,
   answeredQuestions: [],
@@ -95,6 +103,7 @@ export const usePopStore = create<State>()(
       questions: [],
       players: [],
       showQuestions: false,
+      confidenceMode: false,
       answerModes: {},
       boss: '',
       // @ts-ignore
@@ -130,11 +139,17 @@ export const usePopStore = create<State>()(
       setLocalJoinInfo: ({ player, gameId }) =>
         set({ me: player, gameStartedAt: new Date().toISOString(), gameId: gameId }),
       resetGame: () => set({ ...(initialState as any) }),
-      answerQuestion: (id: string, answer: AnswerValue, questionId: string, elapsedMs?: number) => {
+      answerQuestion: (
+        id: string,
+        answer: AnswerValue,
+        questionId: string,
+        elapsedMs?: number,
+        opts?: { confidence?: number; cluesUsed?: number },
+      ) => {
         const updatedPlayers = get().players.map((player) => {
           if (player.id === id) {
             if (!get().currentQuestion) return player
-            const score = scoreGuess(get().currentQuestion, answer, elapsedMs)
+            const score = scoreGuess(get().currentQuestion, answer, elapsedMs, opts)
             const existingAnswerIndex = player.answers.findIndex((a) => a.questionId === questionId)
             if (existingAnswerIndex !== -1) {
               player.answers[existingAnswerIndex] = {

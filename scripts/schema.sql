@@ -5,16 +5,17 @@
 -- then seed with:  npx tsx --env-file=.env.local scripts/migrate-questions.ts
 
 -- ---------------------------------------------------------------------------
--- population_questions: the geography question bank (slider | choice | map)
+-- population_questions: the geography question bank
+-- (slider | choice | map | rank | higher-lower | odd-one-out | build-up | route)
 -- ---------------------------------------------------------------------------
 create table if not exists public.population_questions (
   id            uuid primary key,
-  type          text not null default 'slider',   -- 'slider' | 'choice' | 'map'
+  type          text not null default 'slider',   -- see list above
   category      text not null,
   question      text not null,
   prompt        jsonb,                             -- PromptSpec (text/flag/outline/borders)
-  answer        jsonb not null,                    -- number | string | {lat,lng}
-  options       jsonb,                             -- choice options (string[])
+  answer        jsonb not null,                    -- number | string | {lat,lng} | string[]
+  options       jsonb,                             -- choice options / rank items (string[] | RankItem[])
   lower_bound   double precision,                  -- slider
   upper_bound   double precision,                  -- slider
   unit          text,                              -- slider display unit
@@ -22,12 +23,19 @@ create table if not exists public.population_questions (
   ccn3          text,                              -- map: numeric ISO code → borders for scoring
   difficulty    double precision,                  -- 0..1, from country "fame" (Wikipedia pageviews)
   tier          text,                              -- 'easy' | 'medium' | 'hard' (per-category tertile)
+  extra         jsonb,                             -- type-specific fields that have no dedicated column
+                                                   --   rank: { order }
+                                                   --   higher-lower: { left, right, metric, leftValue, rightValue }
+                                                   --   odd-one-out: { sharedProperty, optionCodes }
+                                                   --   build-up: { clues, acceptable, code }
+                                                   --   route: { from, to, maxSteps, optimalSteps }
   source        text default 'geo'
 );
 -- Existing projects: add the columns without a full re-create.
 alter table public.population_questions add column if not exists ccn3 text;
 alter table public.population_questions add column if not exists difficulty double precision;
 alter table public.population_questions add column if not exists tier text;
+alter table public.population_questions add column if not exists extra jsonb;
 create index if not exists population_questions_category_idx on public.population_questions (category);
 create index if not exists population_questions_tier_idx on public.population_questions (tier);
 

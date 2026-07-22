@@ -5,6 +5,7 @@ import { formatAnswerValue } from '@/lib/utils'
 import { PlayerResult } from './PlayerResult'
 import { Category } from './Category'
 import { RankAnswerFlags } from './geo/RankFlags'
+import { RouteReveal } from './geo/RouteReveal'
 import { WorldMap, type MapPin } from './geo/WorldMap'
 import { POP, stickerFill } from './pop/theme'
 
@@ -30,6 +31,8 @@ export const QuestionResult = ({
       <p className="mb-4 text-xl font-bold text-pop-ink">{question.question}</p>
       {question.type === 'rank' ? (
         <RankAnswerFlags answer={question.answer} />
+      ) : question.type === 'route' ? (
+        <RouteReveal question={question} />
       ) : question.type === 'map' ? (
         <div className="overflow-hidden rounded-[20px] border-4 border-pop-ink">
           <WorldMap
@@ -47,6 +50,28 @@ export const QuestionResult = ({
             interactive={false}
           />
         </div>
+      ) : question.type === 'higher-lower' ? (
+        <span
+          className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"
+          style={{ background: POP.sunshine }}
+        >
+          Answer: {question[question.answer].label} (
+          {question[question.answer].value.toLocaleString()})
+        </span>
+      ) : question.type === 'odd-one-out' ? (
+        <span
+          className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"
+          style={{ background: POP.sunshine }}
+        >
+          Answer: {question.answer} — others {question.sharedProperty}
+        </span>
+      ) : question.type === 'build-up' ? (
+        <span
+          className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"
+          style={{ background: POP.sunshine }}
+        >
+          Answer: {question.answer}
+        </span>
       ) : (
         <span
           className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"

@@ -35,12 +35,12 @@ const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
 
 type GeoQuestion = {
   id: string
-  type: 'slider' | 'choice' | 'map'
+  type: 'slider' | 'choice' | 'map' | 'rank' | 'higher-lower' | 'odd-one-out' | 'build-up' | 'route'
   category: string
   question: string
   prompt?: unknown
   answer: unknown
-  options?: string[]
+  options?: unknown
   lower_bound?: number
   upper_bound?: number
   unit?: string
@@ -48,6 +48,9 @@ type GeoQuestion = {
   ccn3?: string
   difficulty?: number
   tier?: string
+  // Type-specific fields with no dedicated column (rank order, higher-lower
+  // sides, odd-one-out property, build-up clues, route endpoints, …).
+  extra?: Record<string, unknown>
 }
 
 const CHUNK_SIZE = 500
@@ -71,6 +74,7 @@ async function main() {
     ccn3: q.ccn3 ?? null,
     difficulty: q.difficulty ?? null,
     tier: q.tier ?? null,
+    extra: q.extra ?? null,
     source: 'geo',
   }))
 

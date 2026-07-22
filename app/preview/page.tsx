@@ -90,6 +90,55 @@ const SAMPLES: TQuestion[] = [
     prompt: { kind: 'text', text: 'Tap where Kenya is on the map.' },
     answer: { lat: 1, lng: 38 },
   },
+  {
+    id: 's-higher-lower',
+    type: 'higher-lower',
+    category: 'higher-lower',
+    question: 'Which country is larger by land area?',
+    prompt: { kind: 'text', text: 'Which country is larger by land area?' },
+    left: { label: 'Kazakhstan', value: 2_724_900, code: '🇰🇿' },
+    right: { label: 'Argentina', value: 2_780_400, code: '🇦🇷' },
+    metric: 'land area',
+    answer: 'right',
+  },
+  {
+    id: 's-odd-one-out',
+    type: 'odd-one-out',
+    category: 'odd-one-out',
+    question: 'Which is the odd one out?',
+    prompt: { kind: 'text', text: 'Three of these share something. Which is the odd one out?' },
+    options: ['Norway', 'Sweden', 'Denmark', 'Japan'],
+    answer: 'Japan',
+    sharedProperty: 'are in Europe',
+    optionCodes: ['🇳🇴', '🇸🇪', '🇩🇰', '🇯🇵'],
+  },
+  {
+    id: 's-build-up',
+    type: 'build-up',
+    category: 'build-up',
+    question: 'Name the country from the clues',
+    prompt: { kind: 'text', text: 'Name the country - guess early for more points!' },
+    answer: 'Japan',
+    clues: [
+      'Home to about 124 million people.',
+      'Located in Eastern Asia.',
+      'An island nation with no land borders.',
+      'Its currency is the Japanese yen.',
+      'Its capital is Tokyo.',
+    ],
+    code: 'JP',
+  },
+  {
+    id: 's-route',
+    type: 'route',
+    category: 'route',
+    question: 'Hop from Portugal to Poland across bordering countries',
+    prompt: { kind: 'text', text: 'Chain bordering countries from Portugal to Poland.' },
+    from: 'PRT',
+    to: 'POL',
+    maxSteps: 5,
+    optimalSteps: 4,
+  },
 ]
 
 export default function PreviewPage() {
@@ -119,6 +168,10 @@ export default function PreviewPage() {
 function BreakdownDemo() {
   const mapQ = SAMPLES.find((q) => q.type === 'map')!
   const rankQ = SAMPLES.find((q) => q.type === 'rank') as RankQuestion
+  const hlQ = SAMPLES.find((q) => q.type === 'higher-lower')!
+  const oooQ = SAMPLES.find((q) => q.type === 'odd-one-out')!
+  const buQ = SAMPLES.find((q) => q.type === 'build-up')!
+  const rtQ = SAMPLES.find((q) => q.type === 'route')!
 
   const mkPlayer = (
     id: string,
@@ -147,10 +200,34 @@ function BreakdownDemo() {
     mkPlayer('r2', 'Di', 'sage', rankQ, ['Argentina', 'Nigeria', 'Iceland', 'Portugal']), // partial
   ].sort(byScore)
 
+  const hlPlayers = [
+    mkPlayer('h1', 'Ev', 'clay', hlQ, 'right'), // correct
+    mkPlayer('h2', 'Fi', 'lagoon', hlQ, 'left'), // wrong
+  ].sort(byScore)
+
+  const oooPlayers = [
+    mkPlayer('o1', 'Gu', 'sand', oooQ, 'Japan'), // correct
+    mkPlayer('o2', 'Ha', 'sage', oooQ, 'Norway'), // wrong
+  ].sort(byScore)
+
+  const buPlayers = [
+    mkPlayer('b1', 'Io', 'clay', buQ, 'Japan'), // correct (full clues via scoreGuess default)
+    mkPlayer('b2', 'Jo', 'lagoon', buQ, 'Brazil'), // wrong
+  ].sort(byScore)
+
+  const rtPlayers = [
+    mkPlayer('t1', 'Ka', 'clay', rtQ, ['PRT', 'ESP', 'FRA', 'DEU', 'POL']), // valid chain
+    mkPlayer('t2', 'La', 'lagoon', rtQ, ['PRT', 'POL']), // broken
+  ].sort(byScore)
+
   return (
     <>
       <QuestionResult players={mapPlayers} question={mapQ} index={0} />
       <QuestionResult players={rankPlayers} question={rankQ} index={1} />
+      <QuestionResult players={hlPlayers} question={hlQ} index={2} />
+      <QuestionResult players={oooPlayers} question={oooQ} index={3} />
+      <QuestionResult players={buPlayers} question={buQ} index={4} />
+      <QuestionResult players={rtPlayers} question={rtQ} index={5} />
     </>
   )
 }
@@ -168,15 +245,15 @@ function PreviewCard({ question }: { question: TQuestion }) {
       <QuestionInput
         question={question}
         disabled={!!answered}
-        onAnswer={(value, elapsedMs) =>
-          setAnswered({ value, score: scoreGuess(question, value, elapsedMs) })
+        onAnswer={(value, elapsedMs, extra) =>
+          setAnswered({ value, score: scoreGuess(question, value, elapsedMs, extra) })
         }
       />
       {answered && (
         <div className="mt-4 rounded-2xl bg-pop-ink px-4 py-3 text-center text-white">
           <span className="font-black">
             You: {formatAnswerValue(answered.value)} · scored {answered.score} · answer{' '}
-            {formatAnswerValue(question.answer)}
+            {'answer' in question ? formatAnswerValue((question as { answer?: AnswerValue }).answer) : '(see reveal)'}
           </span>
         </div>
       )}

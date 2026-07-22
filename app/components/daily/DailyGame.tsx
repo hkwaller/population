@@ -14,7 +14,9 @@ import { POP } from '@/app/components/pop/theme'
 import { Question } from '@/app/components/Question'
 import { QuestionInput } from '@/app/components/geo/QuestionInput'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { HigherLower } from '@/app/components/geo/HigherLower'
 import { RankReveal } from '@/app/components/geo/RankReveal'
+import { RouteReveal } from '@/app/components/geo/RouteReveal'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 
 const STORE_KEY = 'population-daily'
@@ -76,9 +78,13 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
     setSaved({ total, buckets, streak })
   }
 
-  const onAnswer = (value: AnswerValue, elapsedMs: number) => {
+  const onAnswer = (
+    value: AnswerValue,
+    elapsedMs: number,
+    extra?: { confidence?: number; cluesUsed?: number },
+  ) => {
     const q = questions[index]
-    setRevealing({ value, score: scoreGuess(q, value, elapsedMs) })
+    setRevealing({ value, score: scoreGuess(q, value, elapsedMs, extra) })
   }
 
   const next = () => {
@@ -155,6 +161,29 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
       {question.type === 'rank' && (
         <RankReveal question={question} guess={attempt.value as string[]} />
       )}
+      {question.type === 'higher-lower' && (
+        <HigherLower question={question} selected={attempt.value as 'left' | 'right'} reveal />
+      )}
+      {question.type === 'odd-one-out' && (
+        <>
+          <ChoiceOptions
+            options={question.options}
+            selected={attempt.value as string}
+            correct={question.answer}
+          />
+          <p className="text-center text-base font-bold text-pop-ink/60">
+            The others {question.sharedProperty}.
+          </p>
+        </>
+      )}
+      {question.type === 'build-up' && (
+        <p className="text-center text-xl font-black text-pop-ink">
+          Answer: {question.answer}
+          <br />
+          <span className="text-pop-ink/60">You: {formatAnswerValue(attempt.value)}</span>
+        </p>
+      )}
+      {question.type === 'route' && <RouteReveal question={question} />}
       {question.type === 'slider' && (
         <p className="text-center text-xl font-black text-pop-ink">
           Answer: {formatAnswerValue(question.answer)}

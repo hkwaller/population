@@ -10,11 +10,13 @@ import { usePopStore } from '../state'
 import { PlayerResult } from './PlayerResult'
 import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
-import { Command, CommandType, LatLng, TQuestion } from '../types'
+import { AnswerValue, Command, CommandType, LatLng, TQuestion } from '../types'
 import { DockButton } from './pop/Dock'
 import { POP, stickerFill } from './pop/theme'
 import { WorldMap, type MapPin } from './geo/WorldMap'
 import { RankReveal } from './geo/RankReveal'
+import { HigherLower } from './geo/HigherLower'
+import { RouteReveal } from './geo/RouteReveal'
 import { byName } from '@/lib/geo/countries'
 import { AdsterraBanner } from './AdsterraBanner'
 
@@ -50,7 +52,9 @@ export default function QuestionResultModal({
   // would otherwise overflow horizontally.
   const answerText = asSlider(currentQuestion)
     ? asSlider(currentQuestion)!.answer.toLocaleString()
-    : formatAnswerValue(currentQuestion?.answer)
+    : currentQuestion && 'answer' in currentQuestion
+      ? formatAnswerValue((currentQuestion as { answer?: AnswerValue }).answer)
+      : ''
   const answerFontSize = `min(${Math.floor(640 / Math.max(answerText.length, 3))}px, 16vw)`
 
   const ranked = players
@@ -115,6 +119,45 @@ export default function QuestionResultModal({
                 </div>
               ) : currentQuestion?.type === 'rank' ? (
                 <RankReveal question={currentQuestion} />
+              ) : currentQuestion?.type === 'route' ? (
+                <RouteReveal question={currentQuestion} />
+              ) : currentQuestion?.type === 'higher-lower' ? (
+                <HigherLower question={currentQuestion} reveal />
+              ) : currentQuestion?.type === 'odd-one-out' ? (
+                <div className="flex flex-col items-center gap-3">
+                  <span
+                    className="block font-black leading-none tracking-[-0.03em]"
+                    style={{
+                      color: POP.coral,
+                      fontSize: `min(${Math.floor(640 / Math.max(currentQuestion.answer.length, 3))}px, 12vw)`,
+                    }}
+                  >
+                    {currentQuestion.answer}
+                  </span>
+                  <p className="text-base font-bold text-pop-ink/70 md:text-lg">
+                    The odd one out - the others {currentQuestion.sharedProperty}.
+                  </p>
+                </div>
+              ) : currentQuestion?.type === 'build-up' ? (
+                <div className="flex flex-col items-center gap-3">
+                  <span
+                    className="block font-black leading-none tracking-[-0.03em]"
+                    style={{
+                      color: POP.coral,
+                      fontSize: `min(${Math.floor(640 / Math.max(currentQuestion.answer.length, 3))}px, 12vw)`,
+                    }}
+                  >
+                    {currentQuestion.answer}
+                  </span>
+                  <ul className="mt-2 flex flex-col gap-1 text-left">
+                    {currentQuestion.clues.map((clue, i) => (
+                      <li key={i} className="text-sm font-bold text-pop-ink/60 md:text-base">
+                        <span className="mr-1 text-pop-ink/30">{i + 1}.</span>
+                        {clue}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ) : (
                 <span
                   className="block font-black leading-none tracking-[-0.03em]"

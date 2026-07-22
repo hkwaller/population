@@ -163,6 +163,7 @@ export const useGame = (gameId?: string) => {
     selectedCategories: zustand.selectedCategories,
     amountQuestions: zustand.amountQuestions,
     showQuestions: zustand.showQuestions,
+    confidenceMode: zustand.confidenceMode,
     answerModes: zustand.answerModes,
     me: zustand.me,
     preferences: zustand.preferences,

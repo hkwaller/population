@@ -11,6 +11,10 @@
   "currency": 51,
   "language": 195,
   "continent": 195,
-  "ranking": 300,
-  "total": 2725
+  "ranking": 450,
+  "higher-lower": 390,
+  "odd-one-out": 274,
+  "build-up": 55,
+  "route": 47,
+  "total": 3641
 }

@@ -15,7 +15,15 @@ export type PromptSpec =
   | { kind: 'outline'; code: string } // render country silhouette from geometry
   | { kind: 'borders'; codes: string[] } // "which country borders these?"
 
-export type QuestionType = 'slider' | 'choice' | 'map' | 'rank'
+export type QuestionType =
+  | 'slider'
+  | 'choice'
+  | 'map'
+  | 'rank'
+  | 'higher-lower'
+  | 'odd-one-out'
+  | 'build-up'
+  | 'route'
 
 /** Difficulty bucket derived from country "fame" (Wikipedia pageviews). */
 export type Difficulty = 'easy' | 'medium' | 'hard'
@@ -73,7 +81,64 @@ export type RankQuestion = QuestionBase & {
   unit?: string
 }
 
-export type TQuestion = SliderQuestion | ChoiceQuestion | MapQuestion | RankQuestion
+/** One side of a higher-lower question. `value` is revealed after answering. */
+export type HigherLowerSide = { label: string; value: number; code?: string }
+
+export type HigherLowerQuestion = QuestionBase & {
+  type: 'higher-lower'
+  left: HigherLowerSide
+  right: HigherLowerSide
+  /** Human label for the compared metric, e.g. "population". */
+  metric: string
+  /** Which side has the higher metric value. */
+  answer: 'left' | 'right'
+}
+
+export type OddOneOutQuestion = QuestionBase & {
+  type: 'odd-one-out'
+  /** The four candidate labels (country names). */
+  options: string[]
+  /** The one option that does NOT share the property. */
+  answer: string
+  /** Human-readable property the other three share, e.g. "border Russia". */
+  sharedProperty: string
+  /** Optional flag codes parallel to `options`, for a flag-tiled layout. */
+  optionCodes?: string[]
+}
+
+export type BuildUpQuestion = QuestionBase & {
+  type: 'build-up'
+  /** Clues revealed one at a time, ordered hardest → easiest. */
+  clues: string[]
+  /** Canonical answer (country name). */
+  answer: string
+  /** Alternate spellings/aliases accepted as correct. */
+  acceptable?: string[]
+  /** Flag code (cca2) shown on reveal. */
+  code?: string
+}
+
+export type RouteQuestion = QuestionBase & {
+  type: 'route'
+  /** Start country (cca3). */
+  from: string
+  /** Destination country (cca3). */
+  to: string
+  /** Maximum hops allowed; beyond this the route scores 0. */
+  maxSteps: number
+  /** Hop count of the shortest land path (full marks target). */
+  optimalSteps: number
+}
+
+export type TQuestion =
+  | SliderQuestion
+  | ChoiceQuestion
+  | MapQuestion
+  | RankQuestion
+  | HigherLowerQuestion
+  | OddOneOutQuestion
+  | BuildUpQuestion
+  | RouteQuestion
 
 type Answer = {
   answer: AnswerValue
@@ -105,6 +170,25 @@ export type AnswerPayload = {
   questionId: string
   /** ms from question shown to answer locked; drives the choice speed bonus. */
   elapsedMs?: number
+  /**
+   * Confidence mode (device-local setting): the band half-width (slider) or radius
+   * in km (map) the player committed. Undefined = normal scoring. See scoreAnswer.
+   */
+  confidence?: number
+  /** Build-up: how many clues the player had revealed when they locked in. */
+  cluesUsed?: number
+}
+
+/** Optional per-answer scoring modifiers threaded from the input to scoreAnswer. */
+export type ScoreOpts = {
+  /** Map guess landed inside the target country's borders (point-in-polygon). */
+  insideCountry?: boolean
+  /** Confidence band half-width (slider) / radius km (map). */
+  confidence?: number
+  /** Build-up clues revealed at lock-in time. */
+  cluesUsed?: number
+  /** Route guess forms a valid connected chain (computed against the adjacency graph). */
+  routeValid?: boolean
 }
 
 export type BossPayload = any // Refine later if structure is known

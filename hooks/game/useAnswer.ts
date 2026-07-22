@@ -7,7 +7,10 @@ export const useAnswer = () => {
   const { updateGameState } = useUpdateGameState()
 
   const answer = async (payload: AnswerPayload) => {
-    answerQuestion(payload.id, payload.answer, payload.questionId, payload.elapsedMs)
+    answerQuestion(payload.id, payload.answer, payload.questionId, payload.elapsedMs, {
+      confidence: payload.confidence,
+      cluesUsed: payload.cluesUsed,
+    })
     // Read players AFTER answerQuestion commits to avoid stale-closure bug
     const freshPlayers = usePopStore.getState().players
     await updateGameState({ players: freshPlayers })

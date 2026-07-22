@@ -44,6 +44,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
     selectedCategories,
     selectedDifficulty,
     showQuestions,
+    confidenceMode,
     answerModes,
     updateGame,
   } = usePopStore()
@@ -190,6 +191,11 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
             label="Questions on host screen only"
             checked={!showQuestions}
             onChange={() => updateGame({ showQuestions: !showQuestions })}
+          />
+          <TogglePill
+            label="Confidence mode (bet a range on slider & map)"
+            checked={confidenceMode}
+            onChange={() => updateGame({ confidenceMode: !confidenceMode })}
           />
         </div>
       </div>

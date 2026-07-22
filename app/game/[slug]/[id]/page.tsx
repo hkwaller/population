@@ -15,6 +15,10 @@ import { GameRoomProvider } from '@/app/providers'
 import { asSlider, formatAnswerValue, isInputMode } from '@/lib/utils'
 import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { HigherLower } from '@/app/components/geo/HigherLower'
+import { BuildUp } from '@/app/components/geo/BuildUp'
+import { RouteInput } from '@/app/components/geo/RouteInput'
+import { ConfidenceBand } from '@/app/components/geo/ConfidenceBand'
 import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
 import { MapPicker } from '@/app/components/geo/MapPicker'
 import { RankList } from '@/app/components/geo/RankInput'
@@ -41,6 +45,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
     answeredQuestions,
     showQuestions,
     answerModes,
+    confidenceMode,
   } = game
   const [answerInputModalOpen, setAnswerInputModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(0)
@@ -50,6 +55,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
 
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
+  // Confidence mode: slider band half-width + map circle radius (km).
+  const [band, setBand] = useState(0)
+  const [radius, setRadius] = useState(0)
   // Rank answer lives here (not in RankInput) so the Lock control can sit inside
   // the host Dock, away from the list.
   const [rankOrder, setRankOrder] = useState<string[]>([])
@@ -59,12 +67,14 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   useEffect(() => {
     setMapPin(null)
     setStartedAt(performance.now())
+    setRadius(Math.round((currentQuestion?.type === 'map' ? currentQuestion.falloffKm ?? 2500 : 2500) / 4))
     if (currentQuestion?.type === 'rank') {
       setRankOrder(currentQuestion.items.map((i) => i.label))
     }
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
+    setBand(Math.round((slider.upper_bound - slider.lower_bound) / 4))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion?.id])
 
@@ -90,12 +100,17 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
 
   const waiting = !currentQuestion || command === 'idle'
 
-  const submit = (answer: AnswerValue, elapsedMs?: number) =>
+  const submit = (
+    answer: AnswerValue,
+    elapsedMs?: number,
+    extra?: { confidence?: number; cluesUsed?: number },
+  ) =>
     send('answer', {
       id: playerId,
       answer,
       questionId: currentQuestion.id,
       elapsedMs,
+      ...extra,
     })
 
   const elapsed = () => Math.max(0, Math.round(performance.now() - startedAt))
@@ -147,6 +162,26 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 />
               </div>
             )}
+            {/* Build-up is also tall (clues + typeahead) and commits via its own
+                Lock button, so it lives in the scroll flow like rank. */}
+            {currentQuestion?.type === 'build-up' && !myAnswered && (
+              <div className="mt-6 w-full max-w-md">
+                <BuildUp
+                  key={currentQuestion.id}
+                  question={currentQuestion}
+                  onAnswer={(v, ms, extra) => submit(v, ms, extra)}
+                />
+              </div>
+            )}
+            {currentQuestion?.type === 'route' && !myAnswered && (
+              <div className="mt-6 w-full max-w-md">
+                <RouteInput
+                  key={currentQuestion.id}
+                  question={currentQuestion}
+                  onAnswer={(v, ms) => submit(v, ms)}
+                />
+              </div>
+            )}
           </>
         )}
       </main>
@@ -167,22 +202,51 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
             ) : (
               <>
                 {slider && (
-                  <PopSlider
-                    min={slider.lower_bound}
-                    max={slider.upper_bound}
-                    value={currentAnswer}
-                    onChange={setCurrentAnswer}
-                    valueColor={POP.cobalt}
-                    onOpenKeypad={() => setAnswerInputModalOpen(true)}
-                    compact
-                  />
+                  <>
+                    <PopSlider
+                      min={slider.lower_bound}
+                      max={slider.upper_bound}
+                      value={currentAnswer}
+                      onChange={setCurrentAnswer}
+                      valueColor={POP.cobalt}
+                      onOpenKeypad={() => setAnswerInputModalOpen(true)}
+                      compact
+                    />
+                    {confidenceMode && (
+                      <div className="mt-3">
+                        <ConfidenceBand
+                          label={`How sure? (± ${slider.unit ?? ''})`}
+                          min={0}
+                          max={Math.round((slider.upper_bound - slider.lower_bound) / 2)}
+                          value={band}
+                          onChange={setBand}
+                        />
+                      </div>
+                    )}
+                  </>
                 )}
                 {currentQuestion.type === 'map' && (
-                  <MapPicker
-                    value={mapPin}
-                    onPick={setMapPin}
-                    onConfirm={() => mapPin && submit(mapPin, elapsed())}
-                  />
+                  <>
+                    <MapPicker
+                      value={mapPin}
+                      onPick={setMapPin}
+                      onConfirm={() =>
+                        mapPin &&
+                        submit(mapPin, elapsed(), confidenceMode ? { confidence: radius } : undefined)
+                      }
+                    />
+                    {confidenceMode && (
+                      <div className="mt-3">
+                        <ConfidenceBand
+                          label="How wide is your circle? (km)"
+                          min={50}
+                          max={currentQuestion.falloffKm ?? 2500}
+                          value={radius}
+                          onChange={setRadius}
+                        />
+                      </div>
+                    )}
+                  </>
                 )}
                 {currentQuestion.type === 'choice' && (
                   <>
@@ -200,6 +264,24 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                     )}
                   </>
                 )}
+                {currentQuestion.type === 'odd-one-out' && (
+                  <>
+                    <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+                    <ChoiceOptions
+                      options={currentQuestion.options}
+                      onSelect={(opt) => submit(opt, elapsed())}
+                    />
+                  </>
+                )}
+                {currentQuestion.type === 'higher-lower' && (
+                  <>
+                    <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+                    <HigherLower
+                      question={currentQuestion}
+                      onSelect={(side) => submit(side, elapsed())}
+                    />
+                  </>
+                )}
                 {/* Map has its own Lock control inside MapPicker; this covers slider. */}
                 {currentQuestion.type === 'slider' && (
                   <div className="mt-4">
@@ -208,7 +290,13 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       size="lg"
                       rotate={-1}
                       className="w-full"
-                      onClick={() => submit(currentAnswer)}
+                      onClick={() =>
+                        submit(
+                          currentAnswer,
+                          elapsed(),
+                          confidenceMode ? { confidence: band } : undefined,
+                        )
+                      }
                     >
                       Lock it in
                     </PopButton>
@@ -257,7 +345,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
         onClose={() => setAnswerInputModalOpen(false)}
         onSubmit={(answer: number) => {
           setCurrentAnswer(answer)
-          submit(answer)
+          submit(answer, elapsed(), confidenceMode ? { confidence: band } : undefined)
         }}
       />
       <QuestionResultModal

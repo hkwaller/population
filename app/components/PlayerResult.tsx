@@ -30,8 +30,12 @@ export const PlayerResult = ({
   const Icon = icons[player.icon as keyof typeof icons]
   const bullseye = score >= MAX_SCORE
 
-  // Exact-answer rounds (choice) are simply right or wrong - there's no "closest".
-  const isExact = question?.type === 'choice'
+  // Exact-answer rounds (choice / higher-lower / odd-one-out) are simply right or
+  // wrong - there's no "closest".
+  const isExact =
+    question?.type === 'choice' ||
+    question?.type === 'higher-lower' ||
+    question?.type === 'odd-one-out'
   const isCorrect = isExact && score > 0
   // Estimation rounds (slider/map/rank) can still be nailed exactly - a full score
   // means "perfect", not merely "closest".
@@ -61,6 +65,15 @@ export const PlayerResult = ({
       if (score >= MAX_SCORE) return 'nailed it 🎯'
       const km = Math.round(haversineKm(answer as LatLng, question.answer))
       return `${km.toLocaleString()} km away`
+    }
+    // Higher-lower stores the picked side; show the side's label, not "left".
+    if (question?.type === 'higher-lower' && (answer === 'left' || answer === 'right')) {
+      return `guessed ${question[answer].label}`
+    }
+    // Route stores an ordered cca3 chain; show hop count, not raw codes.
+    if (question?.type === 'route' && Array.isArray(answer)) {
+      const hops = Math.max(0, answer.length - 1)
+      return score > 0 ? `${hops} hops` : 'route broken'
     }
     return `guessed ${formatAnswerValue(answer)}`
   })()

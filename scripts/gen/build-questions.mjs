@@ -411,52 +411,358 @@ for (const c of withLang) {
   const obscurePool = byFame.slice(55) // lean toward the less-famous for hard
   const seen = new Set()
 
-  const genTier = (tier, count, pool, n, difficulty, requireSpread) => {
+  // `order` = 'desc' ("largest first") or 'asc' ("smallest first"). Stored in
+  // `extra.order` so it round-trips through Supabase (see normalizeQuestionRow).
+  const genTier = (tier, count, pool, n, difficulty, requireSpread, order) => {
+    const asc = order === 'asc'
+    const label = asc ? `Sort these by population - smallest first` : `Sort these by population - largest first`
     let made = 0
     for (let attempt = 0; made < count && attempt < count * 50; attempt++) {
-      const pick = shuffle(pool, rng(`rank:${tier}:${attempt}`)).slice(0, n)
+      const pick = shuffle(pool, rng(`rank:${order}:${tier}:${attempt}`)).slice(0, n)
       if (pick.length < n) break
       const key = pick
         .map((c) => c.cca3)
         .sort()
         .join('-')
-      if (seen.has(key)) continue
-      const sorted = [...pick].sort((a, b) => b.population - a.population)
+      const seenKey = `${order}:${key}`
+      if (seen.has(seenKey)) continue
+      const sorted = [...pick].sort((a, b) =>
+        asc ? a.population - b.population : b.population - a.population,
+      )
       // reject exact ties (ambiguous) and, for easy, near-ties (too subtle)
       let ok = true
       for (let i = 1; i < sorted.length; i++) {
-        const ratio = sorted[i - 1].population / sorted[i].population
+        const hi = Math.max(sorted[i - 1].population, sorted[i].population)
+        const lo = Math.min(sorted[i - 1].population, sorted[i].population)
+        const ratio = hi / lo
         if (ratio === 1 || (requireSpread && ratio < 1.3)) {
           ok = false
           break
         }
       }
       if (!ok) continue
-      seen.add(key)
+      seen.add(seenKey)
       push(
         {
-          id: id(`rank:${tier}:${key}`),
+          id: id(`rank:${order}:${tier}:${key}`),
           type: 'rank',
           category: 'ranking',
-          question: `Sort these by population - largest first`,
-          prompt: { kind: 'text', text: `Sort these by population - largest first` },
+          question: label,
+          prompt: { kind: 'text', text: label },
           // items live in `options` (array of {label,value}); shuffled presentation order
-          options: shuffle(pick, rng(`rank:${tier}:${attempt}:o`)).map((c) => ({
+          options: shuffle(pick, rng(`rank:${order}:${tier}:${attempt}:o`)).map((c) => ({
             label: c.name,
             value: c.population,
           })),
           answer: sorted.map((c) => c.name),
+          order,
           unit: 'people',
           tier,
+          extra: { order },
         },
         difficulty,
       )
       made++
     }
   }
-  genTier('easy', 100, famousPool, 3, 0.2, true)
-  genTier('medium', 100, withPop, 4, 0.5, false)
-  genTier('hard', 100, obscurePool, 5, 0.8, false)
+  genTier('easy', 100, famousPool, 3, 0.2, true, 'desc')
+  genTier('medium', 100, withPop, 4, 0.5, false, 'desc')
+  genTier('hard', 100, obscurePool, 5, 0.8, false, 'desc')
+  // Fewer "smallest first" variants for variety without doubling the bank.
+  genTier('easy', 50, famousPool, 3, 0.2, true, 'asc')
+  genTier('medium', 50, withPop, 4, 0.5, false, 'asc')
+  genTier('hard', 50, obscurePool, 5, 0.8, false, 'asc')
+}
+
+// 14. higher-lower - which country is larger by land area? (binary, own UI)
+// Uses AREA (which-bigger already covers population), so the two categories test
+// different knowledge instead of duplicating each other.
+for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
+  const answer = a.area >= b.area ? 'left' : 'right'
+  const closeness = Math.min(a.area, b.area) / Math.max(a.area, b.area, 1)
+  const left = { label: a.name, value: Math.round(a.area), code: a.flag ?? undefined }
+  const right = { label: b.name, value: Math.round(b.area), code: b.flag ?? undefined }
+  const metric = 'land area'
+  push(
+    {
+      id: id(`hl-area:${a.cca3}:${b.cca3}`),
+      type: 'higher-lower',
+      category: 'higher-lower',
+      question: `Which country is larger by land area?`,
+      prompt: { kind: 'text', text: `Which country is larger by land area?` },
+      answer,
+      left,
+      right,
+      metric,
+      extra: { left, right, metric },
+    },
+    0.6 * closeness + 0.4 * ((obscurity(a) + obscurity(b)) / 2),
+  )
+}
+
+// 15. odd-one-out - three countries share a property, one doesn't (choice-like).
+// A generator over country attributes: region, hemisphere, currency, language,
+// and "island / no land borders". The property is surfaced verbatim on reveal.
+{
+  const oooDifficulty = (odd, three) =>
+    (obscurity(odd) + three.reduce((s, c) => s + obscurity(c), 0) / three.length) / 2
+
+  const oddQuestion = (seed, three, odd, sharedProperty) => {
+    const four = shuffle([...three, odd], rng(`${seed}:o`))
+    const optionCodes = four.map((c) => c.flag ?? null)
+    return {
+      id: id(seed),
+      type: 'odd-one-out',
+      category: 'odd-one-out',
+      question: `Which is the odd one out?`,
+      prompt: {
+        kind: 'text',
+        text: `Three of these share something. Which is the odd one out?`,
+      },
+      options: four.map((c) => c.name),
+      answer: odd.name,
+      sharedProperty,
+      optionCodes,
+      extra: { sharedProperty, optionCodes },
+    }
+  }
+
+  const byRegion = {}
+  for (const c of countries) if (c.region) (byRegion[c.region] ??= []).push(c)
+  const regions = Object.keys(byRegion)
+
+  // a) region
+  {
+    let made = 0
+    for (const odd of shuffle(
+      countries.filter((c) => c.region),
+      rng('ooo-region'),
+    )) {
+      if (made >= 120) break
+      const otherRegions = regions.filter((r) => r !== odd.region && byRegion[r].length >= 3)
+      if (!otherRegions.length) continue
+      const R = shuffle(otherRegions, rng(`ooo-region:${odd.cca3}`))[0]
+      const three = shuffle(byRegion[R], rng(`ooo-region:${odd.cca3}:pick`)).slice(0, 3)
+      if (three.length < 3) continue
+      push(oddQuestion(`ooo-region:${odd.cca3}`, three, odd, `are in ${R}`), oooDifficulty(odd, three))
+      made++
+    }
+  }
+
+  // b) hemisphere (sign of centroid latitude)
+  {
+    const north = withLatLng.filter((c) => c.lat >= 0)
+    const south = withLatLng.filter((c) => c.lat < 0)
+    let made = 0
+    for (const odd of shuffle(withLatLng, rng('ooo-hemi'))) {
+      if (made >= 80) break
+      const oddNorth = odd.lat >= 0
+      const pool = oddNorth ? south : north
+      const hemiName = oddNorth ? 'Southern Hemisphere' : 'Northern Hemisphere'
+      const three = shuffle(pool, rng(`ooo-hemi:${odd.cca3}`)).slice(0, 3)
+      if (three.length < 3) continue
+      push(
+        oddQuestion(`ooo-hemi:${odd.cca3}`, three, odd, `are in the ${hemiName}`),
+        oooDifficulty(odd, three),
+      )
+      made++
+    }
+  }
+
+  // c) shared currency
+  {
+    const byCurr = {}
+    for (const c of withCurrency) (byCurr[c.currencyCode] ??= []).push(c)
+    for (const [code, arr] of Object.entries(byCurr)) {
+      if (arr.length < 3) continue
+      const three = shuffle(arr, rng(`ooo-curr:${code}`)).slice(0, 3)
+      const odd = shuffle(
+        withCurrency.filter((c) => c.currencyCode !== code),
+        rng(`ooo-curr:${code}:odd`),
+      )[0]
+      if (three.length < 3 || !odd) continue
+      push(
+        oddQuestion(`ooo-curr:${code}`, three, odd, `use the ${three[0].currency}`),
+        oooDifficulty(odd, three),
+      )
+    }
+  }
+
+  // d) shared primary language
+  {
+    const byLang = {}
+    for (const c of withLang) (byLang[c.languages[0]] ??= []).push(c)
+    for (const [lang, arr] of Object.entries(byLang)) {
+      if (arr.length < 3) continue
+      const three = shuffle(arr, rng(`ooo-lang:${lang}`)).slice(0, 3)
+      const odd = shuffle(
+        withLang.filter((c) => c.languages[0] !== lang),
+        rng(`ooo-lang:${lang}:odd`),
+      )[0]
+      if (three.length < 3 || !odd) continue
+      push(
+        oddQuestion(`ooo-lang:${lang}`, three, odd, `have ${lang} as an official language`),
+        oooDifficulty(odd, three),
+      )
+    }
+  }
+
+  // e) island / no land borders
+  {
+    const islands = countries.filter((c) => c.borders.length === 0)
+    const mainland = countries.filter((c) => c.borders.length > 0)
+    let made = 0
+    for (const odd of shuffle(mainland, rng('ooo-island'))) {
+      if (made >= 60) break
+      const three = shuffle(islands, rng(`ooo-island:${odd.cca3}`)).slice(0, 3)
+      if (three.length < 3) continue
+      push(
+        oddQuestion(`ooo-island:${odd.cca3}`, three, odd, `are island nations with no land borders`),
+        oooDifficulty(odd, three),
+      )
+      made++
+    }
+  }
+}
+
+// 16. build-up - progressive clue reveal; name the country (typeahead answer).
+// Restricted to reasonably famous countries so it's fair to name them; clues run
+// hardest (vague population) → easiest (capital gives it away).
+{
+  const BUILD_FAME_MIN = 0.45
+  const pool = countries.filter(
+    (c) => c.capital && c.population != null && c.region && fame(c) >= BUILD_FAME_MIN,
+  )
+  for (const c of pool) {
+    const clues = []
+    const popPhrase =
+      c.population >= 1_000_000
+        ? `about ${Math.round(c.population / 1_000_000)} million people`
+        : `${c.population.toLocaleString('en-US')} people`
+    clues.push(`Home to ${popPhrase}.`)
+    clues.push(`Located in ${c.subregion || c.region}.`)
+    if (c.borders.length > 0) {
+      const nb = c.borders
+        .map((b) => byCca3.get(b)?.name)
+        .filter(Boolean)
+        .slice(0, 3)
+      clues.push(
+        nb.length
+          ? `Borders ${nb.join(', ')}.`
+          : `Shares land borders with ${c.borders.length} countries.`,
+      )
+    } else {
+      clues.push(`An island nation with no land borders.`)
+    }
+    if (c.currency) clues.push(`Its currency is the ${c.currency}.`)
+    clues.push(`Its capital is ${c.capital}.`)
+    const acceptable = c.official && c.official !== c.name ? [c.official] : undefined
+    push(
+      {
+        id: id(`buildup:${c.cca3}`),
+        type: 'build-up',
+        category: 'build-up',
+        question: `Name the country from the clues`,
+        prompt: { kind: 'text', text: `Name the country - guess early for more points!` },
+        answer: c.name,
+        clues,
+        code: c.cca2,
+        extra: { clues, acceptable, code: c.cca2 },
+      },
+      obscurity(c),
+    )
+  }
+}
+
+// 17. route - "Border Hopper": chain bordering countries from A to B.
+// Built on a land-adjacency graph from country.borders; only connected pairs
+// within a hop cap are emitted, so impossible pairs (e.g. Argentina→Fiji, an
+// island) never appear. Difficulty scales with the shortest-path length.
+{
+  const adj = new Map()
+  for (const c of countries) {
+    if (!adj.has(c.cca3)) adj.set(c.cca3, new Set())
+    for (const b of c.borders) {
+      adj.get(c.cca3).add(b)
+      if (!adj.has(b)) adj.set(b, new Set())
+      adj.get(b).add(c.cca3)
+    }
+  }
+  // BFS shortest path (node list) or null if unconnected within 8 hops.
+  const bfsPath = (from, to) => {
+    if (from === to) return [from]
+    const prev = new Map()
+    const seen = new Set([from])
+    let frontier = [from]
+    let depth = 0
+    while (frontier.length && depth < 8) {
+      depth++
+      const nextF = []
+      for (const n of frontier) {
+        for (const m of adj.get(n) ?? []) {
+          if (seen.has(m)) continue
+          seen.add(m)
+          prev.set(m, n)
+          if (m === to) {
+            const path = [to]
+            let cur = to
+            while (prev.has(cur)) {
+              cur = prev.get(cur)
+              path.unshift(cur)
+            }
+            return path
+          }
+          nextF.push(m)
+        }
+      }
+      frontier = nextF
+    }
+    return null
+  }
+
+  const HOP_CAP = 5
+  const ROUTE_FAME_MIN = 0.5
+  const endpoints = countries.filter((c) => c.borders.length > 0 && fame(c) >= ROUTE_FAME_MIN)
+  const seenPairs = new Set()
+  for (const a of endpoints) {
+    const partners = shuffle(
+      endpoints.filter((x) => x.cca3 !== a.cca3),
+      rng(`route:${a.cca3}`),
+    )
+    let made = 0
+    for (const b of partners) {
+      if (made >= 2) break
+      const key = [a.cca3, b.cca3].sort().join('-')
+      if (seenPairs.has(key)) continue
+      const path = bfsPath(a.cca3, b.cca3)
+      if (!path) continue
+      const optimalSteps = path.length - 1
+      if (optimalSteps < 2 || optimalSteps > HOP_CAP) continue // skip trivial neighbours + too-far
+      seenPairs.add(key)
+      const maxSteps = Math.min(HOP_CAP + 1, optimalSteps + 2)
+      push(
+        {
+          id: id(`route:${a.cca3}:${b.cca3}`),
+          type: 'route',
+          category: 'route',
+          question: `Hop from ${a.name} to ${b.name} across bordering countries`,
+          prompt: {
+            kind: 'text',
+            text: `Chain bordering countries from ${a.name} to ${b.name}.`,
+          },
+          // answer column is non-null; store the optimal path for reference.
+          answer: path,
+          from: a.cca3,
+          to: b.cca3,
+          maxSteps,
+          optimalSteps,
+          extra: { from: a.cca3, to: b.cca3, maxSteps, optimalSteps },
+        },
+        Math.min(1, 0.3 + optimalSteps * 0.12),
+      )
+      made++
+    }
+  }
 }
 
 // --- assign difficulty tiers (absolute thresholds) -----------------------
