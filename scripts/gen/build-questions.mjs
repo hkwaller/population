@@ -750,6 +750,12 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
       if (optimalSteps < 2 || optimalSteps > HOP_CAP) continue // skip trivial neighbours + too-far
       seenPairs.add(key)
       const maxSteps = Math.min(HOP_CAP + 1, optimalSteps + 2)
+      // Route difficulty is driven by chain length, not country fame, so set the
+      // tier explicitly here (the absolute-threshold pass below leaves already-
+      // tiered questions alone). Without this, the fame-based formula never dips
+      // below the "easy" cutoff, so an Easy game finds zero matching routes and
+      // falls back to the full pool - handing out 5-hop monsters on Easy.
+      const routeTier = optimalSteps <= 2 ? 'easy' : optimalSteps === 3 ? 'medium' : 'hard'
       push(
         {
           id: id(`route:${a.cca3}:${b.cca3}`),
@@ -766,6 +772,7 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
           to: b.cca3,
           maxSteps,
           optimalSteps,
+          tier: routeTier,
           extra: { from: a.cca3, to: b.cca3, maxSteps, optimalSteps },
         },
         Math.min(1, 0.3 + optimalSteps * 0.12),
@@ -780,7 +787,7 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
 // *third* of all 195 countries, which still reaches country ~#65 by fame and sweeps
 // in mid-obscurity places like Burkina Faso. Absolute thresholds mean "easy" is a
 // genuinely famous country everywhere. Categories that set their own tier (ranking,
-// where item count drives difficulty) keep it.
+// where item count drives difficulty; route, where chain length does) keep it.
 const EASY_MAX = 0.5
 const HARD_MIN = 0.72
 const tierFor = (d) => (d < EASY_MAX ? 'easy' : d < HARD_MIN ? 'medium' : 'hard')
@@ -789,7 +796,7 @@ for (const item of q) {
 }
 
 // --- write outputs ---
-writeFileSync(join(root, 'app/database/geo-questions.json'), JSON.stringify(q, null, 0))
+writeFileSync(join(root, 'app/database/geo-questions.json'), JSON.stringify(q, null, 2))
 
 const stats = {}
 const tierStats = {}

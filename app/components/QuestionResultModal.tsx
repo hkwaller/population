@@ -38,6 +38,16 @@ export default function QuestionResultModal({
   const [isEnding, setIsEnding] = useState(false)
   const [size, setSize] = useState({ width: 0, height: 0 })
 
+  // Freeze the question we're revealing. When the host taps "Next", the store's
+  // currentQuestion advances immediately while this modal is still fading out via
+  // AnimatePresence - without freezing, the exit animation would re-render with
+  // the *next* question and flash its answer (e.g. the country name of the flag
+  // that's about to appear). We only update this while the reveal is showing.
+  const [revealed, setRevealed] = useState(currentQuestion)
+  useEffect(() => {
+    if (showQuestionResultModal && currentQuestion) setRevealed(currentQuestion)
+  }, [showQuestionResultModal, currentQuestion])
+
   useEffect(() => {
     const update = () => setSize({ width: window.innerWidth, height: window.innerHeight })
     update()
@@ -50,17 +60,17 @@ export default function QuestionResultModal({
 
   // Size the big answer to fit the card - long numbers (populations, areas)
   // would otherwise overflow horizontally.
-  const answerText = asSlider(currentQuestion)
-    ? asSlider(currentQuestion)!.answer.toLocaleString()
-    : currentQuestion && 'answer' in currentQuestion
-      ? formatAnswerValue((currentQuestion as { answer?: AnswerValue }).answer)
+  const answerText = asSlider(revealed)
+    ? asSlider(revealed)!.answer.toLocaleString()
+    : revealed && 'answer' in revealed
+      ? formatAnswerValue((revealed as { answer?: AnswerValue }).answer)
       : ''
   const answerFontSize = `min(${Math.floor(640 / Math.max(answerText.length, 3))}px, 16vw)`
 
   const ranked = players
     .map((player) => ({
       player,
-      answer: player.answers.find((a) => a.questionId === currentQuestion?.id),
+      answer: player.answers.find((a) => a.questionId === revealed?.id),
     }))
     .filter(({ answer }) => answer !== undefined)
     // Highest score is best (closest / correct + fastest), so rank descending.
@@ -101,10 +111,10 @@ export default function QuestionResultModal({
               transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.15 }}
               className="mt-8 w-full max-w-2xl rounded-[48px] bg-white px-6 py-10 shadow-pop-card"
             >
-              {currentQuestion?.type === 'map' ? (
+              {revealed?.type === 'map' ? (
                 <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink">
                   <WorldMap
-                    answer={currentQuestion.answer}
+                    answer={revealed.answer}
                     pins={
                       ranked
                         .map(({ player, answer }) =>
@@ -117,40 +127,40 @@ export default function QuestionResultModal({
                     interactive={false}
                   />
                 </div>
-              ) : currentQuestion?.type === 'rank' ? (
-                <RankReveal question={currentQuestion} />
-              ) : currentQuestion?.type === 'route' ? (
-                <RouteReveal question={currentQuestion} />
-              ) : currentQuestion?.type === 'higher-lower' ? (
-                <HigherLower question={currentQuestion} reveal />
-              ) : currentQuestion?.type === 'odd-one-out' ? (
+              ) : revealed?.type === 'rank' ? (
+                <RankReveal question={revealed} />
+              ) : revealed?.type === 'route' ? (
+                <RouteReveal question={revealed} />
+              ) : revealed?.type === 'higher-lower' ? (
+                <HigherLower question={revealed} reveal />
+              ) : revealed?.type === 'odd-one-out' ? (
                 <div className="flex flex-col items-center gap-3">
                   <span
                     className="block font-black leading-none tracking-[-0.03em]"
                     style={{
                       color: POP.coral,
-                      fontSize: `min(${Math.floor(640 / Math.max(currentQuestion.answer.length, 3))}px, 12vw)`,
+                      fontSize: `min(${Math.floor(640 / Math.max(revealed.answer.length, 3))}px, 12vw)`,
                     }}
                   >
-                    {currentQuestion.answer}
+                    {revealed.answer}
                   </span>
                   <p className="text-base font-bold text-pop-ink/70 md:text-lg">
-                    The odd one out - the others {currentQuestion.sharedProperty}.
+                    The odd one out - the others {revealed.sharedProperty}.
                   </p>
                 </div>
-              ) : currentQuestion?.type === 'build-up' ? (
+              ) : revealed?.type === 'build-up' ? (
                 <div className="flex flex-col items-center gap-3">
                   <span
                     className="block font-black leading-none tracking-[-0.03em]"
                     style={{
                       color: POP.coral,
-                      fontSize: `min(${Math.floor(640 / Math.max(currentQuestion.answer.length, 3))}px, 12vw)`,
+                      fontSize: `min(${Math.floor(640 / Math.max(revealed.answer.length, 3))}px, 12vw)`,
                     }}
                   >
-                    {currentQuestion.answer}
+                    {revealed.answer}
                   </span>
                   <ul className="mt-2 flex flex-col gap-1 text-left">
-                    {currentQuestion.clues.map((clue, i) => (
+                    {revealed.clues.map((clue, i) => (
                       <li key={i} className="text-sm font-bold text-pop-ink/60 md:text-base">
                         <span className="mr-1 text-pop-ink/30">{i + 1}.</span>
                         {clue}
@@ -163,17 +173,17 @@ export default function QuestionResultModal({
                   className="block font-black leading-none tracking-[-0.03em]"
                   style={{ color: POP.coral, fontSize: answerFontSize, whiteSpace: 'nowrap' }}
                 >
-                  {asSlider(currentQuestion) ? (
-                    <CountUp end={asSlider(currentQuestion)!.answer} duration={0.7} separator="," />
+                  {asSlider(revealed) ? (
+                    <CountUp end={asSlider(revealed)!.answer} duration={0.7} separator="," />
                   ) : (
-                    formatAnswerValue(currentQuestion?.answer)
+                    formatAnswerValue(revealed?.answer)
                   )}
                 </span>
               )}
               <p className="mt-4 text-lg font-bold text-pop-ink/60 md:text-xl">
-                {currentQuestion?.question}
+                {revealed?.question}
               </p>
-              {currentQuestion && <PopulationCompare question={currentQuestion} />}
+              {revealed && <PopulationCompare question={revealed} />}
             </motion.div>
 
             <div className="mt-12 flex flex-wrap justify-center gap-5">
@@ -184,7 +194,7 @@ export default function QuestionResultModal({
                   player={player}
                   score={answer?.score || 0}
                   answer={answer?.answer}
-                  question={currentQuestion}
+                  question={revealed}
                   isClosest={index === 0}
                 />
               ))}
