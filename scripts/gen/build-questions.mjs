@@ -739,7 +739,11 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
       endpoints.filter((x) => x.cca3 !== a.cca3),
       rng(`route:${a.cca3}`),
     )
+    // Take up to 2 partners, but guarantee the first short (2-hop) match so the
+    // "easy" tier stays well-stocked instead of being crowded out by the random
+    // longer routes that dominate a shuffled partner list.
     let made = 0
+    let madeShort = false
     for (const b of partners) {
       if (made >= 2) break
       const key = [a.cca3, b.cca3].sort().join('-')
@@ -748,6 +752,9 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
       if (!path) continue
       const optimalSteps = path.length - 1
       if (optimalSteps < 2 || optimalSteps > HOP_CAP) continue // skip trivial neighbours + too-far
+      // Reserve the last slot for a short route until we've found one.
+      if (made >= 1 && !madeShort && optimalSteps > 2) continue
+      if (optimalSteps === 2) madeShort = true
       seenPairs.add(key)
       const maxSteps = Math.min(HOP_CAP + 1, optimalSteps + 2)
       // Route difficulty is driven by chain length, not country fame, so set the

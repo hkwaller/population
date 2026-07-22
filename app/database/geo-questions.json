@@ -88442,14 +88442,14 @@
     "to": "PAK",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "BGD",
       "to": "PAK",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "abd76c1b-d79a-542c-8100-6015be01e43f",
@@ -88472,14 +88472,14 @@
     "to": "SAU",
     "maxSteps": 6,
     "optimalSteps": 5,
+    "tier": "hard",
     "extra": {
       "from": "BGD",
       "to": "SAU",
       "maxSteps": 6,
       "optimalSteps": 5
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.9
   },
   {
     "id": "0a0dadf4-698e-5243-9279-0be0ae7a3dd6",
@@ -88499,14 +88499,14 @@
     "to": "MEX",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "CAN",
       "to": "MEX",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "e50efd13-f565-525e-97f7-7bc8dbe6ab70",
@@ -88528,14 +88528,14 @@
     "to": "SYR",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "CHN",
       "to": "SYR",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
     "id": "5bf34d71-5c15-5454-91c0-11802992f2b6",
@@ -88555,14 +88555,14 @@
     "to": "THA",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "CHN",
       "to": "THA",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "7bdc2a8f-b193-5ae7-b0d7-e45cb9f3bd60",
@@ -88583,44 +88583,41 @@
     "to": "RUS",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "FRA",
       "to": "RUS",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "7461c926-85da-553b-a7f4-c3fb8aba09fe",
+    "id": "5cc86110-9976-5df4-9191-0f6116283179",
     "type": "route",
     "category": "route",
-    "question": "Hop from France to Pakistan across bordering countries",
+    "question": "Hop from France to Netherlands across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from France to Pakistan."
+      "text": "Chain bordering countries from France to Netherlands."
     },
     "answer": [
       "FRA",
-      "DEU",
-      "POL",
-      "RUS",
-      "CHN",
-      "PAK"
+      "BEL",
+      "NLD"
     ],
     "from": "FRA",
-    "to": "PAK",
-    "maxSteps": 6,
-    "optimalSteps": 5,
+    "to": "NLD",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "FRA",
-      "to": "PAK",
-      "maxSteps": 6,
-      "optimalSteps": 5
+      "to": "NLD",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "ea08c704-69fe-5dce-9065-328070e7b24e",
@@ -88643,44 +88640,41 @@
     "to": "BGD",
     "maxSteps": 6,
     "optimalSteps": 5,
+    "tier": "hard",
     "extra": {
       "from": "DEU",
       "to": "BGD",
       "maxSteps": 6,
       "optimalSteps": 5
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.9
   },
   {
-    "id": "3a5325a0-1b71-5a4e-ba18-1cc28f9a4c23",
+    "id": "a8a98886-d962-5f8b-8cd3-27c965bb530c",
     "type": "route",
     "category": "route",
-    "question": "Hop from Germany to Iraq across bordering countries",
+    "question": "Hop from Germany to Italy across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Germany to Iraq."
+      "text": "Chain bordering countries from Germany to Italy."
     },
     "answer": [
       "DEU",
-      "POL",
-      "RUS",
-      "AZE",
-      "IRN",
-      "IRQ"
+      "AUT",
+      "ITA"
     ],
     "from": "DEU",
-    "to": "IRQ",
-    "maxSteps": 6,
-    "optimalSteps": 5,
+    "to": "ITA",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "DEU",
-      "to": "IRQ",
-      "maxSteps": 6,
-      "optimalSteps": 5
+      "to": "ITA",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "c1e751fd-3ada-53e1-ae24-4956b5639008",
@@ -88701,44 +88695,41 @@
     "to": "UKR",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "IND",
       "to": "UKR",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "35f6b359-bf40-569f-bd58-a99df49011b9",
+    "id": "f7e7087b-c3e7-5b4b-91d0-53d9a19df5bb",
     "type": "route",
     "category": "route",
-    "question": "Hop from India to France across bordering countries",
+    "question": "Hop from India to Russia across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from India to France."
+      "text": "Chain bordering countries from India to Russia."
     },
     "answer": [
       "IND",
       "CHN",
-      "RUS",
-      "POL",
-      "DEU",
-      "FRA"
+      "RUS"
     ],
     "from": "IND",
-    "to": "FRA",
-    "maxSteps": 6,
-    "optimalSteps": 5,
+    "to": "RUS",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "IND",
-      "to": "FRA",
-      "maxSteps": 6,
-      "optimalSteps": 5
+      "to": "RUS",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "a6da078b-3db3-51dd-9948-0e1351429c1d",
@@ -88758,14 +88749,14 @@
     "to": "THA",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "IDN",
       "to": "THA",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "03e1e665-758b-53ac-85e5-8c4d301c475c",
@@ -88787,14 +88778,14 @@
     "to": "BGD",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "IDN",
       "to": "BGD",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
     "id": "70b1e266-42d3-5f00-a538-42497c6ff009",
@@ -88817,42 +88808,41 @@
     "to": "NLD",
     "maxSteps": 6,
     "optimalSteps": 5,
+    "tier": "hard",
     "extra": {
       "from": "IRN",
       "to": "NLD",
       "maxSteps": 6,
       "optimalSteps": 5
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.9
   },
   {
-    "id": "6441c5cf-321f-5a35-930e-f5ba11b2aacd",
+    "id": "d060618b-565b-56aa-b745-e9db029bd900",
     "type": "route",
     "category": "route",
-    "question": "Hop from Iran to Poland across bordering countries",
+    "question": "Hop from Iran to China across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Iran to Poland."
+      "text": "Chain bordering countries from Iran to China."
     },
     "answer": [
       "IRN",
-      "AZE",
-      "RUS",
-      "POL"
+      "AFG",
+      "CHN"
     ],
     "from": "IRN",
-    "to": "POL",
-    "maxSteps": 5,
-    "optimalSteps": 3,
+    "to": "CHN",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "IRN",
-      "to": "POL",
-      "maxSteps": 5,
-      "optimalSteps": 3
+      "to": "CHN",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "5cf3bb9e-5e9e-5b0d-b157-b6675a074aec",
@@ -88873,43 +88863,41 @@
     "to": "CHN",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "IRQ",
       "to": "CHN",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "8c04b263-141a-518f-955c-40df7234997b",
+    "id": "5e9eefd2-4414-507d-a5be-54abf7db232e",
     "type": "route",
     "category": "route",
-    "question": "Hop from Iraq to Bangladesh across bordering countries",
+    "question": "Hop from Iraq to United Arab Emirates across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Iraq to Bangladesh."
+      "text": "Chain bordering countries from Iraq to United Arab Emirates."
     },
     "answer": [
       "IRQ",
-      "IRN",
-      "PAK",
-      "IND",
-      "BGD"
+      "SAU",
+      "ARE"
     ],
     "from": "IRQ",
-    "to": "BGD",
-    "maxSteps": 6,
-    "optimalSteps": 4,
+    "to": "ARE",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "IRQ",
-      "to": "BGD",
-      "maxSteps": 6,
-      "optimalSteps": 4
+      "to": "ARE",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "8b5d2108-b184-55f9-a81a-345f206ac305",
@@ -88932,14 +88920,14 @@
     "to": "POL",
     "maxSteps": 6,
     "optimalSteps": 5,
+    "tier": "hard",
     "extra": {
       "from": "ISR",
       "to": "POL",
       "maxSteps": 6,
       "optimalSteps": 5
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.9
   },
   {
     "id": "9b719754-e197-50dd-b1c8-7a9c9c5fcc3c",
@@ -88959,14 +88947,14 @@
     "to": "TUR",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "ISR",
       "to": "TUR",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "1d12c563-a168-58ec-a5f0-21577a3b89d5",
@@ -88987,42 +88975,41 @@
     "to": "ROU",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "ITA",
       "to": "ROU",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "76bc8df5-4ac8-5b79-b11b-2487fd92756e",
+    "id": "b5147a1b-6ea7-5b91-a913-4ee3d9005da1",
     "type": "route",
     "category": "route",
-    "question": "Hop from Italy to Netherlands across bordering countries",
+    "question": "Hop from Italy to Spain across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Italy to Netherlands."
+      "text": "Chain bordering countries from Italy to Spain."
     },
     "answer": [
       "ITA",
-      "AUT",
-      "DEU",
-      "NLD"
+      "FRA",
+      "ESP"
     ],
     "from": "ITA",
-    "to": "NLD",
-    "maxSteps": 5,
-    "optimalSteps": 3,
+    "to": "ESP",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "ITA",
-      "to": "NLD",
-      "maxSteps": 5,
-      "optimalSteps": 3
+      "to": "ESP",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "141e7aa3-1bee-5818-97ed-20c421447f0c",
@@ -89042,14 +89029,14 @@
     "to": "POL",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "NLD",
       "to": "POL",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "0dcb0586-9d50-52f6-8392-b959ec81601d",
@@ -89070,14 +89057,14 @@
     "to": "RUS",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "NLD",
       "to": "RUS",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
     "id": "8d90fca6-af98-5c7e-963b-7c5c76944dac",
@@ -89098,43 +89085,41 @@
     "to": "POL",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "PAK",
       "to": "POL",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "f284e688-39d5-575f-986f-50cb7a5f851b",
+    "id": "b13b4770-01d3-5c54-8b72-3e1d1c87aa34",
     "type": "route",
     "category": "route",
-    "question": "Hop from Pakistan to Israel across bordering countries",
+    "question": "Hop from Pakistan to Russia across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Pakistan to Israel."
+      "text": "Chain bordering countries from Pakistan to Russia."
     },
     "answer": [
       "PAK",
-      "IRN",
-      "IRQ",
-      "JOR",
-      "ISR"
+      "CHN",
+      "RUS"
     ],
     "from": "PAK",
-    "to": "ISR",
-    "maxSteps": 6,
-    "optimalSteps": 4,
+    "to": "RUS",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "PAK",
-      "to": "ISR",
-      "maxSteps": 6,
-      "optimalSteps": 4
+      "to": "RUS",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "3880ed54-6b5e-5fd4-b7d3-5d160bae8a60",
@@ -89156,42 +89141,41 @@
     "to": "THA",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "POL",
       "to": "THA",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
-    "id": "ad55d71e-def8-5c1a-9c9b-395799cf4e8a",
+    "id": "68c2c4b5-2da6-55c6-8066-3d13bdab98b0",
     "type": "route",
     "category": "route",
-    "question": "Hop from Poland to Italy across bordering countries",
+    "question": "Hop from Poland to China across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Poland to Italy."
+      "text": "Chain bordering countries from Poland to China."
     },
     "answer": [
       "POL",
-      "CZE",
-      "AUT",
-      "ITA"
+      "RUS",
+      "CHN"
     ],
     "from": "POL",
-    "to": "ITA",
-    "maxSteps": 5,
-    "optimalSteps": 3,
+    "to": "CHN",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "POL",
-      "to": "ITA",
-      "maxSteps": 5,
-      "optimalSteps": 3
+      "to": "CHN",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "28d67715-8a1e-560d-be12-8acb7a7047af",
@@ -89214,70 +89198,41 @@
     "to": "THA",
     "maxSteps": 6,
     "optimalSteps": 5,
+    "tier": "hard",
     "extra": {
       "from": "ROU",
       "to": "THA",
       "maxSteps": 6,
       "optimalSteps": 5
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.9
   },
   {
-    "id": "8186e911-b016-5e24-835f-c1c1e5714af2",
+    "id": "b18c959b-b4c2-50ed-aafb-03182ef5274e",
     "type": "route",
     "category": "route",
-    "question": "Hop from Romania to Israel across bordering countries",
+    "question": "Hop from Romania to Turkey across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Romania to Israel."
+      "text": "Chain bordering countries from Romania to Turkey."
     },
     "answer": [
       "ROU",
       "BGR",
-      "TUR",
-      "SYR",
-      "ISR"
+      "TUR"
     ],
     "from": "ROU",
-    "to": "ISR",
-    "maxSteps": 6,
-    "optimalSteps": 4,
-    "extra": {
-      "from": "ROU",
-      "to": "ISR",
-      "maxSteps": 6,
-      "optimalSteps": 4
-    },
-    "difficulty": 0.78,
-    "tier": "hard"
-  },
-  {
-    "id": "31b71ebb-46b1-5944-9997-9ba1c5d7d8d0",
-    "type": "route",
-    "category": "route",
-    "question": "Hop from Russia to India across bordering countries",
-    "prompt": {
-      "kind": "text",
-      "text": "Chain bordering countries from Russia to India."
-    },
-    "answer": [
-      "RUS",
-      "CHN",
-      "IND"
-    ],
-    "from": "RUS",
-    "to": "IND",
+    "to": "TUR",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
-      "from": "RUS",
-      "to": "IND",
+      "from": "ROU",
+      "to": "TUR",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "b4ad8d3a-4f2d-5744-b8d0-0e0708fd6d36",
@@ -89297,14 +89252,44 @@
     "to": "IRN",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "RUS",
       "to": "IRN",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
+  },
+  {
+    "id": "6937a60c-9efa-5770-93da-1669fa8f1091",
+    "type": "route",
+    "category": "route",
+    "question": "Hop from Russia to Indonesia across bordering countries",
+    "prompt": {
+      "kind": "text",
+      "text": "Chain bordering countries from Russia to Indonesia."
+    },
+    "answer": [
+      "RUS",
+      "CHN",
+      "MMR",
+      "THA",
+      "MYS",
+      "IDN"
+    ],
+    "from": "RUS",
+    "to": "IDN",
+    "maxSteps": 6,
+    "optimalSteps": 5,
+    "tier": "hard",
+    "extra": {
+      "from": "RUS",
+      "to": "IDN",
+      "maxSteps": 6,
+      "optimalSteps": 5
+    },
+    "difficulty": 0.9
   },
   {
     "id": "fd8e24a5-a24e-56f4-9fc1-7e999f2b3d17",
@@ -89326,43 +89311,41 @@
     "to": "IND",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "SAU",
       "to": "IND",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
-    "id": "d8f635a7-7942-5d43-842a-08255bbad38d",
+    "id": "0f211a0c-0a9f-5161-852d-59a42eaf644e",
     "type": "route",
     "category": "route",
-    "question": "Hop from Saudi Arabia to Romania across bordering countries",
+    "question": "Hop from Saudi Arabia to Turkey across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Saudi Arabia to Romania."
+      "text": "Chain bordering countries from Saudi Arabia to Turkey."
     },
     "answer": [
       "SAU",
       "IRQ",
-      "TUR",
-      "BGR",
-      "ROU"
+      "TUR"
     ],
     "from": "SAU",
-    "to": "ROU",
-    "maxSteps": 6,
-    "optimalSteps": 4,
+    "to": "TUR",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "SAU",
-      "to": "ROU",
-      "maxSteps": 6,
-      "optimalSteps": 4
+      "to": "TUR",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "b6e47a89-2410-5b30-9fcb-72991b9f7366",
@@ -89383,42 +89366,41 @@
     "to": "NLD",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "ESP",
       "to": "NLD",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "8e9d7210-03a2-5614-ab66-333a1b77c6d6",
+    "id": "d89ceaca-0d6c-5ce3-8db0-191c3f9960ac",
     "type": "route",
     "category": "route",
-    "question": "Hop from Spain to Poland across bordering countries",
+    "question": "Hop from Spain to Germany across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Spain to Poland."
+      "text": "Chain bordering countries from Spain to Germany."
     },
     "answer": [
       "ESP",
       "FRA",
-      "DEU",
-      "POL"
+      "DEU"
     ],
     "from": "ESP",
-    "to": "POL",
-    "maxSteps": 5,
-    "optimalSteps": 3,
+    "to": "DEU",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "ESP",
-      "to": "POL",
-      "maxSteps": 5,
-      "optimalSteps": 3
+      "to": "DEU",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "2a2872ed-f004-5ff6-9b09-c1920f82275e",
@@ -89440,43 +89422,41 @@
     "to": "UKR",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "SYR",
       "to": "UKR",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
-    "id": "fb0b663d-8630-5863-ba8e-160dd07e08ed",
+    "id": "cbf82f71-c690-5b6c-a1b4-92387969e114",
     "type": "route",
     "category": "route",
-    "question": "Hop from Syria to India across bordering countries",
+    "question": "Hop from Syria to Iran across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Syria to India."
+      "text": "Chain bordering countries from Syria to Iran."
     },
     "answer": [
       "SYR",
       "IRQ",
-      "IRN",
-      "PAK",
-      "IND"
+      "IRN"
     ],
     "from": "SYR",
-    "to": "IND",
-    "maxSteps": 6,
-    "optimalSteps": 4,
+    "to": "IRN",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "SYR",
-      "to": "IND",
-      "maxSteps": 6,
-      "optimalSteps": 4
+      "to": "IRN",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "ae6beabb-ed7c-5aae-b9e4-5ef30698cd07",
@@ -89496,14 +89476,14 @@
     "to": "VNM",
     "maxSteps": 4,
     "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "THA",
       "to": "VNM",
       "maxSteps": 4,
       "optimalSteps": 2
     },
-    "difficulty": 0.54,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "4419ddcf-805c-5a4f-88ca-51d3bbd71431",
@@ -89526,14 +89506,14 @@
     "to": "DEU",
     "maxSteps": 6,
     "optimalSteps": 5,
+    "tier": "hard",
     "extra": {
       "from": "THA",
       "to": "DEU",
       "maxSteps": 6,
       "optimalSteps": 5
     },
-    "difficulty": 0.9,
-    "tier": "hard"
+    "difficulty": 0.9
   },
   {
     "id": "4eb6cf05-624e-503b-a93f-dd64161facca",
@@ -89555,42 +89535,41 @@
     "to": "DEU",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "TUR",
       "to": "DEU",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
-    "id": "b279a459-c319-57a8-90ae-5104c4b10f19",
+    "id": "2a56a8e5-edfc-5f53-a876-38304277dac1",
     "type": "route",
     "category": "route",
-    "question": "Hop from Turkey to United Arab Emirates across bordering countries",
+    "question": "Hop from Turkey to Russia across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Turkey to United Arab Emirates."
+      "text": "Chain bordering countries from Turkey to Russia."
     },
     "answer": [
       "TUR",
-      "IRQ",
-      "SAU",
-      "ARE"
+      "AZE",
+      "RUS"
     ],
     "from": "TUR",
-    "to": "ARE",
-    "maxSteps": 5,
-    "optimalSteps": 3,
+    "to": "RUS",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "TUR",
-      "to": "ARE",
-      "maxSteps": 5,
-      "optimalSteps": 3
+      "to": "RUS",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.54
   },
   {
     "id": "40960dc7-ce40-5086-9b72-72fc5b139542",
@@ -89611,43 +89590,41 @@
     "to": "PAK",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "UKR",
       "to": "PAK",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.66
   },
   {
-    "id": "92ac43a2-bd50-51a2-969f-e99d35e25343",
+    "id": "31f10255-695b-5586-afa2-8ec18648019c",
     "type": "route",
     "category": "route",
-    "question": "Hop from Ukraine to Iraq across bordering countries",
+    "question": "Hop from Ukraine to China across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Ukraine to Iraq."
+      "text": "Chain bordering countries from Ukraine to China."
     },
     "answer": [
       "UKR",
-      "ROU",
-      "BGR",
-      "TUR",
-      "IRQ"
+      "RUS",
+      "CHN"
     ],
     "from": "UKR",
-    "to": "IRQ",
-    "maxSteps": 6,
-    "optimalSteps": 4,
+    "to": "CHN",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "UKR",
-      "to": "IRQ",
-      "maxSteps": 6,
-      "optimalSteps": 4
+      "to": "CHN",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.54
   },
   {
     "id": "ee9c4b58-4cf5-5257-9c4a-be7d797f9432",
@@ -89668,43 +89645,14 @@
     "to": "SYR",
     "maxSteps": 5,
     "optimalSteps": 3,
+    "tier": "medium",
     "extra": {
       "from": "ARE",
       "to": "SYR",
       "maxSteps": 5,
       "optimalSteps": 3
     },
-    "difficulty": 0.66,
-    "tier": "medium"
-  },
-  {
-    "id": "1dcf1a8a-4ef9-556e-a818-813990c61759",
-    "type": "route",
-    "category": "route",
-    "question": "Hop from United Arab Emirates to Pakistan across bordering countries",
-    "prompt": {
-      "kind": "text",
-      "text": "Chain bordering countries from United Arab Emirates to Pakistan."
-    },
-    "answer": [
-      "ARE",
-      "SAU",
-      "IRQ",
-      "IRN",
-      "PAK"
-    ],
-    "from": "ARE",
-    "to": "PAK",
-    "maxSteps": 6,
-    "optimalSteps": 4,
-    "extra": {
-      "from": "ARE",
-      "to": "PAK",
-      "maxSteps": 6,
-      "optimalSteps": 4
-    },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.66
   },
   {
     "id": "64a77aed-f649-5107-a425-69c81bc3f45d",
@@ -89726,41 +89674,40 @@
     "to": "TUR",
     "maxSteps": 6,
     "optimalSteps": 4,
+    "tier": "hard",
     "extra": {
       "from": "VNM",
       "to": "TUR",
       "maxSteps": 6,
       "optimalSteps": 4
     },
-    "difficulty": 0.78,
-    "tier": "hard"
+    "difficulty": 0.78
   },
   {
-    "id": "fe7ec379-4eb5-597c-ac4b-6d5fdb51d1e2",
+    "id": "7ecf518c-1849-5794-88ad-baa6e2c8a84a",
     "type": "route",
     "category": "route",
-    "question": "Hop from Vietnam to Iran across bordering countries",
+    "question": "Hop from Vietnam to Pakistan across bordering countries",
     "prompt": {
       "kind": "text",
-      "text": "Chain bordering countries from Vietnam to Iran."
+      "text": "Chain bordering countries from Vietnam to Pakistan."
     },
     "answer": [
       "VNM",
       "CHN",
-      "AFG",
-      "IRN"
+      "PAK"
     ],
     "from": "VNM",
-    "to": "IRN",
-    "maxSteps": 5,
-    "optimalSteps": 3,
+    "to": "PAK",
+    "maxSteps": 4,
+    "optimalSteps": 2,
+    "tier": "easy",
     "extra": {
       "from": "VNM",
-      "to": "IRN",
-      "maxSteps": 5,
-      "optimalSteps": 3
+      "to": "PAK",
+      "maxSteps": 4,
+      "optimalSteps": 2
     },
-    "difficulty": 0.66,
-    "tier": "medium"
+    "difficulty": 0.54
   }
 ]

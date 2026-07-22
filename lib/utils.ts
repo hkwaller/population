@@ -51,6 +51,8 @@ export const CHOICE_TIME_LIMIT_MS = 15000
 const CHOICE_BASE = 700
 /** Max points a correct choice can earn on top of CHOICE_BASE, decaying to 0 over CHOICE_TIME_LIMIT_MS. */
 export const CHOICE_SPEED_BONUS = 300
+/** Points docked per broken hop on a route question (non-adjacent or revisited step). */
+export const ROUTE_HOP_PENALTY = 100
 
 /** Great-circle distance between two lat/lng points, in kilometres. */
 export function haversineKm(a: LatLng, b: LatLng) {
@@ -178,7 +180,7 @@ export function scoreAnswer(
     case 'build-up':
       return scoreBuildUp(question, guess as string, opts?.cluesUsed)
     case 'route':
-      return scoreRoute(question, guess as string[], opts?.routeValid)
+      return scoreRoute(question, guess as string[], opts?.routeInvalidHops)
     default:
       return 0
   }
@@ -214,19 +216,16 @@ function scoreBuildUp(question: BuildUpQuestion, guess: string, cluesUsed?: numb
 }
 
 /**
- * Score a route guess. `routeValid` (endpoints match + every hop land-adjacent,
- * computed against the adjacency graph by the caller - see scoreGuess) gates any
- * credit. A valid route scores full at the optimal hop count and decays with each
- * extra hop, reaching 0 once it uses the whole `maxSteps` headroom.
+ * Score a route guess. Start from the full score and dock `ROUTE_HOP_PENALTY` for
+ * each broken hop (a non-adjacent or revisited step, counted against the adjacency
+ * graph by the caller - see scoreGuess). Correct hops keep their credit; only the
+ * bad ones cost points, and the score never drops below 0. A fully connected route
+ * scores full marks regardless of length.
  */
-function scoreRoute(question: RouteQuestion, guess: string[], routeValid?: boolean) {
-  if (!routeValid || !Array.isArray(guess) || guess.length < 2) return 0
-  const steps = guess.length - 1
-  const optimal = Math.max(1, question.optimalSteps)
-  if (steps <= optimal) return MAX_SCORE
-  const extra = steps - optimal
-  const headroom = Math.max(1, question.maxSteps - optimal)
-  return Math.max(0, Math.round(MAX_SCORE * (1 - extra / headroom)))
+function scoreRoute(_question: RouteQuestion, guess: string[], invalidHops?: number) {
+  if (!Array.isArray(guess) || guess.length < 2) return 0
+  const broken = invalidHops ?? 0
+  return Math.max(0, MAX_SCORE - broken * ROUTE_HOP_PENALTY)
 }
 
 /** A near-perfect answer worth celebrating (exact slider hit / same-city map guess). */

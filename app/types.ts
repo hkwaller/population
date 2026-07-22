@@ -187,8 +187,8 @@ export type ScoreOpts = {
   confidence?: number
   /** Build-up clues revealed at lock-in time. */
   cluesUsed?: number
-  /** Route guess forms a valid connected chain (computed against the adjacency graph). */
-  routeValid?: boolean
+  /** Route: number of broken hops (non-adjacent / revisited), computed against the adjacency graph. */
+  routeInvalidHops?: number
 }
 
 export type BossPayload = any // Refine later if structure is known

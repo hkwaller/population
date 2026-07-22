@@ -96,7 +96,10 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   const myAnswered = myPlayerInfo?.answers?.some((a) => a.questionId === currentQuestion?.id)
   const myScore = myPlayerInfo?.answers?.reduce((acc, a) => acc + a.score, 0) ?? 0
   const isBoss = boss === playerId
-  const canEndGame = everyoneHasAnswered && answeredQuestions?.length === amountQuestions - 1
+  // The final question has no "next" - once we're on it, the Dock/reveal CTA
+  // must switch from "Next" to "Finish"/"End" so the host can't skip forever
+  // past the intended question count.
+  const canEndGame = (answeredQuestions?.length ?? 0) >= amountQuestions - 1
 
   const waiting = !currentQuestion || command === 'idle'
 

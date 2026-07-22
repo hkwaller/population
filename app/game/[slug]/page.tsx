@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
@@ -40,11 +40,6 @@ function GamePageContent({ params }: { params: { slug: string } }) {
     .find((p) => p.id === me?.id)
     ?.answers?.some((a) => a.questionId === currentQuestion?.id)
 
-  const everyoneHasAnswered = useMemo(
-    () => players.every((p) => p.answers.some((a) => a.questionId === currentQuestion?.id)),
-    [players, currentQuestion?.id],
-  )
-
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
   // Rank answer lives here (not in RankInput) so Lock can sit in the Dock.
@@ -64,7 +59,10 @@ function GamePageContent({ params }: { params: { slug: string } }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion?.id])
 
-  const canEndGame = everyoneHasAnswered && answeredQuestions?.length === amountQuestions - 1
+  // The final question has no "next" - once we're on it, the Dock/reveal CTA
+  // must switch from "Next" to "Finish"/"End" so the host can't skip forever
+  // past the intended question count.
+  const canEndGame = (answeredQuestions?.length ?? 0) >= amountQuestions - 1
 
   useEffect(() => {
     if (command === 'end') {

@@ -69,6 +69,25 @@ export function shortestPathLength(from: string, to: string): number | null {
 }
 
 /**
+ * Count the "broken" hops in a proposed route: consecutive pairs that don't share a
+ * land border. A revisited country also breaks the hop into it (you can't step onto
+ * a country you've already used). This is what scoring penalises - each broken hop
+ * costs a fixed number of points; the correct hops still earn credit.
+ */
+export function invalidHopCount(route: string[]): number {
+  if (!Array.isArray(route) || route.length < 2) return 0
+  const seen = new Set<string>([route[0]])
+  let broken = 0
+  for (let i = 1; i < route.length; i++) {
+    const a = route[i - 1]
+    const b = route[i]
+    if (seen.has(b) || !areAdjacent(a, b)) broken++
+    seen.add(b)
+  }
+  return broken
+}
+
+/**
  * Validate a proposed route (array of cca3 codes): it must start at `from`, end at
  * `to`, every consecutive pair must be land-adjacent, no repeated country, and use
  * no more than `maxSteps` hops.

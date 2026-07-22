@@ -9,6 +9,7 @@ import { AnswerValue, LatLng, TPlayer, TQuestion } from '../types'
 import { formatAnswerValue, haversineKm, MAX_SCORE } from '@/lib/utils'
 import { POP, stickerFill } from './pop/theme'
 import { RankGuessFlags } from './geo/RankFlags'
+import { RouteGuessFlags } from './geo/RouteFlags'
 
 export const PlayerResult = ({
   player,
@@ -57,10 +58,12 @@ export const PlayerResult = ({
 
   // Rank rounds: show the guessed order as flags only, bordered right/wrong.
   const isRank = question?.type === 'rank' && Array.isArray(answer)
+  // Route rounds: show the attempted journey as a flag chain (broken hops marked).
+  const isRoute = question?.type === 'route' && Array.isArray(answer)
 
   // Map rounds: distance from the true spot reads better than raw coordinates.
   const guessLine = (() => {
-    if (answer === undefined || isRank) return null
+    if (answer === undefined || isRank || isRoute) return null
     if (question?.type === 'map' && typeof answer === 'object') {
       if (score >= MAX_SCORE) return 'nailed it 🎯'
       const km = Math.round(haversineKm(answer as LatLng, question.answer))
@@ -69,11 +72,6 @@ export const PlayerResult = ({
     // Higher-lower stores the picked side; show the side's label, not "left".
     if (question?.type === 'higher-lower' && (answer === 'left' || answer === 'right')) {
       return `guessed ${question[answer].label}`
-    }
-    // Route stores an ordered cca3 chain; show hop count, not raw codes.
-    if (question?.type === 'route' && Array.isArray(answer)) {
-      const hops = Math.max(0, answer.length - 1)
-      return score > 0 ? `${hops} hops` : 'route broken'
     }
     return `guessed ${formatAnswerValue(answer)}`
   })()
@@ -103,6 +101,7 @@ export const PlayerResult = ({
       {isRank && question?.type === 'rank' && (
         <RankGuessFlags guess={answer as string[]} answer={question.answer} />
       )}
+      {isRoute && <RouteGuessFlags chain={answer as string[]} />}
       {guessLine && <span className="text-[17px] font-bold text-pop-ink/60">{guessLine}</span>}
       <span
         className="rounded-pill px-4 py-1.5 text-lg font-black text-white"

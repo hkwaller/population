@@ -3,7 +3,7 @@
 import type { AnswerValue, LatLng, TQuestion } from '@/app/types'
 import { scoreAnswer } from '@/lib/utils'
 import { guessInCountry } from './geometry'
-import { isValidRoute } from './adjacency'
+import { invalidHopCount } from './adjacency'
 
 /**
  * Score a guess, resolving map "did they hit the country" against the loaded border
@@ -23,15 +23,14 @@ export function scoreGuess(
     question.type === 'map' && question.ccn3 && opts?.confidence == null
       ? guessInCountry(question.ccn3, guess as LatLng) === true
       : undefined
-  // Route validity (endpoints + land-adjacency of every hop) against the graph.
-  const routeValid =
-    question.type === 'route'
-      ? isValidRoute(question.from, question.to, guess as string[], question.maxSteps)
-      : undefined
+  // Route: count broken hops (non-adjacent / revisited) against the graph; scoring
+  // docks a fixed penalty per broken hop rather than zeroing the whole route.
+  const routeInvalidHops =
+    question.type === 'route' ? invalidHopCount(guess as string[]) : undefined
   return scoreAnswer(question, guess, elapsedMs, {
     insideCountry,
     confidence: opts?.confidence,
     cluesUsed: opts?.cluesUsed,
-    routeValid,
+    routeInvalidHops,
   })
 }

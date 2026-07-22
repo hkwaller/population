@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { scoreAnswer, haversineKm, MAX_SCORE, MAP_FALLOFF_KM } from './utils'
+import { scoreAnswer, haversineKm, MAX_SCORE, MAP_FALLOFF_KM, ROUTE_HOP_PENALTY } from './utils'
 import type {
   BuildUpQuestion,
   ChoiceQuestion,
@@ -241,23 +241,24 @@ const route: RouteQuestion = {
 }
 
 describe('scoreAnswer - route', () => {
-  it('an invalid route (routeValid false) scores 0', () => {
-    expect(scoreAnswer(route, ['PRT', 'POL'], undefined, { routeValid: false })).toBe(0)
+  it('a fully connected route (no broken hops) scores max', () => {
+    expect(scoreAnswer(route, ['PRT', 'POL'], undefined, { routeInvalidHops: 0 })).toBe(MAX_SCORE)
   })
-  it('a valid optimal-length route scores max', () => {
-    // 3 hops = 4 nodes, matches optimalSteps
-    expect(
-      scoreAnswer(route, ['PRT', 'ESP', 'FRA', 'DEU', 'POL'].slice(0, 4), undefined, {
-        routeValid: true,
-      }),
-    ).toBe(MAX_SCORE)
+  it('docks ROUTE_HOP_PENALTY per broken hop', () => {
+    expect(scoreAnswer(route, ['PRT', 'x', 'POL'], undefined, { routeInvalidHops: 1 })).toBe(
+      MAX_SCORE - ROUTE_HOP_PENALTY,
+    )
+    expect(scoreAnswer(route, ['PRT', 'x', 'y', 'POL'], undefined, { routeInvalidHops: 2 })).toBe(
+      MAX_SCORE - 2 * ROUTE_HOP_PENALTY,
+    )
   })
-  it('a valid but longer route scores less than optimal', () => {
-    const optimal = scoreAnswer(route, ['a', 'b', 'c', 'd'], undefined, { routeValid: true }) // 3 hops
-    const longer = scoreAnswer(route, ['a', 'b', 'c', 'd', 'e'], undefined, { routeValid: true }) // 4 hops
-    expect(optimal).toBe(MAX_SCORE)
-    expect(longer).toBeGreaterThan(0)
-    expect(longer).toBeLessThan(optimal)
+  it('never scores below 0', () => {
+    expect(scoreAnswer(route, ['PRT', 'POL'], undefined, { routeInvalidHops: 99 })).toBe(0)
+  })
+  it('a valid but longer route still scores max (only broken hops cost)', () => {
+    expect(scoreAnswer(route, ['a', 'b', 'c', 'd', 'e'], undefined, { routeInvalidHops: 0 })).toBe(
+      MAX_SCORE,
+    )
   })
 })
 

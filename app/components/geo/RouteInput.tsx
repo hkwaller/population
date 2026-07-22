@@ -2,11 +2,12 @@
 
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowDown, X } from 'lucide-react'
 
 import type { RouteQuestion } from '@/app/types'
-import { COUNTRIES, byCca3 } from '@/lib/geo/countries'
+import { COUNTRIES } from '@/lib/geo/countries'
 import { PopButton } from '../pop/PopButton'
+import { RouteMap } from './RouteMap'
+import { RouteChainFlags } from './RouteFlags'
 
 const NAMED = COUNTRIES.map((c) => ({ name: c.name, cca3: c.cca3 })).sort((a, b) =>
   a.name.localeCompare(b.name),
@@ -21,16 +22,6 @@ function norm(s: string): string {
 }
 
 const MAX_SUGGESTIONS = 6
-const name = (cca3: string) => byCca3.get(cca3)?.name ?? cca3
-
-/** Fixed start/end chip. */
-function Chip({ label }: { label: string }) {
-  return (
-    <div className="flex items-center justify-between rounded-3xl border-4 border-pop-ink bg-white px-5 py-3 text-lg font-black text-pop-ink">
-      <span>{label}</span>
-    </div>
-  )
-}
 
 /**
  * Border Hopper input: build an ordered chain of bordering countries from a fixed
@@ -114,24 +105,18 @@ export function RouteInput({
         Aim for {question.optimalSteps} hops · max {question.maxSteps} · you: {hops}
       </p>
 
-      <Chip label={`Start: ${name(question.from)}`} />
+      <RouteMap from={question.from} to={question.to} chain={chain} />
 
-      {middle.map((cca3, i) => (
-        <div key={`${cca3}-${i}`} className="flex flex-col items-center gap-1">
-          <ArrowDown size={18} strokeWidth={3} className="text-pop-ink/40" />
-          <div className="flex w-full items-center justify-between rounded-3xl border-4 border-pop-ink bg-pop-sunshine px-5 py-3 text-lg font-black text-pop-ink">
-            <span>{name(cca3)}</span>
-            {!disabled && (
-              <button type="button" onClick={() => removeAt(i)} aria-label={`Remove ${name(cca3)}`}>
-                <X size={18} strokeWidth={3} />
-              </button>
-            )}
-          </div>
-        </div>
-      ))}
-
-      <ArrowDown size={18} strokeWidth={3} className="mx-auto text-pop-ink/40" />
-      <Chip label={`End: ${name(question.to)}`} />
+      {/* The proposed trip as a horizontal row of flags: enter a country by name,
+          then see (or learn) its flag. Start/end are fixed; hops are removable. */}
+      <div className="rounded-3xl border-4 border-pop-ink bg-white px-4 py-4">
+        <RouteChainFlags
+          chain={chain}
+          from={question.from}
+          to={question.to}
+          onRemove={disabled ? undefined : removeAt}
+        />
+      </div>
 
       {/* Typeahead to add a hop */}
       <div className="relative mt-2">

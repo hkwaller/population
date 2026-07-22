@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest'
 
-import { neighbors, areAdjacent, hasBorders, shortestPath, isValidRoute } from './geo/adjacency'
+import {
+  neighbors,
+  areAdjacent,
+  hasBorders,
+  shortestPath,
+  isValidRoute,
+  invalidHopCount,
+} from './geo/adjacency'
 
 describe('adjacency graph', () => {
   it('knows real land borders (France ↔ Germany)', () => {
@@ -46,5 +53,24 @@ describe('isValidRoute', () => {
   it('rejects routes longer than maxSteps', () => {
     const path = shortestPath('PRT', 'POL')!
     expect(isValidRoute('PRT', 'POL', path, 1)).toBe(false)
+  })
+})
+
+describe('invalidHopCount', () => {
+  it('is 0 for a fully connected chain', () => {
+    expect(invalidHopCount(['FRA', 'DEU'])).toBe(0)
+    const path = shortestPath('PRT', 'POL')!
+    expect(invalidHopCount(path)).toBe(0)
+  })
+  it('counts each non-adjacent hop', () => {
+    // BGD-IRQ, IRQ-AFG, AFG-SAU are all non-adjacent → 3 broken hops
+    expect(invalidHopCount(['BGD', 'IRQ', 'AFG', 'SAU'])).toBe(3)
+  })
+  it('counts one broken hop in an otherwise valid chain', () => {
+    // FRA-DEU is real; DEU-PRT is not → exactly 1 broken hop
+    expect(invalidHopCount(['FRA', 'DEU', 'PRT'])).toBe(1)
+  })
+  it('treats a revisited country as a broken hop', () => {
+    expect(invalidHopCount(['FRA', 'DEU', 'FRA'])).toBe(1)
   })
 })

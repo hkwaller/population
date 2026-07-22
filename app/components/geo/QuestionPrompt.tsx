@@ -26,18 +26,26 @@ export function FlagPrompt({ code, className }: { code: string; className?: stri
 export function BordersPrompt({ codes }: { codes: string[] }) {
   const neighbours = codes.map((c) => byCca3.get(c)).filter(Boolean).slice(0, 6)
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3">
-      {neighbours.map((n) => (
-        <div key={n!.cca3} className="flex flex-col items-center gap-1">
-          <img
-            // eslint-disable-next-line @next/next/no-img-element
-            src={`/flags/${n!.cca2.toLowerCase()}.svg`}
-            alt={n!.name}
-            style={{ width: 64, borderRadius: 6, border: '2px solid #211812' }}
-          />
-          <span className="text-xs font-bold text-pop-ink/70">{n!.name}</span>
-        </div>
-      ))}
+    <div className="flex flex-col items-center gap-5">
+      <p
+        className="text-center font-black leading-tight tracking-[-0.01em] text-pop-ink"
+        style={{ fontSize: 'clamp(22px, 4vw, 38px)' }}
+      >
+        What country borders these?
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {neighbours.map((n) => (
+          <div key={n!.cca3} className="flex flex-col items-center gap-1">
+            <img
+              // eslint-disable-next-line @next/next/no-img-element
+              src={`/flags/${n!.cca2.toLowerCase()}.svg`}
+              alt={n!.name}
+              style={{ width: 64, borderRadius: 6, border: '2px solid #211812' }}
+            />
+            <span className="text-xs font-bold text-pop-ink/70">{n!.name}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

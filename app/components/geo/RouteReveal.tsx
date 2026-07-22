@@ -3,6 +3,7 @@
 import type { RouteQuestion } from '@/app/types'
 import { shortestPath } from '@/lib/geo/adjacency'
 import { byCca3 } from '@/lib/geo/countries'
+import { RouteMap } from './RouteMap'
 
 const name = (cca3: string) => byCca3.get(cca3)?.name ?? cca3
 
@@ -14,6 +15,7 @@ export function RouteReveal({ question }: { question: RouteQuestion }) {
       <p className="text-base font-black uppercase tracking-wide text-pop-ink/50">
         Shortest route · {question.optimalSteps} hops
       </p>
+      <RouteMap from={question.from} to={question.to} chain={path} className="w-full" />
       <div className="flex flex-wrap items-center justify-center gap-2">
         {path.map((cca3, i) => (
           <span key={`${cca3}-${i}`} className="flex items-center gap-2">
