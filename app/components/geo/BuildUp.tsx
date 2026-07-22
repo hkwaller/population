@@ -9,7 +9,7 @@ import { COUNTRIES } from '@/lib/geo/countries'
 import { PopButton } from '../pop/PopButton'
 
 /** A fresh clue drips in on this cadence; more clues showing = fewer points. */
-const REVEAL_INTERVAL_MS = 5000
+const REVEAL_INTERVAL_MS = 3000
 const REVEAL_INTERVAL_S = REVEAL_INTERVAL_MS / 1000
 
 const COUNTRY_NAMES = Array.from(new Set(COUNTRIES.map((c) => c.name))).sort((a, b) =>
@@ -17,11 +17,7 @@ const COUNTRY_NAMES = Array.from(new Set(COUNTRIES.map((c) => c.name))).sort((a,
 )
 
 function norm(s: string): string {
-  return s
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+  return s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 }
 
 const MAX_SUGGESTIONS = 6

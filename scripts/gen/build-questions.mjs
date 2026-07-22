@@ -415,7 +415,9 @@ for (const c of withLang) {
   // `extra.order` so it round-trips through Supabase (see normalizeQuestionRow).
   const genTier = (tier, count, pool, n, difficulty, requireSpread, order) => {
     const asc = order === 'asc'
-    const label = asc ? `Sort these by population - smallest first` : `Sort these by population - largest first`
+    const label = asc
+      ? `Sort these by population - smallest first`
+      : `Sort these by population - largest first`
     let made = 0
     for (let attempt = 0; made < count && attempt < count * 50; attempt++) {
       const pick = shuffle(pool, rng(`rank:${order}:${tier}:${attempt}`)).slice(0, n)
@@ -544,7 +546,10 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
       const R = shuffle(otherRegions, rng(`ooo-region:${odd.cca3}`))[0]
       const three = shuffle(byRegion[R], rng(`ooo-region:${odd.cca3}:pick`)).slice(0, 3)
       if (three.length < 3) continue
-      push(oddQuestion(`ooo-region:${odd.cca3}`, three, odd, `are in ${R}`), oooDifficulty(odd, three))
+      push(
+        oddQuestion(`ooo-region:${odd.cca3}`, three, odd, `are in ${R}`),
+        oooDifficulty(odd, three),
+      )
       made++
     }
   }
@@ -617,7 +622,12 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
       const three = shuffle(islands, rng(`ooo-island:${odd.cca3}`)).slice(0, 3)
       if (three.length < 3) continue
       push(
-        oddQuestion(`ooo-island:${odd.cca3}`, three, odd, `are island nations with no land borders`),
+        oddQuestion(
+          `ooo-island:${odd.cca3}`,
+          three,
+          odd,
+          `are island nations with no land borders`,
+        ),
         oooDifficulty(odd, three),
       )
       made++
@@ -654,7 +664,7 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
     } else {
       clues.push(`An island nation with no land borders.`)
     }
-    if (c.currency) clues.push(`Its currency is the ${c.currency}.`)
+    // if (c.currency) clues.push(`Its currency is the ${c.currency}.`)
     clues.push(`Its capital is ${c.capital}.`)
     const acceptable = c.official && c.official !== c.name ? [c.official] : undefined
     push(
