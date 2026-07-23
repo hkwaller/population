@@ -3,10 +3,18 @@ import { icons } from './icons'
 export type LatLng = { lat: number; lng: number }
 
 /**
- * A player's raw guess: a number (slider), a chosen option string (choice), a
- * point (map), or an ordered list of labels (rank).
+ * A route answer: the connected chain the player actually walked (`path`, cca3
+ * codes from `from` toward `to`, every step a real border) plus `wrong` - the
+ * impossible hops they attempted along the way, logged for the recap and each
+ * docking points. See RouteInput / scoreRoute.
  */
-export type AnswerValue = number | string | LatLng | string[]
+export type RouteAnswer = { path: string[]; wrong: string[] }
+
+/**
+ * A player's raw guess: a number (slider), a chosen option string (choice), a
+ * point (map), an ordered list of labels (rank), or a route chain + wrong hops.
+ */
+export type AnswerValue = number | string | LatLng | string[] | RouteAnswer
 
 /** How a question's stimulus is presented. Defaults to plain text when omitted. */
 export type PromptSpec =
@@ -187,8 +195,10 @@ export type ScoreOpts = {
   confidence?: number
   /** Build-up clues revealed at lock-in time. */
   cluesUsed?: number
-  /** Route: number of broken hops (non-adjacent / revisited), computed against the adjacency graph. */
-  routeInvalidHops?: number
+  /** Route: the path is a valid chain that actually connects `from` to `to`. */
+  routeComplete?: boolean
+  /** Route: how many impossible hops the player attempted (each docks ROUTE_HOP_PENALTY). */
+  routeWrongHops?: number
 }
 
 export type BossPayload = any // Refine later if structure is known

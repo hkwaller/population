@@ -49,7 +49,9 @@ export const PlayerResult = ({
     ? isExact
       ? 'CORRECT!'
       : 'PERFECT!'
-    : !isExact && isClosest
+    : // "CLOSEST!" only makes sense for a guess that actually scored - a 0 (e.g. a
+      // route that never connected) isn't "close" to anything.
+      !isExact && isClosest && score > 0
       ? 'CLOSEST!'
       : null
   const pillBg = positive ? POP.mint : POP.coral
@@ -58,8 +60,8 @@ export const PlayerResult = ({
 
   // Rank rounds: show the guessed order as flags only, bordered right/wrong.
   const isRank = question?.type === 'rank' && Array.isArray(answer)
-  // Route rounds: show the attempted journey as a flag chain (broken hops marked).
-  const isRoute = question?.type === 'route' && Array.isArray(answer)
+  // Route rounds: show the attempted journey as a flag chain + any wrong hops.
+  const isRoute = question?.type === 'route' && answer != null
 
   // Map rounds: distance from the true spot reads better than raw coordinates.
   const guessLine = (() => {
@@ -101,7 +103,7 @@ export const PlayerResult = ({
       {isRank && question?.type === 'rank' && (
         <RankGuessFlags guess={answer as string[]} answer={question.answer} />
       )}
-      {isRoute && <RouteGuessFlags chain={answer as string[]} />}
+      {isRoute && answer !== undefined && <RouteGuessFlags answer={answer} />}
       {guessLine && <span className="text-[17px] font-bold text-pop-ink/60">{guessLine}</span>}
       <span
         className="rounded-pill px-4 py-1.5 text-lg font-black text-white"

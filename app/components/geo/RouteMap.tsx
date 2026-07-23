@@ -241,7 +241,9 @@ export function RouteMap({
     const endId = countryCcn3Key(to)
     if (id === startId) return START_FILL
     if (id === endId) return END_FILL
-    const hopIds = chain.slice(1, -1).map(countryCcn3Key)
+    // Intermediate hops are every chain entry that isn't the start or end - the
+    // chain may not have reached the end yet, so don't assume it's the last node.
+    const hopIds = chain.filter((c) => c !== from && c !== to).map(countryCcn3Key)
     if (hopIds.includes(id)) return HOP_FILL
     return LAND
   }

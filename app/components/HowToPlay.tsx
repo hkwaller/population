@@ -3,10 +3,19 @@
 import { AnimatePresence, motion } from 'motion/react'
 import {
   ArrowDownWideNarrow,
+  ArrowUpDown,
   CalendarDays,
+  Crosshair,
+  Eye,
   Flag,
+  Gauge,
+  Hash,
   HelpCircle,
+  Keyboard,
+  Lightbulb,
   MapPin,
+  Route,
+  Shuffle,
   Smartphone,
   SlidersHorizontal,
   Target,
@@ -53,6 +62,73 @@ const ANSWER_WAYS: Item[] = [
     light: true,
     title: 'Rank them',
     text: 'Drag places into order by population. Mostly right still earns partial credit.',
+  },
+  {
+    icon: ArrowUpDown,
+    bg: POP.mint,
+    light: true,
+    title: 'Higher or lower',
+    text: 'Two places, one metric - just call which one comes out on top.',
+  },
+  {
+    icon: Shuffle,
+    bg: POP.bubblegum,
+    light: false,
+    title: 'Odd one out',
+    text: 'Three share a trait, one doesn’t. Spot the impostor.',
+  },
+  {
+    icon: Lightbulb,
+    bg: POP.coral,
+    light: true,
+    title: 'Name it',
+    text: 'Clues drop one by one - name the country early for more points.',
+  },
+  {
+    icon: Route,
+    bg: POP.cobalt,
+    light: true,
+    title: 'Border hopper',
+    text: 'Hop country to country across shared borders. Fewer hops, higher score.',
+  },
+]
+
+// Setup options on the "Build your quiz" screen. `light` = needs white text.
+const SETTINGS: Item[] = [
+  {
+    icon: Gauge,
+    bg: POP.coral,
+    light: true,
+    title: 'Difficulty',
+    text: 'Any, Easy, Medium or Hard - Hard leans on the obscure, lesser-known countries.',
+  },
+  {
+    icon: Hash,
+    bg: POP.cobalt,
+    light: true,
+    title: 'How many questions',
+    text: 'Dial the round length up or down, from a quick 1 to a marathon 20.',
+  },
+  {
+    icon: Keyboard,
+    bg: POP.grape,
+    light: true,
+    title: 'Choose or type',
+    text: 'For Flags, Borders & Capitals, switch a category from tapping to typing.',
+  },
+  {
+    icon: Crosshair,
+    bg: POP.sunshine,
+    light: false,
+    title: 'Confidence mode',
+    text: 'On sliders & the map, bet a range: tighter and correct scores bigger.',
+  },
+  {
+    icon: Eye,
+    bg: POP.mint,
+    light: true,
+    title: 'Host screen only',
+    text: 'Show questions on the shared host screen only - phones stay just for answering.',
   },
 ]
 
@@ -151,13 +227,24 @@ export function HowToPlayContent() {
         </div>
       </section>
 
+      {/* Settings */}
+      <section>
+        <SectionTitle>Set up your game</SectionTitle>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {SETTINGS.map((item, i) => (
+            <Card key={item.title} item={item} i={i} />
+          ))}
+        </div>
+      </section>
+
       {/* Scoring */}
       <section>
         <SectionTitle>How scoring works</SectionTitle>
         <ul className="flex flex-col gap-2.5">
           {[
             'Closer guesses score higher - a bullseye is the full 1,000.',
-            'On multiple-choice, answer fast for a speed bonus.',
+            'Quick rounds (choice, higher/lower, odd one out) pay a speed bonus.',
+            'On Name it, the fewer clues you use, the more points you keep.',
             'No penalty for a wrong pick, so always take a swing.',
           ].map((line) => (
             <li key={line} className="flex items-start gap-3">

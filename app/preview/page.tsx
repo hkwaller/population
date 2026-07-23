@@ -216,8 +216,13 @@ function BreakdownDemo() {
   ].sort(byScore)
 
   const rtPlayers = [
-    mkPlayer('t1', 'Ka', 'clay', rtQ, ['PRT', 'ESP', 'FRA', 'DEU', 'POL']), // valid chain
-    mkPlayer('t2', 'La', 'lagoon', rtQ, ['PRT', 'POL']), // broken
+    // Completed route, no wrong hops → full marks.
+    mkPlayer('t1', 'Ka', 'clay', rtQ, { path: ['PRT', 'ESP', 'FRA', 'DEU', 'POL'], wrong: [] }),
+    // Completed, but attempted two impossible hops along the way → −200.
+    mkPlayer('t2', 'La', 'lagoon', rtQ, {
+      path: ['PRT', 'ESP', 'FRA', 'DEU', 'POL'],
+      wrong: ['ITA', 'MAR'],
+    }),
   ].sort(byScore)
 
   return (

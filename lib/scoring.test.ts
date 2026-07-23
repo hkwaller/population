@@ -241,24 +241,35 @@ const route: RouteQuestion = {
 }
 
 describe('scoreAnswer - route', () => {
-  it('a fully connected route (no broken hops) scores max', () => {
-    expect(scoreAnswer(route, ['PRT', 'POL'], undefined, { routeInvalidHops: 0 })).toBe(MAX_SCORE)
-  })
-  it('docks ROUTE_HOP_PENALTY per broken hop', () => {
-    expect(scoreAnswer(route, ['PRT', 'x', 'POL'], undefined, { routeInvalidHops: 1 })).toBe(
-      MAX_SCORE - ROUTE_HOP_PENALTY,
-    )
-    expect(scoreAnswer(route, ['PRT', 'x', 'y', 'POL'], undefined, { routeInvalidHops: 2 })).toBe(
-      MAX_SCORE - 2 * ROUTE_HOP_PENALTY,
-    )
-  })
-  it('never scores below 0', () => {
-    expect(scoreAnswer(route, ['PRT', 'POL'], undefined, { routeInvalidHops: 99 })).toBe(0)
-  })
-  it('a valid but longer route still scores max (only broken hops cost)', () => {
-    expect(scoreAnswer(route, ['a', 'b', 'c', 'd', 'e'], undefined, { routeInvalidHops: 0 })).toBe(
+  const path = ['PRT', 'ESP', 'FRA', 'DEU', 'POL']
+  it('a completed route with no wrong hops scores max', () => {
+    expect(scoreAnswer(route, { path, wrong: [] }, undefined, { routeComplete: true, routeWrongHops: 0 })).toBe(
       MAX_SCORE,
     )
+  })
+  it('docks ROUTE_HOP_PENALTY per attempted wrong hop', () => {
+    expect(
+      scoreAnswer(route, { path, wrong: ['ITA'] }, undefined, { routeComplete: true, routeWrongHops: 1 }),
+    ).toBe(MAX_SCORE - ROUTE_HOP_PENALTY)
+    expect(
+      scoreAnswer(route, { path, wrong: ['ITA', 'MAR'] }, undefined, {
+        routeComplete: true,
+        routeWrongHops: 2,
+      }),
+    ).toBe(MAX_SCORE - 2 * ROUTE_HOP_PENALTY)
+  })
+  it('an incomplete route (never reached the destination) scores 0', () => {
+    expect(
+      scoreAnswer(route, { path: ['PRT', 'ESP'], wrong: [] }, undefined, {
+        routeComplete: false,
+        routeWrongHops: 0,
+      }),
+    ).toBe(0)
+  })
+  it('never scores below 0', () => {
+    expect(
+      scoreAnswer(route, { path, wrong: [] }, undefined, { routeComplete: true, routeWrongHops: 99 }),
+    ).toBe(0)
   })
 })
 

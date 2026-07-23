@@ -1,7 +1,7 @@
 'use client'
 
 import type { AnswerValue, LatLng, TQuestion } from '@/app/types'
-import { scoreAnswer } from '@/lib/utils'
+import { scoreAnswer, asRouteAnswer } from '@/lib/utils'
 import { guessInCountry } from './geometry'
 import { invalidHopCount } from './adjacency'
 
@@ -23,14 +23,25 @@ export function scoreGuess(
     question.type === 'map' && question.ccn3 && opts?.confidence == null
       ? guessInCountry(question.ccn3, guess as LatLng) === true
       : undefined
-  // Route: count broken hops (non-adjacent / revisited) against the graph; scoring
-  // docks a fixed penalty per broken hop rather than zeroing the whole route.
-  const routeInvalidHops =
-    question.type === 'route' ? invalidHopCount(guess as string[]) : undefined
+  // Route: the path is a real connected chain (the input rejects impossible hops),
+  // so score it on whether it actually reached the destination and how many
+  // impossible hops were attempted along the way. Validated here against the graph.
+  let routeComplete: boolean | undefined
+  let routeWrongHops: number | undefined
+  if (question.type === 'route') {
+    const { path, wrong } = asRouteAnswer(guess)
+    routeWrongHops = wrong.length
+    routeComplete =
+      path.length >= 2 &&
+      path[0] === question.from &&
+      path[path.length - 1] === question.to &&
+      invalidHopCount(path) === 0
+  }
   return scoreAnswer(question, guess, elapsedMs, {
     insideCountry,
     confidence: opts?.confidence,
     cluesUsed: opts?.cluesUsed,
-    routeInvalidHops,
+    routeComplete,
+    routeWrongHops,
   })
 }

@@ -17,6 +17,7 @@ import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { HigherLower } from '@/app/components/geo/HigherLower'
 import { RankReveal } from '@/app/components/geo/RankReveal'
 import { RouteReveal } from '@/app/components/geo/RouteReveal'
+import { RouteGuessFlags } from '@/app/components/geo/RouteFlags'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 
 const STORE_KEY = 'population-daily'
@@ -183,7 +184,17 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
           <span className="text-pop-ink/60">You: {formatAnswerValue(attempt.value)}</span>
         </p>
       )}
-      {question.type === 'route' && <RouteReveal question={question} />}
+      {question.type === 'route' && (
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[11px] font-black uppercase tracking-wide text-pop-ink/50">
+              Your route
+            </span>
+            <RouteGuessFlags answer={attempt.value} />
+          </div>
+          <RouteReveal question={question} />
+        </div>
+      )}
       {question.type === 'slider' && (
         <p className="text-center text-xl font-black text-pop-ink">
           Answer: {formatAnswerValue(question.answer)}

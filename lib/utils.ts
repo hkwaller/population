@@ -10,7 +10,6 @@ import {
   type MapQuestion,
   type OddOneOutQuestion,
   type RankQuestion,
-  type RouteQuestion,
   type ScoreOpts,
   type SliderQuestion,
   TQuestion,
@@ -180,7 +179,7 @@ export function scoreAnswer(
     case 'build-up':
       return scoreBuildUp(question, guess as string, opts?.cluesUsed)
     case 'route':
-      return scoreRoute(question, guess as string[], opts?.routeInvalidHops)
+      return scoreRoute(opts?.routeComplete, opts?.routeWrongHops)
     default:
       return 0
   }
@@ -216,16 +215,33 @@ function scoreBuildUp(question: BuildUpQuestion, guess: string, cluesUsed?: numb
 }
 
 /**
- * Score a route guess. Start from the full score and dock `ROUTE_HOP_PENALTY` for
- * each broken hop (a non-adjacent or revisited step, counted against the adjacency
- * graph by the caller - see scoreGuess). Correct hops keep their credit; only the
- * bad ones cost points, and the score never drops below 0. A fully connected route
- * scores full marks regardless of length.
+ * Score a route guess. The input only ever adds real, connected hops to the path,
+ * so a route that actually reaches the destination (`complete`) starts at full
+ * marks; every impossible hop the player *attempted* along the way docks
+ * `ROUTE_HOP_PENALTY`. A route that never connects `from` to `to` scores 0. The
+ * score never drops below 0. `complete`/`wrongHops` are computed against the
+ * adjacency graph by the caller - see scoreGuess.
  */
-function scoreRoute(_question: RouteQuestion, guess: string[], invalidHops?: number) {
-  if (!Array.isArray(guess) || guess.length < 2) return 0
-  const broken = invalidHops ?? 0
-  return Math.max(0, MAX_SCORE - broken * ROUTE_HOP_PENALTY)
+function scoreRoute(complete?: boolean, wrongHops?: number) {
+  if (!complete) return 0
+  return Math.max(0, MAX_SCORE - (wrongHops ?? 0) * ROUTE_HOP_PENALTY)
+}
+
+/**
+ * Normalise a stored route answer. Accepts the `{ path, wrong }` object the input
+ * now produces, and tolerates a bare `string[]` (a legacy/plain path with no logged
+ * wrong hops) so older data and simple callers keep working.
+ */
+export function asRouteAnswer(v: AnswerValue | undefined): { path: string[]; wrong: string[] } {
+  if (Array.isArray(v)) return { path: v as string[], wrong: [] }
+  if (v && typeof v === 'object' && 'path' in v) {
+    const o = v as { path?: unknown; wrong?: unknown }
+    return {
+      path: Array.isArray(o.path) ? (o.path as string[]) : [],
+      wrong: Array.isArray(o.wrong) ? (o.wrong as string[]) : [],
+    }
+  }
+  return { path: [], wrong: [] }
 }
 
 /** A near-perfect answer worth celebrating (exact slider hit / same-city map guess). */
@@ -352,6 +368,7 @@ export function formatAnswerValue(v: AnswerValue | undefined): string {
   if (typeof v === 'number') return v.toLocaleString()
   if (typeof v === 'string') return v
   if (Array.isArray(v)) return v.join(' › ')
+  if ('path' in v) return v.path.join(' › ')
   return `${v.lat.toFixed(1)}°, ${v.lng.toFixed(1)}°`
 }
 

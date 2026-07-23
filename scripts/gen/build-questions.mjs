@@ -731,7 +731,15 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
   }
 
   const HOP_CAP = 5
-  const ROUTE_FAME_MIN = 0.5
+  // Endpoints must be recognizable (you see the start/end names up front), but 0.5
+  // was so strict it left only ~29 countries - and since South America reaches the
+  // rest of the Americas only through the Panama isthmus, virtually no Americas pair
+  // fit under the hop cap, so the bank had a single Americas route. 0.3 keeps
+  // endpoints to the ~130 best-known countries while opening up the Americas, Africa
+  // and more of Europe. (Intermediate hops can be any country - that's the puzzle.)
+  const ROUTE_FAME_MIN = 0.3
+  // Routes to emit per starting country. Higher = a bigger, more varied pool.
+  const ROUTES_PER_COUNTRY = 3
   const endpoints = countries.filter((c) => c.borders.length > 0 && fame(c) >= ROUTE_FAME_MIN)
   const seenPairs = new Set()
   for (const a of endpoints) {
@@ -739,13 +747,13 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
       endpoints.filter((x) => x.cca3 !== a.cca3),
       rng(`route:${a.cca3}`),
     )
-    // Take up to 2 partners, but guarantee the first short (2-hop) match so the
-    // "easy" tier stays well-stocked instead of being crowded out by the random
+    // Take up to ROUTES_PER_COUNTRY partners, but guarantee a short (2-hop) match so
+    // the "easy" tier stays well-stocked instead of being crowded out by the random
     // longer routes that dominate a shuffled partner list.
     let made = 0
     let madeShort = false
     for (const b of partners) {
-      if (made >= 2) break
+      if (made >= ROUTES_PER_COUNTRY) break
       const key = [a.cca3, b.cca3].sort().join('-')
       if (seenPairs.has(key)) continue
       const path = bfsPath(a.cca3, b.cca3)
