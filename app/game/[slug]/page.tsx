@@ -7,6 +7,9 @@ import { useGame } from '@/hooks/useGame'
 import { asSlider, isInputMode } from '@/lib/utils'
 import { LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
+import { HigherLower } from '@/app/components/geo/HigherLower'
+import { BuildUp } from '@/app/components/geo/BuildUp'
+import { RouteInput } from '@/app/components/geo/RouteInput'
 import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
 import { WorldMap } from '@/app/components/geo/WorldMap'
 import { RankList } from '@/app/components/geo/RankInput'
@@ -113,6 +116,43 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           </div>
         )}
 
+        {/* Build-up ("Name It") and route ("Border Hopper") are tall (clues +
+            typeahead / chain builder) and commit via their own Lock button, so
+            they live in the scroll flow like rank rather than the bottom overlay. */}
+        {me?.localPlayer && !myAnswered && currentQuestion?.type === 'build-up' && (
+          <div className="mt-8 w-full max-w-md">
+            <BuildUp
+              key={currentQuestion.id}
+              question={currentQuestion}
+              onAnswer={(v, ms, extra) =>
+                send('answer', {
+                  id: me?.id,
+                  answer: v,
+                  questionId: currentQuestion.id,
+                  elapsedMs: ms,
+                  ...extra,
+                })
+              }
+            />
+          </div>
+        )}
+        {me?.localPlayer && !myAnswered && currentQuestion?.type === 'route' && (
+          <div className="mt-8 w-full max-w-md">
+            <RouteInput
+              key={currentQuestion.id}
+              question={currentQuestion}
+              onAnswer={(v, ms) =>
+                send('answer', {
+                  id: me?.id,
+                  answer: v,
+                  questionId: currentQuestion.id,
+                  elapsedMs: ms,
+                })
+              }
+            />
+          </div>
+        )}
+
         {/* Player stickers */}
         <div className="mt-14 flex flex-wrap justify-center gap-5">
           {players.map((p, index) => (
@@ -173,10 +213,46 @@ function GamePageContent({ params }: { params: { slug: string } }) {
               )}
             </div>
           )}
+          {me?.localPlayer && !myAnswered && currentQuestion?.type === 'odd-one-out' && (
+            <div className="mb-4">
+              <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+              <ChoiceOptions
+                options={currentQuestion.options}
+                onSelect={(opt) =>
+                  send('answer', {
+                    id: me?.id,
+                    answer: opt,
+                    questionId: currentQuestion.id,
+                    elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
+                  })
+                }
+              />
+            </div>
+          )}
+          {me?.localPlayer && !myAnswered && currentQuestion?.type === 'higher-lower' && (
+            <div className="mb-4">
+              <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+              <HigherLower
+                question={currentQuestion}
+                onSelect={(side) =>
+                  send('answer', {
+                    id: me?.id,
+                    answer: side,
+                    questionId: currentQuestion.id,
+                    elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
+                  })
+                }
+              />
+            </div>
+          )}
           {me?.localPlayer &&
             !myAnswered &&
             currentQuestion &&
             currentQuestion.type !== 'choice' &&
+            currentQuestion.type !== 'odd-one-out' &&
+            currentQuestion.type !== 'higher-lower' &&
+            currentQuestion.type !== 'build-up' &&
+            currentQuestion.type !== 'route' &&
             currentQuestion.type !== 'rank' && (
               <PopButton
                 variant="primary"
