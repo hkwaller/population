@@ -132,7 +132,7 @@ export function RouteInput({
         {wrong.length > 0 && <span className="text-pop-coral"> · {wrong.length} wrong</span>}
       </p>
 
-      <RouteMap from={question.from} to={question.to} chain={path} />
+      <RouteMap from={question.from} to={question.to} chain={path} bounded={false} />
 
       {/* The path you've walked, as flags: type a country, then see (or learn) its
           flag. Start/destination are fixed; the last hop can be undone. */}

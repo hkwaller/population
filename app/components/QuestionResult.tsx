@@ -32,7 +32,7 @@ export const QuestionResult = ({
       {question.type === 'rank' ? (
         <RankAnswerFlags answer={question.answer} />
       ) : question.type === 'route' ? (
-        <RouteReveal question={question} />
+        <RouteReveal question={question} players={players} />
       ) : question.type === 'map' ? (
         <div className="overflow-hidden rounded-[20px] border-4 border-pop-ink">
           <WorldMap

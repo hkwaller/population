@@ -56,7 +56,9 @@ export default function QuestionResultModal({
   }, [])
 
   const isBoss = boss === me?.id
-  const showControls = isBoss || (players.filter((p) => p.localPlayer).length === 0 && !me)
+  // A pure host/big-screen device: nobody plays on it (no local players, no `me`).
+  const hostDisplay = players.filter((p) => p.localPlayer).length === 0 && !me
+  const showControls = isBoss || hostDisplay
 
   // Size the big answer to fit the card - long numbers (populations, areas)
   // would otherwise overflow horizontally.
@@ -130,7 +132,7 @@ export default function QuestionResultModal({
               ) : revealed?.type === 'rank' ? (
                 <RankReveal question={revealed} />
               ) : revealed?.type === 'route' ? (
-                <RouteReveal question={revealed} />
+                <RouteReveal question={revealed} players={players} bounded={hostDisplay} />
               ) : revealed?.type === 'higher-lower' ? (
                 <HigherLower question={revealed} reveal />
               ) : revealed?.type === 'odd-one-out' ? (

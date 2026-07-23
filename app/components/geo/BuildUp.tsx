@@ -8,8 +8,10 @@ import type { BuildUpQuestion } from '@/app/types'
 import { COUNTRIES } from '@/lib/geo/countries'
 import { PopButton } from '../pop/PopButton'
 
-/** A fresh clue drips in on this cadence; more clues showing = fewer points. */
-const REVEAL_INTERVAL_MS = 3000
+/** A fresh clue drips in on this cadence; more clues showing = fewer points. The
+ *  first clue is on the same timer, so there's a grace period before any hint
+ *  shows (guess it cold for max points). */
+const REVEAL_INTERVAL_MS = 5000
 const REVEAL_INTERVAL_S = REVEAL_INTERVAL_MS / 1000
 
 const COUNTRY_NAMES = Array.from(new Set(COUNTRIES.map((c) => c.name))).sort((a, b) =>
@@ -37,7 +39,7 @@ export function BuildUp({
   onAnswer: (value: string, elapsedMs: number, extra?: { cluesUsed?: number }) => void
   disabled?: boolean
 }) {
-  const [revealed, setRevealed] = useState(1) // first clue is free
+  const [revealed, setRevealed] = useState(0) // grace period before the first clue
   const [secsLeft, setSecsLeft] = useState(REVEAL_INTERVAL_S)
   const [text, setText] = useState('')
   const [active, setActive] = useState(0)

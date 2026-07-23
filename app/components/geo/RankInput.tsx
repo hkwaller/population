@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { Reorder } from 'motion/react'
 import { GripVertical } from 'lucide-react'
 
@@ -17,8 +17,23 @@ import { POP } from '../pop/theme'
  * the current order is mirrored up via `onChange` for whatever commits it (the
  * Dock's Lock, or a standalone button). Re-inits when `resetKey` (the question id)
  * changes. `tone` sets the helper-text colour for dark vs light backgrounds.
+ *
+ * Wrapped in `memo` with a resetKey-based comparator: the live game pages that
+ * host this list re-render constantly (Liveblocks presence/answers), and any of
+ * those re-renders landing mid-drag would drop the gesture and snap the tile
+ * back. We deliberately ignore `items`/`onChange` identity - `items` is only read
+ * when `resetKey` changes (a new question) and `onChange` closes over a stable
+ * ref/setter - so background parent renders can't disturb an in-flight drag.
  */
-export function RankList({
+export const RankList = memo(
+  RankListInner,
+  (prev, next) =>
+    prev.resetKey === next.resetKey &&
+    prev.disabled === next.disabled &&
+    prev.tone === next.tone,
+)
+
+function RankListInner({
   items,
   resetKey,
   onChange,

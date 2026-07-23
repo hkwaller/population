@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createElement, useEffect, useMemo, useState } from 'react'
+import React, { createElement, useEffect, useMemo, useRef, useState } from 'react'
 import { Flag, Trophy, Lock, icons as lucideIcons } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -59,8 +59,11 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   const [band, setBand] = useState(0)
   const [radius, setRadius] = useState(0)
   // Rank answer lives here (not in RankInput) so the Lock control can sit inside
-  // the host Dock, away from the list.
-  const [rankOrder, setRankOrder] = useState<string[]>([])
+  // the host Dock, away from the list. It's a ref, not state: RankList reports its
+  // order on every reorder tick, and re-rendering this page mid-drag drops the
+  // gesture (the tile snaps back). A ref holds the latest order without a
+  // re-render; the Lock reads it at submit time.
+  const rankOrderRef = useRef<string[]>([])
   // Timestamp the question was shown; drives the choice speed bonus + meter.
   const [startedAt, setStartedAt] = useState(0)
 
@@ -69,7 +72,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
     setStartedAt(performance.now())
     setRadius(Math.round((currentQuestion?.type === 'map' ? currentQuestion.falloffKm ?? 2500 : 2500) / 4))
     if (currentQuestion?.type === 'rank') {
-      setRankOrder(currentQuestion.items.map((i) => i.label))
+      rankOrderRef.current = currentQuestion.items.map((i) => i.label)
     }
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
@@ -160,7 +163,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 <RankList
                   items={currentQuestion.items}
                   resetKey={currentQuestion.id}
-                  onChange={setRankOrder}
+                  onChange={(o) => {
+                    rankOrderRef.current = o
+                  }}
                   tone="light"
                 />
               </div>
@@ -320,7 +325,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
             postGameToSupabase()
             await send('end')
           }}
-          onLock={() => submit(rankOrder, elapsed())}
+          onLock={() => submit(rankOrderRef.current, elapsed())}
           showLock={currentQuestion?.type === 'rank' && !myAnswered}
           canEndGame={canEndGame}
           ending={isEnding}
@@ -335,7 +340,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
             variant="primary"
             size="md"
             className="pointer-events-auto shadow-pop-card"
-            onClick={() => submit(rankOrder, elapsed())}
+            onClick={() => submit(rankOrderRef.current, elapsed())}
           >
             <Lock size={20} strokeWidth={3} />
             Lock

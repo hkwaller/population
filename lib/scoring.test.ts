@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest'
 
-import { scoreAnswer, haversineKm, MAX_SCORE, MAP_FALLOFF_KM, ROUTE_HOP_PENALTY } from './utils'
+import {
+  scoreAnswer,
+  haversineKm,
+  MAX_SCORE,
+  MAP_FALLOFF_KM,
+  ROUTE_HOP_PENALTY,
+  toLargestFirstRank,
+} from './utils'
 import type {
   BuildUpQuestion,
   ChoiceQuestion,
@@ -175,6 +182,37 @@ describe('scoreAnswer - rank', () => {
     const closer = scoreAnswer(rank, ['A', 'C', 'B']) // 1 inversion
     const worse = scoreAnswer(rank, ['B', 'C', 'A']) // 2 inversions
     expect(closer).toBeGreaterThan(worse)
+  })
+})
+
+describe('toLargestFirstRank', () => {
+  const asc: RankQuestion = {
+    id: 'r-asc',
+    type: 'rank',
+    category: 'ranking',
+    question: 'Sort these by population - smallest first',
+    prompt: { kind: 'text', text: 'Sort these by population - smallest first' },
+    order: 'asc',
+    items: [
+      { label: 'A', value: 300 },
+      { label: 'B', value: 200 },
+      { label: 'C', value: 100 },
+    ],
+    answer: ['C', 'B', 'A'], // smallest first, as stored
+  }
+
+  it('flips an asc question to largest-first', () => {
+    const flipped = toLargestFirstRank(asc)
+    expect(flipped.order).toBe('desc')
+    expect(flipped.answer).toEqual(['A', 'B', 'C']) // largest first now
+    expect(flipped.question).toBe('Sort these by population - largest first')
+    expect(flipped.prompt).toEqual({ kind: 'text', text: 'Sort these by population - largest first' })
+    // The player who drags largest-to-smallest now scores full marks.
+    expect(scoreAnswer(flipped, ['A', 'B', 'C'])).toBe(MAX_SCORE)
+  })
+
+  it('leaves a desc question untouched', () => {
+    expect(toLargestFirstRank(rank)).toBe(rank)
   })
 })
 

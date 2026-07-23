@@ -467,13 +467,12 @@ for (const c of withLang) {
       made++
     }
   }
+  // Always largest-first: the drag UI, reveal, and scoring all assume it, so we
+  // no longer generate "smallest first" (asc) variants (they contradicted the
+  // helper text). See toLargestFirstRank, which also flips any legacy asc data.
   genTier('easy', 100, famousPool, 3, 0.2, true, 'desc')
   genTier('medium', 100, withPop, 4, 0.5, false, 'desc')
   genTier('hard', 100, obscurePool, 5, 0.8, false, 'desc')
-  // Fewer "smallest first" variants for variety without doubling the bank.
-  genTier('easy', 50, famousPool, 3, 0.2, true, 'asc')
-  genTier('medium', 50, withPop, 4, 0.5, false, 'asc')
-  genTier('hard', 50, obscurePool, 5, 0.8, false, 'asc')
 }
 
 // 14. higher-lower - which country is larger by land area? (binary, own UI)

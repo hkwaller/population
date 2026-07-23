@@ -21,6 +21,7 @@ export function cn(...inputs: ClassValue[]) {
 
 import { sample } from 'lodash'
 import { animals, adjectives } from '@/app/mockData'
+import { byCca3 } from '@/lib/geo/countries'
 
 export const isDevelopment = process.env.DEVELOPMENT === 'true'
 export const devId = '42-sneaky-geese'
@@ -255,6 +256,28 @@ export function asSlider(q?: TQuestion): SliderQuestion | undefined {
   return q?.type === 'slider' ? q : undefined
 }
 
+/**
+ * Force a rank question to read largest-first. The bank historically shipped a
+ * mix of `desc` ("largest first") and `asc` ("smallest first") questions, but the
+ * drag helper text, reveal, and scoring all assume largest-first - so `asc`
+ * questions contradicted themselves (the player was told "most populous at the
+ * top" while the prompt said "smallest first" and scoring followed the data).
+ * We now always present largest-first: flip any `asc` question by reversing the
+ * answer and rewriting the "smallest first" wording. Idempotent for `desc`.
+ */
+export function toLargestFirstRank(q: RankQuestion): RankQuestion {
+  if (q.order !== 'asc') return q
+  const relabel = (s: string) => s.replace(/smallest first/gi, 'largest first')
+  return {
+    ...q,
+    answer: [...q.answer].reverse(),
+    order: 'desc',
+    question: relabel(q.question),
+    prompt:
+      q.prompt?.kind === 'text' ? { ...q.prompt, text: relabel(q.prompt.text) } : q.prompt,
+  }
+}
+
 /** Convert a raw Supabase `questions` row into a typed TQuestion. */
 export function normalizeQuestionRow(row: any): TQuestion {
   const base = {
@@ -293,14 +316,14 @@ export function normalizeQuestionRow(row: any): TQuestion {
   if (type === 'rank') {
     const parse = (v: any) => (typeof v === 'string' ? JSON.parse(v) : (v ?? []))
     // items are stored in the `options` column (array of {label, value} objects)
-    return {
+    return toLargestFirstRank({
       ...base,
       type: 'rank',
       items: parse(row.options),
       answer: parse(row.answer),
       order: extra.order === 'asc' ? 'asc' : 'desc',
       unit: row.unit ?? undefined,
-    }
+    })
   }
 
   if (type === 'higher-lower') {
@@ -368,7 +391,8 @@ export function formatAnswerValue(v: AnswerValue | undefined): string {
   if (typeof v === 'number') return v.toLocaleString()
   if (typeof v === 'string') return v
   if (Array.isArray(v)) return v.join(' › ')
-  if ('path' in v) return v.path.join(' › ')
+  // A route answer: render country names, not raw cca3 codes.
+  if ('path' in v) return v.path.map((c) => byCca3.get(c)?.name ?? c).join(' › ')
   return `${v.lat.toFixed(1)}°, ${v.lng.toFixed(1)}°`
 }
 

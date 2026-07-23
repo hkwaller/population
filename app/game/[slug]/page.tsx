@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
@@ -45,8 +45,12 @@ function GamePageContent({ params }: { params: { slug: string } }) {
 
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
-  // Rank answer lives here (not in RankInput) so Lock can sit in the Dock.
-  const [rankOrder, setRankOrder] = useState<string[]>([])
+  // Rank answer lives here (not in RankInput) so Lock can sit in the Dock. It's a
+  // ref, not state, on purpose: RankList reports its order on every reorder tick,
+  // and re-rendering this Liveblocks-driven page mid-drag drops the gesture (the
+  // tile snaps back). A ref keeps the latest order without re-rendering; the Dock
+  // reads it at lock time.
+  const rankOrderRef = useRef<string[]>([])
   // Timestamp the question was shown; drives the choice speed bonus + meter.
   const [startedAt, setStartedAt] = useState(0)
 
@@ -54,7 +58,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
     setMapPin(null)
     setStartedAt(performance.now())
     if (currentQuestion?.type === 'rank') {
-      setRankOrder(currentQuestion.items.map((i) => i.label))
+      rankOrderRef.current = currentQuestion.items.map((i) => i.label)
     }
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
@@ -103,6 +107,32 @@ function GamePageContent({ params }: { params: { slug: string } }) {
       <main className="mx-auto flex max-w-3xl flex-col items-center px-5 pb-64 pt-8 md:pt-14">
         <Question question={currentQuestion} />
 
+        {/* Big-screen mirror of the answer options: multiple-choice rounds must
+            always show their alternatives up top so spectators (and remote
+            players) can follow along, even when this device isn't playing. Shown
+            whenever the interactive input isn't (host not playing, or the local
+            player already answered). Read-only. Rank is excluded on purpose. */}
+        {currentQuestion && !(me?.localPlayer && !myAnswered) && (
+          <>
+            {currentQuestion.type === 'choice' &&
+              !isInputMode(currentQuestion, answerModes) && (
+                <div className="mt-8 w-full max-w-md">
+                  <ChoiceOptions options={currentQuestion.options} disabled />
+                </div>
+              )}
+            {currentQuestion.type === 'odd-one-out' && (
+              <div className="mt-8 w-full max-w-md">
+                <ChoiceOptions options={currentQuestion.options} disabled />
+              </div>
+            )}
+            {currentQuestion.type === 'higher-lower' && (
+              <div className="mt-8 w-full max-w-md">
+                <HigherLower question={currentQuestion} disabled />
+              </div>
+            )}
+          </>
+        )}
+
         {/* Rank is a tall, variable-height list, so it sits in the scroll flow
             here (not the fixed bottom overlay). Lock lives in the Dock below. */}
         {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (
@@ -110,7 +140,9 @@ function GamePageContent({ params }: { params: { slug: string } }) {
             <RankList
               items={currentQuestion.items}
               resetKey={currentQuestion.id}
-              onChange={setRankOrder}
+              onChange={(o) => {
+                rankOrderRef.current = o
+              }}
               tone="light"
             />
           </div>
@@ -286,7 +318,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           onLock={() =>
             send('answer', {
               id: me?.id,
-              answer: rankOrder,
+              answer: rankOrderRef.current,
               questionId: currentQuestion.id,
               elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
             })
