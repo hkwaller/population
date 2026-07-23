@@ -1,7 +1,7 @@
 'use client'
 
-import React, { createElement, useEffect, useMemo, useRef, useState } from 'react'
-import { Flag, Trophy, Lock, icons as lucideIcons } from 'lucide-react'
+import React, { createElement, useEffect, useMemo, useState } from 'react'
+import { Flag, Trophy, icons as lucideIcons } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import QuestionResultModal from '@/app/components/QuestionResultModal'
@@ -21,7 +21,7 @@ import { RouteInput } from '@/app/components/geo/RouteInput'
 import { ConfidenceBand } from '@/app/components/geo/ConfidenceBand'
 import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
 import { MapPicker } from '@/app/components/geo/MapPicker'
-import { RankList } from '@/app/components/geo/RankInput'
+import { RankModal } from '@/app/components/geo/RankModal'
 import { SpeedBonusMeter } from '@/app/components/geo/SpeedBonusMeter'
 import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
 import { PopShell } from '@/app/components/pop/PopShell'
@@ -58,12 +58,6 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   // Confidence mode: slider band half-width + map circle radius (km).
   const [band, setBand] = useState(0)
   const [radius, setRadius] = useState(0)
-  // Rank answer lives here (not in RankInput) so the Lock control can sit inside
-  // the host Dock, away from the list. It's a ref, not state: RankList reports its
-  // order on every reorder tick, and re-rendering this page mid-drag drops the
-  // gesture (the tile snaps back). A ref holds the latest order without a
-  // re-render; the Lock reads it at submit time.
-  const rankOrderRef = useRef<string[]>([])
   // Timestamp the question was shown; drives the choice speed bonus + meter.
   const [startedAt, setStartedAt] = useState(0)
 
@@ -71,9 +65,6 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
     setMapPin(null)
     setStartedAt(performance.now())
     setRadius(Math.round((currentQuestion?.type === 'map' ? currentQuestion.falloffKm ?? 2500 : 2500) / 4))
-    if (currentQuestion?.type === 'rank') {
-      rankOrderRef.current = currentQuestion.items.map((i) => i.label)
-    }
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -155,20 +146,15 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
           <>
             {showQuestions && <Question question={currentQuestion} compact />}
             <ReportLink question={currentQuestion?.question} />
-            {/* Rank is a tall, variable-height list, so it lives in the scroll
-                flow here (not the compact bottom overlay). Its own Lock bar is a
-                fixed element rendered from inside RankInput. */}
+            {/* Rank opens its own full-screen drag modal (portalled to <body>) so
+                the reorder gesture never fights the page's scroll or re-renders.
+                It commits directly via onLock. */}
             {currentQuestion?.type === 'rank' && !myAnswered && (
-              <div className="mt-6 w-full max-w-md">
-                <RankList
-                  items={currentQuestion.items}
-                  resetKey={currentQuestion.id}
-                  onChange={(o) => {
-                    rankOrderRef.current = o
-                  }}
-                  tone="light"
-                />
-              </div>
+              <RankModal
+                key={currentQuestion.id}
+                question={currentQuestion}
+                onLock={(order) => submit(order, elapsed())}
+              />
             )}
             {/* Build-up is also tall (clues + typeahead) and commits via its own
                 Lock button, so it lives in the scroll flow like rank. */}
@@ -325,27 +311,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
             postGameToSupabase()
             await send('end')
           }}
-          onLock={() => submit(rankOrderRef.current, elapsed())}
-          showLock={currentQuestion?.type === 'rank' && !myAnswered}
           canEndGame={canEndGame}
           ending={isEnding}
         />
-      )}
-
-      {/* Player-only devices have no Dock, so their rank Lock is a standalone
-          bottom bar. The host locks in from inside the Dock instead. */}
-      {!isBoss && !waiting && currentQuestion?.type === 'rank' && !myAnswered && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center px-5">
-          <PopButton
-            variant="primary"
-            size="md"
-            className="pointer-events-auto shadow-pop-card"
-            onClick={() => submit(rankOrderRef.current, elapsed())}
-          >
-            <Lock size={20} strokeWidth={3} />
-            Lock
-          </PopButton>
-        </div>
       )}
 
       <AnswerInputModal

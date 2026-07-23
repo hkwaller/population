@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
@@ -12,7 +12,7 @@ import { BuildUp } from '@/app/components/geo/BuildUp'
 import { RouteInput } from '@/app/components/geo/RouteInput'
 import { TypedAnswerInput } from '@/app/components/geo/TypedAnswerInput'
 import { WorldMap } from '@/app/components/geo/WorldMap'
-import { RankList } from '@/app/components/geo/RankInput'
+import { RankModal } from '@/app/components/geo/RankModal'
 import { SpeedBonusMeter } from '@/app/components/geo/SpeedBonusMeter'
 import { Player } from '@/app/components/Player'
 import { Question } from '@/app/components/Question'
@@ -45,21 +45,12 @@ function GamePageContent({ params }: { params: { slug: string } }) {
 
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
-  // Rank answer lives here (not in RankInput) so Lock can sit in the Dock. It's a
-  // ref, not state, on purpose: RankList reports its order on every reorder tick,
-  // and re-rendering this Liveblocks-driven page mid-drag drops the gesture (the
-  // tile snaps back). A ref keeps the latest order without re-rendering; the Dock
-  // reads it at lock time.
-  const rankOrderRef = useRef<string[]>([])
   // Timestamp the question was shown; drives the choice speed bonus + meter.
   const [startedAt, setStartedAt] = useState(0)
 
   useEffect(() => {
     setMapPin(null)
     setStartedAt(performance.now())
-    if (currentQuestion?.type === 'rank') {
-      rankOrderRef.current = currentQuestion.items.map((i) => i.label)
-    }
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -133,19 +124,22 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           </>
         )}
 
-        {/* Rank is a tall, variable-height list, so it sits in the scroll flow
-            here (not the fixed bottom overlay). Lock lives in the Dock below. */}
+        {/* Rank opens its own full-screen drag modal (portalled to <body>) so the
+            reorder gesture never fights this page's scroll or re-renders. It
+            commits directly via onLock - no Dock lock needed. */}
         {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (
-          <div className="mt-8 w-full max-w-md">
-            <RankList
-              items={currentQuestion.items}
-              resetKey={currentQuestion.id}
-              onChange={(o) => {
-                rankOrderRef.current = o
-              }}
-              tone="light"
-            />
-          </div>
+          <RankModal
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onLock={(order) =>
+              send('answer', {
+                id: me?.id,
+                answer: order,
+                questionId: currentQuestion.id,
+                elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
+              })
+            }
+          />
         )}
 
         {/* Build-up ("Name It") and route ("Border Hopper") are tall (clues +
@@ -315,15 +309,6 @@ function GamePageContent({ params }: { params: { slug: string } }) {
             await send('end')
             router.push(`/game/${params.slug}/end`)
           }}
-          onLock={() =>
-            send('answer', {
-              id: me?.id,
-              answer: rankOrderRef.current,
-              questionId: currentQuestion.id,
-              elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
-            })
-          }
-          showLock={me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank'}
           canEndGame={canEndGame}
           ending={isEnding}
         />
