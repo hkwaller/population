@@ -273,8 +273,7 @@ export function toLargestFirstRank(q: RankQuestion): RankQuestion {
     answer: [...q.answer].reverse(),
     order: 'desc',
     question: relabel(q.question),
-    prompt:
-      q.prompt?.kind === 'text' ? { ...q.prompt, text: relabel(q.prompt.text) } : q.prompt,
+    prompt: q.prompt?.kind === 'text' ? { ...q.prompt, text: relabel(q.prompt.text) } : q.prompt,
   }
 }
 
@@ -555,7 +554,7 @@ export const categories = [
     name: 'Odd One Out',
     icon: 'Shuffle',
     group: 'quickfire',
-    tier: 'main',
+    tier: 'special',
     bg: categoryBackgroundColors[14],
     count: stat('odd-one-out'),
   },
@@ -573,7 +572,7 @@ export const categories = [
     name: 'Border Hopper',
     icon: 'Route',
     group: 'map',
-    tier: 'special',
+    tier: 'main',
     bg: categoryBackgroundColors[5],
     count: stat('route'),
   },
