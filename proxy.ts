@@ -18,6 +18,11 @@ const isPublicRoute = createRouteMatcher([
   '/go-ad-free',
   '/sign-in',
   '/sign-up',
+  // SEO / crawler endpoints (metadata file conventions with no static-asset
+  // extension are otherwise caught by the matcher and gated by Clerk).
+  '/robots.txt',
+  '/sitemap.xml',
+  '/opengraph-image',
   '/api/liveblocks-auth',
   // Stripe routes enforce their own auth (checkout/portal require a userId;
   // the webhook is authenticated by its Stripe signature).

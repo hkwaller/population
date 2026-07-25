@@ -1,6 +1,13 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { AnimatedContainer } from '../components/AnimatedContainer'
 import { Logo } from '../components/Logo'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'How Population handles your data and privacy.',
+  alternates: { canonical: '/privacy' },
+}
 
 export default function PrivacyPage() {
   return (
