@@ -28,9 +28,7 @@ import { POP } from '../pop/theme'
 export const RankList = memo(
   RankListInner,
   (prev, next) =>
-    prev.resetKey === next.resetKey &&
-    prev.disabled === next.disabled &&
-    prev.tone === next.tone,
+    prev.resetKey === next.resetKey && prev.disabled === next.disabled && prev.tone === next.tone,
 )
 
 function RankListInner({
@@ -72,7 +70,7 @@ function RankListInner({
           tone === 'light' ? 'text-white/80' : 'text-pop-ink/60'
         }`}
       >
-        Drag into order — most populous at the top
+        Drag into order - most populous at the top
       </p>
       <Reorder.Group
         axis="y"

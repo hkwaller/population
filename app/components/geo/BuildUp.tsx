@@ -126,7 +126,7 @@ export function BuildUp({
       {!allRevealed && !disabled && (
         <div className="mx-auto flex items-center gap-2 rounded-pill border-2 border-pop-ink bg-pop-sunshine px-4 py-2 text-sm font-black text-pop-ink">
           <Timer size={16} strokeWidth={3} />
-          Next clue in {secsLeft}s — guess now for more points!
+          Next clue in {secsLeft}s - guess now for more points!
         </div>
       )}
 

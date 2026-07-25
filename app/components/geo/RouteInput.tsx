@@ -15,11 +15,7 @@ const NAMED = COUNTRIES.map((c) => ({ name: c.name, cca3: c.cca3 })).sort((a, b)
 )
 
 function norm(s: string): string {
-  return s
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+  return s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 }
 
 const MAX_SUGGESTIONS = 6
@@ -85,7 +81,7 @@ export function RouteInput({
     if (!areAdjacent(current, cca3)) {
       // Impossible hop from here: reject the move, log it, dock points.
       setWrong((w) => [...w, cca3])
-      flash(`${name(cca3)} doesn't border ${name(current)} — −100`)
+      flash(`${name(cca3)} doesn't border ${name(current)} - −100`)
       return
     }
     setNote(null)
@@ -142,9 +138,7 @@ export function RouteInput({
       </div>
 
       {reached && (
-        <p className="text-center text-base font-black text-pop-mint">
-          Connected! Lock it in.
-        </p>
+        <p className="text-center text-base font-black text-pop-mint">Connected! Lock it in.</p>
       )}
 
       {/* Typeahead to attempt the next hop */}

@@ -63,7 +63,7 @@ export const QuestionResult = ({
           className="inline-block rounded-pill border-2 border-pop-ink px-4 py-1.5 text-lg font-black text-pop-ink"
           style={{ background: POP.sunshine }}
         >
-          Answer: {question.answer} — others {question.sharedProperty}
+          Answer: {question.answer} - others {question.sharedProperty}
         </span>
       ) : question.type === 'build-up' ? (
         <span

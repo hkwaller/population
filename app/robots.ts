@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         // Per-session / non-content routes and internals. `/_next/` is left
-        // crawlable on purpose — bots need render-critical CSS/JS.
+        // crawlable on purpose - bots need render-critical CSS/JS.
         disallow: ['/api/', '/admin/', '/game/', '/setup/', '/join/', '/profile'],
       },
     ],
