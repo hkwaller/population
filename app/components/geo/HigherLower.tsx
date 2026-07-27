@@ -64,7 +64,7 @@ export function HigherLower({
             <span className="text-lg sm:text-xl">{data.label}</span>
             {reveal ? (
               <span className="text-sm font-bold opacity-70">
-                {data.value.toLocaleString()}
+                {data.value.toLocaleString()} km²
               </span>
             ) : null}
           </motion.button>

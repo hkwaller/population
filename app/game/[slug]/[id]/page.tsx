@@ -29,6 +29,7 @@ import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { PopSlider } from '@/app/components/pop/PopSlider'
 import { Dock } from '@/app/components/pop/Dock'
+import { PopWaitingLoader } from '@/app/components/pop/PopWaitingLoader'
 import { POP, stickerFill } from '@/app/components/pop/theme'
 
 function PlayerPageContent({ params }: { params: { slug: string; id: string } }) {
@@ -138,10 +139,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
 
       <main className="mx-auto flex max-w-lg flex-col items-center px-5 pb-72 pt-8">
         {waiting ? (
-          <div className="mt-24 flex flex-col items-center gap-4 text-center">
-            <div className="text-2xl font-black text-white">Waiting for the game to start…</div>
-            <div className="text-4xl">🌀</div>
-          </div>
+          <PopWaitingLoader />
         ) : (
           <>
             {showQuestions && <Question question={currentQuestion} compact />}
