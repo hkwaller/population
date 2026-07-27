@@ -28,6 +28,11 @@ const CHIP_CYCLE: string[] = [
 // Cobalt/coral/grape need light text; sunshine/bubblegum/white keep ink text.
 const DARK_FILLS = new Set<string>([POP.coral, POP.cobalt, POP.grape])
 
+// How long the pointer must rest on a chip before its explainer appears.
+const HOVER_DELAY_MS = 500
+// Width of the explainer popover (px); used to clamp it within the viewport.
+const TOOLTIP_WIDTH = 240
+
 const DIFFICULTY_OPTIONS = [
   { id: 'all', label: 'Any', fill: POP.ink, light: true },
   { id: 'easy', label: 'Easy', fill: POP.mint, light: false },
@@ -249,6 +254,34 @@ function CategorySection({
   // Which category's answer-mode popover is open (only one at a time).
   const [openMode, setOpenMode] = useState<string | null>(null)
 
+  // The explainer popover showing for a rested hover. Positioned with fixed
+  // viewport coords (clamped to stay on-screen) so edge chips never clip it.
+  // Appears only after the pointer rests on a chip for HOVER_DELAY_MS, so
+  // brushing past chips stays quiet.
+  const [info, setInfo] = useState<{ id: string; cx: number; bottom: number } | null>(null)
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const startHover = (id: string, el: HTMLElement) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    hoverTimer.current = setTimeout(() => {
+      const r = el.getBoundingClientRect()
+      // Keep the centered TOOLTIP_WIDTH box inside the viewport with an 8px gutter.
+      const half = TOOLTIP_WIDTH / 2
+      const cx = Math.min(
+        Math.max(r.left + r.width / 2, 8 + half),
+        window.innerWidth - 8 - half,
+      )
+      // Anchor the popover's bottom 8px above the chip's top edge.
+      setInfo({ id, cx, bottom: window.innerHeight - r.top + 8 })
+    }, HOVER_DELAY_MS)
+  }
+  const endHover = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    hoverTimer.current = null
+    setInfo(null)
+  }
+  useEffect(() => () => void (hoverTimer.current && clearTimeout(hoverTimer.current)), [])
+
   const handleChip = (cat: Cat) => {
     const willSelect = !selectedCategories.includes(cat.id)
     onToggle(cat.id)
@@ -292,7 +325,12 @@ function CategorySection({
           const mode: AnswerMode = answerModes[cat.id] === 'input' ? 'input' : 'choice'
           const ModeIcon = mode === 'input' ? Keyboard : Grid2x2
           return (
-            <div key={cat.id} className="relative">
+            <div
+              key={cat.id}
+              className="relative"
+              onMouseEnter={(e) => startHover(cat.id, e.currentTarget)}
+              onMouseLeave={endHover}
+            >
               <motion.button
                 initial={{ scale: 0 }}
                 animate={{ scale: visible ? 1 : 0, rotate: selected ? (i % 2 ? 3 : -3) : 0 }}
@@ -358,6 +396,29 @@ function CategorySection({
                         setOpenMode(null)
                       }}
                     />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Explainer — floats just above the chip after a rested hover.
+                  Fixed + viewport-clamped so it never clips at screen edges.
+                  Suppressed while the answer-mode picker is open for this cat. */}
+              <AnimatePresence>
+                {info?.id === cat.id && openMode !== cat.id && (
+                  <motion.div
+                    role="tooltip"
+                    initial={{ opacity: 0, y: 6, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.94 }}
+                    transition={{ duration: 0.14 }}
+                    style={{
+                      width: TOOLTIP_WIDTH,
+                      left: info.cx - TOOLTIP_WIDTH / 2,
+                      bottom: info.bottom,
+                    }}
+                    className="pointer-events-none fixed z-40 rounded-2xl border-4 border-pop-ink bg-white p-3 text-center text-sm font-bold leading-snug text-pop-ink shadow-pop-card"
+                  >
+                    {cat.description}
                   </motion.div>
                 )}
               </AnimatePresence>

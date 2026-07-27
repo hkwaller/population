@@ -121,6 +121,13 @@ function GamePageContent({ params }: { params: { slug: string } }) {
                 <HigherLower question={currentQuestion} disabled />
               </div>
             )}
+            {/* Build-up ("Name It"): mirror the dripping clues so spectators and
+                already-answered players can follow along. Read-only, no input. */}
+            {currentQuestion.type === 'build-up' && (
+              <div className="mt-8 w-full max-w-md">
+                <BuildUp key={currentQuestion.id} question={currentQuestion} readOnly />
+              </div>
+            )}
           </>
         )}
 

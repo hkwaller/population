@@ -485,6 +485,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[0],
     count: stat('flags'),
+    description: 'See a national flag and name the country it belongs to.',
   },
   {
     id: 'outline',
@@ -494,6 +495,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[1],
     count: stat('outline'),
+    description: 'Identify a country from the silhouette of its borders alone.',
   },
   {
     id: 'borders',
@@ -503,6 +505,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[2],
     count: stat('borders'),
+    description: 'Guess the country from the list of neighbours it shares a land border with.',
   },
   {
     id: 'capitals',
@@ -512,6 +515,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[3],
     count: stat('capitals'),
+    description: 'Match a country to its capital city (or the other way around).',
   },
   {
     id: 'ranking',
@@ -521,6 +525,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[12],
     count: stat('ranking'),
+    description: 'Drag a handful of countries into order, from most to least populated.',
   },
   {
     id: 'locate',
@@ -530,6 +535,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[5],
     count: stat('locate'),
+    description: 'Drop a pin on the world map to place a country or city. Closer is worth more.',
   },
   {
     id: 'which-bigger',
@@ -539,6 +545,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[8],
     count: stat('which-bigger'),
+    description: 'Two countries head to head — pick the one with the larger population.',
   },
   {
     id: 'higher-lower',
@@ -548,6 +555,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[13],
     count: stat('higher-lower'),
+    description: "Say whether the next country's number is higher or lower than the one shown.",
   },
   {
     id: 'odd-one-out',
@@ -557,6 +565,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[14],
     count: stat('odd-one-out'),
+    description: 'Spot the one country that does not belong with the rest of the group.',
   },
   {
     id: 'build-up',
@@ -566,6 +575,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[0],
     count: stat('build-up'),
+    description: 'Clues reveal one at a time — name the country as early as you can.',
   },
   {
     id: 'route',
@@ -575,6 +585,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[5],
     count: stat('route'),
+    description: 'Hop country to country across shared borders to reach the destination.',
   },
   {
     id: 'area',
@@ -584,6 +595,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[6],
     count: stat('area'),
+    description: "Estimate a country's total land area in square kilometres.",
   },
   {
     id: 'distance',
@@ -593,6 +605,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[7],
     count: stat('distance'),
+    description: 'Estimate how many kilometres apart two places are.',
   },
   {
     id: 'currency',
@@ -602,6 +615,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[9],
     count: stat('currency'),
+    description: 'Match a country to the currency its people spend.',
   },
   {
     id: 'language',
@@ -611,6 +625,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[10],
     count: stat('language'),
+    description: 'Match a country to an official language spoken there.',
   },
   {
     id: 'continent',
@@ -620,6 +635,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[11],
     count: stat('continent'),
+    description: 'Name which continent a given country sits on.',
   },
   {
     id: 'population',
@@ -629,6 +645,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[4],
     count: stat('population'),
+    description: "Estimate a country's population — get as close to the real number as you can.",
   },
 ] as const
 

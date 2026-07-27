@@ -9,8 +9,8 @@ import { COUNTRIES } from '@/lib/geo/countries'
 import { PopButton } from '../pop/PopButton'
 
 /** A fresh clue drips in on this cadence; more clues showing = fewer points. The
- *  first clue is on the same timer, so there's a grace period before any hint
- *  shows (guess it cold for max points). */
+ *  first clue shows immediately (worth full marks) and every clue after it costs
+ *  points, so the countdown is the grace window before the next hint lands. */
 const REVEAL_INTERVAL_MS = 5000
 const REVEAL_INTERVAL_S = REVEAL_INTERVAL_MS / 1000
 
@@ -26,20 +26,25 @@ const MAX_SUGGESTIONS = 6
 
 /**
  * Build-up ("Name It"): clues drip in automatically every REVEAL_INTERVAL_MS, and
- * a country typeahead commits the guess. Score decays with how many clues were
- * showing at lock-in, so guessing early (before the next clue lands) is worth more.
- * Lives in the scroll flow with its own Lock bar.
+ * a country typeahead commits the guess. The first clue is free (full marks); the
+ * score decays with each extra clue showing at lock-in, so guessing before the
+ * next clue lands is worth more. Lives in the scroll flow with its own Lock bar.
+ *
+ * `readOnly` renders just the dripping clues + countdown (no input) so the shared
+ * game screen / spectators can follow along; the timer runs the same either way.
  */
 export function BuildUp({
   question,
   onAnswer,
   disabled = false,
+  readOnly = false,
 }: {
   question: BuildUpQuestion
-  onAnswer: (value: string, elapsedMs: number, extra?: { cluesUsed?: number }) => void
+  onAnswer?: (value: string, elapsedMs: number, extra?: { cluesUsed?: number }) => void
   disabled?: boolean
+  readOnly?: boolean
 }) {
-  const [revealed, setRevealed] = useState(0) // grace period before the first clue
+  const [revealed, setRevealed] = useState(1) // first clue is shown immediately (free)
   const [secsLeft, setSecsLeft] = useState(REVEAL_INTERVAL_S)
   const [text, setText] = useState('')
   const [active, setActive] = useState(0)
@@ -88,7 +93,7 @@ export function BuildUp({
     if (!value) return
     const canonical = COUNTRY_NAMES.find((item) => norm(item) === norm(value)) ?? value
     // Build-up isn't timed (score comes from cluesUsed), so elapsedMs is 0.
-    onAnswer(canonical, 0, { cluesUsed: revealed })
+    onAnswer?.(canonical, 0, { cluesUsed: revealed })
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -130,6 +135,9 @@ export function BuildUp({
         </div>
       )}
 
+      {/* Read-only mirror (shared game screen / spectators): clues only, no input. */}
+      {readOnly ? null : (
+        <>
       {/* Typeahead */}
       <div className="relative">
         <AnimatePresence>
@@ -191,6 +199,8 @@ export function BuildUp({
       >
         Lock it in
       </PopButton>
+        </>
+      )}
     </div>
   )
 }
