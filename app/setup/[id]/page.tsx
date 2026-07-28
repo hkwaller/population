@@ -65,7 +65,7 @@ function WaitingSticker({ rot = -2, delay = 0 }: { rot?: number; delay?: number 
         } as React.CSSProperties
       }
     >
-      <span className="text-lg font-black text-pop-ink/40">
+      <span className="text-lg font-black text-pop-ink/50">
         waiting
         <AnimatedDots />
       </span>
@@ -132,9 +132,15 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const [namePromptOpen, setNamePromptOpen] = useState(false)
   const [savingName, setSavingName] = useState(false)
   const [burstKey, setBurstKey] = useState(0)
+  const [mounted, setMounted] = useState(false)
   const prevCount = useRef(players.length)
   const reduce = useReducedMotion()
   const router = useRouter()
+
+  // The QR encodes an absolute origin, so it can only be built on the client;
+  // gate it behind mount so server and first client render agree (no hydration
+  // mismatch) and the code is never wrong.
+  useEffect(() => setMounted(true), [])
 
   // Fire a celebration burst only when the head count actually grows (never on
   // the first render, and never when someone leaves).
@@ -275,14 +281,14 @@ function SetupPageContent({ params }: { params: { id: string } }) {
           Scan the code, or head to the join page and enter it
         </p>
 
-        <div className="mt-12 grid grid-cols-1 items-start gap-8 md:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 items-start gap-8 md:mt-12 md:grid-cols-2">
           {/* QR card */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1, rotate: -2 }}
             transition={{ type: 'spring', stiffness: 260, damping: 18 }}
             whileHover={reduce ? undefined : { y: -5, rotate: -0.5 }}
-            className="relative mx-auto flex w-full max-w-sm flex-col items-center rounded-card bg-white p-6 shadow-pop-card"
+            className="relative mx-auto flex w-full max-w-sm flex-col items-center rounded-card bg-white p-5 shadow-pop-card md:p-6"
           >
             {/* "Aim your camera here" badge */}
             <motion.span
@@ -310,10 +316,14 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                   }}
                 />
               ))}
-              <QRCode value={url} size={232} />
+              {mounted ? (
+                <QRCode value={url} size={204} />
+              ) : (
+                <div className="h-[204px] w-[204px]" aria-hidden />
+              )}
             </div>
 
-            <div className="mt-6 flex items-center gap-2">
+            <div className="mt-5 flex items-center gap-2 md:mt-6">
               <span
                 className="rounded-pill border-[3px] border-pop-ink px-5 py-2.5 text-xl font-black text-pop-ink"
                 style={{ background: POP.sunshine }}
@@ -328,9 +338,9 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               >
                 {copied ? (
                   <motion.span
-                    initial={{ scale: 0, rotate: -20 }}
+                    initial={reduce ? false : { scale: 0, rotate: -20 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 14 }}
+                    transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 400, damping: 14 }}
                   >
                     <Check size={20} strokeWidth={3} />
                   </motion.span>
@@ -348,9 +358,9 @@ function SetupPageContent({ params }: { params: { id: string } }) {
             <div className="mb-5 flex items-center gap-3">
               <motion.span
                 key={players.length}
-                initial={{ scale: 0.5, rotate: -10 }}
+                initial={reduce ? false : { scale: 0.5, rotate: -10 }}
                 animate={{ scale: 1, rotate: -4 }}
-                transition={{ type: 'spring', stiffness: 320, damping: 15 }}
+                transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 15 }}
                 className="grid h-11 min-w-[44px] place-items-center rounded-sticker border-[3px] border-white px-2 text-2xl font-black text-pop-ink shadow-pop"
                 style={{ background: POP.sunshine }}
               >
@@ -358,9 +368,9 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               </motion.span>
               <motion.p
                 key={hypeLine(players.length)}
-                initial={{ opacity: 0, y: 6 }}
+                initial={reduce ? false : { opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                transition={reduce ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="text-2xl font-black leading-tight text-pop-ink"
               >
                 {hypeLine(players.length)}

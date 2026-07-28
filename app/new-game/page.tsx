@@ -116,7 +116,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
         }
       />
 
-      <div className="mx-auto max-w-4xl px-5 pb-40 pt-6 md:pt-10">
+      <div className="mx-auto max-w-4xl px-5 pb-52 pt-6 md:pt-10">
         <motion.h1
           initial={{ scale: 0.9, opacity: 0, rotate: -4 }}
           animate={{ scale: 1, opacity: 1, rotate: -1.5 }}
@@ -366,7 +366,7 @@ function CategorySection({
                 transition={{ ...POP_SPRING, delay: i * 0.03 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleChip(cat)}
-                className={`inline-flex items-center gap-2 rounded-pill px-5 py-3 text-[22px] font-black ${
+                className={`inline-flex items-center gap-2 border-4 border-transparent rounded-pill px-5 py-3 text-[22px] font-black ${
                   selected ? 'border-4 border-white shadow-pop' : ''
                 }`}
                 style={
@@ -477,58 +477,52 @@ function QuizTicket({
   difficulty: string
   ready: boolean
 }) {
+  // One persistent pill that swaps content/skin on `ready` rather than swapping
+  // two AnimatePresence children - a mode="wait" swap here stalls the entering
+  // child mid-spring and freezes it at partial opacity.
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <motion.div
+      initial={{ opacity: 0, y: 12, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1, rotate: ready ? 1.5 : -1.5 }}
+      transition={POP_SPRING}
+      className={`rounded-pill border-4 px-4 py-2 text-base font-black md:text-lg ${
+        ready
+          ? 'border-white text-pop-ink shadow-pop-sm'
+          : 'border-dashed border-pop-ink/25 text-pop-ink/55'
+      }`}
+      style={{ background: ready ? POP.paper : 'rgba(255,255,255,0.6)' }}
+    >
       {ready ? (
-        <motion.div
-          key="built"
-          initial={{ opacity: 0, y: 10, scale: 0.9, rotate: 0 }}
-          animate={{ opacity: 1, y: 0, scale: 1, rotate: 1.5 }}
-          exit={{ opacity: 0, y: 10, scale: 0.9 }}
-          transition={POP_SPRING}
-          className="flex items-center gap-1.5 rounded-pill border-4 border-white px-4 py-2 text-base font-black text-pop-ink shadow-pop-sm md:text-lg"
-          style={{ background: POP.paper }}
-        >
+        <span className="flex items-center gap-1.5">
           <TicketStat value={count} label={count === 1 ? 'question' : 'questions'} />
           <span className="opacity-30">·</span>
           <TicketStat value={packs} label={packs === 1 ? 'category' : 'categories'} />
           <span className="opacity-30">·</span>
           <span>{difficulty}</span>
-        </motion.div>
+        </span>
       ) : (
-        <motion.div
-          key="empty"
-          initial={{ opacity: 0, y: 10, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1, rotate: -1.5 }}
-          exit={{ opacity: 0, y: 10, scale: 0.9 }}
-          transition={POP_SPRING}
-          className="rounded-pill border-4 border-dashed border-pop-ink/25 bg-white/60 px-4 py-2 text-base font-black text-pop-ink/55"
-        >
-          Pick a category to start
-        </motion.div>
+        'Pick a category to start'
       )}
-    </AnimatePresence>
+    </motion.div>
   )
 }
 
-// One "12 questions" stat with the number bumping on change.
+// One "12 questions" stat. The number remounts on change (keyed) so it gives a
+// small spring pop without a nested AnimatePresence, which would deadlock inside
+// the ticket's own mode="wait" presence and freeze it mid-fade.
 function TicketStat({ value, label }: { value: number; label: string }) {
   return (
     <span className="inline-flex items-baseline gap-1">
-      <span className="grid overflow-hidden">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={value}
-            initial={{ y: 12, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -12, opacity: 0 }}
-            transition={POP_SPRING}
-            style={{ color: POP.coral }}
-          >
-            {value}
-          </motion.span>
-        </AnimatePresence>
-      </span>
+      <motion.span
+        key={value}
+        initial={{ y: 8, scale: 0.7, opacity: 0.3 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        transition={POP_SPRING}
+        className="inline-block tabular-nums"
+        style={{ color: POP.coral }}
+      >
+        {value}
+      </motion.span>
       {label}
     </span>
   )
