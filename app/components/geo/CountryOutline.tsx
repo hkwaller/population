@@ -74,23 +74,26 @@ export function CountryOutline({
   }
 
   return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      width={size}
-      height={size}
-      className={className}
-      role="img"
-      aria-label="Country outline"
-    >
-      {d && (
-        <path
-          d={d}
-          fill={fill}
-          stroke="rgba(0,0,0,0.25)"
-          strokeWidth={1.5}
-          strokeLinejoin="round"
-        />
-      )}
-    </svg>
+    <div className="flex flex-col gap-4">
+      <h1 className="text-2xl md:text-4xl font-bold text-pop-ink">What country is this?</h1>
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        width={size}
+        height={size}
+        className={className}
+        role="img"
+        aria-label="Country outline"
+      >
+        {d && (
+          <path
+            d={d}
+            fill={fill}
+            stroke="rgba(0,0,0,0.25)"
+            strokeWidth={1.5}
+            strokeLinejoin="round"
+          />
+        )}
+      </svg>
+    </div>
   )
 }

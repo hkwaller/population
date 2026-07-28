@@ -46,6 +46,10 @@ const DIFFICULTY_OPTIONS = [
   { id: 'hard', label: 'Hard', fill: POP.coral, light: true },
 ] as const
 
+const DIFF_LABEL: Record<string, string> = Object.fromEntries(
+  DIFFICULTY_OPTIONS.map((o) => [o.id, o.label]),
+)
+
 function NewGamePageContent({ gameId }: { gameId: string }) {
   const router = useRouter()
   const refId = useRef(gameId)
@@ -98,8 +102,10 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
   const setCount = (n: number) => updateGame({ amountQuestions: Math.min(20, Math.max(1, n)) })
   const canStart = storageLoaded && selectedCategories.length > 0
 
+  const diffLabel = DIFF_LABEL[selectedDifficulty] ?? 'Any'
+
   return (
-    <PopShell bg={POP.mint}>
+    <PopShell bg={POP.mint} chips chipsOpacity={0.35}>
       <PopHeader
         logoTextColor={POP.mint}
         right={
@@ -111,12 +117,15 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
       />
 
       <div className="mx-auto max-w-4xl px-5 pb-40 pt-6 md:pt-10">
-        <h1
-          className="text-center font-black tracking-[-0.02em] text-pop-ink"
-          style={{ fontSize: 'clamp(48px, 8vw, 72px)', rotate: '-1.5deg' }}
+        <motion.h1
+          initial={{ scale: 0.9, opacity: 0, rotate: -4 }}
+          animate={{ scale: 1, opacity: 1, rotate: -1.5 }}
+          transition={POP_SPRING}
+          className="pop-textshadow text-center font-black tracking-[-0.02em] text-pop-ink"
+          style={{ fontSize: 'clamp(48px, 8vw, 72px)' }}
         >
           Build your quiz
-        </h1>
+        </motion.h1>
 
         {/* Question count stepper */}
         <div className="mx-auto mt-10 flex max-w-xl items-center justify-between gap-4 rounded-pill bg-white px-7 py-4 shadow-pop-card">
@@ -125,12 +134,21 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
             <StepBtn onClick={() => setCount(amountQuestions - 1)}>
               <Minus size={24} strokeWidth={3.5} />
             </StepBtn>
-            <span
-              className="w-14 text-center text-[52px] font-black leading-none"
-              style={{ color: POP.coral }}
-            >
-              {amountQuestions}
-            </span>
+            <div className="grid w-14 place-items-center overflow-hidden">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={amountQuestions}
+                  initial={{ y: 18, scale: 0.6, opacity: 0 }}
+                  animate={{ y: 0, scale: 1, opacity: 1 }}
+                  exit={{ y: -18, scale: 0.6, opacity: 0 }}
+                  transition={POP_SPRING}
+                  className="text-center text-[52px] font-black leading-none"
+                  style={{ color: POP.coral }}
+                >
+                  {amountQuestions}
+                </motion.span>
+              </AnimatePresence>
+            </div>
             <StepBtn onClick={() => setCount(amountQuestions + 1)}>
               <Plus size={24} strokeWidth={3.5} />
             </StepBtn>
@@ -211,21 +229,29 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="fixed inset-x-0 bottom-6 z-20 flex justify-center px-5">
-        <PopButton
-          variant="primary"
-          size="lg"
-          rotate={-1}
-          disabled={!canStart}
-          onClick={async () => {
-            if (!canStart) return
-            await send('setup')
-            router.push(`/setup/${refId.current}`)
-          }}
-        >
-          Open the lobby <ArrowRight size={26} />
-        </PopButton>
+      {/* CTA - a live "boarding pass" reads back the quiz you built, then launches it. */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-20 flex flex-col items-center gap-3 px-5">
+        <QuizTicket
+          count={amountQuestions}
+          packs={selectedCategories.length}
+          difficulty={diffLabel}
+          ready={canStart}
+        />
+        <div className="pointer-events-auto">
+          <PopButton
+            variant="primary"
+            size="lg"
+            rotate={-1}
+            disabled={!canStart}
+            onClick={async () => {
+              if (!canStart) return
+              await send('setup')
+              router.push(`/setup/${refId.current}`)
+            }}
+          >
+            Open the lobby <ArrowRight size={26} />
+          </PopButton>
+        </div>
       </div>
 
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
@@ -434,6 +460,77 @@ function CategorySection({
         })}
       </div>
     </div>
+  )
+}
+
+// A small parchment "boarding pass" that floats above the start button and
+// reads back the quiz you've assembled. When nothing is picked yet it turns
+// into the reason the button is disabled, so the gate never feels dead.
+function QuizTicket({
+  count,
+  packs,
+  difficulty,
+  ready,
+}: {
+  count: number
+  packs: number
+  difficulty: string
+  ready: boolean
+}) {
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      {ready ? (
+        <motion.div
+          key="built"
+          initial={{ opacity: 0, y: 10, scale: 0.9, rotate: 0 }}
+          animate={{ opacity: 1, y: 0, scale: 1, rotate: 1.5 }}
+          exit={{ opacity: 0, y: 10, scale: 0.9 }}
+          transition={POP_SPRING}
+          className="flex items-center gap-1.5 rounded-pill border-4 border-white px-4 py-2 text-base font-black text-pop-ink shadow-pop-sm md:text-lg"
+          style={{ background: POP.paper }}
+        >
+          <TicketStat value={count} label={count === 1 ? 'question' : 'questions'} />
+          <span className="opacity-30">·</span>
+          <TicketStat value={packs} label={packs === 1 ? 'category' : 'categories'} />
+          <span className="opacity-30">·</span>
+          <span>{difficulty}</span>
+        </motion.div>
+      ) : (
+        <motion.div
+          key="empty"
+          initial={{ opacity: 0, y: 10, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1, rotate: -1.5 }}
+          exit={{ opacity: 0, y: 10, scale: 0.9 }}
+          transition={POP_SPRING}
+          className="rounded-pill border-4 border-dashed border-pop-ink/25 bg-white/60 px-4 py-2 text-base font-black text-pop-ink/55"
+        >
+          Pick a category to start
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
+// One "12 questions" stat with the number bumping on change.
+function TicketStat({ value, label }: { value: number; label: string }) {
+  return (
+    <span className="inline-flex items-baseline gap-1">
+      <span className="grid overflow-hidden">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={value}
+            initial={{ y: 12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -12, opacity: 0 }}
+            transition={POP_SPRING}
+            style={{ color: POP.coral }}
+          >
+            {value}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+      {label}
+    </span>
   )
 }
 

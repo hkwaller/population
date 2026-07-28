@@ -85,7 +85,7 @@ function RankModalInner({
         </Reorder.Group>
       </div>
 
-      <div className="px-5 pb-8 pt-2">
+      <div className="px-5 pb-8 pt-2 mx-auto w-full md:w-auto">
         <PopButton
           variant="secondary"
           size="lg"
