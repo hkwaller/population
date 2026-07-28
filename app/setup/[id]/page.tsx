@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import QRCode from 'react-qr-code'
 import { sample } from 'lodash'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { UserPlus, ArrowRight, Copy, Check, icons as lucideIcons } from 'lucide-react'
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
@@ -20,7 +20,105 @@ import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { NamePromptModal } from '@/app/components/pop/NamePromptModal'
 import { HowToPlayButton, HowToPlayModal } from '@/app/components/HowToPlay'
-import { POP, stickerColors } from '@/app/components/pop/theme'
+import { POP, POP_SPRING, stickerColors, STICKER_FILLS } from '@/app/components/pop/theme'
+
+// The room fills up like a party - the copy escalates with the head count so the
+// host feels the momentum instead of reading a flat tally.
+function hypeLine(n: number): string {
+  if (n === 0) return 'Nobody yet - share that code!'
+  if (n === 1) return 'One brave soul. Who’s next?'
+  if (n === 2) return 'Two in - a rivalry brews.'
+  if (n === 3) return 'Three deep. Now it’s a game.'
+  if (n === 4) return 'Four strong - it’s getting loud in here.'
+  return `${n} in - it’s a full house!`
+}
+
+// Pulsing three-dot ellipsis; falls back to a static char when motion is reduced.
+function AnimatedDots() {
+  const reduce = useReducedMotion()
+  if (reduce) return <span>…</span>
+  return (
+    <span className="inline-flex" aria-hidden>
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          animate={{ opacity: [0.2, 1, 0.2] }}
+          transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.18, ease: 'easeInOut' }}
+        >
+          .
+        </motion.span>
+      ))}
+    </span>
+  )
+}
+
+// An empty seat, held. Dashed sticker that gently breathes on the shared pop-bob.
+function WaitingSticker({ rot = -2, delay = 0 }: { rot?: number; delay?: number }) {
+  return (
+    <div
+      className="pop-bob inline-flex min-w-[128px] flex-col items-center justify-center gap-1 rounded-sticker px-5 py-4 text-center"
+      style={
+        {
+          border: '4px dashed rgba(33,24,18,0.3)',
+          '--rot': `${rot}deg`,
+          animationDelay: `${delay}s`,
+        } as React.CSSProperties
+      }
+    >
+      <span className="text-lg font-black text-pop-ink/40">
+        waiting
+        <AnimatedDots />
+      </span>
+    </div>
+  )
+}
+
+// A short burst of sticker-confetti, fired once each time a new player lands.
+// Keyed by an incrementing trigger so it replays on remount and self-parks.
+function JoinBurst({ trigger }: { trigger: number }) {
+  const reduce = useReducedMotion()
+  const bits = useMemo(() => {
+    if (!trigger) return []
+    return Array.from({ length: 14 }).map((_, i) => {
+      const angle = (Math.PI * 2 * i) / 14 + (Math.random() - 0.5) * 0.5
+      const dist = 55 + Math.random() * 95
+      return {
+        id: `${trigger}-${i}`,
+        x: Math.cos(angle) * dist,
+        y: Math.sin(angle) * dist - 24,
+        rot: Math.random() * 300 - 150,
+        size: 9 + Math.random() * 11,
+        color: STICKER_FILLS[i % STICKER_FILLS.length],
+        delay: Math.random() * 0.06,
+      }
+    })
+  }, [trigger])
+
+  if (reduce || !trigger) return null
+  return (
+    <div className="pointer-events-none absolute left-1/2 top-4 z-30 h-0 w-0" aria-hidden>
+      {bits.map((b) => (
+        <motion.span
+          key={b.id}
+          initial={{ x: 0, y: 0, scale: 0, rotate: 0, opacity: 1 }}
+          animate={{ x: b.x, y: b.y, scale: 1, rotate: b.rot, opacity: 0 }}
+          transition={{ duration: 0.9, delay: b.delay, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute block rounded-[5px] border-2 border-white"
+          style={{ width: b.size, height: b.size, background: b.color }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Four corner brackets that frame the QR like a camera viewfinder - a wordless
+// "aim here" that gently breathes.
+const VIEWFINDER_CORNERS = [
+  '-left-2 -top-2 border-l-[5px] border-t-[5px] rounded-tl-[12px]',
+  '-right-2 -top-2 border-r-[5px] border-t-[5px] rounded-tr-[12px]',
+  '-left-2 -bottom-2 border-l-[5px] border-b-[5px] rounded-bl-[12px]',
+  '-right-2 -bottom-2 border-r-[5px] border-b-[5px] rounded-br-[12px]',
+]
 
 function SetupPageContent({ params }: { params: { id: string } }) {
   const { user } = useUser()
@@ -33,7 +131,17 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const [howToOpen, setHowToOpen] = useState(false)
   const [namePromptOpen, setNamePromptOpen] = useState(false)
   const [savingName, setSavingName] = useState(false)
+  const [burstKey, setBurstKey] = useState(0)
+  const prevCount = useRef(players.length)
+  const reduce = useReducedMotion()
   const router = useRouter()
+
+  // Fire a celebration burst only when the head count actually grows (never on
+  // the first render, and never when someone leaves).
+  useEffect(() => {
+    if (players.length > prevCount.current) setBurstKey((k) => k + 1)
+    prevCount.current = players.length
+  }, [players.length])
 
   // Best-guess name from Clerk, used to seed the prompt when we have nothing saved.
   const clerkName =
@@ -97,15 +205,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   }
 
   // Add the signed-in player to the room with a resolved display name + sticker.
-  const joinAsUser = ({
-    name,
-    color,
-    icon,
-  }: {
-    name: string
-    color: string
-    icon: string
-  }) => {
+  const joinAsUser = ({ name, color, icon }: { name: string; color: string; icon: string }) => {
     const id = user?.id
     const player = { id: id!, name, color, localPlayer: true, icon }
     send({ type: 'boss', payload: id })
@@ -150,6 +250,8 @@ function SetupPageContent({ params }: { params: { id: string } }) {
     }
   }
 
+  const ready = players.length > 0
+
   return (
     <PopShell bg={POP.bubblegum}>
       <PopHeader
@@ -179,30 +281,92 @@ function SetupPageContent({ params }: { params: { id: string } }) {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1, rotate: -2 }}
             transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-            className="mx-auto flex w-full max-w-sm flex-col items-center rounded-card bg-white p-6 shadow-pop-card"
+            whileHover={reduce ? undefined : { y: -5, rotate: -0.5 }}
+            className="relative mx-auto flex w-full max-w-sm flex-col items-center rounded-card bg-white p-6 shadow-pop-card"
           >
-            <div className="rounded-[20px] bg-white p-2">
-              <QRCode value={url} size={240} />
+            {/* "Aim your camera here" badge */}
+            <motion.span
+              initial={{ scale: 0, rotate: -12 }}
+              animate={{ scale: 1, rotate: -8 }}
+              transition={{ ...POP_SPRING, delay: 0.25 }}
+              className="absolute -left-3 -top-4 z-20 rounded-pill border-[3px] border-white px-3.5 py-1.5 text-sm font-black tracking-tight text-white shadow-pop"
+              style={{ background: POP.cobalt }}
+            >
+              SCAN ME
+            </motion.span>
+
+            <div className="relative rounded-[20px] bg-white p-3">
+              {VIEWFINDER_CORNERS.map((c, i) => (
+                <motion.span
+                  key={i}
+                  aria-hidden
+                  className={`absolute block h-6 w-6 border-pop-ink ${c}`}
+                  animate={reduce ? undefined : { opacity: [0.45, 1, 0.45] }}
+                  transition={{
+                    duration: 2.4,
+                    repeat: Infinity,
+                    delay: i * 0.15,
+                    ease: 'easeInOut',
+                  }}
+                />
+              ))}
+              <QRCode value={url} size={232} />
             </div>
-            <div className="mt-5 flex items-center gap-2">
+
+            <div className="mt-6 flex items-center gap-2">
               <span
                 className="rounded-pill border-[3px] border-pop-ink px-5 py-2.5 text-xl font-black text-pop-ink"
                 style={{ background: POP.sunshine }}
               >
                 {params.id}
               </span>
-              <button
+              <motion.button
                 onClick={copyCode}
+                whileTap={reduce ? undefined : { scale: 0.9 }}
                 aria-label={copied ? 'Code copied' : 'Copy game code'}
                 className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
               >
-                {copied ? <Check size={20} strokeWidth={3} /> : <Copy size={20} strokeWidth={3} />}
-              </button>
+                {copied ? (
+                  <motion.span
+                    initial={{ scale: 0, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 14 }}
+                  >
+                    <Check size={20} strokeWidth={3} />
+                  </motion.span>
+                ) : (
+                  <Copy size={20} strokeWidth={3} />
+                )}
+              </motion.button>
             </div>
           </motion.div>
 
           {/* Players */}
-          <div>
+          <div className="relative">
+            <JoinBurst key={burstKey} trigger={burstKey} />
+
+            <div className="mb-5 flex items-center gap-3">
+              <motion.span
+                key={players.length}
+                initial={{ scale: 0.5, rotate: -10 }}
+                animate={{ scale: 1, rotate: -4 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 15 }}
+                className="grid h-11 min-w-[44px] place-items-center rounded-sticker border-[3px] border-white px-2 text-2xl font-black text-pop-ink shadow-pop"
+                style={{ background: POP.sunshine }}
+              >
+                {players.length}
+              </motion.span>
+              <motion.p
+                key={hypeLine(players.length)}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="text-2xl font-black leading-tight text-pop-ink"
+              >
+                {hypeLine(players.length)}
+              </motion.p>
+            </div>
+
             <div className="flex flex-wrap items-start gap-4">
               {players.map((player, index) => (
                 <Player
@@ -218,25 +382,23 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                   }
                 />
               ))}
-              {/* Ghost waiting sticker */}
-              <div
-                className="inline-flex min-w-[128px] flex-col items-center justify-center gap-1 rounded-sticker px-5 py-4 text-center"
-                style={{ border: '4px dashed rgba(23,18,20,0.35)' }}
-              >
-                <span className="text-lg font-black text-pop-ink/40">waiting for more…</span>
-              </div>
+              {/* Empty seats, held open */}
+              <WaitingSticker rot={-2} delay={0} />
+              {players.length === 0 && <WaitingSticker rot={3} delay={0.9} />}
             </div>
 
-            <p className="mt-6 text-lg font-bold text-pop-ink/70">
-              {players.length === 0
-                ? 'Nobody yet - share that code!'
-                : `${players.length} ${players.length === 1 ? 'player' : 'players'} in. Tap a sticker to crown the host.`}
-            </p>
+            {ready && (
+              <p className="mt-6 text-lg font-bold text-pop-ink/70">
+                Tap a sticker to crown the host.
+              </p>
+            )}
 
             {user && !players.find((p) => p.id === user.id) && (
-              <button
+              <motion.button
                 onClick={handleAddMe}
-                className="mt-4 inline-flex items-center gap-3 rounded-pill bg-pop-ink px-5 py-3 text-lg font-black text-white"
+                whileHover={reduce ? undefined : { y: -2, rotate: -1 }}
+                whileTap={reduce ? undefined : { scale: 0.96, y: 2 }}
+                className="mt-4 inline-flex items-center gap-3 rounded-pill bg-pop-ink px-5 py-3 text-lg font-black text-white shadow-pop-btn"
               >
                 Add me
                 {user.imageUrl && (
@@ -248,34 +410,40 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                     className="rounded-full"
                   />
                 )}
-              </button>
+              </motion.button>
             )}
 
             {!players.find((p) => p.localPlayer) && (
               <div className="mt-4">
                 {!playingOnSameDevice ? (
-                  <button
+                  <motion.button
                     onClick={() => updateGame({ playingOnSameDevice: true })}
+                    whileHover={reduce ? undefined : { y: -2, rotate: 1 }}
+                    whileTap={reduce ? undefined : { scale: 0.96, y: 2 }}
                     className="inline-flex items-center gap-2 rounded-pill bg-white px-5 py-3 text-lg font-black text-pop-ink shadow-pop"
                   >
                     <UserPlus size={20} /> Add player on this device
-                  </button>
+                  </motion.button>
                 ) : (
                   <div className="flex max-w-sm items-center gap-2 rounded-pill bg-white p-2 pl-5 shadow-pop">
                     <input
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && name.trim()) handleAddLocalPlayer()
+                      }}
                       maxLength={15}
                       placeholder="name"
-                      className="min-w-0 flex-1 bg-transparent text-xl font-black text-pop-ink outline-none placeholder:text-[rgba(23,18,20,0.35)]"
+                      className="min-w-0 flex-1 bg-transparent text-xl font-black text-pop-ink outline-none placeholder:text-[rgba(33,24,18,0.35)]"
                     />
-                    <button
+                    <motion.button
                       onClick={handleAddLocalPlayer}
+                      whileTap={reduce ? undefined : { scale: 0.94 }}
                       className="shrink-0 rounded-pill px-5 py-2.5 text-lg font-black text-white"
                       style={{ background: POP.coral }}
                     >
                       Add
-                    </button>
+                    </motion.button>
                   </div>
                 )}
               </div>
@@ -285,21 +453,36 @@ function SetupPageContent({ params }: { params: { id: string } }) {
       </div>
 
       <div className="fixed inset-x-0 bottom-6 z-20 flex justify-center px-5">
-        <PopButton
-          variant="primary"
-          size="lg"
-          rotate={1}
-          disabled={!players.length || isStarting}
-          onClick={handleContinue}
-        >
-          {isStarting ? (
-            'Starting…'
-          ) : (
-            <>
-              Everyone&apos;s in - let&apos;s go! <ArrowRight size={26} />
-            </>
-          )}
-        </PopButton>
+        {!ready ? (
+          <div
+            className="pop-bob inline-flex items-center gap-2 rounded-pill border-[3px] border-dashed border-pop-ink/40 bg-white/85 px-8 py-4 text-xl font-black text-pop-ink/70"
+            style={{ ['--rot' as any]: '1deg' }}
+          >
+            Waiting for players
+            <AnimatedDots />
+          </div>
+        ) : (
+          <motion.div
+            animate={reduce ? undefined : { rotate: [1, -1.5, 1], y: [0, -3, 0] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <PopButton
+              variant="primary"
+              size="lg"
+              rotate={0}
+              disabled={isStarting}
+              onClick={handleContinue}
+            >
+              {isStarting ? (
+                'Starting…'
+              ) : (
+                <>
+                  Everyone&apos;s in - let&apos;s go! <ArrowRight size={26} />
+                </>
+              )}
+            </PopButton>
+          </motion.div>
+        )}
       </div>
 
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />

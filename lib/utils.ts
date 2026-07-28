@@ -545,7 +545,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[8],
     count: stat('which-bigger'),
-    description: 'Two countries head to head — pick the one with the larger population.',
+    description: 'Two countries head to head - pick the one with the larger population.',
   },
   {
     id: 'higher-lower',
@@ -575,7 +575,7 @@ export const categories = [
     tier: 'main',
     bg: categoryBackgroundColors[0],
     count: stat('build-up'),
-    description: 'Clues reveal one at a time — name the country as early as you can.',
+    description: 'Clues reveal one at a time - name the country as early as you can.',
   },
   {
     id: 'route',
@@ -645,7 +645,7 @@ export const categories = [
     tier: 'special',
     bg: categoryBackgroundColors[4],
     count: stat('population'),
-    description: "Estimate a country's population — get as close to the real number as you can.",
+    description: "Estimate a country's population - get as close to the real number as you can.",
   },
 ] as const
 

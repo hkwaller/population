@@ -13,7 +13,13 @@ import { PopButton } from '../components/pop/PopButton'
 import { PopToggle } from '../components/pop/PopControls'
 import { HowToPlayButton, HowToPlayModal } from '../components/HowToPlay'
 import { POP, POP_SPRING } from '../components/pop/theme'
-import { categories, makeId, INPUT_CAPABLE_CATEGORIES, type AnswerMode, type AnswerModes } from '@/lib/utils'
+import {
+  categories,
+  makeId,
+  INPUT_CAPABLE_CATEGORIES,
+  type AnswerMode,
+  type AnswerModes,
+} from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
 import { useStorage } from '@/liveblocks.config'
 
@@ -267,10 +273,7 @@ function CategorySection({
       const r = el.getBoundingClientRect()
       // Keep the centered TOOLTIP_WIDTH box inside the viewport with an 8px gutter.
       const half = TOOLTIP_WIDTH / 2
-      const cx = Math.min(
-        Math.max(r.left + r.width / 2, 8 + half),
-        window.innerWidth - 8 - half,
-      )
+      const cx = Math.min(Math.max(r.left + r.width / 2, 8 + half), window.innerWidth - 8 - half)
       // Anchor the popover's bottom 8px above the chip's top edge.
       setInfo({ id, cx, bottom: window.innerHeight - r.top + 8 })
     }, HOVER_DELAY_MS)
@@ -361,7 +364,11 @@ function CategorySection({
                     // pop-in + double pulse is the "you can change this" nudge.
                     initial={{ scale: 0 }}
                     animate={{ scale: [0, 1, 1.25, 1, 1.25, 1] }}
-                    transition={{ duration: 0.9, times: [0, 0.15, 0.35, 0.55, 0.75, 1], ease: 'easeInOut' }}
+                    transition={{
+                      duration: 0.9,
+                      times: [0, 0.15, 0.35, 0.55, 0.75, 1],
+                      ease: 'easeInOut',
+                    }}
                     className="ml-0.5 grid h-8 w-8 place-items-center rounded-full border-[3px] border-pop-ink/20 bg-white text-pop-ink"
                   >
                     <ModeIcon size={16} strokeWidth={2.75} />
@@ -400,7 +407,7 @@ function CategorySection({
                 )}
               </AnimatePresence>
 
-              {/* Explainer — floats just above the chip after a rested hover.
+              {/* Explainer - floats just above the chip after a rested hover.
                   Fixed + viewport-clamped so it never clips at screen edges.
                   Suppressed while the answer-mode picker is open for this cat. */}
               <AnimatePresence>
