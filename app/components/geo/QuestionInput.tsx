@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { AnswerValue, LatLng, TQuestion } from '@/app/types'
 import { usePopStore } from '@/app/state'
 import { PopSlider } from '../pop/PopSlider'
+import { PopRangeSlider } from '../pop/PopRangeSlider'
 import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 import { ChoiceOptions } from './ChoiceOptions'
@@ -146,22 +147,28 @@ export function QuestionInput({
   // slider
   return (
     <div className="flex flex-col gap-4">
-      <PopSlider
-        min={question.lower_bound}
-        max={question.upper_bound}
-        value={sliderValue}
-        onChange={setSliderValue}
-        valueColor={POP.cobalt}
-        locked={disabled}
-      />
-      {confidenceMode && (
-        <ConfidenceBand
-          label={`How sure? (± ${question.unit ?? ''})`}
-          min={0}
-          max={Math.round((question.upper_bound - question.lower_bound) / 2)}
-          value={band}
-          onChange={setBand}
-          disabled={disabled}
+      {confidenceMode ? (
+        <PopRangeSlider
+          min={question.lower_bound}
+          max={question.upper_bound}
+          center={sliderValue}
+          band={band}
+          onChange={(c, b) => {
+            setSliderValue(c)
+            setBand(b)
+          }}
+          valueColor={POP.cobalt}
+          locked={disabled}
+          unit={question.unit}
+        />
+      ) : (
+        <PopSlider
+          min={question.lower_bound}
+          max={question.upper_bound}
+          value={sliderValue}
+          onChange={setSliderValue}
+          valueColor={POP.cobalt}
+          locked={disabled}
         />
       )}
       <PopButton

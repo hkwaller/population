@@ -3,8 +3,14 @@ import { usePopStore } from '@/app/state'
 import { useUpdateGameState } from '../useUpdateGameState'
 
 export const useSetup = () => {
-  const { updateGame, amountQuestions, showQuestions, answerModes, selectedCategories } =
-    usePopStore()
+  const {
+    updateGame,
+    amountQuestions,
+    showQuestions,
+    confidenceMode,
+    answerModes,
+    selectedCategories,
+  } = usePopStore()
   const { updateGameState } = useUpdateGameState()
 
   const setup = async (payload: undefined) => {
@@ -22,6 +28,7 @@ export const useSetup = () => {
       skippedQuestions: [],
       selectedCategories: selectedCategories,
       showQuestions: showQuestions,
+      confidenceMode: confidenceMode,
       answerModes: answerModes,
       players: [],
       hostAdFree: false,

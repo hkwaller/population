@@ -152,6 +152,12 @@ type Answer = {
   answer: AnswerValue
   score: number
   questionId: string
+  /**
+   * Confidence mode: the band half-width (slider) / radius km (map) that was bet.
+   * Kept on the record so the reveal can show the range the player actually
+   * committed - the answer alone is just its midpoint.
+   */
+  confidence?: number
 }
 
 export type TPlayer = {

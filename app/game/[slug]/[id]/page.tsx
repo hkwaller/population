@@ -28,6 +28,7 @@ import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { PopSlider } from '@/app/components/pop/PopSlider'
+import { PopRangeSlider } from '@/app/components/pop/PopRangeSlider'
 import { Dock } from '@/app/components/pop/Dock'
 import { PopWaitingLoader } from '@/app/components/pop/PopWaitingLoader'
 import { POP, stickerFill } from '@/app/components/pop/theme'
@@ -190,11 +191,30 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 value={
                   myPlayerInfo?.answers?.find((a) => a.questionId === currentQuestion.id)?.answer
                 }
+                confidence={
+                  myPlayerInfo?.answers?.find((a) => a.questionId === currentQuestion.id)
+                    ?.confidence
+                }
               />
             ) : (
               <>
-                {slider && (
-                  <>
+                {slider &&
+                  (confidenceMode ? (
+                    <PopRangeSlider
+                      min={slider.lower_bound}
+                      max={slider.upper_bound}
+                      center={currentAnswer}
+                      band={band}
+                      onChange={(c, b) => {
+                        setCurrentAnswer(c)
+                        setBand(b)
+                      }}
+                      valueColor={POP.cobalt}
+                      onOpenKeypad={() => setAnswerInputModalOpen(true)}
+                      unit={slider.unit}
+                      compact
+                    />
+                  ) : (
                     <PopSlider
                       min={slider.lower_bound}
                       max={slider.upper_bound}
@@ -204,19 +224,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       onOpenKeypad={() => setAnswerInputModalOpen(true)}
                       compact
                     />
-                    {confidenceMode && (
-                      <div className="mt-3">
-                        <ConfidenceBand
-                          label={`How sure? (± ${slider.unit ?? ''})`}
-                          min={0}
-                          max={Math.round((slider.upper_bound - slider.lower_bound) / 2)}
-                          value={band}
-                          onChange={setBand}
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
+                  ))}
                 {currentQuestion.type === 'map' && (
                   <>
                     <MapPicker
@@ -372,10 +380,13 @@ function LockedState({
   players,
   currentQuestionId,
   value,
+  confidence,
 }: {
   players: any[]
   currentQuestionId: string
   value: AnswerValue | undefined
+  /** Confidence mode: half-width of the band that was locked in. */
+  confidence?: number
 }) {
   const waitingName = players.find(
     (p) => !p.answers.some((a: any) => a.questionId === currentQuestionId),
@@ -386,7 +397,9 @@ function LockedState({
         className="rounded-pill bg-white px-5 py-2 text-3xl font-black"
         style={{ color: POP.ink, rotate: '-2deg' }}
       >
-        {formatAnswerValue(value)}
+        {confidence != null && typeof value === 'number'
+          ? `${formatAnswerValue(value - confidence)} – ${formatAnswerValue(value + confidence)}`
+          : formatAnswerValue(value)}
       </span>
       <span className="text-3xl font-black text-white">Locked in! ✊</span>
       <span className="text-lg font-bold text-white/70">No takebacks. Sweating yet?</span>

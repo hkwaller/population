@@ -3,6 +3,7 @@ import { TQuestion } from '@/app/types'
 import { useUpdateGameState } from '../useUpdateGameState'
 import { useSupabase } from '../useSupabase'
 import { sampleQuestions } from '@/lib/sampleQuestions'
+import { useStorage } from '@/liveblocks.config'
 
 export const useRematch = () => {
   const {
@@ -10,15 +11,22 @@ export const useRematch = () => {
     amountQuestions,
     showQuestions,
     answerModes,
-    selectedCategories,
+    selectedCategories: deviceCategories,
     selectedDifficulty,
     getSeenQuestionIds,
     updateGame,
   } = usePopStore()
   const { updateGameState } = useUpdateGameState()
   const { fetchQuestionsByCategories } = useSupabase()
+  // The host stamped the room's categories at `start`. Any device can issue
+  // `rematch` (the boss may have been handed over to a player who never picked
+  // categories on their own device), so the room value wins - falling back to
+  // this device's picks only when the room has none (daily/solo).
+  const roomCategories = useStorage((root) => root.game?.selectedCategories)
 
   const rematch = async (payload: undefined) => {
+    const selectedCategories = roomCategories?.length ? [...roomCategories] : deviceCategories
+
     // Re-fetch and re-sample a fresh pool instead of reusing the previous game's
     // `questions` (which replayed the same round). Exclude every question shown
     // on this device today - which already covers the round just played - so

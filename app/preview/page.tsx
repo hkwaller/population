@@ -172,6 +172,8 @@ function BreakdownDemo() {
   const oooQ = SAMPLES.find((q) => q.type === 'odd-one-out')!
   const buQ = SAMPLES.find((q) => q.type === 'build-up')!
   const rtQ = SAMPLES.find((q) => q.type === 'route')!
+  const sliderQ = SAMPLES.find((q) => q.type === 'slider')!
+  const sliderAnswer = sliderQ.type === 'slider' ? sliderQ.answer : 0
 
   const mkPlayer = (
     id: string,
@@ -179,13 +181,22 @@ function BreakdownDemo() {
     color: string,
     q: TQuestion,
     guess: AnswerValue,
+    /** Confidence mode: band half-width, so the card renders the bet range. */
+    confidence?: number,
   ): TPlayer => ({
     id,
     name,
     color,
     icon: 'Globe',
-    score: scoreGuess(q, guess),
-    answers: [{ questionId: q.id, answer: guess, score: scoreGuess(q, guess) }],
+    score: scoreGuess(q, guess, undefined, { confidence }),
+    answers: [
+      {
+        questionId: q.id,
+        answer: guess,
+        score: scoreGuess(q, guess, undefined, { confidence }),
+        confidence,
+      },
+    ],
   })
 
   const byScore = (a: TPlayer, b: TPlayer) => b.score - a.score
@@ -225,8 +236,15 @@ function BreakdownDemo() {
     }),
   ].sort(byScore)
 
+  // Confidence mode: the bet is a range, so the cards must read back a range.
+  const confPlayers = [
+    mkPlayer('c1', 'Mo', 'sand', sliderQ, sliderAnswer + 200, 4000), // tight band, contains it
+    mkPlayer('c2', 'Ni', 'sage', sliderQ, sliderAnswer * 2, 1000), // wide miss → 0
+  ].sort(byScore)
+
   return (
     <>
+      <QuestionResult players={confPlayers} question={sliderQ} index={0} />
       <QuestionResult players={mapPlayers} question={mapQ} index={0} />
       <QuestionResult players={rankPlayers} question={rankQ} index={1} />
       <QuestionResult players={hlPlayers} question={hlQ} index={2} />

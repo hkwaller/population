@@ -17,6 +17,7 @@ export const PlayerResult = ({
   score,
   index,
   question,
+  confidence,
   isClosest = false,
   isWinner = false,
 }: {
@@ -25,6 +26,8 @@ export const PlayerResult = ({
   answer?: AnswerValue
   score: number
   question?: TQuestion
+  /** Confidence mode: band half-width (slider) / radius km (map) that was bet. */
+  confidence?: number
   isClosest?: boolean
   isWinner?: boolean
 }) => {
@@ -69,11 +72,19 @@ export const PlayerResult = ({
     if (question?.type === 'map' && typeof answer === 'object') {
       if (score >= MAX_SCORE) return 'nailed it 🎯'
       const km = Math.round(haversineKm(answer as LatLng, question.answer))
-      return `${km.toLocaleString()} km away`
+      const line = `${km.toLocaleString()} km away`
+      return confidence ? `${line} · ${confidence.toLocaleString()} km circle` : line
     }
     // Higher-lower stores the picked side; show the side's label, not "left".
     if (question?.type === 'higher-lower' && (answer === 'left' || answer === 'right')) {
       return `guessed ${question[answer].label}`
+    }
+    // Confidence mode bets a range, so echo the range - its midpoint alone is a
+    // number the player never actually picked.
+    if (confidence != null && typeof answer === 'number') {
+      return `bet ${formatAnswerValue(answer - confidence)} – ${formatAnswerValue(
+        answer + confidence,
+      )}`
     }
     return `guessed ${formatAnswerValue(answer)}`
   })()

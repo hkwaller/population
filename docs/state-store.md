@@ -10,7 +10,7 @@ State is split deliberately. **Consume everything through `hooks/useGame.ts`** -
 
 Defined in `liveblocks.config.ts` (`GameState`). This is what every player in a room sees and what the host mutates to drive the game forward:
 
-`command`, `boss`, `currentQuestion`, `answeredQuestions`, `skippedQuestions`, `players`, `endedAt` (plus the game config fields the host sets at setup).
+`command`, `boss`, `currentQuestion`, `answeredQuestions`, `skippedQuestions`, `players`, `endedAt` (plus the game config fields the host sets at setup: `amountQuestions`, `showQuestions`, `answerModes`, `confidenceMode`, `hostAdFree`).
 
 Liveblocks storage must be JSON-serializable - that's why `players` is typed `any[]` (player icons carry symbol indices). Don't tighten that type without a serialization plan.
 
@@ -18,7 +18,9 @@ Liveblocks storage must be JSON-serializable - that's why `players` is typed `an
 
 Defined in `app/state.ts`. Persisted to `localStorage` under the key **`population-store`** (`persist` + `createJSONStorage`). Holds things that are _this device's_ concern:
 
-`selectedCategories`, `amountQuestions`, `capAnswers`, `hideQuestions`, `showQuestions`, `me`, `preferences`, plus local UI flags (`showScoreModal`, `showQuestionResultModal`, `playingOnSameDevice`).
+`selectedCategories`, `amountQuestions`, `capAnswers`, `hideQuestions`, `showQuestions`, `confidenceMode`, `me`, `preferences`, plus local UI flags (`showScoreModal`, `showQuestionResultModal`, `playingOnSameDevice`).
+
+`confidenceMode` is the interesting case: it's a device preference (it's what daily and solo read, and what the host toggles on `/new-game`), but because it changes **scoring** it can't stay device-local once a room is live - the host would be scored under different rules than the guests. `useStart` stamps it onto room storage, and `resolveConfidenceMode` (`lib/confidenceMode.ts`) picks the winner: room value in a live game, device value in the lobby and outside rooms. It's resolved rather than written back into Zustand, so joining someone else's confidence-mode room doesn't silently flip your own daily setting.
 
 ## The bug this split fixes
 

@@ -16,6 +16,13 @@ export type GameState = {
   questions: TQuestion[]
   amountQuestions: number
   showQuestions: boolean
+  /**
+   * Confidence mode: slider/map answers also carry a band/radius, and scoring
+   * rewards a narrow band. Room-wide (stamped by the host at `start`) so every
+   * player is scored under the same rules - a per-device setting would score
+   * the host differently from the guests.
+   */
+  confidenceMode: boolean
   answerModes: AnswerModes
   selectedCategories: string[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

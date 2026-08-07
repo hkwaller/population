@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
 import type { AnswerValue, TQuestion } from '@/app/types'
+import { usePopStore } from '@/app/state'
 import { MAX_SCORE, formatAnswerValue } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { dateKeyUTC } from '@/lib/daily'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopLogo } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
+import { PopToggle } from '@/app/components/pop/PopControls'
 import { POP } from '@/app/components/pop/theme'
 import { Question } from '@/app/components/Question'
 import { QuestionInput } from '@/app/components/geo/QuestionInput'
@@ -22,7 +24,8 @@ import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 
 const STORE_KEY = 'population-daily'
 
-type Attempt = { value: AnswerValue; score: number }
+/** `confidence` is the band half-width / map radius, when confidence mode is on. */
+type Attempt = { value: AnswerValue; score: number; confidence?: number }
 type SavedPlay = { total: number; buckets: string; streak: number }
 
 function bucket(score: number): string {
@@ -34,6 +37,13 @@ function bucket(score: number): string {
 
 export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; dateKey: string }) {
   const maxTotal = questions.length * MAX_SCORE
+
+  // Device-local confidence-mode preference. Daily has no setup screen, so the
+  // toggle rides along on the first question and locks once you've answered it -
+  // switching scoring rules mid-run would make the shareable grid meaningless.
+  const confidenceMode = usePopStore((s) => s.confidenceMode)
+  const updateGame = usePopStore((s) => s.updateGame)
+  const hasBandQuestion = questions.some((q) => q.type === 'slider' || q.type === 'map')
 
   const [index, setIndex] = useState(0)
   const [attempts, setAttempts] = useState<Attempt[]>([])
@@ -85,7 +95,11 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
     extra?: { confidence?: number; cluesUsed?: number },
   ) => {
     const q = questions[index]
-    setRevealing({ value, score: scoreGuess(q, value, elapsedMs, extra) })
+    setRevealing({
+      value,
+      score: scoreGuess(q, value, elapsedMs, extra),
+      confidence: extra?.confidence,
+    })
   }
 
   const next = () => {
@@ -127,6 +141,21 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
           </div>
         ) : (
           <div className="w-full">
+            {index === 0 && hasBandQuestion && (
+              <div className="mb-4 flex items-center justify-between gap-4 rounded-3xl bg-white px-5 py-3 shadow-pop">
+                <div className="min-w-0">
+                  <span className="block text-base font-black text-pop-ink">Confidence mode</span>
+                  <span className="block text-sm font-bold text-pop-ink/55">
+                    Bet a range - narrow scores more, miss it and you get nothing
+                  </span>
+                </div>
+                <PopToggle
+                  compact
+                  checked={confidenceMode}
+                  onChange={(v) => updateGame({ confidenceMode: v })}
+                />
+              </div>
+            )}
             <QuestionInput question={q} onAnswer={onAnswer} />
           </div>
         )}
@@ -200,7 +229,16 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
           Answer: {formatAnswerValue(question.answer)}
           {question.unit ? ` ${question.unit}` : ''}
           <br />
-          <span className="text-pop-ink/60">You: {formatAnswerValue(attempt.value)}</span>
+          {/* In confidence mode the bet was a range, so echo the range - showing
+              only its midpoint would look like a guess the player never made. */}
+          <span className="text-pop-ink/60">
+            You:{' '}
+            {attempt.confidence != null && typeof attempt.value === 'number'
+              ? `${formatAnswerValue(attempt.value - attempt.confidence)} – ${formatAnswerValue(
+                  attempt.value + attempt.confidence,
+                )}`
+              : formatAnswerValue(attempt.value)}
+          </span>
         </p>
       )}
       <span

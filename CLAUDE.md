@@ -47,7 +47,7 @@ node scripts/build-countries.mjs   # writes lib/geo/countries.json
 
 `hooks/useGame.ts` is the **single canonical boundary hook** - always use it. It merges:
 
-- **Liveblocks (room-shared, authoritative for a live game):** `command`, `currentQuestion`, `players`, `boss`, `answeredQuestions`, `skippedQuestions`, `endedAt`
+- **Liveblocks (room-shared, authoritative for a live game):** `command`, `currentQuestion`, `players`, `boss`, `answeredQuestions`, `skippedQuestions`, `endedAt`, plus the host's config stamped at `start` (`amountQuestions`, `showQuestions`, `answerModes`, `confidenceMode`, `hostAdFree`) so joining players inherit it. Anything that changes **scoring** must live here - `confidenceMode` is resolved by `resolveConfidenceMode` (`lib/confidenceMode.ts`): the host's stamped value wins in a live room, a device's own preference only applies in the lobby and in daily/solo.
 - **Zustand / `usePopStore` (device-local, per player):** `selectedCategories`, `amountQuestions`, `capAnswers`, `hideQuestions`, `showQuestions`, `me`, `preferences`
 - **Derived (no store):** `showQuestionResultModal`
 

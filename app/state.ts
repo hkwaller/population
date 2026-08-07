@@ -156,12 +156,14 @@ export const usePopStore = create<State>()(
                 ...player.answers[existingAnswerIndex],
                 answer: answer,
                 score: score,
+                confidence: opts?.confidence,
               }
             } else {
               player.answers.push({
                 answer: answer,
                 questionId: questionId,
                 score: score,
+                confidence: opts?.confidence,
               })
             }
           }

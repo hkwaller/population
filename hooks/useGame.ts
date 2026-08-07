@@ -5,9 +5,12 @@
  *
  * Source-of-truth split:
  *   Liveblocks (room-shared):  command, currentQuestion, players, boss,
- *                              answeredQuestions, skippedQuestions, endedAt
- *   Zustand (device-local):    selectedCategories, amountQuestions, showQuestions,
- *                              answerModes, me, preferences
+ *                              answeredQuestions, skippedQuestions, endedAt,
+ *                              plus host-chosen config once the game starts
+ *                              (amountQuestions, showQuestions, confidenceMode,
+ *                              answerModes)
+ *   Zustand (device-local):    selectedCategories, me, preferences, and the
+ *                              host's own config picks while still idle
  *   Derived (no store):        showQuestionResultModal
  *
  * The previous useLiveGame synced ALL Liveblocks fields including
@@ -20,6 +23,7 @@ import { useEffect, useMemo } from 'react'
 
 import { usePopStore } from '@/app/state'
 import { Command, CommandType } from '@/app/types'
+import { resolveConfidenceMode } from '@/lib/confidenceMode'
 import { useStorage } from '@/liveblocks.config'
 
 import { useAnswer } from './game/useAnswer'
@@ -134,6 +138,11 @@ export const useGame = (gameId?: string) => {
   }
 
   // ── Derived state ──────────────────────────────────────────────────────────
+  const confidenceMode = resolveConfidenceMode({
+    room: gameStorage ?? undefined,
+    device: zustand.confidenceMode,
+  })
+
   const showQuestionResultModal = useMemo(() => {
     if (!zustand.players.length || !zustand.currentQuestion) return false
     return zustand.players.every((player) =>
@@ -159,11 +168,12 @@ export const useGame = (gameId?: string) => {
     answeredQuestions: zustand.answeredQuestions,
     skippedQuestions: zustand.skippedQuestions,
     endedAt: zustand.endedAt,
-    // Zustand-owned (never overwritten by Liveblocks)
-    selectedCategories: zustand.selectedCategories,
     amountQuestions: zustand.amountQuestions,
     showQuestions: zustand.showQuestions,
-    confidenceMode: zustand.confidenceMode,
+    // Room-wide once the game has started; see resolveConfidenceMode.
+    confidenceMode,
+    // Zustand-owned (never overwritten by Liveblocks)
+    selectedCategories: zustand.selectedCategories,
     answerModes: zustand.answerModes,
     me: zustand.me,
     preferences: zustand.preferences,

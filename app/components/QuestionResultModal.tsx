@@ -196,6 +196,7 @@ export default function QuestionResultModal({
                   player={player}
                   score={answer?.score || 0}
                   answer={answer?.answer}
+                  confidence={answer?.confidence}
                   question={revealed}
                   isClosest={index === 0}
                 />
