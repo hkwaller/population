@@ -15,7 +15,7 @@ import { v5 as uuidv5 } from 'uuid'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const NS = '6ba7b811-9dad-11d1-80b4-00c04fd430c8' // uuid URL namespace
-const countries = JSON.parse(readFileSync(join(root, 'lib/geo/countries.json'), 'utf-8'))
+const { countries } = JSON.parse(readFileSync(join(root, 'lib/geo/countries.json'), 'utf-8'))
 
 const id = (seed) => uuidv5(seed, NS)
 

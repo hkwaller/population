@@ -25,7 +25,11 @@ export type Country = {
   pageviews: number
 }
 
-export const COUNTRIES = raw as Country[]
+export const COUNTRIES = raw.countries as Country[]
+
+/** Where `population` comes from - one source, one reference year (see scripts/build-countries.mjs). */
+export const POPULATION_SOURCE: string = raw.populationSource
+export const POPULATION_YEAR: number = raw.populationYear
 
 export const byCca2 = new Map(COUNTRIES.map((c) => [c.cca2, c]))
 export const byName = new Map(COUNTRIES.map((c) => [c.name, c]))

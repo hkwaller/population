@@ -1,6 +1,6 @@
 # Population
 
-A real-time, multiplayer **geography guessing game**. Answer numeric, multiple-choice, and map-pin questions about the world - flags, capitals, borders, and a few billion people. Scoring rewards being _close_, and the **lowest score wins**.
+A real-time, multiplayer **geography guessing game**. Answer numeric, multiple-choice, and map-pin questions about the world - flags, capitals, borders, and a few billion people. Scoring rewards being _close_, and the **highest score wins**.
 
 > Population began life as a number-guessing quiz called "Ish" and grew into a geography-first game. You may still see "Ish" in old git history; the codebase is now Population throughout.
 

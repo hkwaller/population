@@ -1,11 +1,22 @@
 /**
  * Builds lib/geo/countries.json - the canonical, committed country dataset.
  *
- * Source: REST Countries v5 (https://api.restcountries.com/countries/v5), the
- * single source of truth for names, ISO codes, capital (+coords), area,
- * borders, coordinates, region, currencies, languages, flag emoji, population,
- * and sovereignty classification. Outline availability is joined from the
- * world-atlas 110m TopoJSON (data/raw/countries-110m.json) by numeric ISO code.
+ * Sources:
+ * - REST Countries v5 (https://api.restcountries.com/countries/v5) for names,
+ *   ISO codes, capital (+coords), area, borders, coordinates, region,
+ *   currencies, languages, flag emoji, and sovereignty classification.
+ * - Population: World Bank World Development Indicators, SP.POP.TOTL
+ *   ("Population, total"), for one pinned reference year (POPULATION_YEAR).
+ *   https://data.worldbank.org/indicator/SP.POP.TOTL - CC BY 4.0.
+ *   REST Countries' own population field mixes years (and has round
+ *   placeholders), which put China above India in generated questions, so it
+ *   is only used as a fallback for countries the World Bank doesn't cover
+ *   (recorded in `populationFallbacks`).
+ * - Outline availability is joined from the world-atlas 110m TopoJSON
+ *   (data/raw/countries-110m.json) by numeric ISO code.
+ *
+ * Output shape: { populationSource, populationYear, populationUpdated,
+ * populationFallbacks, countries: Country[] }.
  *
  * Requires RESTCOUNTRIES_API_KEY (see .env.example). Run:
  *   node --env-file=.env.local scripts/build-countries.mjs
@@ -25,6 +36,12 @@ if (!KEY) {
 }
 
 const BASE = 'https://api.restcountries.com/countries/v5'
+
+// Pinned so rebuilds are reproducible. Bump to the latest complete year once the
+// World Bank publishes it (WDI usually updates in July).
+const POPULATION_YEAR = 2025
+const POPULATION_SOURCE = 'World Bank, World Development Indicators (SP.POP.TOTL)'
+const WB_URL = `https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=400&date=${POPULATION_YEAR}`
 const RESPONSE_FIELDS = [
   'names.common',
   'names.official',
@@ -61,8 +78,23 @@ async function fetchAll() {
   return all
 }
 
+/** ISO alpha-3 → population for POPULATION_YEAR, plus the dataset's last-updated date. */
+async function fetchWorldBankPopulation() {
+  const res = await fetch(WB_URL)
+  if (!res.ok) throw new Error(`World Bank request failed (${res.status})`)
+  const [meta, rows] = await res.json()
+  const byIso3 = new Map()
+  for (const r of rows ?? []) {
+    if (r.countryiso3code && typeof r.value === 'number') byIso3.set(r.countryiso3code, r.value)
+  }
+  return { byIso3, updated: meta?.lastupdated ?? null }
+}
+
 const raw = await fetchAll()
 console.log(`fetched ${raw.length} entries from REST Countries v5`)
+const wb = await fetchWorldBankPopulation()
+console.log(`fetched ${wb.byIso3.size} ${POPULATION_YEAR} populations from the World Bank`)
+const populationFallbacks = []
 
 // outline availability from world-atlas (numeric ISO code join)
 const atlas = JSON.parse(readFileSync(join(root, 'data/raw/countries-110m.json'), 'utf-8'))
@@ -70,6 +102,13 @@ const geomCodes = new Set(atlas.objects.countries.geometries.map((g) => parseInt
 
 const pickCapital = (caps) =>
   (Array.isArray(caps) && (caps.find((c) => c.attributes?.primary) ?? caps[0])) || null
+
+// Only for countries the World Bank doesn't publish (e.g. the Holy See).
+function restPopulation(c) {
+  if (typeof c.population !== 'number') return null
+  populationFallbacks.push(c.codes.alpha_3)
+  return c.population
+}
 
 const countries = raw
   // sovereign UN members + observers (Vatican, Palestine) with a capital = clean quiz set
@@ -100,7 +139,7 @@ const countries = raw
       currencyCode: c.currencies?.[0]?.code ?? null,
       languages: Array.isArray(c.languages) ? c.languages.map((l) => l.name).filter(Boolean) : [],
       flag: c.flag?.emoji ?? null,
-      population: typeof c.population === 'number' ? c.population : null,
+      population: wb.byIso3.get(c.codes.alpha_3) ?? restPopulation(c),
       hasOutline: geomCodes.has(parseInt(String(c.codes.ccn3), 10)),
       pageviews: 0, // filled in below from Wikipedia
     }
@@ -113,7 +152,14 @@ const views = await fetchCountryPageviews(countries, (m) => console.log(m))
 for (const c of countries) c.pageviews = views.get(c.cca3) ?? 0
 
 mkdirSync(join(root, 'lib/geo'), { recursive: true })
-writeFileSync(join(root, 'lib/geo/countries.json'), JSON.stringify(countries, null, 0))
+const dataset = {
+  populationSource: POPULATION_SOURCE,
+  populationYear: POPULATION_YEAR,
+  populationUpdated: wb.updated,
+  populationFallbacks: populationFallbacks.sort(),
+  countries,
+}
+writeFileSync(join(root, 'lib/geo/countries.json'), JSON.stringify(dataset, null, 0))
 
 const has = (f) => countries.filter(f).length
 console.log(`countries: ${countries.length}`)
@@ -124,3 +170,5 @@ console.log(
 )
 const noPop = countries.filter((c) => c.population == null).map((c) => c.cca3)
 if (noPop.length) console.log(`  no population: ${noPop.join(', ')}`)
+if (populationFallbacks.length)
+  console.log(`  population from REST Countries (no World Bank data): ${populationFallbacks.join(', ')}`)

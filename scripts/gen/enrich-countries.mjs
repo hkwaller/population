@@ -15,14 +15,15 @@ import { fetchCountryPageviews } from './pageviews.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const file = join(root, 'lib/geo/countries.json')
-const countries = JSON.parse(readFileSync(file, 'utf-8'))
+const dataset = JSON.parse(readFileSync(file, 'utf-8'))
+const { countries } = dataset
 
 console.log(`fetching Wikipedia pageviews for ${countries.length} countries…`)
 const views = await fetchCountryPageviews(countries, (m) => console.log(m))
 
 for (const c of countries) c.pageviews = views.get(c.cca3) ?? 0
 
-writeFileSync(file, JSON.stringify(countries, null, 0))
+writeFileSync(file, JSON.stringify(dataset, null, 0))
 
 const sorted = [...countries].sort((a, b) => b.pageviews - a.pageviews)
 console.log(`\nwrote pageviews to ${countries.length} countries`)

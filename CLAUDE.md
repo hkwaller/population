@@ -35,7 +35,7 @@ Seed the question bank (after applying `scripts/schema.sql` in Supabase):
 npx tsx --env-file=.env.local scripts/migrate-questions.ts
 ```
 
-Regenerate country data (build-time, needs `RESTCOUNTRIES_API_KEY`):
+Regenerate country data (build-time, needs `RESTCOUNTRIES_API_KEY`). Population comes from World Bank `SP.POP.TOTL` for the year pinned in `POPULATION_YEAR`, and the source/year are recorded at the top of `countries.json`:
 
 ```sh
 node scripts/build-countries.mjs   # writes lib/geo/countries.json
@@ -91,3 +91,7 @@ Auth middleware is **`proxy.ts`** (Next 16's renamed middleware entry), not `mid
 
 - `command` typing is loose (`Command | CommandType`) in the store - the string `command` field drives the state machine; grep `hooks/game/` for how each is handled.
 - `npm test` defaults to **watch mode**; use `npm run test:run` for a one-shot.
+
+## Open follow-ups
+
+- **Population source credit in the UI.** Population data comes from the World Bank (`POPULATION_SOURCE` / `POPULATION_YEAR`, exported from `lib/geo/countries.ts`), but nothing in the app shows it yet. Add a small "Population: World Bank, <year>" line on the population-slider and ranking result screens (and the which-bigger `PopulationCompare` in `QuestionResultModal.tsx`). The World Bank data is CC BY 4.0, so attribution is expected.
