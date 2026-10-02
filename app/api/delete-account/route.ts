@@ -7,7 +7,7 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin'
 /**
  * Delete the signed-in account (App Store rule 5.1.1(v)): any running ad-free
  * subscription is cancelled so it stops billing, then the stats and history in
- * Supabase (`population_delete_identity`), then the Clerk user. The id comes
+ * Supabase (`population.delete_identity`), then the Clerk user. The id comes
  * from Clerk, never the request, so this can only ever delete yourself.
  */
 export async function POST() {
@@ -26,7 +26,7 @@ export async function POST() {
       }
     }
 
-    const { error } = await supabaseAdmin().rpc('population_delete_identity', { p_id: userId })
+    const { error } = await supabaseAdmin().rpc('delete_identity', { p_id: userId })
     if (error) throw error
 
     await clerk.users.deleteUser(userId)

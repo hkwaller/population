@@ -21,7 +21,7 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 | `components/NativeBoot.tsx` | `native-app` class on `<html>`, restores the device store if iOS cleared it, routes universal links and reminder taps. Mounted in `app/layout.tsx`. |
 | `lib/roomCode.ts` | `roomCodeFromScan`: a bare room code or a `/join/<code>` link, nothing else (tested). |
 | `app/.well-known/*` | `apple-app-site-association` and `assetlinks.json`, 404 until `APPLE_TEAM_ID` / `ANDROID_CERT_SHA256` are set. |
-| `app/api/delete-account/route.ts`, `lib/supabaseAdmin.ts`, `supabase/migrations/0001_population_delete_identity.sql` | Account deletion. |
+| `app/api/delete-account/route.ts`, `lib/supabaseAdmin.ts`, `supabase/migrations/0002_population_delete_identity.sql` | Account deletion. |
 
 ## Native extras
 
@@ -33,7 +33,7 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 - **Safe area.** `PopShell` pads by `--safe-top` (`env(safe-area-inset-top)`, 0 in a browser) and sets the status bar text colour from each route's background. Plain pages get `body` padding and a parchment strip.
 - **Sign-in.** Google blocks OAuth in app web views, so `globals.css` hides Clerk's Google button and divider under `html.native-app`. Email codes must stay on.
 - **No purchases in the app.** Apple and Google require their own billing for digital goods, so the app hides the "Remove ads" link, the Stripe tiers and the portal on `/go-ad-free` ("Ad-free passes aren't sold in the app"). A pass bought on the web still applies (it's on the Clerk user). Popunders never fire in the app; banners stay.
-- **Account deletion.** "Delete my account" on `/profile` (two steps, web and app). `/api/delete-account` cancels any Stripe subscription, runs `population_delete_identity` (deletes the profile row and solo games, strips the player from shared games), then deletes the Clerk user.
+- **Account deletion.** "Delete my account" on `/profile` (two steps, web and app). `/api/delete-account` cancels any Stripe subscription, runs `population.delete_identity` (deletes the profile row and solo games, strips the player from shared games), then deletes the Clerk user.
 
 ## Dev loop
 
@@ -58,7 +58,7 @@ Or `npm run native:ios` and run from Xcode. The `geo-native` launch config runs 
 Owner tasks:
 
 1. **Clerk production instance.** population.buzz runs on a development instance (`charming-mustang-76.clerk.accounts.dev`, dev limits). Move to production, then make sure `clerkHosts` in `native.config.json` / `allowNavigation` in `capacitor.config.ts` match the production Frontend API host (now guessed as `clerk.population.buzz`), and re-sync.
-2. **Apply the deletion migration** (`supabase/migrations/0001_population_delete_identity.sql`) and set `SUPABASE_SERVICE_ROLE_KEY` on Vercel (the route needs it).
+2. **Set `SUPABASE_SERVICE_ROLE_KEY` on Vercel** (the delete-account route needs it). The deletion migration is applied.
 3. **Apple Developer**: Team in Xcode, Associated Domains capability (entitlement file is in place), `APPLE_TEAM_ID` on Vercel.
 4. **Google Play**: closed test with 12 testers for 14 days (new personal accounts), `ANDROID_CERT_SHA256` from Play Console > App integrity on Vercel.
 5. **Listings**: copy, screenshots (6.9" iPhone, Android phone), privacy labels (Clerk email, Supabase stats, PostHog if turned back on, Adsterra ads), age rating, privacy policy (`/privacy`).

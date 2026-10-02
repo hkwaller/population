@@ -12,17 +12,12 @@ import { usePopStore } from '@/app/state'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl!, supabaseKey!)
+// Population's tables live in their own `population` schema (shared Supabase project).
+export const supabase = createClient(supabaseUrl!, supabaseKey!, { db: { schema: 'population' } })
 
 export function useSupabase() {
-  const {
-    gameId,
-    players,
-    selectedCategories,
-    amountQuestions,
-    showQuestions,
-    answeredQuestions,
-  } = usePopStore()
+  const { gameId, players, selectedCategories, amountQuestions, showQuestions, answeredQuestions } =
+    usePopStore()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
@@ -33,7 +28,7 @@ export function useSupabase() {
       setError(null)
       try {
         const ids = questions.map((q) => q.id)
-        const { data: existing } = await supabase.from('population_questions').select('id').in('id', ids)
+        const { data: existing } = await supabase.from('questions').select('id').in('id', ids)
         console.log('🚀 ~ useSupabase ~ existing:', existing)
         const existingIds = new Set((existing ?? []).map((e: { id: string }) => e.id))
         const newQuestions = questions.filter((q) => !existingIds.has(q.id))
@@ -43,7 +38,7 @@ export function useSupabase() {
           return { data: [], skipped }
         }
 
-        const { data, error } = await supabase.from('population_questions').insert(newQuestions).select()
+        const { data, error } = await supabase.from('questions').insert(newQuestions).select()
         console.log('🚀 ~ useSupabase ~ data:', data)
         if (error) throw error
 
@@ -61,7 +56,7 @@ export function useSupabase() {
   const fetchQuestionsByCategory = useCallback(async (category: string) => {
     try {
       const { data, error } = await supabase
-        .from('population_questions')
+        .from('questions')
         .select('id, question')
         .eq('category', category)
         .limit(200)
@@ -78,7 +73,7 @@ export function useSupabase() {
       // Fetch the full matching set (rows come back clustered by category) so the
       // caller's sampleSize can spread evenly across the selected categories.
       const { data, error } = await supabase
-        .from('population_questions')
+        .from('questions')
         .select('*')
         .in('category', categories)
         .limit(5000)
@@ -96,7 +91,7 @@ export function useSupabase() {
     setError(null)
     try {
       const { data, error } = await supabase
-        .from('population_games')
+        .from('games')
         .select('*')
         .filter('players', 'cs', `[{"id":"${playerId}"}]`)
 
@@ -124,7 +119,7 @@ export function useSupabase() {
     })
 
     try {
-      const { data: gameData, error: gameError } = await supabase.from('population_games').insert(game)
+      const { data: gameData, error: gameError } = await supabase.from('games').insert(game)
       if (gameError) throw gameError
 
       const updatePromises = statsUpdates.map(async ({ id, profileSeed, increments }) => {
@@ -146,21 +141,14 @@ export function useSupabase() {
     } finally {
       setLoading(false)
     }
-  }, [
-    amountQuestions,
-    answeredQuestions,
-    gameId,
-    players,
-    selectedCategories,
-    showQuestions,
-  ])
+  }, [amountQuestions, answeredQuestions, gameId, players, selectedCategories, showQuestions])
 
   const fetchPlayerPreferences = useCallback(async (playerId: string) => {
     setLoading(true)
     setError(null)
     try {
       const { data, error } = await supabase
-        .from('population_user_preferences')
+        .from('user_preferences')
         .select('*')
         .eq('id', playerId)
         .single()
@@ -182,7 +170,7 @@ export function useSupabase() {
       setError(null)
       try {
         const { data: existingPlayer, error: fetchError } = await supabase
-          .from('population_user_preferences')
+          .from('user_preferences')
           .select('*')
           .eq('id', playerId)
           .single()
@@ -192,11 +180,11 @@ export function useSupabase() {
         let result
         if (existingPlayer) {
           result = await supabase
-            .from('population_user_preferences')
+            .from('user_preferences')
             .update({ preferred_color: color, icon, display_name: displayName })
             .eq('id', playerId)
         } else {
-          result = await supabase.from('population_user_preferences').insert({
+          result = await supabase.from('user_preferences').insert({
             id: playerId,
             preferred_color: color,
             icon,
@@ -223,7 +211,7 @@ export function useSupabase() {
       if (!playerId) throw new Error('No playerId provided')
 
       const { data, error } = await supabase
-        .from('population_games')
+        .from('games')
         .select('*')
         .filter('players', 'cs', `[{"id":"${playerId}"}]`)
 
@@ -241,7 +229,7 @@ export function useSupabase() {
     setLoading(true)
     setError(null)
     try {
-      const { data, error } = await supabase.from('population_questions').select('category')
+      const { data, error } = await supabase.from('questions').select('category')
 
       if (error) throw error
       const uniqueCategories = uniq(data.map((item: any) => item.category))
@@ -264,7 +252,7 @@ export function useSupabase() {
     setLoading(true)
     setError(null)
     try {
-      const { data, error } = await supabase.from('population_user_preferences').select('*')
+      const { data, error } = await supabase.from('user_preferences').select('*')
 
       if (error) throw error
       return data
@@ -282,7 +270,7 @@ export function useSupabase() {
     setError(null)
     try {
       const { data: existingReport, error: fetchError } = await supabase
-        .from('population_reported_questions')
+        .from('reported_questions')
         .select('*')
         .eq('question', question)
         .single()
@@ -293,7 +281,7 @@ export function useSupabase() {
 
       if (existingReport) {
         const { error: updateError } = await supabase
-          .from('population_reported_questions')
+          .from('reported_questions')
           .update({
             report_count: existingReport.report_count + 1,
             updated_at: new Date().toISOString(),
@@ -302,7 +290,7 @@ export function useSupabase() {
 
         if (updateError) throw updateError
       } else {
-        const { error: insertError } = await supabase.from('population_reported_questions').insert({
+        const { error: insertError } = await supabase.from('reported_questions').insert({
           question: question,
         })
 
@@ -320,7 +308,7 @@ export function useSupabase() {
     setError(null)
     try {
       const { data, error } = await supabase
-        .from('population_reported_questions')
+        .from('reported_questions')
         .select('*')
         .order('report_count', { ascending: false })
 
@@ -352,23 +340,21 @@ export function useSupabase() {
   }
 }
 
-// increment_columns only UPDATEs, so a signed-in player who never saved
+// increment_stats only UPDATEs, so a signed-in player who never saved
 // preferences would get no stats. Create the row first; an existing row
 // (and its chosen name/sticker) is left untouched.
 async function ensurePlayerPreferences(seed: PlayerStatsUpdate['profileSeed']) {
   const { error } = await supabase
-    .from('population_user_preferences')
+    .from('user_preferences')
     .upsert(seed, { onConflict: 'id', ignoreDuplicates: true })
 
   if (error) throw error
 }
 
 async function incrementPlayerStats(playerId: string, increments: StatIncrements) {
-  const { data, error } = await supabase.rpc('increment_columns', {
-    table_name: 'population_user_preferences',
-    id_column: 'id',
-    id_value: playerId,
-    increments: increments,
+  const { data, error } = await supabase.rpc('increment_stats', {
+    p_id: playerId,
+    p_increments: increments,
   })
 
   if (error) {

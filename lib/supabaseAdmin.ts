@@ -2,11 +2,16 @@ import 'server-only'
 import { createClient } from '@supabase/supabase-js'
 
 /**
- * Service-role Supabase client: bypasses RLS, so server routes only (today:
+ * Service-role Supabase client for the `population` schema: bypasses RLS, so server routes only (today:
  * /api/delete-account). Never import from a client component.
  */
 export function supabaseAdmin() {
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
-    auth: { persistSession: false },
-  })
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      db: { schema: 'population' },
+      auth: { persistSession: false },
+    },
+  )
 }
