@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,5 +43,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- QR scanner (@capacitor/barcode-scanner). -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- The daily reminder needn't be exact; dropping this avoids the Play Console declaration. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 </manifest>

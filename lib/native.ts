@@ -3,11 +3,6 @@
  * NATIVE.md). Every helper works in a plain browser too, so components call
  * these and never ask which platform they are on.
  */
-import {
-  CapacitorBarcodeScanner,
-  CapacitorBarcodeScannerCameraDirection,
-  CapacitorBarcodeScannerTypeHint,
-} from '@capacitor/barcode-scanner'
 import { Capacitor, registerPlugin, type PluginListenerHandle } from '@capacitor/core'
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics'
 import { LocalNotifications } from '@capacitor/local-notifications'
@@ -167,7 +162,8 @@ export async function setDailyReminder(on: boolean, copy: { title: string; body:
         id: REMINDER.id,
         title: copy.title,
         body: copy.body,
-        schedule: { on: { hour: REMINDER.hour, minute: REMINDER.minute }, allowWhileIdle: true },
+        // Not allowWhileIdle: that needs the exact-alarm permission on Android, removed in the manifest.
+        schedule: { on: { hour: REMINDER.hour, minute: REMINDER.minute } },
         extra: { path },
       },
     ],
@@ -183,6 +179,9 @@ export async function setDailyReminder(on: boolean, copy: { title: string; body:
 export async function scanQr(instructions: string): Promise<string | null> {
   if (!isNativeApp()) return null
   try {
+    // Loaded on demand: its web fallback bundles a QR decoder the website never needs.
+    const { CapacitorBarcodeScanner, CapacitorBarcodeScannerCameraDirection, CapacitorBarcodeScannerTypeHint } =
+      await import('@capacitor/barcode-scanner')
     const { ScanResult } = await CapacitorBarcodeScanner.scanBarcode({
       hint: CapacitorBarcodeScannerTypeHint.QR_CODE,
       scanInstructions: instructions,
