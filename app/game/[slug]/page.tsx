@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
+import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, isInputMode } from '@/lib/utils'
 import { LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
@@ -30,6 +31,7 @@ import { POP } from '@/app/components/pop/theme'
 
 function GamePageContent({ params }: { params: { slug: string } }) {
   const { game, send, closeModals } = useGame(params.slug)
+  const { postGameToSupabase } = useSupabase()
   const { players, currentQuestion, command, answeredQuestions, amountQuestions, me, answerModes } =
     game
 
@@ -313,6 +315,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           onNext={() => send('next')}
           onEnd={async () => {
             setIsEnding(true)
+            postGameToSupabase()
             await send('end')
             router.push(`/game/${params.slug}/end`)
           }}

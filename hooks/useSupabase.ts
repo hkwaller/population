@@ -2,22 +2,17 @@
 
 import { useState, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { maxBy, sampleSize, uniq } from 'lodash'
-import { v4 as uuidv4 } from 'uuid'
+import { sampleSize, uniq } from 'lodash'
 
 import { TQuestion } from '@/app/types'
-import { MAX_SCORE, normalizeQuestionRow } from '@/lib/utils'
+import { normalizeQuestionRow } from '@/lib/utils'
+import { buildGameRecord, PlayerStatsUpdate, StatIncrements } from '@/lib/gameRecord'
 import { usePopStore } from '@/app/state'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export const supabase = createClient(supabaseUrl!, supabaseKey!)
-
-const isUUID = (id: string) => {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-  return uuidRegex.test(id)
-}
 
 export function useSupabase() {
   const {
@@ -119,48 +114,23 @@ export function useSupabase() {
     setLoading(true)
     setError(null)
 
-    const isMultiplayerGame = players.length > 1
-
-    const decoratedPlayers = players.map((player) => {
-      const score = player.answers.reduce((acc, answer) => acc + answer.score, 0)
-
-      return {
-        ...player,
-        id: isUUID(player.id) ? player.id : uuidv4(),
-        score,
-        bullseyes: player.answers.filter((answer) => answer.score >= MAX_SCORE).length,
-        gameAverage: score / amountQuestions,
-      }
+    const { game, statsUpdates } = buildGameRecord({
+      gameId: gameId!,
+      players,
+      selectedCategories,
+      amountQuestions,
+      showQuestions,
+      answeredQuestions,
     })
 
-    const input = {
-      gameId: gameId!,
-      finished_at: new Date().toISOString(),
-      categories: selectedCategories,
-      amountQuestions: amountQuestions,
-      players: decoratedPlayers,
-      showQuestions: showQuestions,
-      questions: answeredQuestions,
-      winner: maxBy(decoratedPlayers, 'score')!,
-    }
-
-    const winner = maxBy(decoratedPlayers, 'score')!
-
     try {
-      const { data: gameData, error: gameError } = await supabase.from('population_games').insert(input)
+      const { data: gameData, error: gameError } = await supabase.from('population_games').insert(game)
       if (gameError) throw gameError
 
-      const updatePromises = decoratedPlayers.map(async (player) => {
+      const updatePromises = statsUpdates.map(async ({ id, profileSeed, increments }) => {
         try {
-          const updateData = await incrementPlayerStats(player.id, {
-            games_played: 1,
-            overall_score: player.score,
-            bullseyes: player.bullseyes,
-            total_questions_answered: player.answers.length,
-            multiplayer_games: isMultiplayerGame ? 1 : 0,
-            wins: isMultiplayerGame && player.id === winner.id ? 1 : 0,
-          })
-          console.log(`Updated stats for player ${player.id}`)
+          await ensurePlayerPreferences(profileSeed)
+          await incrementPlayerStats(id, increments)
         } catch (error) {
           console.error('Failed to update player stats:', error)
         }
@@ -382,7 +352,18 @@ export function useSupabase() {
   }
 }
 
-async function incrementPlayerStats(playerId: string, increments: Record<string, number>) {
+// increment_columns only UPDATEs, so a signed-in player who never saved
+// preferences would get no stats. Create the row first; an existing row
+// (and its chosen name/sticker) is left untouched.
+async function ensurePlayerPreferences(seed: PlayerStatsUpdate['profileSeed']) {
+  const { error } = await supabase
+    .from('population_user_preferences')
+    .upsert(seed, { onConflict: 'id', ignoreDuplicates: true })
+
+  if (error) throw error
+}
+
+async function incrementPlayerStats(playerId: string, increments: StatIncrements) {
   const { data, error } = await supabase.rpc('increment_columns', {
     table_name: 'population_user_preferences',
     id_column: 'id',
