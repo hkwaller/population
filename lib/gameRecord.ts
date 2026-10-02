@@ -4,7 +4,7 @@ import { TPlayer, TQuestion } from '@/app/types'
 import { MAX_SCORE } from '@/lib/utils'
 
 // Signed-in players join with their Clerk user id (`user_...`); guests get a
-// `makeId()` room slug. Only Clerk ids have a population_user_preferences row,
+// `makeId()` room slug. Only Clerk ids have a population.user_preferences row,
 // a /profile page and an account to delete, so only they get stats.
 export const isClerkUserId = (id: string | undefined | null): id is string =>
   typeof id === 'string' && id.startsWith('user_')
@@ -20,7 +20,7 @@ export type StatIncrements = {
 
 export type PlayerStatsUpdate = {
   id: string
-  // Inserted only when the player has no preferences row yet (increment_columns
+  // Inserted only when the player has no preferences row yet (increment_stats
   // is UPDATE-only, so the row must exist before the stats can land).
   profileSeed: { id: string; display_name: string; preferred_color?: string; icon: string }
   increments: StatIncrements
@@ -46,7 +46,7 @@ export function buildGameRecord({
   const isMultiplayerGame = players.length > 1
 
   // Player ids are stored as-is: /profile looks games up by Clerk id and
-  // population_delete_identity matches players[].id / winner.id against it.
+  // population.delete_identity matches players[].id / winner.id against it.
   const decoratedPlayers = players.map((player) => {
     const answers = player.answers ?? []
     const score = answers.reduce((acc, answer) => acc + answer.score, 0)

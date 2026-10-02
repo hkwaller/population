@@ -6,7 +6,7 @@ Guidance for working in this repo. Read this before making changes.
 
 A real-time, multiplayer **geography/trivia guessing game**. Players answer numeric, multiple-choice, and map-pin questions; scoring rewards being _close_ - each question is worth up to `MAX_SCORE` (1000) points and the **highest total wins**. Modes: live multiplayer rooms, a shared **daily** puzzle, and solo/same-device.
 
-> History: the product started as a number-guessing quiz called "Ish" and evolved into a geography-first game. The package, store, and user-facing copy are now all **Population**; Supabase objects are prefixed `population_`. You may still see "Ish" in old git history.
+> History: the product started as a number-guessing quiz called "Ish" and evolved into a geography-first game. The package, store, and user-facing copy are now all **Population**; Supabase objects live in their own `population` schema (the project is shared with other apps; every client passes `db: { schema: 'population' }`). Schema changes go in `supabase/migrations/` and `scripts/schema.sql`. You may still see "Ish" in old git history.
 
 ## Stack
 

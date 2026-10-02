@@ -31,7 +31,9 @@ if (!NEXT_PUBLIC_SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   process.exit(1)
 }
 
-const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+const supabase = createClient(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+  db: { schema: 'population' },
+})
 
 type GeoQuestion = {
   id: string
@@ -83,10 +85,7 @@ async function main() {
   // Prune first: remove every existing geo row so questions dropped from the
   // generator don't linger as orphans. The source filter satisfies Supabase's
   // "delete requires a filter" rule; other sources are left untouched.
-  const { error: deleteError } = await supabase
-    .from('population_questions')
-    .delete()
-    .eq('source', 'geo')
+  const { error: deleteError } = await supabase.from('questions').delete().eq('source', 'geo')
   if (deleteError) {
     console.error('Error pruning existing geo questions:', deleteError.message)
     process.exit(1)
@@ -96,7 +95,7 @@ async function main() {
   let inserted = 0
   for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
     const chunk = rows.slice(i, i + CHUNK_SIZE)
-    const { error } = await supabase.from('population_questions').insert(chunk)
+    const { error } = await supabase.from('questions').insert(chunk)
     if (error) {
       console.error(`Error inserting chunk ${i / CHUNK_SIZE + 1}:`, error.message)
       process.exit(1)
