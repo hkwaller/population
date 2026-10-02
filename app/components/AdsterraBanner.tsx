@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 import { useAdFree } from '@/hooks/useAdFree'
+import { useIsNativeApp } from '@/hooks/useNative'
 
 const BANNER_KEY = process.env.NEXT_PUBLIC_ADSTERRA_BANNER_KEY
 
@@ -16,6 +17,9 @@ export function AdsterraBanner() {
   const { adFree, loading } = useAdFree()
   const containerRef = useRef<HTMLDivElement>(null)
   const hidden = adFree || loading
+  // The app store rules forbid selling the ad-free pass outside in-app purchase,
+  // so the app drops the upsell link (a pass bought on the web still applies).
+  const isNative = useIsNativeApp()
 
   useEffect(() => {
     if (hidden || !containerRef.current || !BANNER_KEY) return
@@ -51,12 +55,14 @@ export function AdsterraBanner() {
   return (
     <div className="flex flex-col items-center gap-1">
       <div ref={containerRef} className="flex justify-center" style={{ minHeight: 60 }} />
-      <Link
-        href="/go-ad-free"
-        className="text-xs font-bold text-pop-ink/40 underline decoration-dotted hover:text-pop-ink/70"
-      >
-        Remove ads
-      </Link>
+      {!isNative && (
+        <Link
+          href="/go-ad-free"
+          className="text-xs font-bold text-pop-ink/40 underline decoration-dotted hover:text-pop-ink/70"
+        >
+          Remove ads
+        </Link>
+      )}
     </div>
   )
 }

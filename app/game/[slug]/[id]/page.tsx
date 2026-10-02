@@ -32,6 +32,7 @@ import { PopRangeSlider } from '@/app/components/pop/PopRangeSlider'
 import { Dock } from '@/app/components/pop/Dock'
 import { PopWaitingLoader } from '@/app/components/pop/PopWaitingLoader'
 import { POP, stickerFill } from '@/app/components/pop/theme'
+import { useHaptic } from '@/hooks/useNative'
 
 function PlayerPageContent({ params }: { params: { slug: string; id: string } }) {
   const { game, send, closeModals } = useGame(params.slug)
@@ -73,6 +74,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
     setBand(Math.round((slider.upper_bound - slider.lower_bound) / 4))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion?.id])
+
+  // Native app: a nudge on this phone when a new question lands.
+  useHaptic(currentQuestion ? 'turn' : null, currentQuestion?.id ?? '')
 
   useEffect(() => {
     if (command === 'end') {

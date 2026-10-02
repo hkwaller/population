@@ -28,7 +28,7 @@ const floatingIconClasses = [
 
 export const AnimatedContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative h-[100dvh] w-[100vw] overflow-hidden ish-bg">
+    <div className="relative h-[calc(100dvh-var(--safe-top))] w-[100vw] overflow-hidden ish-bg">
       {categories.map((category, index) => {
         const Icon = icons[category.icon as keyof typeof icons]
         if (!Icon) return null

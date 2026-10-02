@@ -3,6 +3,7 @@
 import { motion } from 'motion/react'
 
 import { POP } from '../pop/theme'
+import { haptic } from '@/lib/native'
 
 /**
  * 2×2 grid of answer buttons for a choice question. In reveal mode it colours
@@ -46,7 +47,10 @@ export function ChoiceOptions({
             disabled={disabled || correct != null}
             whileHover={disabled || correct != null ? undefined : { y: -3, rotate: 0 }}
             whileTap={disabled || correct != null ? undefined : { y: 3 }}
-            onClick={() => onSelect?.(opt)}
+            onClick={() => {
+              haptic('select')
+              onSelect?.(opt)
+            }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -0.6 : 0.6 }}
             transition={{ delay: i * 0.04, type: 'spring', stiffness: 260, damping: 20 }}

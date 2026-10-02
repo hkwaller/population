@@ -7,6 +7,7 @@ import { AnswerValue, Command, CommandType, Difficulty, TPlayer, TPreferences, T
 import { AnswerModes } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { dateKeyUTC } from '@/lib/daily'
+import { deviceStorage } from '@/lib/native'
 
 export type State = {
   addOrRemoveCategory: (category: string) => void
@@ -26,6 +27,8 @@ export type State = {
    * from Liveblocks (see hooks/useGame.ts).
    */
   confidenceMode: boolean
+  /** Native app only: the daily puzzle reminder is scheduled on this device. */
+  dailyReminder: boolean
   boss?: string
   closeModals: () => void
   command: Command | CommandType
@@ -104,6 +107,7 @@ export const usePopStore = create<State>()(
       players: [],
       showQuestions: false,
       confidenceMode: false,
+      dailyReminder: false,
       answerModes: {},
       boss: '',
       // @ts-ignore
@@ -221,7 +225,8 @@ export const usePopStore = create<State>()(
     }),
     {
       name: 'population-store',
-      storage: createJSONStorage(() => localStorage),
+      // Mirrored to native Preferences in the app (lib/native.ts); plain localStorage on the web.
+      storage: createJSONStorage(() => deviceStorage),
     },
   ),
 )

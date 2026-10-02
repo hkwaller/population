@@ -217,8 +217,78 @@ export default function Profile() {
             </div>
           </div>
         </div>
+
+        <DeleteAccount
+          onDeleted={async () => {
+            // Forget this device's copy of the account's sticker before signing out.
+            updateGame({ preferences: {} as any, me: undefined })
+            await signOut({ redirectUrl: '/' })
+          }}
+        />
       </div>
     </PopShell>
+  )
+}
+
+/**
+ * Two-step account deletion (App Store rule 5.1.1(v)): /api/delete-account
+ * cancels any ad-free subscription, deletes the stats and profile, then the
+ * Clerk user.
+ */
+function DeleteAccount({ onDeleted }: { onDeleted: () => Promise<void> }) {
+  const [step, setStep] = useState<'idle' | 'confirm' | 'busy' | 'failed'>('idle')
+
+  const remove = async () => {
+    setStep('busy')
+    try {
+      const res = await fetch('/api/delete-account', { method: 'POST' })
+      if (!res.ok) throw new Error(String(res.status))
+      await onDeleted()
+    } catch {
+      setStep('failed')
+    }
+  }
+
+  return (
+    <div className="mt-12 flex flex-col items-center gap-3 text-center">
+      {step === 'idle' && (
+        <button
+          type="button"
+          onClick={() => setStep('confirm')}
+          className="text-sm font-bold text-pop-ink/50 underline decoration-dotted hover:text-pop-ink/80"
+        >
+          Delete my account
+        </button>
+      )}
+      {step !== 'idle' && (
+        <div className="w-full max-w-md rounded-card bg-white p-6 shadow-pop-card">
+          <p className="text-lg font-black text-pop-ink">Delete your account for good?</p>
+          <p className="mt-2 text-sm font-bold text-pop-ink/60">
+            Your profile, stats and game history go, and any ad-free subscription is cancelled.
+            This can&apos;t be undone.
+          </p>
+          {step === 'failed' && (
+            <p className="mt-3 text-sm font-black" style={{ color: POP.coral }}>
+              Something went wrong. Try again in a moment.
+            </p>
+          )}
+          <div className="mt-5 flex justify-center gap-3">
+            <PopButton variant="secondary" size="sm" rotate={0} onClick={() => setStep('idle')}>
+              Keep it
+            </PopButton>
+            <PopButton
+              variant="primary"
+              size="sm"
+              rotate={0}
+              disabled={step === 'busy'}
+              onClick={remove}
+            >
+              {step === 'busy' ? 'Deleting…' : 'Delete'}
+            </PopButton>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 import { useAdFree } from '@/hooks/useAdFree'
+import { isNativeApp } from '@/lib/native'
 
 const POPUNDER_SRC = process.env.NEXT_PUBLIC_ADSTERRA_POPUNDER_SRC
 
@@ -40,6 +41,8 @@ export function AdsterraPopunder() {
 
   useEffect(() => {
     if (adFree || loading || fired.current || !POPUNDER_SRC) return
+    // Never in the native app: a popunder there would open over the game.
+    if (isNativeApp()) return
     if (withinCooldown()) return
     fired.current = true
 

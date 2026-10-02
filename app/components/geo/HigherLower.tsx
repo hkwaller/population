@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 
 import type { HigherLowerQuestion } from '@/app/types'
 import { POP } from '../pop/theme'
+import { haptic } from '@/lib/native'
 
 type Side = 'left' | 'right'
 
@@ -53,7 +54,10 @@ export function HigherLower({
             disabled={locked}
             whileHover={locked ? undefined : { y: -3 }}
             whileTap={locked ? undefined : { y: 3 }}
-            onClick={() => onSelect?.(side)}
+            onClick={() => {
+              haptic('select')
+              onSelect?.(side)
+            }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -0.6 : 0.6 }}
             transition={{ delay: i * 0.04, type: 'spring', stiffness: 260, damping: 20 }}

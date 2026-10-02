@@ -1,0 +1,13 @@
+{
+  "appId": "app.playam.population",
+  "appName": "Population",
+  "siteUrl": "https://population.buzz",
+  "bg": "#CC6B49",
+  "accent": "#FFFFFF",
+  "text": "#FFFFFF",
+  "textMuted": "#F4E8D2",
+  "ua": "PopulationApp",
+  "clerkHosts": ["*.clerk.accounts.dev", "clerk.population.buzz", "accounts.population.buzz"],
+  "schema": "population",
+  "cameraText": "Population uses the camera to scan a room's QR code."
+}

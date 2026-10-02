@@ -21,6 +21,8 @@ import { RankReveal } from '@/app/components/geo/RankReveal'
 import { RouteReveal } from '@/app/components/geo/RouteReveal'
 import { RouteGuessFlags } from '@/app/components/geo/RouteFlags'
 import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
+import { deviceStorage, setDailyReminder, shareText as shareResult } from '@/lib/native'
+import { useHaptic, useIsNativeApp } from '@/hooks/useNative'
 
 const STORE_KEY = 'population-daily'
 
@@ -82,7 +84,7 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
         streak,
         plays: { ...(store.plays ?? {}), [dateKey]: { total, buckets } },
       }
-      localStorage.setItem(STORE_KEY, JSON.stringify(next))
+      deviceStorage.setItem(STORE_KEY, JSON.stringify(next))
     } catch {
       /* ignore */
     }
@@ -165,6 +167,9 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
 }
 
 function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }) {
+  // Same good/bad line as the score pill below.
+  useHaptic(attempt.score >= 550 ? 'right' : 'wrong', question.id)
+
   return (
     <div className="flex flex-col items-center gap-4 rounded-card bg-white p-6 shadow-pop-card">
       {question.type === 'map' && (
@@ -265,14 +270,22 @@ function Results({
   const [copied, setCopied] = useState(false)
   const shareText = `Population ${dateKey}\n${saved.buckets}\n${saved.total.toLocaleString()}/${maxTotal.toLocaleString()} pts`
 
+  // Share sheet in the app (and Web Share where the browser has it), else the clipboard.
   const share = async () => {
-    try {
-      await navigator.clipboard.writeText(shareText)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      /* clipboard blocked */
-    }
+    if ((await shareResult(shareText)) !== 'copied') return
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const isNative = useIsNativeApp()
+  const reminderOn = usePopStore((s) => s.dailyReminder)
+  const updateGame = usePopStore((s) => s.updateGame)
+  const toggleReminder = async () => {
+    const on = await setDailyReminder(!reminderOn, {
+      title: 'A new daily puzzle is out',
+      body: 'Eight fresh questions about the world. Keep your streak going!',
+    })
+    updateGame({ dailyReminder: on })
   }
 
   return (
@@ -307,6 +320,11 @@ function Results({
         <PopButton variant="primary" size="lg" className="w-full" onClick={share}>
           {copied ? 'Copied! ✓' : 'Share result'}
         </PopButton>
+        {isNative && (
+          <PopButton variant="secondary" size="lg" className="w-full" onClick={toggleReminder}>
+            {reminderOn ? 'Daily reminder on ✓' : 'Remind me tomorrow'}
+          </PopButton>
+        )}
         <PopButton href="/" variant="secondary" size="lg" className="w-full">
           Home
         </PopButton>

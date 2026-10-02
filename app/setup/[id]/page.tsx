@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation'
 import QRCode from 'react-qr-code'
 import { sample } from 'lodash'
 import { motion, useReducedMotion } from 'motion/react'
-import { UserPlus, ArrowRight, Copy, Check, icons as lucideIcons } from 'lucide-react'
+import { UserPlus, ArrowRight, Copy, Check, Share, icons as lucideIcons } from 'lucide-react'
+import { shareText } from '@/lib/native'
+import { useIsNativeApp } from '@/hooks/useNative'
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
 
@@ -128,6 +130,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const [name, setName] = useState('')
   const [isStarting, setIsStarting] = useState(false)
   const [copied, setCopied] = useState(false)
+  const isNative = useIsNativeApp()
   const [howToOpen, setHowToOpen] = useState(false)
   const [namePromptOpen, setNamePromptOpen] = useState(false)
   const [savingName, setSavingName] = useState(false)
@@ -172,6 +175,11 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   }, [user?.id, preferences?.display_name, fetchPlayerPreferences, updateGame])
 
   const copyCode = async () => {
+    // Native app: the share sheet with the join link (Messages, WhatsApp...).
+    if (isNative) {
+      await shareText(`Join my Population game: ${url}`)
+      return
+    }
     try {
       await navigator.clipboard.writeText(params.id)
       setCopied(true)
@@ -333,7 +341,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               <motion.button
                 onClick={copyCode}
                 whileTap={reduce ? undefined : { scale: 0.9 }}
-                aria-label={copied ? 'Code copied' : 'Copy game code'}
+                aria-label={isNative ? 'Share invite link' : copied ? 'Code copied' : 'Copy game code'}
                 className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
               >
                 {copied ? (
@@ -344,6 +352,8 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                   >
                     <Check size={20} strokeWidth={3} />
                   </motion.span>
+                ) : isNative ? (
+                  <Share size={20} strokeWidth={3} />
                 ) : (
                   <Copy size={20} strokeWidth={3} />
                 )}
