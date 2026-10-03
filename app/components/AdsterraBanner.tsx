@@ -5,24 +5,23 @@ import Link from 'next/link'
 
 import { useAdFree } from '@/hooks/useAdFree'
 import { useIsNativeApp } from '@/hooks/useNative'
-
-const BANNER_KEY = process.env.NEXT_PUBLIC_ADSTERRA_BANNER_KEY
+import { ADSTERRA_BANNER_KEY as BANNER_KEY } from '@/lib/ads'
 
 /**
- * Adsterra 468x60 banner. Self-gating: renders nothing for ad-free users (and
- * while Clerk hydrates, to avoid a flash). Includes a subtle "Remove ads" link
+ * Adsterra 468x60 banner. Self-gating: renders nothing when no banner key is
+ * set (ads off), for ad-free users, and while Clerk hydrates (no flash). Includes a subtle "Remove ads" link
  * so the banner doubles as the upsell entry point.
  */
 export function AdsterraBanner() {
   const { adFree, loading } = useAdFree()
   const containerRef = useRef<HTMLDivElement>(null)
-  const hidden = adFree || loading
+  const hidden = !BANNER_KEY || adFree || loading
   // The app store rules forbid selling the ad-free pass outside in-app purchase,
   // so the app drops the upsell link (a pass bought on the web still applies).
   const isNative = useIsNativeApp()
 
   useEffect(() => {
-    if (hidden || !containerRef.current || !BANNER_KEY) return
+    if (hidden || !containerRef.current) return
     const container = containerRef.current
     container.innerHTML = ''
 

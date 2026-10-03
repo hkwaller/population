@@ -10,6 +10,7 @@ import { PopShell } from '../components/pop/PopShell'
 import { PopHeader, PopAuth } from '../components/pop/PopHeader'
 import { POP, stickerFill } from '../components/pop/theme'
 import { AdsterraBanner } from '../components/AdsterraBanner'
+import { BANNER_ENABLED } from '@/lib/ads'
 
 type SortOption = 'overall' | 'perGame' | 'bullseyes'
 
@@ -118,9 +119,11 @@ export default function Highscores() {
             </p>
           )}
         </div>
-        <div className="pb-10">
-          <AdsterraBanner />
-        </div>
+        {BANNER_ENABLED && (
+          <div className="pb-10">
+            <AdsterraBanner />
+          </div>
+        )}
       </div>
     </PopShell>
   )
