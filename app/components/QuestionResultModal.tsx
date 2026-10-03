@@ -19,6 +19,7 @@ import { HigherLower } from './geo/HigherLower'
 import { RouteReveal } from './geo/RouteReveal'
 import { byName } from '@/lib/geo/countries'
 import { AdsterraBanner } from './AdsterraBanner'
+import { BANNER_ENABLED } from '@/lib/ads'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
 
@@ -203,7 +204,7 @@ export default function QuestionResultModal({
               ))}
             </div>
 
-            {!adsSuppressed && (
+            {BANNER_ENABLED && !adsSuppressed && (
               <div className="mt-12 w-full">
                 <AdsterraBanner />
               </div>

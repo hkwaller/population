@@ -16,6 +16,7 @@ import { PopButton } from '@/app/components/pop/PopButton'
 import { POP, stickerFill } from '@/app/components/pop/theme'
 import { AdsterraBanner } from '@/app/components/AdsterraBanner'
 import { AdsterraPopunder } from '@/app/components/AdsterraPopunder'
+import { BANNER_ENABLED } from '@/lib/ads'
 
 const EndPageContent = ({ slug }: { slug: string }) => {
   const [size, setSize] = useState({ width: 0, height: 0 })
@@ -124,9 +125,11 @@ const EndPageContent = ({ slug }: { slug: string }) => {
             Suppressed when this device or the host is ad-free. */}
         {!adsSuppressed && (
           <>
-            <div className="mt-16">
-              <AdsterraBanner />
-            </div>
+            {BANNER_ENABLED && (
+              <div className="mt-16">
+                <AdsterraBanner />
+              </div>
+            )}
             {me && <AdsterraPopunder />}
           </>
         )}

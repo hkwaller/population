@@ -4,21 +4,20 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 import { useAdFree } from '@/hooks/useAdFree'
-
-const BANNER_KEY = process.env.NEXT_PUBLIC_ADSTERRA_BANNER_KEY
+import { ADSTERRA_BANNER_KEY as BANNER_KEY } from '@/lib/ads'
 
 /**
- * Adsterra 468x60 banner. Self-gating: renders nothing for ad-free users (and
- * while Clerk hydrates, to avoid a flash). Includes a subtle "Remove ads" link
+ * Adsterra 468x60 banner. Self-gating: renders nothing when no banner key is
+ * set (ads off), for ad-free users, and while Clerk hydrates (no flash). Includes a subtle "Remove ads" link
  * so the banner doubles as the upsell entry point.
  */
 export function AdsterraBanner() {
   const { adFree, loading } = useAdFree()
   const containerRef = useRef<HTMLDivElement>(null)
-  const hidden = adFree || loading
+  const hidden = !BANNER_KEY || adFree || loading
 
   useEffect(() => {
-    if (hidden || !containerRef.current || !BANNER_KEY) return
+    if (hidden || !containerRef.current) return
     const container = containerRef.current
     container.innerHTML = ''
 

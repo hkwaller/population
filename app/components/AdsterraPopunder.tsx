@@ -3,8 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 import { useAdFree } from '@/hooks/useAdFree'
-
-const POPUNDER_SRC = process.env.NEXT_PUBLIC_ADSTERRA_POPUNDER_SRC
+import { ADSTERRA_POPUNDER_SRC as POPUNDER_SRC } from '@/lib/ads'
 
 /**
  * How long to wait, per device, before we re-inject the popunder script.
