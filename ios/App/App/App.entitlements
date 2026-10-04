@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:population.buzz</string>
+		<string>applinks:population.playam.app</string>
 	</array>
 </dict>
 </plist>
