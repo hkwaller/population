@@ -3,16 +3,32 @@
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'motion/react'
-import { ArrowRight, CircleAlert } from 'lucide-react'
+import { ArrowRight, CircleAlert, ScanLine } from 'lucide-react'
 
 import { PopShell } from '../components/pop/PopShell'
 import { PopHeader, PopAuth } from '../components/pop/PopHeader'
 import { POP } from '../components/pop/theme'
+import { scanQr } from '@/lib/native'
+import { roomCodeFromScan } from '@/lib/roomCode'
+import { useIsNativeApp } from '@/hooks/useNative'
 
 export default function JoinEntryPage() {
   const [code, setCode] = useState('')
   const [error, setError] = useState(false)
+  const [notARoom, setNotARoom] = useState(false)
   const router = useRouter()
+  const isNative = useIsNativeApp()
+
+  // Native app only: scan the QR code on the host's lobby screen.
+  async function handleScan() {
+    setError(false)
+    setNotARoom(false)
+    const text = await scanQr("Point the camera at the QR code on the host's screen")
+    if (!text) return
+    const slug = roomCodeFromScan(text)
+    if (slug) router.push(`/join/${encodeURIComponent(slug)}`)
+    else setNotARoom(true)
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -49,6 +65,7 @@ export default function JoinEntryPage() {
               onChange={(e) => {
                 setCode(e.target.value)
                 setError(false)
+                setNotARoom(false)
               }}
               placeholder="sleepy-fox-42"
               autoComplete="off"
@@ -67,6 +84,18 @@ export default function JoinEntryPage() {
           </div>
         </form>
 
+        {isNative && (
+          <motion.button
+            type="button"
+            onClick={handleScan}
+            whileHover={{ y: -2 }}
+            whileTap={{ y: 4 }}
+            className="mt-5 inline-flex items-center gap-2 rounded-pill border-4 border-white px-6 py-3 text-xl font-black text-white"
+          >
+            <ScanLine size={24} /> Scan the QR code
+          </motion.button>
+        )}
+
         <AnimatePresence>
           {error && (
             <motion.div
@@ -78,6 +107,18 @@ export default function JoinEntryPage() {
               style={{ background: POP.coral }}
             >
               <CircleAlert size={20} /> Hmm, no party at that code. Typo maybe?
+            </motion.div>
+          )}
+          {notARoom && (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+              className="mt-5 inline-flex items-center gap-2 rounded-pill px-5 py-3 text-lg font-black text-white"
+              style={{ background: POP.coral }}
+            >
+              <CircleAlert size={20} /> That QR code isn&apos;t a Population room.
             </motion.div>
           )}
         </AnimatePresence>

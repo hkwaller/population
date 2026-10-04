@@ -19,6 +19,7 @@ import { HigherLower } from './geo/HigherLower'
 import { RouteReveal } from './geo/RouteReveal'
 import { byName } from '@/lib/geo/countries'
 import { AdsterraBanner } from './AdsterraBanner'
+import { useHaptic } from '@/hooks/useNative'
 import { BANNER_ENABLED } from '@/lib/ads'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
@@ -78,6 +79,13 @@ export default function QuestionResultModal({
     .filter(({ answer }) => answer !== undefined)
     // Highest score is best (closest / correct + fastest), so rank descending.
     .sort((a, b) => (b.answer?.score || 0) - (a.answer?.score || 0))
+
+  // Buzz this device's player once per reveal: right/wrong rounds on correctness,
+  // scored rounds on the same 550 line the daily uses (no-op without a player).
+  const mine = showQuestionResultModal && me ? ranked.find((r) => r.player.id === me.id)?.answer : undefined
+  const exactRound = revealed && ['choice', 'higher-lower', 'odd-one-out'].includes(revealed.type)
+  const good = mine && (exactRound ? (mine.score ?? 0) > 0 : (mine.score ?? 0) >= 550)
+  useHaptic(mine ? (good ? 'right' : 'wrong') : null, revealed?.id ?? '')
 
   return (
     <AnimatePresence>

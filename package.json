@@ -12,9 +12,25 @@
     "test": "vitest",
     "test:run": "vitest run",
     "start-dev": "next dev",
-    "reseed": "npx tsx --env-file=.env.local scripts/migrate-questions.ts"
+    "reseed": "npx tsx --env-file=.env.local scripts/migrate-questions.ts",
+    "native:sync": "cap sync",
+    "native:dev": "CAP_SERVER_URL=${CAP_SERVER_URL:-http://localhost:3000} cap sync",
+    "native:icons": "node scripts/native/icons.mjs && capacitor-assets generate --ios --android --assetPath native/assets --iconBackgroundColor #CC6B49 --iconBackgroundColorDark #CC6B49 --splashBackgroundColor #CC6B49 --splashBackgroundColorDark #CC6B49",
+    "native:ios": "cap open ios",
+    "native:android": "cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/barcode-scanner": "^3.1.2",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.5.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/share": "^8.0.3",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4",
     "@clerk/nextjs": "^7.0.12",
     "@liveblocks/client": "^3.15.4",
     "@liveblocks/node": "^3.15.4",
@@ -52,6 +68,8 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/d3-geo": "^3.1.0",

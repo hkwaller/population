@@ -12,6 +12,7 @@ import { PopButton } from '@/app/components/pop/PopButton'
 import { POP } from '@/app/components/pop/theme'
 import { isAdFree, type AdFreePublicMetadata } from '@/lib/entitlement'
 import type { PlanKey } from '@/lib/stripe'
+import { useIsNativeApp } from '@/hooks/useNative'
 
 type Tier = {
   plan: PlanKey
@@ -54,6 +55,8 @@ const TIERS: Tier[] = [
 ]
 
 function GoAdFreeContent() {
+  // Store rules: no Stripe checkout or portal inside the native app.
+  const isNative = useIsNativeApp()
   const { user, isSignedIn, isLoaded } = useUser()
   const router = useRouter()
   const params = useSearchParams()
@@ -155,7 +158,7 @@ function GoAdFreeContent() {
               {meta.subStatus === 'day-pass' ? 'Day pass active' : 'Subscription active'} until{' '}
               {new Date(meta.adFreeUntil!).toLocaleString()}
             </p>
-            {meta.subStatus !== 'day-pass' && (
+            {meta.subStatus !== 'day-pass' && !isNative && (
               <div className="mt-6">
                 <PopButton
                   variant="secondary"
@@ -172,7 +175,7 @@ function GoAdFreeContent() {
         )}
 
         {/* Tiers */}
-        {isLoaded && !adFree && (
+        {isLoaded && !adFree && !isNative && (
           <div className="mt-12 flex flex-wrap items-stretch justify-center gap-5">
             {TIERS.map((tier) => (
               <div
@@ -217,7 +220,13 @@ function GoAdFreeContent() {
           </div>
         )}
 
-        {isLoaded && !isSignedIn && (
+        {isLoaded && !adFree && isNative && (
+          <p className="mx-auto mt-10 max-w-md text-lg font-bold text-white/80">
+            Ad-free passes aren&apos;t sold in the app.
+          </p>
+        )}
+
+        {isLoaded && !isSignedIn && !isNative && (
           <p className="mt-8 text-base font-bold text-white/70">
             You&apos;ll need an account so your ad-free status follows you across devices.
           </p>

@@ -167,3 +167,35 @@ body {
 .animate-float-slow  { animation: float-slow  30s infinite linear; }
 .animate-float-medium { animation: float-medium 25s infinite linear; }
 .animate-float-fast  { animation: float-fast  20s infinite linear; }
+
+/* ---------- Native app (NATIVE.md) ---------- */
+
+/* Status bar inset. 0 in a browser tab, so the website is unchanged. PopShell
+   pads by it itself (it is fixed, body padding doesn't reach it); this covers
+   the plain pages (contact, privacy). */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+body {
+  padding-top: var(--safe-top);
+}
+/* Parchment strip under the status bar on plain pages. z-index 0 keeps it under
+   PopShell (later in the DOM), which paints its own colour there. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto;
+  height: var(--safe-top);
+  background: #F4E8D2;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Google blocks OAuth inside app web views (disallowed_useragent), so the app
+   hides Clerk's Google button. Unlayered on purpose: Clerk's own CSS is
+   unlayered and would win over @layer rules. */
+.native-app .cl-socialButtonsBlockButton__google,
+.native-app .cl-socialButtonsIconButton__google,
+.native-app .cl-dividerRow {
+  display: none !important;
+}

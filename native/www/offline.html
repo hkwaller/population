@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Population</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #CC6B49; color: #FFFFFF;
+    font-family: -apple-system, system-ui, sans-serif; }
+  main { height: 100%; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 20px; padding: 0 32px; text-align: center; box-sizing: border-box; }
+  .tile { width: 72px; height: 72px; border-radius: 22px; background: #FFFFFF; color: #CC6B49;
+    display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900;
+    transform: rotate(-6deg); box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15); }
+  h1 { margin: 0; font-size: 24px; font-weight: 800; }
+  p { margin: 0; color: #F4E8D2; font-size: 16px; line-height: 1.4; }
+  button { margin-top: 8px; border: 0; border-radius: 999px; background: #FFFFFF; color: #CC6B49;
+    font: inherit; font-weight: 800; font-size: 17px; padding: 14px 32px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="tile">P</div>
+  <h1>No connection</h1>
+  <p>Population needs the internet to play. Check your connection and try again.</p>
+  <button id="retry" type="button">Try again</button>
+</main>
+<script>
+  // Keep in step with server.url in capacitor.config.ts.
+  var APP_URL = 'https://population.buzz'
+  document.getElementById('retry').onclick = function () { window.location.replace(APP_URL) }
+</script>
+</body>
+</html>

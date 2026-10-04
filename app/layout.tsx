@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { ClerkProvider } from '@clerk/nextjs'
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/site'
 import { JsonLd } from './components/JsonLd'
+import { NativeBoot } from '@/components/NativeBoot'
 
 const gabarito = Gabarito({
   subsets: ['latin'],
@@ -16,6 +17,8 @@ const gabarito = Gabarito({
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  // Lets the native app draw under the status bar; globals.css pads it back.
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
@@ -87,6 +90,7 @@ export default function RootLayout({
           ]}
         />
         <ClerkProvider>
+          <NativeBoot />
           {/* <CSPostHogProvider> */}
           {children}
           {/* </CSPostHogProvider> */}

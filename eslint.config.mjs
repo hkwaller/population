@@ -16,6 +16,9 @@ const config = [
       'next-env.d.ts',
       'lib/geo/countries.json',
       'data/**',
+      // Generated Capacitor projects (NATIVE.md).
+      'ios/**',
+      'android/**',
     ],
   },
   ...nextCoreWebVitals,
