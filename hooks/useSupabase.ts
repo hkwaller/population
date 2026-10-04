@@ -255,11 +255,11 @@ export function useSupabase() {
       const { data, error } = await supabase.from('user_preferences').select('*')
 
       if (error) throw error
-      return data
+      return data ?? []
     } catch (err) {
       console.error('Error in getHighscores:', err)
       setError(err instanceof Error ? err : new Error('Unknown error'))
-      return null
+      return []
     } finally {
       setLoading(false)
     }
