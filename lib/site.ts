@@ -4,7 +4,7 @@
 const rawSiteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   process.env.NEXT_PUBLIC_APP_URL ??
-  'https://population.buzz'
+  'https://population.playam.app'
 
 // Normalize: absolute URL, no trailing slash.
 export const SITE_URL = rawSiteUrl.replace(/\/+$/, '')

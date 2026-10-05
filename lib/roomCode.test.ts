@@ -18,8 +18,8 @@ describe('roomCodeFromScan', () => {
   })
 
   it('accepts the lobby QR link', () => {
-    expect(roomCodeFromScan('https://population.buzz/join/sleepy-fox-42')).toBe('sleepy-fox-42')
-    expect(roomCodeFromScan('https://population.buzz/join/sleepy-fox-42/')).toBe('sleepy-fox-42')
+    expect(roomCodeFromScan('https://population.playam.app/join/sleepy-fox-42')).toBe('sleepy-fox-42')
+    expect(roomCodeFromScan('https://population.playam.app/join/sleepy-fox-42/')).toBe('sleepy-fox-42')
     expect(roomCodeFromScan('http://localhost:3000/join/sleepy-fox-42?x=1')).toBe('sleepy-fox-42')
   })
 
@@ -29,10 +29,10 @@ describe('roomCodeFromScan', () => {
     expect(roomCodeFromScan('sleepy-fox')).toBeNull()
     expect(roomCodeFromScan('sleepy-fox-420')).toBeNull()
     expect(roomCodeFromScan('Sleepy-Fox-42')).toBeNull()
-    expect(roomCodeFromScan('https://population.buzz/')).toBeNull()
-    expect(roomCodeFromScan('https://population.buzz/game/sleepy-fox-42')).toBeNull()
-    expect(roomCodeFromScan('https://population.buzz/join/sleepy-fox-42/extra')).toBeNull()
-    expect(roomCodeFromScan('https://population.buzz/join/not%20a%20code')).toBeNull()
+    expect(roomCodeFromScan('https://population.playam.app/')).toBeNull()
+    expect(roomCodeFromScan('https://population.playam.app/game/sleepy-fox-42')).toBeNull()
+    expect(roomCodeFromScan('https://population.playam.app/join/sleepy-fox-42/extra')).toBeNull()
+    expect(roomCodeFromScan('https://population.playam.app/join/not%20a%20code')).toBeNull()
     expect(roomCodeFromScan('javascript:alert(1)//join/sleepy-fox-42')).toBeNull()
     expect(roomCodeFromScan('WIFI:S:home;T:WPA;P:secret;;')).toBeNull()
   })

@@ -20,12 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- App Links: population.buzz opens in the app (assetlinks.json on the site). -->
+            <!-- App Links: population.playam.app opens in the app (assetlinks.json on the site). -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="population.buzz" />
+                <data android:scheme="https" android:host="population.playam.app" />
             </intent-filter>
         </activity>
 

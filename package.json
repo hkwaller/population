@@ -16,7 +16,7 @@
     "native:sync": "cap sync",
     "native:dev": "CAP_SERVER_URL=${CAP_SERVER_URL:-http://localhost:3000} cap sync",
     "native:icons": "node scripts/native/icons.mjs && capacitor-assets generate --ios --android --assetPath native/assets --iconBackgroundColor #CC6B49 --iconBackgroundColorDark #CC6B49 --splashBackgroundColor #CC6B49 --splashBackgroundColorDark #CC6B49",
-    "native:ios": "cap open ios",
+    "native:ios": "open ios/App/Population.xcworkspace",
     "native:android": "cap open android"
   },
   "dependencies": {

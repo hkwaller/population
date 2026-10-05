@@ -1,10 +1,10 @@
 # Population - native app (iOS + Android)
 
-The App Store and Google Play builds are a Capacitor 8 shell around the live site, `https://population.buzz`. Same recipe as Anno (`~/privat/anno`, branch `capacitor`, its NATIVE.md).
+The App Store and Google Play builds are a Capacitor 8 shell around the live site, `https://population.playam.app`. Same recipe as Anno (`~/privat/anno`, branch `capacitor`, its NATIVE.md).
 
 ## How it works
 
-- **Remote URL, not a bundled export.** The app opens population.buzz in a WKWebView (iOS) or WebView (Android). The game needs its server (Liveblocks auth, Clerk `proxy.ts`, Stripe and delete-account routes), and a remote URL means every Vercel deploy reaches the app without a store review. The shell only ships the icon, splash, offline page and native plugins.
+- **Remote URL, not a bundled export.** The app opens population.playam.app in a WKWebView (iOS) or WebView (Android). The game needs its server (Liveblocks auth, Clerk `proxy.ts`, Stripe and delete-account routes), and a remote URL means every Vercel deploy reaches the app without a store review. The shell only ships the icon, splash, offline page and native plugins.
 - **One codebase.** `lib/native.ts` is the only file that touches Capacitor. Every helper falls back or does nothing in a browser, and components branch only through `useIsNativeApp()` / `useNativePlatform()` (`hooks/useNative.ts`, hydration-safe). The website is unchanged.
 - iOS uses Swift Package Manager (no CocoaPods). Android uses Gradle and needs Java and the Android SDK.
 
@@ -16,6 +16,7 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 | `capacitor.config.ts` | Server URL (or `CAP_SERVER_URL` for dev), hosts allowed inside the web view (Clerk, Sign in with Apple), offline page. |
 | `native/www/` | `index.html` (required, never shown) and `offline.html` (no connection, retry). |
 | `native/assets/` | Icon and splash sources. `npm run native:icons` redraws them (`scripts/native/icons.mjs`, the white "P" tile on terracotta) and generates every size. |
+| `ios/App/Population.xcworkspace` | Open this one (`npm run native:ios`). It wraps `ios/App/App.xcodeproj`, whose file and folder names the Capacitor CLI hardcodes; the target, product and scheme inside are named Population (`ios.scheme` in `capacitor.config.ts`). Don't rename `App.xcodeproj`: `cap sync` then can't update the plugin package. |
 | `ios/`, `android/` | Generated native projects, committed. Hand edits: `ios/App/App/App.entitlements` (universal links), `SceneDelegate.swift` + `ExternalDisplay.swift` (AirPlay, see below), `Info.plist` (camera text), `AndroidManifest.xml` (App Links, camera, exact alarm removed). |
 | `lib/native.ts` | `isNativeApp`, `haptic`, `shareText`, `deviceStorage` + `restoreDeviceStorage`, `statusBarFor`, `setDailyReminder`, `scanQr`, and the TV helpers. |
 | `components/NativeBoot.tsx` | `native-app` class on `<html>`, restores the device store if iOS cleared it, routes universal links and reminder taps. Mounted in `app/layout.tsx`. |
@@ -46,7 +47,7 @@ CAP_SERVER_URL=http://localhost:3010 npm run native:dev
 ```
 
 ```bash
-xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'name=iPhone 17 Pro' -derivedDataPath ios/App/build CODE_SIGNING_ALLOWED=NO build
+xcodebuild -workspace ios/App/Population.xcworkspace -scheme Population -configuration Debug -sdk iphonesimulator -destination 'name=iPhone 17 Pro' -derivedDataPath ios/App/build CODE_SIGNING_ALLOWED=NO build
 ```
 
 Or `npm run native:ios` and run from Xcode. The `geo-native` launch config runs the dev server on 3010. Web edits hot-reload into the app; config, plugin and Swift changes need a sync and rebuild. A real phone needs the Mac's LAN IP in `CAP_SERVER_URL`.
@@ -57,7 +58,7 @@ Or `npm run native:ios` and run from Xcode. The `geo-native` launch config runs 
 
 Owner tasks:
 
-1. **Clerk production instance.** population.buzz runs on a development instance (`charming-mustang-76.clerk.accounts.dev`, dev limits). Move to production, then make sure `clerkHosts` in `native.config.json` / `allowNavigation` in `capacitor.config.ts` match the production Frontend API host (now guessed as `clerk.population.buzz`), and re-sync.
+1. **Clerk production instance.** population.playam.app runs on a development instance (`charming-mustang-76.clerk.accounts.dev`, dev limits). Move to production, then make sure `clerkHosts` in `native.config.json` / `allowNavigation` in `capacitor.config.ts` match the production Frontend API host (set up on population.playam.app: `clerk.population.playam.app`, `accounts.population.playam.app`; add an explicit `population` DNS record before the Clerk ones, see Anno's NATIVE.md), and re-sync.
 2. **Set `SUPABASE_SERVICE_ROLE_KEY` on Vercel** (the delete-account route needs it). The deletion migration is applied.
 3. **Apple Developer**: Team in Xcode, Associated Domains capability (entitlement file is in place), `APPLE_TEAM_ID` on Vercel.
 4. **Google Play**: closed test with 12 testers for 14 days (new personal accounts), `ANDROID_CERT_SHA256` from Play Console > App integrity on Vercel.

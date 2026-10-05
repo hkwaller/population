@@ -9,7 +9,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
  * CAP_SERVER_URL points the shell at a dev server for local testing, e.g.
  *   CAP_SERVER_URL=http://localhost:3000 npx cap run ios
  */
-const url = process.env.CAP_SERVER_URL ?? 'https://population.buzz'
+const url = process.env.CAP_SERVER_URL ?? 'https://population.playam.app'
 
 const config: CapacitorConfig = {
   appId: 'app.playam.population',
@@ -25,10 +25,15 @@ const config: CapacitorConfig = {
     // Hosts that stay inside the app instead of opening Safari: Clerk's
     // session handshake (dev instance, and the prod Frontend API once live),
     // and Sign in with Apple's web flow.
-    allowNavigation: ['*.clerk.accounts.dev', 'clerk.population.buzz', 'accounts.population.buzz', 'appleid.apple.com'],
+    allowNavigation: ['*.clerk.accounts.dev', 'clerk.population.playam.app', 'accounts.population.playam.app', 'appleid.apple.com'],
     errorPath: 'offline.html',
   },
   ios: {
+    // The Xcode target, product and scheme are "Population" so the games tell apart
+    // in Xcode, Organizer and the simulator. The file names stay
+    // ios/App/App.xcodeproj because the Capacitor CLI hardcodes them; open
+    // ios/App/Population.xcworkspace (npm run native:ios) for a named window.
+    scheme: 'Population',
     contentInset: 'never',
     // Long-press link previews make the game feel like a web page.
     allowsLinkPreview: false,
