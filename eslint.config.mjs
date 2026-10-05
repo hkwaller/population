@@ -19,6 +19,8 @@ const config = [
       // Generated Capacitor projects (NATIVE.md).
       'ios/**',
       'android/**',
+      // Built offline island (native/offline -> native/www).
+      'native/www/**',
     ],
   },
   ...nextCoreWebVitals,

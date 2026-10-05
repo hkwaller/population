@@ -35,6 +35,7 @@ export function NamePromptModal({
   // Reseed + focus each time the modal opens.
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reseed the field each time the modal opens
       setValue(initialName)
       // Wait for the enter animation before grabbing focus.
       const t = setTimeout(() => inputRef.current?.focus(), 120)

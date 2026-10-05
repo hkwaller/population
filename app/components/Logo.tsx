@@ -3,11 +3,13 @@
 import { LoginAndProfile } from './LoginAndProfile'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { usePathname, useRouter } from 'next/navigation'
+import { useHomeHref } from '@/hooks/useNative'
 
 export const Logo = () => {
   const router = useRouter()
   const isDesktop = useMediaQuery('(min-width: 600px)')
   const isGamePath = usePathname().includes('/game')
+  const home = useHomeHref()
 
   return (
     <div
@@ -18,7 +20,7 @@ export const Logo = () => {
       <div
         className="bg-white border-4 border-ish-ink p-2 transform -rotate-1 inline-block cursor-pointer shadow-[4px_4px_0px_#211812]
       md:border-8 md:p-4"
-        onClick={() => router.push('/')}
+        onClick={() => router.push(home)}
       >
         <span className="text-xl font-extrabold md:text-2xl tracking-tighter">Population.</span>
       </div>

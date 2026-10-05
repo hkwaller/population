@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# offline island, built into native/www by `npm run native:offline` (NATIVE.md)
+/native/www/offline.html
+/native/www/offline-assets/
+/native/www/app-url.js
+/native/www/flags/
+/native/www/geo/

@@ -47,6 +47,7 @@ export default function QuestionResultModal({
   // that's about to appear). We only update this while the reveal is showing.
   const [revealed, setRevealed] = useState(currentQuestion)
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- freezes the shown question for the exit animation (see above)
     if (showQuestionResultModal && currentQuestion) setRevealed(currentQuestion)
   }, [showQuestionResultModal, currentQuestion])
 

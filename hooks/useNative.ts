@@ -25,6 +25,11 @@ export function useNativePlatform(): 'ios' | 'android' | 'web' {
 
 const noSubscribe = () => () => {}
 
+/** Where "home" is: the app's launcher (`/app`, the shell's server.url) in the app, `/` on the web. */
+export function useHomeHref(): string {
+  return useIsNativeApp() ? '/app' : '/'
+}
+
 /** iOS app only: true while a TV is attached over AirPlay or a cable. */
 export function useTvConnected(): boolean {
   const [connected, setConnected] = useState(false)

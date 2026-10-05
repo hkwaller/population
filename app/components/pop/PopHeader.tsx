@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/context-menu'
 import { SignOutButton } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
+import { useHomeHref } from '@/hooks/useNative'
 
 // The tilted `Population` tag, top-left of most screens. Clicking it goes home.
 export function PopLogo({
@@ -22,8 +23,9 @@ export function PopLogo({
   textColor?: string
 }) {
   const isPaper = tone === 'paper'
+  const home = useHomeHref()
   return (
-    <Link href="/">
+    <Link href={home}>
       <motion.span
         whileHover={{ rotate: 0, y: -2 }}
         className={cn(

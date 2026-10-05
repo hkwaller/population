@@ -199,3 +199,15 @@ body::before {
 .native-app .cl-dividerRow {
   display: none !important;
 }
+
+/* App shell: no grey tap flash, link callouts or text selection on taps. The
+   website keeps browser defaults. Unlayered so it wins over component classes. */
+.native-app {
+  -webkit-tap-highlight-color: transparent;
+}
+.native-app a,
+.native-app button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

@@ -22,6 +22,20 @@
         "3010"
       ],
       "port": 3010
+    },
+    {
+      "name": "offline-island",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "vite",
+        "preview",
+        "--config",
+        "native/offline/vite.config.ts",
+        "--port",
+        "4174",
+        "--strictPort"
+      ],
+      "port": 4174
     }
   ]
 }

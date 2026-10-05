@@ -9,7 +9,10 @@ import type { CapacitorConfig } from '@capacitor/cli'
  * CAP_SERVER_URL points the shell at a dev server for local testing, e.g.
  *   CAP_SERVER_URL=http://localhost:3000 npx cap run ios
  */
-const url = process.env.CAP_SERVER_URL ?? 'https://population.playam.app'
+// The app opens on /app, a launcher built for the phone; the website keeps `/`
+// as its landing page. CAP_SERVER_URL is an origin; /app is appended to it.
+const origin = (process.env.CAP_SERVER_URL ?? 'https://population.playam.app').replace(/\/$/, '')
+const url = `${origin}/app`
 
 const config: CapacitorConfig = {
   appId: 'app.playam.population',

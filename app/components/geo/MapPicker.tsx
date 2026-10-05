@@ -44,6 +44,7 @@ export function MapPicker({
     const isPhone = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches
     if (!isPhone) return
     const landscape = window.matchMedia('(orientation: landscape)')
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads matchMedia after mount, hydration-safe
     if (landscape.matches) setExpanded(true)
     const onChange = (e: MediaQueryListEvent) => {
       if (e.matches) setExpanded(true)

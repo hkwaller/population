@@ -71,7 +71,7 @@ Optional `prompt: PromptSpec` gives a rich stimulus (`text` | `flag` | `outline`
 
 ### Routing & auth
 
-App Router routes: `/`, `/new-game`, `/setup/[id]`, `/join/[slug]`, `/game/[slug]/[id]`, `/game/[slug]/end`, `/daily`, `/highscores`, `/profile`, `/admin/*`.
+App Router routes: `/` (website landing), `/app` (native app launcher, Capacitor `server.url`), `/new-game`, `/setup/[id]`, `/join/[slug]`, `/game/[slug]/[id]`, `/game/[slug]/end`, `/daily`, `/highscores`, `/profile`, `/admin/*`.
 
 Auth middleware is **`proxy.ts`** (Next 16's renamed middleware entry), not `middleware.ts`. Public routes are allow-listed there - **add any new public route to `isPublicRoute`** or Clerk will gate it.
 

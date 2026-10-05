@@ -2,6 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 const isPublicRoute = createRouteMatcher([
   '/',
+  '/app', // the native app's start screen (capacitor.config.ts server.url)
   '/new-game',
   '/setup/(.*)',
   '/join',

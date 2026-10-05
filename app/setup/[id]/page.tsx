@@ -79,6 +79,8 @@ function WaitingSticker({ rot = -2, delay = 0 }: { rot?: number; delay?: number 
 // Keyed by an incrementing trigger so it replays on remount and self-parks.
 function JoinBurst({ trigger }: { trigger: number }) {
   const reduce = useReducedMotion()
+  // Random once per trigger on purpose: each burst scatters differently.
+  /* eslint-disable react-hooks/purity */
   const bits = useMemo(() => {
     if (!trigger) return []
     return Array.from({ length: 14 }).map((_, i) => {
@@ -95,6 +97,7 @@ function JoinBurst({ trigger }: { trigger: number }) {
       }
     })
   }, [trigger])
+  /* eslint-enable react-hooks/purity */
 
   if (reduce || !trigger) return null
   return (

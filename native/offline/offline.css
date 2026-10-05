@@ -1,0 +1,26 @@
+/* The site's styles, plus the font next/font serves online (bundled here, OFL). */
+@import '../../app/globals.css';
+
+@font-face {
+  font-family: 'Gabarito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: block;
+  src: url('./fonts/gabarito-latin.woff2') format('woff2');
+}
+
+:root {
+  /* next/font sets this on <body> online; tailwind's font-sans reads it. */
+  --font-gabarito: 'Gabarito';
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html,
+body {
+  background: #CC6B49;
+}
+
+/* Keep the last button of every screen clear of the home indicator. */
+#root .pop-scroll {
+  padding-bottom: var(--safe-bottom);
+}
