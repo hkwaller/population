@@ -344,7 +344,7 @@ function CategorySection({
         />
       )}
 
-      <div className="mt-5 flex flex-wrap justify-center gap-3.5">
+      <div className="mt-5 flex flex-wrap justify-center gap-2 sm:gap-3.5">
         {cats.map((cat, i) => {
           const Icon = lucideIcons[cat.icon as keyof typeof lucideIcons]
           const selected = selectedCategories.includes(cat.id)
@@ -366,8 +366,8 @@ function CategorySection({
                 transition={{ ...POP_SPRING, delay: i * 0.03 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleChip(cat)}
-                className={`inline-flex items-center gap-2 border-4 border-transparent rounded-pill px-5 py-3 text-[22px] font-black ${
-                  selected ? 'border-4 border-white shadow-pop' : ''
+                className={`inline-flex items-center gap-1.5 rounded-pill border-[3px] border-transparent px-3.5 py-2 text-base font-black sm:gap-2 sm:border-4 sm:px-5 sm:py-3 sm:text-[22px] ${
+                  selected ? 'border-white shadow-pop' : ''
                 }`}
                 style={
                   selected
@@ -375,7 +375,9 @@ function CategorySection({
                     : { background: 'rgba(255,255,255,0.45)', color: 'rgba(23,18,20,0.45)' }
                 }
               >
-                {Icon && <Icon size={22} strokeWidth={2.5} />}
+                {Icon && (
+                  <Icon strokeWidth={2.5} className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" />
+                )}
                 {cat.name}
                 {canInput && selected && (
                   <motion.span
@@ -395,9 +397,9 @@ function CategorySection({
                       times: [0, 0.15, 0.35, 0.55, 0.75, 1],
                       ease: 'easeInOut',
                     }}
-                    className="ml-0.5 grid h-8 w-8 place-items-center rounded-full border-[3px] border-pop-ink/20 bg-white text-pop-ink"
+                    className="ml-0.5 grid h-6 w-6 place-items-center rounded-full border-2 border-pop-ink/20 bg-white text-pop-ink sm:h-8 sm:w-8 sm:border-[3px]"
                   >
-                    <ModeIcon size={16} strokeWidth={2.75} />
+                    <ModeIcon strokeWidth={2.75} className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </motion.span>
                 )}
               </motion.button>

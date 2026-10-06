@@ -2,7 +2,15 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
 
-import { haptic, isNativeApp, nativePlatform, onTvChange, tvConnected, type HapticKind } from '@/lib/native'
+import {
+  haptic,
+  isNativeApp,
+  nativePlatform,
+  onTvChange,
+  showOnTv,
+  tvConnected,
+  type HapticKind,
+} from '@/lib/native'
 
 /** Buzzes once when a verdict shows (and again only when `key` changes). */
 export function useHaptic(kind: HapticKind | null, key: string | number, delayMs = 0) {
@@ -43,4 +51,24 @@ export function useTvConnected(): boolean {
     }
   }, [])
   return connected
+}
+
+// Pending "clear the TV" from the last page that cast. The next room page
+// cancels it, so moving lobby → game → results never flashes the placeholder.
+let tvHideTimer: ReturnType<typeof setTimeout> | undefined
+
+/**
+ * iOS app, host device: puts `path` (a room page) on an AirPlay TV as its
+ * display-only `?view=tv` copy, now or whenever Screen Mirroring comes on.
+ * Pass null on devices that shouldn't cast. Leaving the room clears the TV.
+ */
+export function useCastToTv(path: string | null) {
+  useEffect(() => {
+    if (!path) return
+    clearTimeout(tvHideTimer)
+    showOnTv(`${window.location.origin}${path}?view=tv`)
+    return () => {
+      tvHideTimer = setTimeout(() => showOnTv(null), 1500)
+    }
+  }, [path])
 }

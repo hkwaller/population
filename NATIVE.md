@@ -32,6 +32,8 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 - **Share sheet** for the daily result. In the lobby, the copy-code button becomes "share invite link" in the app.
 - **Daily reminder.** "Remind me tomorrow" on the daily result, app only, a local notification at 09:00. Tapping it opens `/daily`. State in the store (`dailyReminder`).
 - **QR scan to join.** "Scan the QR code" on `/join`, app only.
+- **The TV over AirPlay (iOS).** The host opens a room on the iPhone and turns on Screen Mirroring to an Apple TV (or plugs in a cable). `ExternalDisplay.swift` puts a web view on the TV, and the host's room pages (`/setup/[id]`, `/game/[slug]`, `/game/[slug]/end`) put their `?view=tv` copy on it with `useCastToTv` (`hooks/useNative.ts`). `?view=tv` is display only: no buttons, no dock, no ads, it never writes to the room, and it follows the room into the game, the results and a rematch by itself. The TV web view has its own non-persistent storage, so it is a separate, silent device in the room. The phone keeps its normal host screen (and its inputs if the host added themselves as a player), so it works as the remote. The lobby on the phone says how to turn on Screen Mirroring, or that the TV is connected.
+- **Swipe back.** `allowsBackForwardNavigationGestures` on the app's web view (`MainViewController`), so an edge swipe walks back through the pages like in Safari.
 - **Storage that survives.** `population-store` (Zustand) and `population-daily` (streak) are mirrored to native Preferences. Reads stay synchronous so hydration is exactly as on the web; NativeBoot copies the native copy back if localStorage was wiped, then rehydrates the store.
 - **Safe area.** `PopShell` pads by `--safe-top` (`env(safe-area-inset-top)`, 0 in a browser) and sets the status bar text colour from each route's background. Plain pages get `body` padding and a parchment strip.
 - **Sign-in.** Google blocks OAuth in app web views, so `globals.css` hides Clerk's Google button and divider under `html.native-app`. Email codes must stay on.
@@ -69,7 +71,6 @@ Owner tasks:
 
 ## Not done yet
 
-- **AirPlay TV.** The native side is in (`ExternalDisplay.swift`, the scene role, the SceneDelegate check), but the web side isn't: Population needs a display-only TV view of the lobby and `/game/[slug]` that claims nothing, and the host phone switching to a player view while a TV is connected (see Anno's `useCasting`).
 - **Bottom safe area.** Fixed docks (`pb-6`) sit close to the iPhone home indicator.
 - **Android.** Not built here (no Java / Android SDK on this Mac). Check edge-to-edge insets on Android.
 - **Real-device pass**: scanner, haptics, emoji in the share text, the reminder firing.

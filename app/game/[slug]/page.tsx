@@ -28,8 +28,9 @@ import { PopButton } from '@/app/components/pop/PopButton'
 import { PopSlider } from '@/app/components/pop/PopSlider'
 import { Dock } from '@/app/components/pop/Dock'
 import { POP } from '@/app/components/pop/theme'
+import { useCastToTv } from '@/hooks/useNative'
 
-function GamePageContent({ params }: { params: { slug: string } }) {
+function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean }) {
   const { game, send, closeModals } = useGame(params.slug)
   const { postGameToSupabase } = useSupabase()
   const { players, currentQuestion, command, answeredQuestions, amountQuestions, me, answerModes } =
@@ -40,6 +41,8 @@ function GamePageContent({ params }: { params: { slug: string } }) {
   const [isEnding, setIsEnding] = useState(false)
   const [howToOpen, setHowToOpen] = useState(false)
   const router = useRouter()
+  // iOS app: the host's screen goes on an AirPlay TV (see setup page).
+  useCastToTv(tv ? null : `/game/${params.slug}`)
 
   const myAnswered = players
     .find((p) => p.id === me?.id)
@@ -67,7 +70,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
   useEffect(() => {
     if (command === 'end') {
       closeModals()
-      router.push(`/game/${params.slug}/end`)
+      router.push(`/game/${params.slug}/end${tv ? '?view=tv' : ''}`)
     } else if (command === 'next') {
       closeModals()
     }
@@ -93,7 +96,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           <span className="rounded-pill bg-white px-3 py-2 text-base font-black text-pop-ink sm:px-4">
             {(answeredQuestions?.length ?? 0) + 1}/{amountQuestions}
           </span>
-          <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />
+          {!tv && <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />}
         </div>
       </header>
 
@@ -107,12 +110,11 @@ function GamePageContent({ params }: { params: { slug: string } }) {
             player already answered). Read-only. Rank is excluded on purpose. */}
         {currentQuestion && !(me?.localPlayer && !myAnswered) && (
           <>
-            {currentQuestion.type === 'choice' &&
-              !isInputMode(currentQuestion, answerModes) && (
-                <div className="mt-8 w-full max-w-md">
-                  <ChoiceOptions options={currentQuestion.options} disabled />
-                </div>
-              )}
+            {currentQuestion.type === 'choice' && !isInputMode(currentQuestion, answerModes) && (
+              <div className="mt-8 w-full max-w-md">
+                <ChoiceOptions options={currentQuestion.options} disabled />
+              </div>
+            )}
             {currentQuestion.type === 'odd-one-out' && (
               <div className="mt-8 w-full max-w-md">
                 <ChoiceOptions options={currentQuestion.options} disabled />
@@ -191,7 +193,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
         {/* Player stickers */}
         <div className="mt-14 flex flex-wrap justify-center gap-5">
           {players.map((p, index) => (
-            <Player key={p.id} {...p} index={index} showScore send={send} />
+            <Player key={p.id} {...p} index={index} showScore send={tv ? undefined : send} />
           ))}
         </div>
       </main>
@@ -309,7 +311,7 @@ function GamePageContent({ params }: { params: { slug: string } }) {
         </div>
       </div>
 
-      {currentQuestion && (
+      {currentQuestion && !tv && (
         <Dock
           onReplace={() => send('replace')}
           onNext={() => send('next')}
@@ -336,17 +338,29 @@ function GamePageContent({ params }: { params: { slug: string } }) {
           })
         }}
       />
-      <QuestionResultModal canEndGame={canEndGame} send={send} />
+      <QuestionResultModal
+        canEndGame={canEndGame}
+        send={tv ? undefined : send}
+        adsSuppressed={tv}
+      />
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>
   )
 }
 
-export default function GamePage({ params }: { params: Promise<{ slug: string }> }) {
+export default function GamePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ view?: string }>
+}) {
   const resolvedParams = React.use(params)
+  // `?view=tv`: the display-only copy the iOS app puts on an AirPlay TV (NATIVE.md).
+  const tv = React.use(searchParams).view === 'tv'
   return (
     <GameRoomProvider gameId={resolvedParams.slug}>
-      <GamePageContent params={resolvedParams} />
+      <GamePageContent params={resolvedParams} tv={tv} />
     </GameRoomProvider>
   )
 }

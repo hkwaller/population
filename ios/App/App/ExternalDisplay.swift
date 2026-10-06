@@ -189,6 +189,9 @@ public class ExternalDisplayPlugin: CAPPlugin, CAPBridgedPlugin {
 class MainViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(ExternalDisplayPlugin())
+        // Edge swipe goes back, as in Safari. Next's client routing pushes
+        // history entries, so the swipe walks back through the app's pages.
+        webView?.allowsBackForwardNavigationGestures = true
     }
 }
 

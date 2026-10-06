@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 import QRCode from 'react-qr-code'
 import { sample } from 'lodash'
 import { motion, useReducedMotion } from 'motion/react'
-import { UserPlus, ArrowRight, Copy, Check, Share, icons as lucideIcons } from 'lucide-react'
+import { UserPlus, ArrowRight, Copy, Check, Share, Tv, icons as lucideIcons } from 'lucide-react'
 import { shareText } from '@/lib/native'
-import { useIsNativeApp } from '@/hooks/useNative'
+import { useCastToTv, useIsNativeApp, useNativePlatform, useTvConnected } from '@/hooks/useNative'
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
 
@@ -125,11 +125,11 @@ const VIEWFINDER_CORNERS = [
   '-right-2 -bottom-2 border-r-[5px] border-b-[5px] rounded-br-[12px]',
 ]
 
-function SetupPageContent({ params }: { params: { id: string } }) {
+function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean }) {
   const { user } = useUser()
   const { game, send, closeModals, updateGame, setLocalJoinInfo } = useGame(params.id)
   const { fetchPlayerPreferences, updatePlayerPreferences } = useSupabase()
-  const { players, preferences, boss, playingOnSameDevice } = game
+  const { players, preferences, boss, playingOnSameDevice, command } = game
   const [name, setName] = useState('')
   const [isStarting, setIsStarting] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -142,6 +142,15 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   const prevCount = useRef(players.length)
   const reduce = useReducedMotion()
   const router = useRouter()
+  const tvConnected = useTvConnected()
+  const showTvHint = useNativePlatform() === 'ios' && !tv
+
+  // iOS app: the lobby goes on an AirPlay TV. The TV copy (`?view=tv`) is
+  // display only and follows the host into the game by itself.
+  useCastToTv(tv ? null : `/setup/${params.id}`)
+  useEffect(() => {
+    if (tv && command === 'start') router.replace(`/game/${params.id}?view=tv`)
+  }, [tv, command, params.id, router])
 
   // The QR encodes an absolute origin, so it can only be built on the client;
   // gate it behind mount so server and first client render agree (no hydration
@@ -274,10 +283,12 @@ function SetupPageContent({ params }: { params: { id: string } }) {
       <PopHeader
         logoTextColor={POP.bubblegum}
         right={
-          <div className="flex items-center gap-3">
-            <HowToPlayButton tone="dark" onClick={() => setHowToOpen(true)} />
-            <PopAuth tone="dark" />
-          </div>
+          tv ? undefined : (
+            <div className="flex items-center gap-3">
+              <HowToPlayButton tone="dark" onClick={() => setHowToOpen(true)} />
+              <PopAuth tone="dark" />
+            </div>
+          )
         }
       />
 
@@ -341,26 +352,32 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               >
                 {params.id}
               </span>
-              <motion.button
-                onClick={copyCode}
-                whileTap={reduce ? undefined : { scale: 0.9 }}
-                aria-label={isNative ? 'Share invite link' : copied ? 'Code copied' : 'Copy game code'}
-                className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
-              >
-                {copied ? (
-                  <motion.span
-                    initial={reduce ? false : { scale: 0, rotate: -20 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 400, damping: 14 }}
-                  >
-                    <Check size={20} strokeWidth={3} />
-                  </motion.span>
-                ) : isNative ? (
-                  <Share size={20} strokeWidth={3} />
-                ) : (
-                  <Copy size={20} strokeWidth={3} />
-                )}
-              </motion.button>
+              {!tv && (
+                <motion.button
+                  onClick={copyCode}
+                  whileTap={reduce ? undefined : { scale: 0.9 }}
+                  aria-label={
+                    isNative ? 'Share invite link' : copied ? 'Code copied' : 'Copy game code'
+                  }
+                  className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
+                >
+                  {copied ? (
+                    <motion.span
+                      initial={reduce ? false : { scale: 0, rotate: -20 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={
+                        reduce ? { duration: 0 } : { type: 'spring', stiffness: 400, damping: 14 }
+                      }
+                    >
+                      <Check size={20} strokeWidth={3} />
+                    </motion.span>
+                  ) : isNative ? (
+                    <Share size={20} strokeWidth={3} />
+                  ) : (
+                    <Copy size={20} strokeWidth={3} />
+                  )}
+                </motion.button>
+              )}
             </div>
           </motion.div>
 
@@ -373,7 +390,9 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                 key={players.length}
                 initial={reduce ? false : { scale: 0.5, rotate: -10 }}
                 animate={{ scale: 1, rotate: -4 }}
-                transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 15 }}
+                transition={
+                  reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 15 }
+                }
                 className="grid h-11 min-w-[44px] place-items-center rounded-sticker border-[3px] border-white px-2 text-2xl font-black text-pop-ink shadow-pop"
                 style={{ background: POP.sunshine }}
               >
@@ -399,9 +418,15 @@ function SetupPageContent({ params }: { params: { id: string } }) {
                   name={player.name}
                   icon={player.icon}
                   color={player.color || stickerColors[0].id}
-                  send={send}
-                  setBoss={() =>
-                    send({ type: 'boss', payload: boss === player.id ? undefined : player.id })
+                  send={tv ? undefined : send}
+                  setBoss={
+                    tv
+                      ? undefined
+                      : () =>
+                          send({
+                            type: 'boss',
+                            payload: boss === player.id ? undefined : player.id,
+                          })
                   }
                 />
               ))}
@@ -410,13 +435,13 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               {players.length === 0 && <WaitingSticker rot={3} delay={0.9} />}
             </div>
 
-            {ready && (
+            {ready && !tv && (
               <p className="mt-6 text-lg font-bold text-pop-ink/70">
                 Tap a sticker to crown the host.
               </p>
             )}
 
-            {user && !players.find((p) => p.id === user.id) && (
+            {!tv && user && !players.find((p) => p.id === user.id) && (
               <motion.button
                 onClick={handleAddMe}
                 whileHover={reduce ? undefined : { y: -2, rotate: -1 }}
@@ -436,7 +461,7 @@ function SetupPageContent({ params }: { params: { id: string } }) {
               </motion.button>
             )}
 
-            {!players.find((p) => p.localPlayer) && (
+            {!tv && !players.find((p) => p.localPlayer) && (
               <div className="mt-4">
                 {!playingOnSameDevice ? (
                   <motion.button
@@ -473,15 +498,24 @@ function SetupPageContent({ params }: { params: { id: string } }) {
             )}
           </div>
         </div>
+
+        {showTvHint && (
+          <p className="mx-auto mt-10 flex max-w-md items-center justify-center gap-2 text-center text-base font-bold text-pop-ink/70">
+            <Tv size={20} strokeWidth={2.5} className="shrink-0" />
+            {tvConnected
+              ? 'The game is on the TV. This phone is your remote.'
+              : 'Turn on Screen Mirroring to an Apple TV to put the game on the big screen.'}
+          </p>
+        )}
       </div>
 
       <div className="fixed inset-x-0 bottom-6 z-20 flex justify-center px-5">
-        {!ready ? (
+        {!ready || tv ? (
           <div
             className="pop-bob inline-flex items-center gap-2 rounded-pill border-[3px] border-dashed border-pop-ink/40 bg-white/85 px-8 py-4 text-xl font-black text-pop-ink/70"
             style={{ ['--rot' as any]: '1deg' }}
           >
-            Waiting for players
+            {ready ? 'Waiting for the host' : 'Waiting for players'}
             <AnimatedDots />
           </div>
         ) : (
@@ -521,11 +555,19 @@ function SetupPageContent({ params }: { params: { id: string } }) {
   )
 }
 
-export default function SetupPage({ params }: { params: Promise<{ id: string }> }) {
+export default function SetupPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ view?: string }>
+}) {
   const resolvedParams = React.use(params)
+  // `?view=tv`: the display-only copy the iOS app puts on an AirPlay TV (NATIVE.md).
+  const tv = React.use(searchParams).view === 'tv'
   return (
     <GameRoomProvider gameId={resolvedParams.id}>
-      <SetupPageContent params={resolvedParams} />
+      <SetupPageContent params={resolvedParams} tv={tv} />
     </GameRoomProvider>
   )
 }

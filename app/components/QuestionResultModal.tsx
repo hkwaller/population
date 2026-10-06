@@ -61,15 +61,16 @@ export default function QuestionResultModal({
   const isBoss = boss === me?.id
   // A pure host/big-screen device: nobody plays on it (no local players, no `me`).
   const hostDisplay = players.filter((p) => p.localPlayer).length === 0 && !me
-  const showControls = isBoss || hostDisplay
+  // No `send`: the TV copy of the room (`?view=tv`), which only watches.
+  const showControls = (isBoss || hostDisplay) && !!send
 
   // Size the big answer to fit the card - long numbers (populations, areas)
   // would otherwise overflow horizontally.
   const answerText = asSlider(revealed)
     ? asSlider(revealed)!.answer.toLocaleString()
     : revealed && 'answer' in revealed
-      ? formatAnswerValue((revealed as { answer?: AnswerValue }).answer)
-      : ''
+    ? formatAnswerValue((revealed as { answer?: AnswerValue }).answer)
+    : ''
   const answerFontSize = `min(${Math.floor(640 / Math.max(answerText.length, 3))}px, 16vw)`
 
   const ranked = players
@@ -83,7 +84,8 @@ export default function QuestionResultModal({
 
   // Buzz this device's player once per reveal: right/wrong rounds on correctness,
   // scored rounds on the same 550 line the daily uses (no-op without a player).
-  const mine = showQuestionResultModal && me ? ranked.find((r) => r.player.id === me.id)?.answer : undefined
+  const mine =
+    showQuestionResultModal && me ? ranked.find((r) => r.player.id === me.id)?.answer : undefined
   const exactRound = revealed && ['choice', 'higher-lower', 'odd-one-out'].includes(revealed.type)
   const good = mine && (exactRound ? (mine.score ?? 0) > 0 : (mine.score ?? 0) >= 550)
   useHaptic(mine ? (good ? 'right' : 'wrong') : null, revealed?.id ?? '')
@@ -151,7 +153,9 @@ export default function QuestionResultModal({
                     className="block font-black leading-none tracking-[-0.03em]"
                     style={{
                       color: POP.coral,
-                      fontSize: `min(${Math.floor(640 / Math.max(revealed.answer.length, 3))}px, 12vw)`,
+                      fontSize: `min(${Math.floor(
+                        640 / Math.max(revealed.answer.length, 3),
+                      )}px, 12vw)`,
                     }}
                   >
                     {revealed.answer}
@@ -166,7 +170,9 @@ export default function QuestionResultModal({
                     className="block font-black leading-none tracking-[-0.03em]"
                     style={{
                       color: POP.coral,
-                      fontSize: `min(${Math.floor(640 / Math.max(revealed.answer.length, 3))}px, 12vw)`,
+                      fontSize: `min(${Math.floor(
+                        640 / Math.max(revealed.answer.length, 3),
+                      )}px, 12vw)`,
                     }}
                   >
                     {revealed.answer}

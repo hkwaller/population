@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { QuestionResult } from '@/app/components/QuestionResult'
 import { useGame } from '@/hooks/useGame'
 import { useInGameAdsSuppressed } from '@/hooks/useInGameAdsSuppressed'
+import { useCastToTv } from '@/hooks/useNative'
 import { GameRoomProvider } from '@/app/providers'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
@@ -18,7 +19,7 @@ import { AdsterraBanner } from '@/app/components/AdsterraBanner'
 import { AdsterraPopunder } from '@/app/components/AdsterraPopunder'
 import { BANNER_ENABLED } from '@/lib/ads'
 
-const EndPageContent = ({ slug }: { slug: string }) => {
+const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
   const [size, setSize] = useState({ width: 0, height: 0 })
   const [showBreakdown, setShowBreakdown] = useState(false)
   const { game, send } = useGame(slug)
@@ -26,6 +27,9 @@ const EndPageContent = ({ slug }: { slug: string }) => {
   const { suppressed: adsSuppressed } = useInGameAdsSuppressed()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  // iOS app: the host device keeps the results on the AirPlay TV (see setup page).
+  const hostDevice = !me || me.localPlayer
+  useCastToTv(tv || !hostDevice ? null : `/game/${slug}/end`)
 
   useEffect(() => {
     const update = () => setSize({ width: window.innerWidth, height: window.innerHeight })
@@ -36,22 +40,23 @@ const EndPageContent = ({ slug }: { slug: string }) => {
 
   useEffect(() => {
     if (command === 'rematch') {
-      if (!me || me.localPlayer) router.push(`/game/${slug}`)
+      if (tv) router.replace(`/game/${slug}?view=tv`)
+      else if (!me || me.localPlayer) router.push(`/game/${slug}`)
       else router.push(`/game/${slug}/${me.id}`)
     }
-  }, [command, slug, me, router])
+  }, [command, slug, me, router, tv])
 
   // Highest total wins (closest / correct + fastest across the game).
   const sorted = [...players].sort((a, b) => (b.score || 0) - (a.score || 0))
   const winner = sorted[0]
-  const canRematch = boss === me?.id || !me
+  const canRematch = !tv && (boss === me?.id || !me)
 
   return (
     <PopShell bg={POP.grape}>
       {size.width > 0 && (
         <Confetti width={size.width} height={size.height} recycle={false} numberOfPieces={400} />
       )}
-      <PopHeader logoTextColor={POP.grape} right={<PopAuth tone="light" />} />
+      <PopHeader logoTextColor={POP.grape} right={tv ? undefined : <PopAuth tone="light" />} />
 
       <div className="mx-auto max-w-4xl px-5 pb-24 pt-6 text-center md:pt-10">
         <motion.h1
@@ -123,7 +128,7 @@ const EndPageContent = ({ slug }: { slug: string }) => {
 
         {/* Ad banner + popunder (popunder only on player devices, per plan).
             Suppressed when this device or the host is ad-free. */}
-        {!adsSuppressed && (
+        {!adsSuppressed && !tv && (
           <>
             {BANNER_ENABLED && (
               <div className="mt-16">
@@ -161,11 +166,19 @@ const EndPageContent = ({ slug }: { slug: string }) => {
   )
 }
 
-export default function EndPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function EndPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ view?: string }>
+}) {
   const { slug } = React.use(params)
+  // `?view=tv`: the display-only copy the iOS app puts on an AirPlay TV (NATIVE.md).
+  const tv = React.use(searchParams).view === 'tv'
   return (
     <GameRoomProvider gameId={slug}>
-      <EndPageContent slug={slug} />
+      <EndPageContent slug={slug} tv={tv} />
     </GameRoomProvider>
   )
 }
