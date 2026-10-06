@@ -28,6 +28,7 @@ import { PopButton } from '@/app/components/pop/PopButton'
 import { PopSlider } from '@/app/components/pop/PopSlider'
 import { Dock } from '@/app/components/pop/Dock'
 import { POP } from '@/app/components/pop/theme'
+import { TvScoreboard, useTvStage } from '@/app/components/pop/tv'
 import { useCastToTv } from '@/hooks/useNative'
 
 function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean }) {
@@ -43,6 +44,7 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
   const router = useRouter()
   // iOS app: the host's screen goes on an AirPlay TV (see setup page).
   useCastToTv(tv ? null : `/game/${params.slug}`)
+  const stage = useTvStage(tv)
 
   const myAnswered = players
     .find((p) => p.id === me?.id)
@@ -79,124 +81,145 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
 
   return (
     <PopShell bg={POP.cobalt}>
-      {/* Top bar */}
-      <header className="flex items-center justify-between gap-2 px-5 pt-5 md:px-12 md:pt-8">
-        <PopLogo textColor={POP.cobalt} />
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Rank states its category in the prompt, so the chip would just
+      {/* On the TV: a 1280×720 stage zoomed to the screen - question on the
+          left, a live scoreboard on the right. Elsewhere `contents` keeps the
+          normal scrolling page. */}
+      <div
+        className={tv ? 'flex flex-col' : 'contents'}
+        style={stage ? { zoom: stage.zoom, height: stage.height } : undefined}
+      >
+        {/* Top bar */}
+        <header className="flex items-center justify-between gap-2 px-5 pt-5 md:px-12 md:pt-8">
+          <PopLogo textColor={POP.cobalt} />
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Rank states its category in the prompt, so the chip would just
               repeat it - hide it for rank (and on the smallest screens it's
               decorative, so keep it to sm+ to leave room for the count pill). */}
-          {currentQuestion && currentQuestion.type !== 'rank' && (
-            <Category
-              question={currentQuestion}
-              bg={POP.sunshine}
-              className="hidden rotate-2 border-[3px] border-white text-base sm:inline-block"
-            />
-          )}
-          <span className="rounded-pill bg-white px-3 py-2 text-base font-black text-pop-ink sm:px-4">
-            {(answeredQuestions?.length ?? 0) + 1}/{amountQuestions}
-          </span>
-          {!tv && <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />}
-        </div>
-      </header>
+            {currentQuestion && currentQuestion.type !== 'rank' && (
+              <Category
+                question={currentQuestion}
+                bg={POP.sunshine}
+                className="hidden rotate-2 border-[3px] border-white text-base sm:inline-block"
+              />
+            )}
+            <span className="rounded-pill bg-white px-3 py-2 text-base font-black text-pop-ink sm:px-4">
+              {(answeredQuestions?.length ?? 0) + 1}/{amountQuestions}
+            </span>
+            {!tv && <HowToPlayButton tone="light" onClick={() => setHowToOpen(true)} />}
+          </div>
+        </header>
 
-      <main className="mx-auto flex max-w-3xl flex-col items-center px-5 pb-64 pt-8 md:pt-14">
-        <Question question={currentQuestion} />
+        <main
+          className={
+            tv
+              ? 'grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_300px] items-center gap-12 px-12 pb-10'
+              : 'mx-auto flex max-w-3xl flex-col items-center px-5 pb-64 pt-8 md:pt-14'
+          }
+        >
+          <div className={tv ? 'flex flex-col items-center' : 'contents'}>
+            <Question question={currentQuestion} />
 
-        {/* Big-screen mirror of the answer options: multiple-choice rounds must
+            {/* Big-screen mirror of the answer options: multiple-choice rounds must
             always show their alternatives up top so spectators (and remote
             players) can follow along, even when this device isn't playing. Shown
             whenever the interactive input isn't (host not playing, or the local
             player already answered). Read-only. Rank is excluded on purpose. */}
-        {currentQuestion && !(me?.localPlayer && !myAnswered) && (
-          <>
-            {currentQuestion.type === 'choice' && !isInputMode(currentQuestion, answerModes) && (
-              <div className="mt-8 w-full max-w-md">
-                <ChoiceOptions options={currentQuestion.options} disabled />
-              </div>
-            )}
-            {currentQuestion.type === 'odd-one-out' && (
-              <div className="mt-8 w-full max-w-md">
-                <ChoiceOptions options={currentQuestion.options} disabled />
-              </div>
-            )}
-            {currentQuestion.type === 'higher-lower' && (
-              <div className="mt-8 w-full max-w-md">
-                <HigherLower question={currentQuestion} disabled />
-              </div>
-            )}
-            {/* Build-up ("Name It"): mirror the dripping clues so spectators and
+            {currentQuestion && !(me?.localPlayer && !myAnswered) && (
+              <>
+                {currentQuestion.type === 'choice' &&
+                  !isInputMode(currentQuestion, answerModes) && (
+                    <div className={tv ? 'mt-10 w-full max-w-2xl' : 'mt-8 w-full max-w-md'}>
+                      <ChoiceOptions options={currentQuestion.options} disabled />
+                    </div>
+                  )}
+                {currentQuestion.type === 'odd-one-out' && (
+                  <div className={tv ? 'mt-10 w-full max-w-2xl' : 'mt-8 w-full max-w-md'}>
+                    <ChoiceOptions options={currentQuestion.options} disabled />
+                  </div>
+                )}
+                {currentQuestion.type === 'higher-lower' && (
+                  <div className={tv ? 'mt-10 w-full max-w-2xl' : 'mt-8 w-full max-w-md'}>
+                    <HigherLower question={currentQuestion} disabled />
+                  </div>
+                )}
+                {/* Build-up ("Name It"): mirror the dripping clues so spectators and
                 already-answered players can follow along. Read-only, no input. */}
-            {currentQuestion.type === 'build-up' && (
-              <div className="mt-8 w-full max-w-md">
-                <BuildUp key={currentQuestion.id} question={currentQuestion} readOnly />
-              </div>
+                {currentQuestion.type === 'build-up' && (
+                  <div className={tv ? 'mt-10 w-full max-w-2xl' : 'mt-8 w-full max-w-md'}>
+                    <BuildUp key={currentQuestion.id} question={currentQuestion} readOnly />
+                  </div>
+                )}
+              </>
             )}
-          </>
-        )}
 
-        {/* Rank opens its own full-screen drag modal (portalled to <body>) so the
+            {/* Rank opens its own full-screen drag modal (portalled to <body>) so the
             reorder gesture never fights this page's scroll or re-renders. It
             commits directly via onLock - no Dock lock needed. */}
-        {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (
-          <RankModal
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onLock={(order) =>
-              send('answer', {
-                id: me?.id,
-                answer: order,
-                questionId: currentQuestion.id,
-                elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
-              })
-            }
-          />
-        )}
+            {me?.localPlayer && !myAnswered && currentQuestion?.type === 'rank' && (
+              <RankModal
+                key={currentQuestion.id}
+                question={currentQuestion}
+                onLock={(order) =>
+                  send('answer', {
+                    id: me?.id,
+                    answer: order,
+                    questionId: currentQuestion.id,
+                    elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
+                  })
+                }
+              />
+            )}
 
-        {/* Build-up ("Name It") and route ("Border Hopper") are tall (clues +
+            {/* Build-up ("Name It") and route ("Border Hopper") are tall (clues +
             typeahead / chain builder) and commit via their own Lock button, so
             they live in the scroll flow like rank rather than the bottom overlay. */}
-        {me?.localPlayer && !myAnswered && currentQuestion?.type === 'build-up' && (
-          <div className="mt-8 w-full max-w-md">
-            <BuildUp
-              key={currentQuestion.id}
-              question={currentQuestion}
-              onAnswer={(v, ms, extra) =>
-                send('answer', {
-                  id: me?.id,
-                  answer: v,
-                  questionId: currentQuestion.id,
-                  elapsedMs: ms,
-                  ...extra,
-                })
-              }
-            />
+            {me?.localPlayer && !myAnswered && currentQuestion?.type === 'build-up' && (
+              <div className={tv ? 'mt-10 w-full max-w-2xl' : 'mt-8 w-full max-w-md'}>
+                <BuildUp
+                  key={currentQuestion.id}
+                  question={currentQuestion}
+                  onAnswer={(v, ms, extra) =>
+                    send('answer', {
+                      id: me?.id,
+                      answer: v,
+                      questionId: currentQuestion.id,
+                      elapsedMs: ms,
+                      ...extra,
+                    })
+                  }
+                />
+              </div>
+            )}
+            {me?.localPlayer && !myAnswered && currentQuestion?.type === 'route' && (
+              <div className={tv ? 'mt-10 w-full max-w-2xl' : 'mt-8 w-full max-w-md'}>
+                <RouteInput
+                  key={currentQuestion.id}
+                  question={currentQuestion}
+                  onAnswer={(v, ms) =>
+                    send('answer', {
+                      id: me?.id,
+                      answer: v,
+                      questionId: currentQuestion.id,
+                      elapsedMs: ms,
+                    })
+                  }
+                />
+              </div>
+            )}
           </div>
-        )}
-        {me?.localPlayer && !myAnswered && currentQuestion?.type === 'route' && (
-          <div className="mt-8 w-full max-w-md">
-            <RouteInput
-              key={currentQuestion.id}
-              question={currentQuestion}
-              onAnswer={(v, ms) =>
-                send('answer', {
-                  id: me?.id,
-                  answer: v,
-                  questionId: currentQuestion.id,
-                  elapsedMs: ms,
-                })
-              }
-            />
-          </div>
-        )}
 
-        {/* Player stickers */}
-        <div className="mt-14 flex flex-wrap justify-center gap-5">
-          {players.map((p, index) => (
-            <Player key={p.id} {...p} index={index} showScore send={tv ? undefined : send} />
-          ))}
-        </div>
-      </main>
+          {/* Player stickers (the TV gets a ranked scoreboard instead) */}
+          {tv ? (
+            <TvScoreboard />
+          ) : (
+            <div className="mt-14 flex flex-wrap justify-center gap-5">
+              {players.map((p, index) => (
+                <Player key={p.id} {...p} index={index} showScore send={tv ? undefined : send} />
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
 
       {/* Answer input area - host game-flow controls now live in <Dock />.
           Extra bottom clearance so inputs sit above the floating Dock. */}
@@ -342,6 +365,7 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
         canEndGame={canEndGame}
         send={tv ? undefined : send}
         adsSuppressed={tv}
+        tv={tv}
       />
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>

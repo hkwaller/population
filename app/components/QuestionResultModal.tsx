@@ -8,6 +8,7 @@ import { ArrowRight, ListEnd } from 'lucide-react'
 
 import { usePopStore } from '../state'
 import { PlayerResult } from './PlayerResult'
+import { useTvStage } from './pop/tv'
 import { useSupabase } from '@/hooks/useSupabase'
 import { asSlider, formatAnswerValue } from '@/lib/utils'
 import { AnswerValue, Command, CommandType, LatLng, TQuestion } from '../types'
@@ -29,16 +30,20 @@ export default function QuestionResultModal({
   canEndGame,
   send,
   adsSuppressed = false,
+  tv = false,
 }: {
   canEndGame: boolean
   send?: SendFn
   /** Hide the ad banner (local user is ad-free, or the host is - see useInGameAdsSuppressed). */
   adsSuppressed?: boolean
+  /** The AirPlay TV copy: a zoomed two-column stage (see pop/tv.tsx). */
+  tv?: boolean
 }) {
   const { currentQuestion, updateGame, players, boss, me, showQuestionResultModal } = usePopStore()
   const { postGameToSupabase } = useSupabase()
   const [isEnding, setIsEnding] = useState(false)
   const [size, setSize] = useState({ width: 0, height: 0 })
+  const stage = useTvStage(tv)
 
   // Freeze the question we're revealing. When the host taps "Next", the store's
   // currentQuestion advances immediately while this modal is still fading out via
@@ -109,102 +114,123 @@ export default function QuestionResultModal({
             />
           )}
 
-          <div className="mx-auto flex min-h-full max-w-4xl flex-col items-center px-5 pt-12 pb-32 text-center">
-            <motion.span
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1, rotate: -2 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-              className="rounded-pill bg-pop-ink px-6 py-3 text-xl font-black text-white md:text-2xl"
-            >
-              The answer was…
-            </motion.span>
+          <div
+            className={
+              tv
+                ? 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 px-12 text-center'
+                : 'mx-auto flex min-h-full max-w-4xl flex-col items-center px-5 pt-12 pb-32 text-center'
+            }
+            style={
+              stage
+                ? {
+                    // A big room's result cards need more rows: shrink to keep them on screen.
+                    zoom: stage.zoom * (players.length > 6 ? 0.8 : 1),
+                    height: stage.height / (players.length > 6 ? 0.8 : 1),
+                  }
+                : undefined
+            }
+          >
+            <div className={tv ? 'flex flex-col items-center' : 'contents'}>
+              <motion.span
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1, rotate: -2 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+                className="rounded-pill bg-pop-ink px-6 py-3 text-xl font-black text-white md:text-2xl"
+              >
+                The answer was…
+              </motion.span>
 
-            <motion.div
-              initial={{ scale: 1.4, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1, rotate: 1 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.15 }}
-              className="mt-8 w-full max-w-2xl rounded-[48px] bg-white px-6 py-10 shadow-pop-card"
-            >
-              {revealed?.type === 'map' ? (
-                <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink">
-                  <WorldMap
-                    answer={revealed.answer}
-                    pins={
-                      ranked
-                        .map(({ player, answer }) =>
-                          answer && typeof answer.answer === 'object'
-                            ? { point: answer.answer as LatLng, color: stickerFill(player.color) }
-                            : null,
-                        )
-                        .filter(Boolean) as MapPin[]
-                    }
-                    interactive={false}
-                  />
-                </div>
-              ) : revealed?.type === 'rank' ? (
-                <RankReveal question={revealed} />
-              ) : revealed?.type === 'route' ? (
-                <RouteReveal question={revealed} players={players} bounded={hostDisplay} />
-              ) : revealed?.type === 'higher-lower' ? (
-                <HigherLower question={revealed} reveal />
-              ) : revealed?.type === 'odd-one-out' ? (
-                <div className="flex flex-col items-center gap-3">
+              <motion.div
+                initial={{ scale: 1.4, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1, rotate: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.15 }}
+                className="mt-8 w-full max-w-2xl rounded-[48px] bg-white px-6 py-10 shadow-pop-card"
+              >
+                {revealed?.type === 'map' ? (
+                  <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink">
+                    <WorldMap
+                      answer={revealed.answer}
+                      pins={
+                        ranked
+                          .map(({ player, answer }) =>
+                            answer && typeof answer.answer === 'object'
+                              ? { point: answer.answer as LatLng, color: stickerFill(player.color) }
+                              : null,
+                          )
+                          .filter(Boolean) as MapPin[]
+                      }
+                      interactive={false}
+                    />
+                  </div>
+                ) : revealed?.type === 'rank' ? (
+                  <RankReveal question={revealed} />
+                ) : revealed?.type === 'route' ? (
+                  <RouteReveal question={revealed} players={players} bounded={hostDisplay} />
+                ) : revealed?.type === 'higher-lower' ? (
+                  <HigherLower question={revealed} reveal />
+                ) : revealed?.type === 'odd-one-out' ? (
+                  <div className="flex flex-col items-center gap-3">
+                    <span
+                      className="block font-black leading-none tracking-[-0.03em]"
+                      style={{
+                        color: POP.coral,
+                        fontSize: `min(${Math.floor(
+                          640 / Math.max(revealed.answer.length, 3),
+                        )}px, 12vw)`,
+                      }}
+                    >
+                      {revealed.answer}
+                    </span>
+                    <p className="text-base font-bold text-pop-ink/70 md:text-lg">
+                      The odd one out - the others {revealed.sharedProperty}.
+                    </p>
+                  </div>
+                ) : revealed?.type === 'build-up' ? (
+                  <div className="flex flex-col items-center gap-3">
+                    <span
+                      className="block font-black leading-none tracking-[-0.03em]"
+                      style={{
+                        color: POP.coral,
+                        fontSize: `min(${Math.floor(
+                          640 / Math.max(revealed.answer.length, 3),
+                        )}px, 12vw)`,
+                      }}
+                    >
+                      {revealed.answer}
+                    </span>
+                    <ul className="mt-2 flex flex-col gap-1 text-left">
+                      {revealed.clues.map((clue, i) => (
+                        <li key={i} className="text-sm font-bold text-pop-ink/60 md:text-base">
+                          <span className="mr-1 text-pop-ink/30">{i + 1}.</span>
+                          {clue}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
                   <span
                     className="block font-black leading-none tracking-[-0.03em]"
-                    style={{
-                      color: POP.coral,
-                      fontSize: `min(${Math.floor(
-                        640 / Math.max(revealed.answer.length, 3),
-                      )}px, 12vw)`,
-                    }}
+                    style={{ color: POP.coral, fontSize: answerFontSize, whiteSpace: 'nowrap' }}
                   >
-                    {revealed.answer}
+                    {asSlider(revealed) ? (
+                      <CountUp end={asSlider(revealed)!.answer} duration={0.7} separator="," />
+                    ) : (
+                      formatAnswerValue(revealed?.answer)
+                    )}
                   </span>
-                  <p className="text-base font-bold text-pop-ink/70 md:text-lg">
-                    The odd one out - the others {revealed.sharedProperty}.
-                  </p>
-                </div>
-              ) : revealed?.type === 'build-up' ? (
-                <div className="flex flex-col items-center gap-3">
-                  <span
-                    className="block font-black leading-none tracking-[-0.03em]"
-                    style={{
-                      color: POP.coral,
-                      fontSize: `min(${Math.floor(
-                        640 / Math.max(revealed.answer.length, 3),
-                      )}px, 12vw)`,
-                    }}
-                  >
-                    {revealed.answer}
-                  </span>
-                  <ul className="mt-2 flex flex-col gap-1 text-left">
-                    {revealed.clues.map((clue, i) => (
-                      <li key={i} className="text-sm font-bold text-pop-ink/60 md:text-base">
-                        <span className="mr-1 text-pop-ink/30">{i + 1}.</span>
-                        {clue}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <span
-                  className="block font-black leading-none tracking-[-0.03em]"
-                  style={{ color: POP.coral, fontSize: answerFontSize, whiteSpace: 'nowrap' }}
-                >
-                  {asSlider(revealed) ? (
-                    <CountUp end={asSlider(revealed)!.answer} duration={0.7} separator="," />
-                  ) : (
-                    formatAnswerValue(revealed?.answer)
-                  )}
-                </span>
-              )}
-              <p className="mt-4 text-lg font-bold text-pop-ink/60 md:text-xl">
-                {revealed?.question}
-              </p>
-              {revealed && <PopulationCompare question={revealed} />}
-            </motion.div>
+                )}
+                <p className="mt-4 text-lg font-bold text-pop-ink/60 md:text-xl">
+                  {revealed?.question}
+                </p>
+                {revealed && <PopulationCompare question={revealed} />}
+              </motion.div>
+            </div>
 
-            <div className="mt-12 flex flex-wrap justify-center gap-5">
+            <div
+              className={
+                tv ? 'grid grid-cols-2 gap-5' : 'mt-12 flex flex-wrap justify-center gap-5'
+              }
+            >
               {ranked.map(({ player, answer }, index) => (
                 <PlayerResult
                   key={player.id}
