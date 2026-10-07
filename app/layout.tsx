@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { Gabarito } from 'next/font/google'
+import localFont from 'next/font/local'
 import { CSPostHogProvider } from './providers'
 import { Toaster } from '@/components/ui/toaster'
 import { ClerkProvider } from '@clerk/nextjs'
@@ -8,9 +8,11 @@ import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/site'
 import { JsonLd } from './components/JsonLd'
 import { NativeBoot } from '@/components/NativeBoot'
 
-const gabarito = Gabarito({
-  subsets: ['latin'],
-  weight: ['700', '800', '900'],
+// Self-hosted (Google Fonts' latin subset of the variable font) so the build
+// never has to reach Google - a failed fetch there breaks Vercel builds.
+const gabarito = localFont({
+  src: './fonts/gabarito-latin.woff2',
+  weight: '700 900',
   variable: '--font-gabarito',
 })
 
