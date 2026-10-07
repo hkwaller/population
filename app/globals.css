@@ -205,6 +205,11 @@ body::before {
 .native-app {
   -webkit-tap-highlight-color: transparent;
 }
+/* The route wipe fights the web view's own swipe-back/forward transition, so
+   the app skips it. */
+.native-app .pop-wipe {
+  animation: none;
+}
 .native-app a,
 .native-app button {
   -webkit-touch-callout: none;

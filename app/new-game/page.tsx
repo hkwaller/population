@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { icons as lucideIcons, Minus, Plus, ArrowRight, Grid2x2, Keyboard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Drawer } from 'vaul'
 
 import { usePopStore } from '../state'
 import { GameRoomProvider } from '../providers'
@@ -22,6 +23,8 @@ import {
 } from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
 import { useStorage } from '@/liveblocks.config'
+import { useMediaQuery } from '../hooks/useMediaQuery'
+import { haptic } from '@/lib/native'
 
 const CHIP_CYCLE: string[] = [
   POP.sunshine,
@@ -36,6 +39,10 @@ const DARK_FILLS = new Set<string>([POP.coral, POP.cobalt, POP.grape])
 
 // How long the pointer must rest on a chip before its explainer appears.
 const HOVER_DELAY_MS = 500
+// Touch has no hover: hold a chip this long to see its explainer instead.
+const LONG_PRESS_MS = 450
+// A finger drifting further than this (px) is a scroll, not a long-press.
+const LONG_PRESS_SLOP = 10
 // Width of the explainer popover (px); used to clamp it within the viewport.
 const TOOLTIP_WIDTH = 240
 
@@ -189,8 +196,8 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           Pick your categories
         </h2>
         <p className="mt-3 text-center text-lg font-bold text-pop-ink/70">
-          Tap to toggle - greyed-out stickers sit this round out. Flags, Borders and Capitals let
-          you pick options or typing.
+          Tap to toggle - greyed-out stickers sit this round out. Hold one to see what it is.
+          Flags, Borders and Capitals let you pick options or typing.
         </p>
 
         <CategorySection
@@ -283,33 +290,83 @@ function CategorySection({
   const ids = cats.map((c) => c.id)
   const allOn = ids.every((id) => selectedCategories.includes(id))
 
-  // Which category's answer-mode popover is open (only one at a time).
+  // Which category's answer-mode picker is open (only one at a time). On
+  // desktop it's a popover under the chip; on phones a centered popover often
+  // runs off-screen for edge chips, so it becomes a bottom drawer instead.
   const [openMode, setOpenMode] = useState<string | null>(null)
+  const isDesktop = useMediaQuery('(min-width: 640px)')
+  const openCat = cats.find((c) => c.id === openMode)
+  const openModeValue: AnswerMode = openMode && answerModes[openMode] === 'input' ? 'input' : 'choice'
 
-  // The explainer popover showing for a rested hover. Positioned with fixed
-  // viewport coords (clamped to stay on-screen) so edge chips never clip it.
-  // Appears only after the pointer rests on a chip for HOVER_DELAY_MS, so
-  // brushing past chips stays quiet.
+  // The explainer popover. Positioned with fixed viewport coords (clamped to
+  // stay on-screen) so edge chips never clip it. With a mouse it appears after
+  // the pointer rests on a chip for HOVER_DELAY_MS, so brushing past chips stays
+  // quiet; on touch it appears while a chip is held for LONG_PRESS_MS and goes
+  // away when the finger lifts.
   const [info, setInfo] = useState<{ id: string; cx: number; bottom: number } | null>(null)
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const infoTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pressStart = useRef<{ x: number; y: number } | null>(null)
+  // Set when a long-press showed the explainer, so the release doesn't also
+  // toggle the chip.
+  const longPressed = useRef(false)
 
-  const startHover = (id: string, el: HTMLElement) => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current)
-    hoverTimer.current = setTimeout(() => {
+  const showInfoAfter = (id: string, el: HTMLElement, delay: number, onShow?: () => void) => {
+    if (infoTimer.current) clearTimeout(infoTimer.current)
+    infoTimer.current = setTimeout(() => {
+      onShow?.()
       const r = el.getBoundingClientRect()
       // Keep the centered TOOLTIP_WIDTH box inside the viewport with an 8px gutter.
       const half = TOOLTIP_WIDTH / 2
       const cx = Math.min(Math.max(r.left + r.width / 2, 8 + half), window.innerWidth - 8 - half)
       // Anchor the popover's bottom 8px above the chip's top edge.
       setInfo({ id, cx, bottom: window.innerHeight - r.top + 8 })
-    }, HOVER_DELAY_MS)
+    }, delay)
   }
-  const endHover = () => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current)
-    hoverTimer.current = null
+  const hideInfo = () => {
+    if (infoTimer.current) clearTimeout(infoTimer.current)
+    infoTimer.current = null
+    pressStart.current = null
     setInfo(null)
   }
-  useEffect(() => () => void (hoverTimer.current && clearTimeout(hoverTimer.current)), [])
+  useEffect(() => () => void (infoTimer.current && clearTimeout(infoTimer.current)), [])
+
+  const pressHandlers = (id: string) => ({
+    onPointerEnter: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType === 'mouse') showInfoAfter(id, e.currentTarget, HOVER_DELAY_MS)
+    },
+    onPointerLeave: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType === 'mouse') hideInfo()
+    },
+    onPointerDown: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType === 'mouse') return
+      longPressed.current = false
+      pressStart.current = { x: e.clientX, y: e.clientY }
+      showInfoAfter(id, e.currentTarget, LONG_PRESS_MS, () => {
+        longPressed.current = true
+        haptic('tap')
+      })
+    },
+    onPointerMove: (e: React.PointerEvent<HTMLElement>) => {
+      const start = pressStart.current
+      if (e.pointerType === 'mouse' || !start || longPressed.current) return
+      if (Math.hypot(e.clientX - start.x, e.clientY - start.y) > LONG_PRESS_SLOP) hideInfo()
+    },
+    onPointerUp: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType !== 'mouse') hideInfo()
+    },
+    onPointerCancel: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType !== 'mouse') hideInfo()
+    },
+    // Swallow the click that follows a long-press (chip and mode badge alike).
+    onClickCapture: (e: React.MouseEvent<HTMLElement>) => {
+      if (!longPressed.current) return
+      longPressed.current = false
+      e.stopPropagation()
+      e.preventDefault()
+    },
+    // Android fires contextmenu on long-press; keep it from opening anything.
+    onContextMenu: (e: React.MouseEvent<HTMLElement>) => e.preventDefault(),
+  })
 
   const handleChip = (cat: Cat) => {
     const willSelect = !selectedCategories.includes(cat.id)
@@ -336,7 +393,7 @@ function CategorySection({
       </div>
 
       {/* Click-catcher: taps outside an open popover dismiss it. */}
-      {openMode && (
+      {openMode && isDesktop && (
         <button
           aria-label="Close answer mode picker"
           className="fixed inset-0 z-20 cursor-default"
@@ -356,9 +413,8 @@ function CategorySection({
           return (
             <div
               key={cat.id}
-              className="relative"
-              onMouseEnter={(e) => startHover(cat.id, e.currentTarget)}
-              onMouseLeave={endHover}
+              className="relative select-none [-webkit-touch-callout:none]"
+              {...pressHandlers(cat.id)}
             >
               <motion.button
                 initial={{ scale: 0 }}
@@ -405,7 +461,7 @@ function CategorySection({
               </motion.button>
 
               <AnimatePresence>
-                {openMode === cat.id && (
+                {isDesktop && openMode === cat.id && (
                   <motion.div
                     initial={{ opacity: 0, y: -8, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -435,7 +491,7 @@ function CategorySection({
                 )}
               </AnimatePresence>
 
-              {/* Explainer - floats just above the chip after a rested hover.
+              {/* Explainer - floats just above the chip after a rested hover or long-press.
                   Fixed + viewport-clamped so it never clips at screen edges.
                   Suppressed while the answer-mode picker is open for this cat. */}
               <AnimatePresence>
@@ -461,6 +517,57 @@ function CategorySection({
           )
         })}
       </div>
+
+      {!isDesktop && (
+        <Drawer.Root open={!!openCat} onOpenChange={(o) => !o && setOpenMode(null)}>
+          <Drawer.Portal>
+            <Drawer.Overlay className="fixed inset-0 z-40 bg-pop-ink/40" />
+            <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-[28px] border-x-4 border-t-4 border-pop-ink bg-white px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-3 outline-none">
+              <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-pop-ink/20" />
+              <Drawer.Title className="text-center text-2xl font-black text-pop-ink">
+                {openCat?.name}
+              </Drawer.Title>
+              <Drawer.Description className="mt-1 text-center text-base font-bold text-pop-ink/60">
+                How do you want to answer?
+              </Drawer.Description>
+              <div className="mt-5 flex flex-col gap-3">
+                {(
+                  [
+                    { id: 'choice', Icon: Grid2x2, label: 'Choose', hint: 'Pick from options' },
+                    { id: 'input', Icon: Keyboard, label: 'Type', hint: 'Type the answer yourself' },
+                  ] as const
+                ).map(({ id, Icon, label, hint }) => {
+                  const active = openModeValue === id
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => {
+                        if (openMode) onSetMode(openMode, id)
+                        setOpenMode(null)
+                      }}
+                      className={`flex items-center gap-4 rounded-3xl border-4 px-5 py-4 text-left transition-colors ${
+                        active
+                          ? 'border-pop-ink bg-pop-ink text-white'
+                          : 'border-pop-ink/15 bg-white text-pop-ink'
+                      }`}
+                    >
+                      <Icon size={26} strokeWidth={2.75} />
+                      <span className="flex flex-col">
+                        <span className="text-xl font-black">{label}</span>
+                        <span
+                          className={`text-sm font-bold ${active ? 'text-white/70' : 'text-pop-ink/55'}`}
+                        >
+                          {hint}
+                        </span>
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </Drawer.Content>
+          </Drawer.Portal>
+        </Drawer.Root>
+      )}
     </div>
   )
 }
