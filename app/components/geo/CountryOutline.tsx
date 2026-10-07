@@ -1,12 +1,32 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { geoMercator, geoPath } from 'd3-geo'
+import { useEffect, useState } from 'react'
 
 import { byCca3 } from '@/lib/geo/countries'
-import { loadCountryGeometry, type CountryFeature } from '@/lib/geo/geometry'
 
-/** A country silhouette drawn from world-atlas geometry, auto-fit to the box. */
+/** Pre-projected silhouette from scripts/build-country-outlines.mjs. */
+type Outline = { w: number; h: number; d: string }
+
+const cache = new Map<string, Promise<Outline>>()
+
+function loadOutline(key: string) {
+  let p = cache.get(key)
+  if (!p) {
+    p = fetch(`/geo/outlines/${key}.json`).then((r) => {
+      if (!r.ok) throw new Error(`outline ${key}: ${r.status}`)
+      return r.json() as Promise<Outline>
+    })
+    p.catch(() => cache.delete(key)) // allow retry on transient failure
+    cache.set(key, p)
+  }
+  return p
+}
+
+/**
+ * A country silhouette, auto-fit to the box. Uses the high-detail per-country
+ * outlines (10m data, home landmass only, globe-style projection) rather than
+ * the 110m world geometry the map draws from.
+ */
 export function CountryOutline({
   code,
   size = 260,
@@ -18,47 +38,37 @@ export function CountryOutline({
   fill?: string
   className?: string
 }) {
-  const [feature, setFeature] = useState<CountryFeature | null>(null)
-  const [failed, setFailed] = useState(false)
   const ccn3 = byCca3.get(code)?.ccn3
+  const key = ccn3 ? String(parseInt(ccn3, 10)) : null
+  const [outline, setOutline] = useState<Outline | null>(null)
+  const [failed, setFailed] = useState(!key)
 
   // Reset to the loading state when the target country changes (during render,
   // not synchronously inside the effect). The async results below still set
   // state from the .then/.catch callbacks, which is allowed.
-  const [loadedCcn3, setLoadedCcn3] = useState(ccn3)
-  if (ccn3 !== loadedCcn3) {
-    setLoadedCcn3(ccn3)
-    setFeature(null)
-    setFailed(false)
+  const [loadedKey, setLoadedKey] = useState(key)
+  if (key !== loadedKey) {
+    setLoadedKey(key)
+    setOutline(null)
+    setFailed(!key)
   }
 
   useEffect(() => {
+    if (!key) return
     let alive = true
-    loadCountryGeometry()
-      .then(({ byCcn3 }) => {
-        if (!alive) return
-        const f = ccn3 ? (byCcn3.get(String(parseInt(ccn3, 10))) ?? null) : null
-        if (f) setFeature(f)
-        else setFailed(true)
-      })
+    loadOutline(key)
+      .then((o) => alive && setOutline(o))
       .catch(() => alive && setFailed(true))
     return () => {
       alive = false
     }
-  }, [ccn3])
+  }, [key])
 
-  const d = useMemo(() => {
-    if (!feature) return null
-    const pad = size * 0.08
-    const projection = geoMercator().fitExtent(
-      [
-        [pad, pad],
-        [size - pad, size - pad],
-      ],
-      feature,
-    )
-    return geoPath(projection)(feature)
-  }, [feature, size])
+  // Square box with 8% padding around the longer side, outline centred.
+  const span = outline ? Math.max(outline.w, outline.h) / 0.84 : 1
+  const viewBox = outline
+    ? `${(outline.w - span) / 2} ${(outline.h - span) / 2} ${span} ${span}`
+    : `0 0 ${size} ${size}`
 
   if (failed) {
     // Geometry unavailable (tiny states) - caller should avoid outline questions
@@ -77,19 +87,21 @@ export function CountryOutline({
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl md:text-4xl font-bold text-pop-ink">What country is this?</h1>
       <svg
-        viewBox={`0 0 ${size} ${size}`}
+        viewBox={viewBox}
         width={size}
         height={size}
         className={className}
         role="img"
         aria-label="Country outline"
       >
-        {d && (
+        {outline && (
           <path
-            d={d}
+            d={outline.d}
             fill={fill}
+            fillRule="evenodd"
             stroke="rgba(0,0,0,0.25)"
             strokeWidth={1.5}
+            vectorEffect="non-scaling-stroke"
             strokeLinejoin="round"
           />
         )}

@@ -19,7 +19,7 @@ const shim = (file: string) => resolve(__dirname, 'shims', file)
  *   production, plus /app), so "Try again" goes back to exactly the URL the
  *   shell was synced with. Capacitor opens any other URL in Safari.
  * - flags/ and geo/: the round components load `/flags/xx.svg` and
- *   `/geo/countries-110m.json` from the site's public/ folder. Copied to the
+ *   `/geo/countries-110m.json` + `/geo/outlines/*.json` from the site's public/ folder. Copied to the
  *   same paths in native/www, so they load from disk offline.
  */
 function offlineFiles(): Plugin {

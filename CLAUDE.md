@@ -41,6 +41,12 @@ Regenerate country data (build-time, needs `RESTCOUNTRIES_API_KEY`). Population 
 node scripts/build-countries.mjs   # writes lib/geo/countries.json
 ```
 
+Country-shape question silhouettes are pre-built per country from the world-atlas **10m** data (home landmass only, far territories dropped, globe-style projection). The world map and `guessInCountry` scoring keep using the light 110m file:
+
+```sh
+npm run geo:outlines   # writes public/geo/outlines/<ccn3>.json
+```
+
 ## Architecture - the important part
 
 ### State lives in two places. Do not mix them up.

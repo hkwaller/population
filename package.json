@@ -13,6 +13,7 @@
     "test:run": "vitest run",
     "start-dev": "next dev",
     "reseed": "npx tsx --env-file=.env.local scripts/migrate-questions.ts",
+    "geo:outlines": "node scripts/build-country-outlines.mjs",
     "native:offline": "rm -rf native/www/offline-assets && vite build --config native/offline/vite.config.ts",
     "native:sync": "npm run native:offline && cap sync",
     "native:dev": "export CAP_SERVER_URL=${CAP_SERVER_URL:-http://localhost:3000} && npm run native:offline && cap sync",
@@ -89,6 +90,7 @@
     "tailwindcss": "^3.4.4",
     "typescript": "^5",
     "vite": "^7.0.2",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "world-atlas": "^2.0.2"
   }
 }
