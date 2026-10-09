@@ -9,7 +9,7 @@ import { PopShell } from '@/app/components/pop/PopShell'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { POP } from '@/app/components/pop/theme'
 import { pickDaily, DAILY_SIZE } from '@/lib/daily'
-import { MAX_SCORE, toLargestFirstRank } from '@/lib/utils'
+import { MAX_SCORE, normalizeQuestionRow } from '@/lib/utils'
 import { isNativeApp } from '@/lib/native'
 
 import { onNavigate } from './shims/nav'
@@ -73,7 +73,7 @@ function autoGoOnline() {
  * the world geometry the prompts and maps load are copied into native/www
  * (vite.config.ts), so nothing here needs the network.
  */
-const POOL = (geoQuestions as unknown as TQuestion[]).map((q) => (q.type === 'rank' ? toLargestFirstRank(q) : q))
+const POOL = geoQuestions.map(normalizeQuestionRow)
 
 /** A fresh practice set: the daily's picker (category mix, easy to hard) with a random seed. */
 function practiceSet(): { questions: TQuestion[]; key: string } {
