@@ -1,7 +1,6 @@
 import geoQuestions from '@/app/database/geo-questions.json'
-import type { TQuestion } from '@/app/types'
 import { pickDaily, dateKeyUTC } from '@/lib/daily'
-import { toLargestFirstRank } from '@/lib/utils'
+import { normalizeQuestionRow } from '@/lib/utils'
 import { DailyGame } from '@/app/components/daily/DailyGame'
 import type { Metadata } from 'next'
 
@@ -17,10 +16,8 @@ export const dynamic = 'force-dynamic'
 
 export default function DailyPage() {
   const dateKey = dateKeyUTC(new Date())
-  // The JSON bank bypasses normalizeQuestionRow (the Supabase path), so flip any
-  // legacy "smallest first" rank questions to largest-first here too.
-  const questions = pickDaily(geoQuestions as unknown as TQuestion[], dateKey).map((q) =>
-    q.type === 'rank' ? toLargestFirstRank(q) : q,
-  )
+  // The JSON bank uses the Supabase row shape (rank items live under `options`),
+  // so normalize it like the Supabase path does.
+  const questions = pickDaily(geoQuestions.map(normalizeQuestionRow), dateKey)
   return <DailyGame questions={questions} dateKey={dateKey} />
 }
