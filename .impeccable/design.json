@@ -1,0 +1,464 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T09:34:24.956147+00:00",
+  "title": "Design System: Population",
+  "extensions": {
+    "colorMeta": {
+      "pop-coral": {
+        "role": "primary",
+        "displayName": "Terracotta",
+        "tonalRamp": [
+          "oklch(15.0% 0.1321 39.8)",
+          "oklch(26.4% 0.1321 39.8)",
+          "oklch(37.9% 0.1321 39.8)",
+          "oklch(49.3% 0.1321 39.8)",
+          "oklch(60.7% 0.1321 39.8)",
+          "oklch(72.1% 0.1321 39.8)",
+          "oklch(83.6% 0.1321 39.8)",
+          "oklch(95.0% 0.1321 39.8)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-cobalt": {
+        "role": "secondary",
+        "displayName": "Deep Ocean Teal",
+        "tonalRamp": [
+          "oklch(15.0% 0.0760 210.9)",
+          "oklch(26.4% 0.0760 210.9)",
+          "oklch(37.9% 0.0760 210.9)",
+          "oklch(49.3% 0.0760 210.9)",
+          "oklch(60.7% 0.0760 210.9)",
+          "oklch(72.1% 0.0760 210.9)",
+          "oklch(83.6% 0.0760 210.9)",
+          "oklch(95.0% 0.0760 210.9)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-sunshine": {
+        "role": "secondary",
+        "displayName": "Ochre",
+        "tonalRamp": [
+          "oklch(15.0% 0.1364 78.7)",
+          "oklch(26.4% 0.1364 78.7)",
+          "oklch(37.9% 0.1364 78.7)",
+          "oklch(49.3% 0.1364 78.7)",
+          "oklch(60.7% 0.1364 78.7)",
+          "oklch(72.1% 0.1364 78.7)",
+          "oklch(83.6% 0.1364 78.7)",
+          "oklch(95.0% 0.1364 78.7)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-grape": {
+        "role": "secondary",
+        "displayName": "Highland Brown",
+        "tonalRamp": [
+          "oklch(15.0% 0.0763 57.2)",
+          "oklch(26.4% 0.0763 57.2)",
+          "oklch(37.9% 0.0763 57.2)",
+          "oklch(49.3% 0.0763 57.2)",
+          "oklch(60.7% 0.0763 57.2)",
+          "oklch(72.1% 0.0763 57.2)",
+          "oklch(83.6% 0.0763 57.2)",
+          "oklch(95.0% 0.0763 57.2)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-mint": {
+        "role": "secondary",
+        "displayName": "Moss Green",
+        "tonalRamp": [
+          "oklch(15.0% 0.1111 153.1)",
+          "oklch(26.4% 0.1111 153.1)",
+          "oklch(37.9% 0.1111 153.1)",
+          "oklch(49.3% 0.1111 153.1)",
+          "oklch(60.7% 0.1111 153.1)",
+          "oklch(72.1% 0.1111 153.1)",
+          "oklch(83.6% 0.1111 153.1)",
+          "oklch(95.0% 0.1111 153.1)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-bubblegum": {
+        "role": "secondary",
+        "displayName": "Clay Rose",
+        "tonalRamp": [
+          "oklch(15.0% 0.0978 37.8)",
+          "oklch(26.4% 0.0978 37.8)",
+          "oklch(37.9% 0.0978 37.8)",
+          "oklch(49.3% 0.0978 37.8)",
+          "oklch(60.7% 0.0978 37.8)",
+          "oklch(72.1% 0.0978 37.8)",
+          "oklch(83.6% 0.0978 37.8)",
+          "oklch(95.0% 0.0978 37.8)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-ink": {
+        "role": "neutral",
+        "displayName": "Espresso Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0184 55.2)",
+          "oklch(26.4% 0.0184 55.2)",
+          "oklch(37.9% 0.0184 55.2)",
+          "oklch(49.3% 0.0184 55.2)",
+          "oklch(60.7% 0.0184 55.2)",
+          "oklch(72.1% 0.0184 55.2)",
+          "oklch(83.6% 0.0184 55.2)",
+          "oklch(95.0% 0.0184 55.2)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-paper": {
+        "role": "neutral",
+        "displayName": "Parchment",
+        "tonalRamp": [
+          "oklch(15.0% 0.0319 82.8)",
+          "oklch(26.4% 0.0319 82.8)",
+          "oklch(37.9% 0.0319 82.8)",
+          "oklch(49.3% 0.0319 82.8)",
+          "oklch(60.7% 0.0319 82.8)",
+          "oklch(72.1% 0.0319 82.8)",
+          "oklch(83.6% 0.0319 82.8)",
+          "oklch(95.0% 0.0319 82.8)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "pop-sky": {
+        "role": "secondary",
+        "displayName": "Glacial Aqua",
+        "tonalRamp": [
+          "oklch(15.0% 0.0473 189.6)",
+          "oklch(26.4% 0.0473 189.6)",
+          "oklch(37.9% 0.0473 189.6)",
+          "oklch(49.3% 0.0473 189.6)",
+          "oklch(60.7% 0.0473 189.6)",
+          "oklch(72.1% 0.0473 189.6)",
+          "oklch(83.6% 0.0473 189.6)",
+          "oklch(95.0% 0.0473 189.6)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "oklch(15.0% 0.0000 89.9)",
+          "oklch(26.4% 0.0000 89.9)",
+          "oklch(37.9% 0.0000 89.9)",
+          "oklch(49.3% 0.0000 89.9)",
+          "oklch(60.7% 0.0000 89.9)",
+          "oklch(72.1% 0.0000 89.9)",
+          "oklch(83.6% 0.0000 89.9)",
+          "oklch(95.0% 0.0000 89.9)"
+        ],
+        "rampSource": "Synthesized OKLCH metadata; not a shipped tonal scale."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Website Display",
+        "purpose": "Website introduction."
+      },
+      "launcher-display": {
+        "displayName": "Launcher Display",
+        "purpose": "App opening line."
+      },
+      "body": {
+        "displayName": "Bold Body",
+        "purpose": "Launcher descriptions."
+      },
+      "label": {
+        "displayName": "Action Label",
+        "purpose": "Medium button labels before responsive enlargement."
+      },
+      "compact-label": {
+        "displayName": "Compact Label",
+        "purpose": "Settings help and semantic labels."
+      },
+      "compact-body": {
+        "displayName": "Compact Body",
+        "purpose": "Launcher and modal supporting copy."
+      },
+      "supporting-body": {
+        "displayName": "Supporting Body",
+        "purpose": "Website supporting copy and footer links."
+      },
+      "body-large": {
+        "displayName": "Body Large",
+        "purpose": "Instructions and supporting paragraphs."
+      },
+      "waiting-copy": {
+        "displayName": "Waiting Copy",
+        "purpose": "Waiting loader and editorial support copy."
+      },
+      "category-label": {
+        "displayName": "Category Label",
+        "purpose": "Wider category selection controls."
+      },
+      "control-large": {
+        "displayName": "Control Large",
+        "purpose": "Shared name input and larger control labels."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Format headings and larger shared controls."
+      },
+      "section-title": {
+        "displayName": "Section Title",
+        "purpose": "Support sections and launcher party action."
+      },
+      "numeric-value": {
+        "displayName": "Numeric Value",
+        "purpose": "Slider readout and profile statistic."
+      },
+      "room-code": {
+        "displayName": "Room Code",
+        "purpose": "Wide join-code entry."
+      },
+      "statistic": {
+        "displayName": "Statistic",
+        "purpose": "Website statistics and new-game section heading."
+      },
+      "question-count": {
+        "displayName": "Question Count",
+        "purpose": "New-game question count."
+      },
+      "answer-value": {
+        "displayName": "Answer Value",
+        "purpose": "Numeric answer display and offline total."
+      },
+      "page-display": {
+        "displayName": "Page Display",
+        "purpose": "New-game heading."
+      },
+      "joining-display": {
+        "displayName": "Joining Display",
+        "purpose": "Join heading."
+      },
+      "lobby-display": {
+        "displayName": "Lobby Display",
+        "purpose": "Setup/lobby heading."
+      },
+      "results-display": {
+        "displayName": "Results Display",
+        "purpose": "Game-end heading."
+      },
+      "question": {
+        "displayName": "Question",
+        "purpose": "Shared question prompt."
+      }
+    },
+    "shadows": [
+      {
+        "name": "pop",
+        "value": "0 3px 8px rgba(33,24,18,0.12)",
+        "purpose": "Small elements."
+      },
+      {
+        "name": "pop-btn",
+        "value": "0 4px 10px rgba(33,24,18,0.16)",
+        "purpose": "Button lift."
+      },
+      {
+        "name": "pop-card",
+        "value": "0 8px 24px rgba(33,24,18,0.12)",
+        "purpose": "Shared panels."
+      },
+      {
+        "name": "pop-hero",
+        "value": "0 10px 28px rgba(33,24,18,0.14)",
+        "purpose": "Larger hero surfaces."
+      },
+      {
+        "name": "pop-dark",
+        "value": "0 5px 14px rgba(33,24,18,0.22)",
+        "purpose": "Dark surfaces."
+      },
+      {
+        "name": "atlas-globe",
+        "value": "0 20px 45px rgba(33,24,18,.16)",
+        "purpose": "Globe ambient depth."
+      },
+      {
+        "name": "daily-ticket",
+        "value": "drop-shadow(0 6px 10px rgba(33,24,18,0.16))",
+        "purpose": "Notched daily silhouette."
+      },
+      {
+        "name": "setup-dock",
+        "value": "0 -4px 16px rgba(33,24,18,0.08)",
+        "purpose": "Subtle separation above the fixed setup action dock."
+      }
+    ],
+    "motion": [
+      {
+        "name": "pop-spring",
+        "value": "spring(stiffness:260,damping:18)",
+        "purpose": "Existing Pop entry preset."
+      },
+      {
+        "name": "button-hover",
+        "value": "translateY(-2px)",
+        "purpose": "Shared button hover."
+      },
+      {
+        "name": "button-press",
+        "value": "translateY(1px)",
+        "purpose": "Shared button press."
+      },
+      {
+        "name": "route-wipe",
+        "value": "0.4s ease-out",
+        "purpose": "Web route entry; disabled in native mode."
+      },
+      {
+        "name": "reduced-route-fade",
+        "value": "0.15s ease-out",
+        "purpose": "Reduced-motion route fallback; atlas shell further caps CSS duration at .01ms."
+      },
+      {
+        "name": "waiting-morph",
+        "value": "1600ms per shape",
+        "purpose": "Country-outline waiting morph; requestAnimationFrame loop stops for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared PopButton primary variant, medium size.",
+      "html": "<button class=\"ds-button-primary\">Play a game</button>",
+      "css": ".ds-button-primary{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;background:#211812;color:#fff;border:none;border-radius:12px;padding:14px 28px;cursor:pointer;box-shadow:0 4px 10px rgba(33,24,18,.16);transition:transform .15s;}.ds-button-primary:hover{transform:translateY(-2px)}.ds-button-primary:active{transform:translateY(1px)}.ds-button-primary:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Shared PopButton secondary variant, medium size.",
+      "html": "<button class=\"ds-button-secondary\">Play a game</button>",
+      "css": ".ds-button-secondary{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;background:#fff;color:#211812;border:none;border-radius:12px;padding:14px 28px;cursor:pointer;box-shadow:0 4px 10px rgba(33,24,18,.16);transition:transform .15s;}.ds-button-secondary:hover{transform:translateY(-2px)}.ds-button-secondary:active{transform:translateY(1px)}.ds-button-secondary:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Action Button",
+      "kind": "button",
+      "refersTo": "button-action",
+      "description": "Shared PopButton action variant, medium size.",
+      "html": "<button class=\"ds-button-action\">Play a game</button>",
+      "css": ".ds-button-action{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;background:#CC6B49;color:#fff;border:none;border-radius:12px;padding:14px 28px;cursor:pointer;box-shadow:0 4px 10px rgba(33,24,18,.16);transition:transform .15s;}.ds-button-action:hover{transform:translateY(-2px)}.ds-button-action:active{transform:translateY(1px)}.ds-button-action:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Shared PopButton ghost variant, medium size.",
+      "html": "<button class=\"ds-button-ghost\">Play a game</button>",
+      "css": ".ds-button-ghost{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;background:transparent;color:#211812;border:4px solid #211812;border-radius:12px;padding:14px 28px;cursor:pointer;transition:transform .15s;}.ds-button-ghost:hover{transform:translateY(-2px)}.ds-button-ghost:active{transform:translateY(1px)}.ds-button-ghost:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Ghost Light Button",
+      "kind": "button",
+      "refersTo": "button-ghost-light",
+      "description": "Shared PopButton ghost-light variant, medium size.",
+      "html": "<button class=\"ds-button-ghost-light\">Play a game</button>",
+      "css": ".ds-button-ghost-light{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;background:transparent;color:#fff;border:3px solid #fff;border-radius:12px;padding:14px 28px;cursor:pointer;transition:transform .15s;}.ds-button-ghost-light:hover{transform:translateY(-2px)}.ds-button-ghost-light:active{transform:translateY(1px)}.ds-button-ghost-light:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Shared Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Softly elevated panel for grouped content.",
+      "html": "<section class=\"ds-panel\"><strong>How it works</strong><p>The closer your guess, the more points you bag.</p></section>",
+      "css": ".ds-panel{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;background:#fff;color:#211812;border-radius:16px;padding:24px;box-shadow:0 8px 24px rgba(33,24,18,.12)}.ds-panel p{font-size:18px;line-height:1.375}"
+    },
+    {
+      "name": "Globe Wordmark",
+      "kind": "nav",
+      "refersTo": "wordmark",
+      "description": "Straight home link with geographic identity.",
+      "html": "<a class=\"ds-wordmark\" href=\"#\"><svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><ellipse cx=\"12\" cy=\"12\" rx=\"4\" ry=\"10\"/><path d=\"M2 12h20\"/></svg>Population</a>",
+      "css": ".ds-wordmark{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;display:inline-flex;gap:10px;align-items:center;background:#fff;color:#CC6B49;border-radius:12px;padding:8px 12px;text-decoration:none;transition:transform .15s}.ds-wordmark:hover{transform:translateY(-2px)}.ds-wordmark:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Choice Option",
+      "kind": "button",
+      "refersTo": "choice-option",
+      "description": "Outlined, level answer control; rendered in its resting state.",
+      "html": "<button class=\"ds-choice\">Chile</button>",
+      "css": ".ds-choice{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.025em;font-weight:900;font-size:16px;line-height:1.25;background:#fff;color:#211812;border:2px solid #211812;border-radius:12px;padding:12px 16px;min-height:64px;box-shadow:0 4px 10px rgba(33,24,18,.16);transition:transform .15s}.ds-choice:hover{transform:translateY(-3px)}.ds-choice:active{transform:translateY(3px)}.ds-choice:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Shared Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Readable white name/text field with ink placeholder and focus ring.",
+      "html": "<input class=\"ds-input\" placeholder=\"Your name\" aria-label=\"Your name\">",
+      "css": ".ds-input{font-family:var(--font-gabarito),system-ui,sans-serif;font-size:24px;font-weight:800;background:#fff;color:#211812;border:none;border-radius:12px;padding:16px 24px}.ds-input::placeholder{color:rgba(33,24,18,.75)}.ds-input:hover{box-shadow:0 0 0 1px rgba(33,24,18,.2)}.ds-input:focus-visible{outline:2px solid #211812;outline-offset:4px;box-shadow:0 0 0 4px #211812}"
+    },
+    {
+      "name": "Semantic Label",
+      "kind": "chip",
+      "refersTo": "semantic-label",
+      "description": "A retained capsule for status meaning, not the primary action shape.",
+      "html": "<span class=\"ds-label\">Round 2 of 5</span>",
+      "css": ".ds-label{display:inline-flex;font-family:var(--font-gabarito),system-ui,sans-serif;font-size:14px;font-weight:900;background:#211812;color:#fff;border-radius:999px;padding:6px 12px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Playful Atlas",
+    "overview": "Population\u2019s visual world is a playful atlas: warm terrain colours, ocean teal, geographic linework and confident Gabarito typography. The geography gives the game its own identity while its approachable controls keep a group of friends moving into play.\n\nThe approved atlas refinement now extends across the website and launcher, setup and lobby, answering and reveal, results and highscores, daily play, offline practice, and support/legal surfaces. It preserves the Population name, maker credit, content and gameplay scoring. Shared controls, panels, typography, contrast and motion carry the same identity across these different tasks; their page compositions remain purpose-specific.\n\nCoverage describes implemented source and reviewed surfaces, not universal runtime verification. Authenticated profile and admin were reviewed in source only. The local Clerk provider has atlas appearance settings; externally hosted sign-in remains outside the app\u2019s styling control.",
+    "keyCharacteristics": [
+      "Geographic imagery and static meridians establish the atlas identity.",
+      "Level controls and shared panels use soft, blurred depth.",
+      "Earthy route colours and bold type keep the party-game energy."
+    ],
+    "rules": [
+      {
+        "name": "The Geographic Signature Rule",
+        "body": "Use the globe wordmark and static meridian linework as the shared identity cues.",
+        "section": "overview"
+      },
+      {
+        "name": "The Soft Depth Rule",
+        "body": "Use the implemented blurred Pop shadows for controls and panels; avoid restoring hard offset block shadows to the refined primitives.",
+        "section": "elevation & depth"
+      },
+      {
+        "name": "The Level Surface Rule",
+        "body": "Controls, wordmarks, tiles and panels stay level; motion communicates hover, press, entry or celebration rather than idle drift.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do use the existing earthy palette and Gabarito family.",
+      "Do keep controls, wordmarks, tiles and panels level, with purposeful press or entry feedback.",
+      "Do place the website globe after the actions when the intro stacks on mobile.",
+      "Do preserve readable focus treatments, native safe areas and the maker credit.",
+      "Do use ink for small labels on coral or mint and light text on teal, brown or ink.",
+      "Do retain circles for geographic and player marks and pills for semantic labels, scores and switches."
+    ],
+    "donts": [
+      "Don't restore floating category chips, decorative tilts, constant CTA bobbing or offset block shadows.",
+      "Don't substitute invented continent silhouettes for the existing world-atlas vector geography.",
+      "Don't treat confetti or real device-orientation handling as decorative rotation defects.",
+      "Don't change gameplay scoring, content or launcher priorities as part of a visual refinement.",
+      "Don't canonize isolated source outliers or claim externally hosted authentication and source-only reviews were visually verified."
+    ]
+  }
+}

@@ -1,0 +1,222 @@
+[
+  {
+    "device": "desktop",
+    "route": "/new-game",
+    "heading": "Build your quiz",
+    "overflow": false,
+    "buttons": [
+      "",
+      "Sign in",
+      "",
+      "",
+      "Any",
+      "Easy",
+      "Medium",
+      "Hard",
+      "Select all",
+      "Flags",
+      "Country Shapes",
+      "Borders"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/daily",
+    "overflow": false,
+    "buttons": [
+      "",
+      "Lock it in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/how-to-play",
+    "heading": "How to play",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/about",
+    "heading": "About Population",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/contact",
+    "heading": "Get In Touch",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/privacy",
+    "heading": "Privacy Policy",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/highscores",
+    "heading": "Hall of fame",
+    "overflow": false,
+    "buttons": [
+      "Sign in",
+      "Highest scores",
+      "Points per game",
+      "Most bullseyes"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/go-ad-free",
+    "heading": "Remove all ads",
+    "overflow": false,
+    "buttons": [
+      "Sign in",
+      "Sign in to buy",
+      "Sign in to buy",
+      "Sign in to buy"
+    ],
+    "errors": []
+  },
+  {
+    "device": "desktop",
+    "route": "/profile",
+    "heading": "Sign in to Population",
+    "overflow": false,
+    "buttons": [
+      "Continue with Google",
+      "",
+      "",
+      "Continue"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/new-game",
+    "heading": "Build your quiz",
+    "overflow": false,
+    "buttons": [
+      "",
+      "Sign in",
+      "",
+      "",
+      "Any",
+      "Easy",
+      "Medium",
+      "Hard",
+      "Select all",
+      "Flags",
+      "Country Shapes",
+      "Borders"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/daily",
+    "overflow": false,
+    "buttons": [
+      "",
+      "Lock it in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/how-to-play",
+    "heading": "How to play",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/about",
+    "heading": "About Population",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/contact",
+    "heading": "Get In Touch",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/privacy",
+    "heading": "Privacy Policy",
+    "overflow": false,
+    "buttons": [
+      "Sign in"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/highscores",
+    "heading": "Hall of fame",
+    "overflow": false,
+    "buttons": [
+      "Sign in",
+      "Highest scores",
+      "Points per game",
+      "Most bullseyes"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/go-ad-free",
+    "heading": "Remove all ads",
+    "overflow": false,
+    "buttons": [
+      "Sign in",
+      "Sign in to buy",
+      "Sign in to buy",
+      "Sign in to buy"
+    ],
+    "errors": []
+  },
+  {
+    "device": "mobile",
+    "route": "/profile",
+    "heading": "Sign in to Population",
+    "overflow": false,
+    "buttons": [
+      "Continue with Google",
+      "",
+      "",
+      "Continue"
+    ],
+    "errors": []
+  }
+]
