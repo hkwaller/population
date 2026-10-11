@@ -67,7 +67,7 @@ export function FancyModal({
           {title ? (
             <DialogHeader>
               <h2
-                className="text-4xl font-extrabold uppercase text-ish-cobalt transform -rotate-2 mb-4 mt-6"
+                className="text-4xl font-extrabold uppercase text-ish-cobalt transform mb-4 mt-6"
                 id="modal-description"
               >
                 {title}
@@ -98,7 +98,7 @@ export function FancyModal({
           {title && (
             <DrawerTitle>
               <h2
-                className="text-3xl font-extrabold uppercase text-ish-cobalt transform -rotate-2 mb-4"
+                className="text-3xl font-extrabold uppercase text-ish-cobalt transform mb-4"
                 id="drawer-title"
               >
                 {title || 'Modal'}

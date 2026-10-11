@@ -57,7 +57,7 @@ export default function JoinEntryPage() {
 
         <form onSubmit={handleSubmit} className="mt-10 w-full">
           <div
-            className="flex items-center gap-2 rounded-pill bg-white p-2 pl-6"
+            className="flex items-center gap-2 rounded-xl bg-white p-2 pl-6"
             style={error ? { boxShadow: `0 0 0 5px ${POP.coral}` } : undefined}
           >
             <input
@@ -67,16 +67,17 @@ export default function JoinEntryPage() {
                 setError(false)
                 setNotARoom(false)
               }}
+              aria-label="Room code"
               placeholder="sleepy-fox-42"
               autoComplete="off"
               spellCheck={false}
-              className="min-w-0 flex-1 bg-transparent text-2xl font-black text-pop-ink outline-none placeholder:text-[rgba(23,18,20,0.35)] md:text-[40px]"
+              className="min-w-0 flex-1 bg-transparent text-2xl font-black text-pop-ink outline-none placeholder:text-pop-ink/75 md:text-[40px]"
             />
             <motion.button
               type="submit"
               whileHover={{ y: -2 }}
               whileTap={{ y: 4 }}
-              className="flex shrink-0 items-center gap-2 rounded-pill px-6 py-4 text-xl font-black text-white md:text-2xl"
+              className="flex shrink-0 items-center gap-2 rounded-xl px-6 py-4 text-xl font-black text-white md:text-2xl"
               style={{ background: POP.coral }}
             >
               Join <ArrowRight size={24} />
@@ -90,7 +91,7 @@ export default function JoinEntryPage() {
             onClick={handleScan}
             whileHover={{ y: -2 }}
             whileTap={{ y: 4 }}
-            className="mt-5 inline-flex items-center gap-2 rounded-pill border-4 border-white px-6 py-3 text-xl font-black text-white"
+            className="mt-5 inline-flex items-center gap-2 rounded-xl border-4 border-white px-6 py-3 text-xl font-black text-white"
           >
             <ScanLine size={24} /> Scan the QR code
           </motion.button>
@@ -103,7 +104,7 @@ export default function JoinEntryPage() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-              className="mt-5 inline-flex items-center gap-2 rounded-pill px-5 py-3 text-lg font-black text-white"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-lg font-black text-white"
               style={{ background: POP.coral }}
             >
               <CircleAlert size={20} /> Hmm, no party at that code. Typo maybe?
@@ -115,7 +116,7 @@ export default function JoinEntryPage() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-              className="mt-5 inline-flex items-center gap-2 rounded-pill px-5 py-3 text-lg font-black text-white"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-lg font-black text-white"
               style={{ background: POP.coral }}
             >
               <CircleAlert size={20} /> That QR code isn&apos;t a Population room.

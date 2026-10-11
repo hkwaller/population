@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { ClerkProvider } from '@clerk/nextjs'
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/site'
 import { JsonLd } from './components/JsonLd'
+import { POP } from './components/pop/theme'
 import { NativeBoot } from '@/components/NativeBoot'
 
 // Self-hosted (Google Fonts' latin subset of the variable font) so the build
@@ -91,7 +92,17 @@ export default function RootLayout({
             },
           ]}
         />
-        <ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            variables: {
+              colorPrimary: POP.cobalt,
+              colorText: POP.ink,
+              colorBackground: POP.paper,
+              borderRadius: '12px',
+              fontFamily: 'var(--font-gabarito), system-ui, sans-serif',
+            },
+          }}
+        >
           <NativeBoot />
           {/* <CSPostHogProvider> */}
           {children}

@@ -44,17 +44,19 @@ function RankModalInner({
   return createPortal(
     <div
       className="fixed inset-0 z-[60] flex flex-col overflow-hidden"
-      style={{ background: POP.cobalt, touchAction: 'none' }}
+      style={{
+        background: POP.cobalt,
+        touchAction: 'none',
+        paddingTop: 'var(--safe-top)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+      }}
     >
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-7 px-5 py-8">
         <div className="text-center">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-white/60">
-            Drag to sort
-          </p>
           <h2 className="mt-2 text-balance text-2xl font-black leading-tight text-white">
             {question.question}
           </h2>
-          <p className="mt-1.5 text-sm font-bold text-white/70">Most populous at the top</p>
+          <p className="mt-1.5 text-sm font-bold text-white/90">Most populous at the top</p>
         </div>
 
         <Reorder.Group
@@ -68,8 +70,8 @@ function RankModalInner({
             <Reorder.Item
               key={label}
               value={label}
-              whileDrag={{ scale: 1.04, boxShadow: '0 12px 0 rgba(0,0,0,0.22)' }}
-              className="flex cursor-grab touch-none select-none items-center gap-3 rounded-pill border-4 border-pop-ink bg-white px-4 py-4 shadow-pop-btn active:cursor-grabbing"
+              whileDrag={{ scale: 1.04, boxShadow: '0 8px 24px rgba(33,24,18,0.16)' }}
+              className="flex cursor-grab touch-none select-none items-center gap-3 rounded-xl border-4 border-pop-ink bg-white px-4 py-4 shadow-pop-btn active:cursor-grabbing"
               style={{ touchAction: 'none' }}
             >
               <span
@@ -89,7 +91,6 @@ function RankModalInner({
         <PopButton
           variant="secondary"
           size="lg"
-          rotate={-1}
           className="mx-auto w-full max-w-md"
           disabled={locking}
           onClick={() => {

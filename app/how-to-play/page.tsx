@@ -16,7 +16,7 @@ export default function HowToPlayPage() {
       <div className="mx-auto max-w-2xl px-5 pb-32 pt-6 md:pt-10">
         <motion.h1
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1, rotate: -1.5 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={POP_SPRING}
           className="mb-10 text-center font-black tracking-[-0.02em] text-pop-ink"
           style={{ fontSize: 'clamp(48px, 9vw, 76px)' }}
@@ -27,10 +27,10 @@ export default function HowToPlayPage() {
         <HowToPlayContent />
 
         <div className="mt-12 flex flex-wrap justify-center gap-4">
-          <PopButton href="/new-game" variant="primary" size="lg" rotate={-1}>
+          <PopButton href="/new-game" variant="primary" size="lg">
             Start a party
           </PopButton>
-          <PopButton href="/daily" variant="secondary" size="lg" rotate={1}>
+          <PopButton href="/daily" variant="secondary" size="lg">
             🗓️ Play the daily
           </PopButton>
         </div>

@@ -29,11 +29,13 @@ export function QuestionInput({
   question,
   onAnswer,
   disabled = false,
+  tone = 'dark',
   confidenceMode: confidenceModeProp,
 }: {
   question: TQuestion
   onAnswer: (value: AnswerValue, elapsedMs: number, extra?: AnswerExtra) => void
   disabled?: boolean
+  tone?: 'light' | 'dark'
   /** Override the store setting (used by the preview harness). */
   confidenceMode?: boolean
 }) {
@@ -99,7 +101,12 @@ export function QuestionInput({
 
   if (question.type === 'rank') {
     return (
-      <RankInput question={question} onAnswer={(v, ms) => onAnswer(v, ms)} disabled={disabled} />
+      <RankInput
+        tone={tone}
+        question={question}
+        onAnswer={(v, ms) => onAnswer(v, ms)}
+        disabled={disabled}
+      />
     )
   }
 

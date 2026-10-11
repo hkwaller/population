@@ -258,10 +258,7 @@ function BreakdownDemo() {
 function PreviewCard({ question }: { question: TQuestion }) {
   const [answered, setAnswered] = useState<{ value: AnswerValue; score: number } | null>(null)
   return (
-    <section className="rounded-[32px] bg-white p-6 shadow-pop-card">
-      <div className="mb-2 text-xs font-black uppercase tracking-wide text-pop-ink/40">
-        {question.type} · {question.category}
-      </div>
+    <section className="rounded-card bg-white p-6 shadow-pop-card">
       <div className="mb-6 flex flex-col items-center gap-4">
         <QuestionPrompt prompt={question.prompt} fallbackText={question.question} />
       </div>
@@ -276,7 +273,9 @@ function PreviewCard({ question }: { question: TQuestion }) {
         <div className="mt-4 rounded-2xl bg-pop-ink px-4 py-3 text-center text-white">
           <span className="font-black">
             You: {formatAnswerValue(answered.value)} · scored {answered.score} · answer{' '}
-            {'answer' in question ? formatAnswerValue((question as { answer?: AnswerValue }).answer) : '(see reveal)'}
+            {'answer' in question
+              ? formatAnswerValue((question as { answer?: AnswerValue }).answer)
+              : '(see reveal)'}
           </span>
         </div>
       )}
@@ -289,8 +288,8 @@ function RevealDemo() {
   const guess = { lat: 20, lng: 10 }
   const answer = { lat: 1, lng: 38 }
   return (
-    <section className="rounded-[32px] bg-white p-6 shadow-pop-card">
-      <div className="mb-4 text-xs font-black uppercase tracking-wide text-pop-ink/40">
+    <section className="rounded-card bg-white p-6 shadow-pop-card">
+      <div className="mb-4 text-xs font-black uppercase tracking-wide text-pop-ink/75">
         reveal states
       </div>
       <ChoiceOptions
@@ -298,10 +297,10 @@ function RevealDemo() {
         selected="Greece"
         correct="Italy"
       />
-      <div className="mt-6 overflow-hidden rounded-[24px] border-4 border-pop-ink">
+      <div className="mt-6 overflow-hidden rounded-card border-4 border-pop-ink">
         <WorldMap value={guess} answer={answer} interactive={false} />
       </div>
-      <p className="mt-2 text-center font-bold text-pop-ink/60">
+      <p className="mt-2 text-center font-bold text-pop-ink/75">
         distance: {mapDistanceKm(guess, answer)} km
       </p>
       <div className="mt-8">

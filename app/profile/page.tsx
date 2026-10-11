@@ -62,12 +62,7 @@ export default function Profile() {
       <PopHeader
         logoTone="ink"
         right={
-          <PopButton
-            variant="ghost"
-            size="sm"
-            rotate={2}
-            onClick={() => signOut({ redirectUrl: '/' })}
-          >
+          <PopButton variant="ghost" size="sm" onClick={() => signOut({ redirectUrl: '/' })}>
             Sign out
           </PopButton>
         }
@@ -76,16 +71,17 @@ export default function Profile() {
       <div className="mx-auto max-w-5xl px-5 pb-24 pt-6 md:pt-10">
         <h1
           className="font-black tracking-[-0.02em] text-pop-ink"
-          style={{ fontSize: 'clamp(48px, 9vw, 72px)', rotate: '-1.5deg' }}
+          style={{ fontSize: 'clamp(48px, 9vw, 72px)' }}
         >
           Your sticker
         </h1>
 
         <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Editor */}
-          <div className="rounded-[40px] bg-white p-7 shadow-pop-card" style={{ rotate: '-1deg' }}>
+          <div className="rounded-card bg-white p-7 shadow-pop-card">
             <label className="block text-lg font-black text-pop-ink">Name</label>
             <input
+              aria-label="Player name"
               value={name}
               onChange={(e) => set({ display_name: e.target.value })}
               className="mt-2 w-full rounded-pill px-5 py-3 text-xl font-extrabold text-pop-ink outline-none focus:ring-4 focus:ring-pop-ink"
@@ -101,11 +97,10 @@ export default function Profile() {
                   <button
                     key={icon.name}
                     onClick={() => set({ icon: icon.name })}
-                    className="flex h-[62px] w-[62px] items-center justify-center rounded-[20px]"
+                    className="flex h-[62px] w-[62px] items-center justify-center rounded-card"
                     style={{
                       background: sel ? stickerFill(colorId) : POP.paper,
                       border: sel ? '4px solid #211812' : 'none',
-                      rotate: sel ? `${i % 2 ? 3 : -3}deg` : '0deg',
                     }}
                   >
                     {Icon && createElement(Icon, { size: 26, className: 'text-pop-ink' })}
@@ -120,7 +115,9 @@ export default function Profile() {
                 <button
                   key={c.id}
                   onClick={() => set({ preferred_color: c.id })}
-                  className={`h-12 w-12 rounded-full ${colorId === c.id ? 'border-4 border-pop-ink' : ''}`}
+                  className={`h-12 w-12 rounded-full ${
+                    colorId === c.id ? 'border-4 border-pop-ink' : ''
+                  }`}
                   style={{ background: c.hex }}
                   aria-label={c.id}
                 />
@@ -148,14 +145,14 @@ export default function Profile() {
 
           {/* Preview + track record */}
           <div className="flex flex-col gap-6">
-            <div className="rounded-[32px] bg-white/40 p-6">
-              <span className="text-sm font-black uppercase tracking-wide text-pop-ink/60">
+            <div className="rounded-card bg-white/40 p-6">
+              <span className="text-sm font-black uppercase tracking-wide text-pop-ink/75">
                 Live preview
               </span>
               <div className="mt-4 flex justify-center">
                 <div
                   className="inline-flex min-w-[140px] flex-col items-center gap-1 rounded-sticker border-4 border-white px-6 py-5 shadow-pop"
-                  style={{ background: stickerFill(colorId), rotate: '-2deg' }}
+                  style={{ background: stickerFill(colorId) }}
                 >
                   <div className="flex items-center gap-2">
                     {PreviewIcon &&
@@ -166,7 +163,7 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="rounded-[32px] bg-white p-6 shadow-pop-card">
+            <div className="rounded-card bg-white p-6 shadow-pop-card">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-black text-pop-ink">Your track record</span>
               </div>
@@ -199,7 +196,7 @@ export default function Profile() {
                           <div className="truncate text-lg font-extrabold text-pop-ink">
                             {game.gameId ?? game.id}
                           </div>
-                          <div className="text-xs font-bold text-pop-ink/50">
+                          <div className="text-xs font-bold text-pop-ink/75">
                             {new Date(game.finished_at).toLocaleDateString()} ·{' '}
                             {game.players?.length ?? 0} players
                           </div>
@@ -211,7 +208,7 @@ export default function Profile() {
                     )
                   })}
                 {games.length === 0 && (
-                  <p className="text-lg font-bold text-pop-ink/50">No games yet - start a party!</p>
+                  <p className="text-lg font-bold text-pop-ink/75">No games yet - start a party!</p>
                 )}
               </div>
             </div>
@@ -255,7 +252,7 @@ function DeleteAccount({ onDeleted }: { onDeleted: () => Promise<void> }) {
         <button
           type="button"
           onClick={() => setStep('confirm')}
-          className="text-sm font-bold text-pop-ink/50 underline decoration-dotted hover:text-pop-ink/80"
+          className="text-sm font-bold text-pop-ink/75 underline decoration-dotted hover:text-pop-ink/80"
         >
           Delete my account
         </button>
@@ -263,9 +260,9 @@ function DeleteAccount({ onDeleted }: { onDeleted: () => Promise<void> }) {
       {step !== 'idle' && (
         <div className="w-full max-w-md rounded-card bg-white p-6 shadow-pop-card">
           <p className="text-lg font-black text-pop-ink">Delete your account for good?</p>
-          <p className="mt-2 text-sm font-bold text-pop-ink/60">
-            Your profile, stats and game history go, and any ad-free subscription is cancelled.
-            This can&apos;t be undone.
+          <p className="mt-2 text-sm font-bold text-pop-ink/75">
+            Your profile, stats and game history go, and any ad-free subscription is cancelled. This
+            can&apos;t be undone.
           </p>
           {step === 'failed' && (
             <p className="mt-3 text-sm font-black" style={{ color: POP.coral }}>
@@ -273,16 +270,10 @@ function DeleteAccount({ onDeleted }: { onDeleted: () => Promise<void> }) {
             </p>
           )}
           <div className="mt-5 flex justify-center gap-3">
-            <PopButton variant="secondary" size="sm" rotate={0} onClick={() => setStep('idle')}>
+            <PopButton variant="secondary" size="sm" onClick={() => setStep('idle')}>
               Keep it
             </PopButton>
-            <PopButton
-              variant="primary"
-              size="sm"
-              rotate={0}
-              disabled={step === 'busy'}
-              onClick={remove}
-            >
+            <PopButton variant="primary" size="sm" disabled={step === 'busy'} onClick={remove}>
               {step === 'busy' ? 'Deleting…' : 'Delete'}
             </PopButton>
           </div>
@@ -296,7 +287,7 @@ function Stat({ value, label }: { value: number; label: string }) {
   return (
     <div className="text-center">
       <div className="text-[34px] font-black leading-none text-pop-ink">{value}</div>
-      <div className="text-sm font-bold text-pop-ink/60">{label}</div>
+      <div className="text-sm font-bold text-pop-ink/75">{label}</div>
     </div>
   )
 }

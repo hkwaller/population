@@ -38,7 +38,7 @@ export function RouteReveal({
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <p className="text-base font-black uppercase tracking-wide text-pop-ink/50">
+      <p className="text-base font-black uppercase tracking-wide text-pop-ink/75">
         Shortest route · {question.optimalSteps} hops
       </p>
       <RouteMap
@@ -53,7 +53,7 @@ export function RouteReveal({
         {path.map((cca3, i) => (
           <Fragment key={`${cca3}-${i}`}>
             {i > 0 && (
-              <ChevronRight size={18} strokeWidth={3} className="mt-4 flex-none text-pop-ink/40" />
+              <ChevronRight size={18} strokeWidth={3} className="mt-4 flex-none text-pop-ink/75" />
             )}
             <RouteFlag cca3={cca3} size={44} />
           </Fragment>

@@ -59,7 +59,7 @@ export function NamePromptModal({
           exit={{ opacity: 0 }}
           onClick={onClose}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(23,18,20,0.55)' }}
+          style={{ background: 'rgba(33,24,18,0.55)' }}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -67,13 +67,15 @@ export function NamePromptModal({
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md rounded-[36px] bg-pop-paper p-6 md:p-8"
-            style={{ boxShadow: '0 16px 0 rgba(0,0,0,0.2)' }}
+            className="relative w-full max-w-md rounded-card bg-pop-paper p-6 md:p-8"
+            style={{ boxShadow: '0 8px 24px rgba(33,24,18,0.16)' }}
           >
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-3xl font-black leading-none text-pop-ink">What&apos;s your name?</h2>
-                <p className="mt-2 text-[15px] font-bold leading-snug text-pop-ink/60">
+                <h2 className="text-3xl font-black leading-none text-pop-ink">
+                  What&apos;s your name?
+                </h2>
+                <p className="mt-2 text-[15px] font-bold leading-snug text-pop-ink/75">
                   This is how you&apos;ll show up on the stickers and the leaderboard.
                 </p>
               </div>
@@ -87,13 +89,14 @@ export function NamePromptModal({
             </div>
 
             <input
+              aria-label="Player name"
               ref={inputRef}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && submit()}
               maxLength={15}
               placeholder="your name"
-              className="w-full rounded-pill px-5 py-3.5 text-xl font-extrabold text-pop-ink outline-none focus:ring-4 focus:ring-pop-ink"
+              className="w-full rounded-xl px-5 py-3.5 text-xl font-extrabold text-pop-ink outline-none focus:ring-4 focus:ring-pop-ink"
               style={{ background: POP.paper }}
             />
 

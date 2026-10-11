@@ -46,7 +46,7 @@ const Slider = ({
     <div
       className={`bg-ish-mint border-8 border-ish-ink ${
         small ? 'p-4' : 'p-6'
-      } transform -rotate-1 max-w-[400px] mx-auto w-full`}
+      } transform max-w-[400px] mx-auto w-full`}
     >
       <div className="flex justify-between text-xl font-bold mb-6 mx-auto">
         <motion.div className="relative pt-3" whileHover="visible" initial="hidden">
@@ -66,7 +66,7 @@ const Slider = ({
         </motion.div>
         <motion.span
           layout
-          className="cursor-pointer text-2xl text-ish-coral bg-white px-3 py-1 border-4 border-ish-ink transform -rotate-2 text-wrap break-words text-center font-extrabold"
+          className="cursor-pointer text-2xl text-ish-coral bg-white px-3 py-1 border-4 border-ish-ink transform text-wrap break-words text-center font-extrabold"
           onClick={openManualModal}
         >
           {value}

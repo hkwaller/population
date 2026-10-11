@@ -81,16 +81,16 @@ const config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
         pill: '999px',
-        card: '36px',
-        sticker: '24px',
+        card: '16px',
+        sticker: '12px',
       },
       boxShadow: {
         // Signature hard offset, no blur
-        pop: '0 6px 0 rgba(0,0,0,0.15)',
-        'pop-btn': '0 8px 0 rgba(0,0,0,0.22)',
-        'pop-card': '0 12px 0 rgba(0,0,0,0.15)',
-        'pop-hero': '0 14px 0 rgba(0,0,0,0.15)',
-        'pop-dark': '0 8px 0 rgba(0,0,0,0.3)',
+        pop: '0 3px 8px rgba(33,24,18,0.12)',
+        'pop-btn': '0 4px 10px rgba(33,24,18,0.16)',
+        'pop-card': '0 8px 24px rgba(33,24,18,0.12)',
+        'pop-hero': '0 10px 28px rgba(33,24,18,0.14)',
+        'pop-dark': '0 5px 14px rgba(33,24,18,0.22)',
       },
       keyframes: {
         'accordion-down': {

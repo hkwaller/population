@@ -20,10 +20,8 @@ export const GameInfo = () => {
 
   return (
     <motion.div
-      className="bg-ish-lime border-8 border-ish-ink p-6 transform -rotate-2 shadow-[6px_6px_0px_#211812]"
-      whileHover={{
-        rotate: 3,
-      }}
+      className="bg-ish-lime border-8 border-ish-ink p-6 transform shadow-pop-card"
+      whileHover={{}}
     >
       <h2 className="text-xl md:text-3xl font-bold mb-4 uppercase">Features</h2>
       <ul className="list-disc list-inside text-md md:text-xl">

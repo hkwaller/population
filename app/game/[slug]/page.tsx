@@ -99,7 +99,7 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
               <Category
                 question={currentQuestion}
                 bg={POP.sunshine}
-                className="hidden rotate-2 border-[3px] border-white text-base sm:inline-block"
+                className="hidden border-[3px] border-white text-base sm:inline-block"
               />
             )}
             <span className="rounded-pill bg-white px-3 py-2 text-base font-black text-pop-ink sm:px-4">
@@ -239,7 +239,7 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
             </div>
           )}
           {me?.localPlayer && !myAnswered && currentQuestion?.type === 'map' && (
-            <div className="mb-4 overflow-hidden rounded-[20px] border-4 border-pop-ink">
+            <div className="mb-4 overflow-hidden rounded-card border-4 border-pop-ink">
               <WorldMap value={mapPin} onPick={setMapPin} />
             </div>
           )}
@@ -317,7 +317,6 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
               <PopButton
                 variant="primary"
                 size="lg"
-                rotate={-1}
                 className="w-full"
                 disabled={currentQuestion.type === 'map' && !mapPin}
                 onClick={() =>

@@ -28,7 +28,7 @@ export default function AboutPage() {
       <main className="mx-auto flex max-w-3xl flex-col px-5 pb-28 pt-6 md:pt-10">
         <motion.h1
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1, rotate: -1.5 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={POP_SPRING}
           className="mb-4 text-center font-black tracking-[-0.02em] text-white"
           style={{ fontSize: 'clamp(48px, 9vw, 80px)' }}
@@ -44,7 +44,7 @@ export default function AboutPage() {
           {/* The twist */}
           <motion.section
             initial={{ scale: 0.94, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, rotate: -1 }}
+            animate={{ scale: 1, opacity: 1 }}
             transition={{ ...POP_SPRING, delay: 0.05 }}
             className="rounded-card bg-white p-7 shadow-pop-card"
           >
@@ -60,7 +60,7 @@ export default function AboutPage() {
           {/* How it works */}
           <motion.section
             initial={{ scale: 0.94, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, rotate: 1 }}
+            animate={{ scale: 1, opacity: 1 }}
             transition={{ ...POP_SPRING, delay: 0.1 }}
             className="rounded-card border-4 border-white p-7"
             style={{ background: POP.cobalt }}
@@ -71,7 +71,7 @@ export default function AboutPage() {
                 <li key={s.n} className="flex items-center gap-4">
                   <span
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[22px] font-black text-white shadow-pop-sm"
-                    style={{ background: s.bg, rotate: `${i % 2 === 0 ? -4 : 4}deg` }}
+                    style={{ background: s.bg }}
                   >
                     {s.n}
                   </span>
@@ -84,7 +84,7 @@ export default function AboutPage() {
           {/* The categories */}
           <motion.section
             initial={{ scale: 0.94, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, rotate: -1 }}
+            animate={{ scale: 1, opacity: 1 }}
             transition={{ ...POP_SPRING, delay: 0.15 }}
             className="rounded-card p-7 shadow-pop-card"
             style={{ background: POP.sunshine }}
@@ -113,7 +113,7 @@ export default function AboutPage() {
           {/* Who made this */}
           <motion.section
             initial={{ scale: 0.94, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, rotate: 1 }}
+            animate={{ scale: 1, opacity: 1 }}
             transition={{ ...POP_SPRING, delay: 0.2 }}
             className="rounded-card bg-pop-ink p-7"
           >
@@ -139,10 +139,10 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <PopButton href="/new-game" variant="secondary" size="lg" rotate={-1}>
+          <PopButton href="/new-game" variant="secondary" size="lg">
             Start a party
           </PopButton>
-          <PopButton href="/how-to-play" variant="ghostLight" size="lg" rotate={1}>
+          <PopButton href="/how-to-play" variant="ghostLight" size="lg">
             How to play
           </PopButton>
         </div>

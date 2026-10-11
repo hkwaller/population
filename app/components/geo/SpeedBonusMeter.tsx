@@ -14,13 +14,7 @@ import { POP } from '../pop/theme'
  * `startedAt` is a performance.now() timestamp captured when the question was
  * shown. When `active` goes false (answer locked) the bar freezes where it is.
  */
-export function SpeedBonusMeter({
-  startedAt,
-  active,
-}: {
-  startedAt: number
-  active: boolean
-}) {
+export function SpeedBonusMeter({ startedAt, active }: { startedAt: number; active: boolean }) {
   const [fraction, setFraction] = useState(1)
 
   useEffect(() => {
@@ -43,7 +37,7 @@ export function SpeedBonusMeter({
   return (
     <div className="mb-3 select-none">
       <div className="mb-1.5 flex items-center justify-between px-1">
-        <span className="text-sm font-black uppercase tracking-wide text-pop-ink/60">
+        <span className="text-sm font-black uppercase tracking-wide text-pop-ink/75">
           Speed bonus
         </span>
         <span className="text-sm font-black tabular-nums text-pop-ink/80">

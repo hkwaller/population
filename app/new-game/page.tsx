@@ -35,7 +35,7 @@ const CHIP_CYCLE: string[] = [
   '#ffffff',
 ]
 // Cobalt/coral/grape need light text; sunshine/bubblegum/white keep ink text.
-const DARK_FILLS = new Set<string>([POP.coral, POP.cobalt, POP.grape])
+const DARK_FILLS = new Set<string>([POP.cobalt, POP.grape])
 
 // How long the pointer must rest on a chip before its explainer appears.
 const HOVER_DELAY_MS = 500
@@ -125,8 +125,8 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
 
       <div className="mx-auto max-w-4xl px-5 pb-52 pt-6 md:pt-10">
         <motion.h1
-          initial={{ scale: 0.9, opacity: 0, rotate: -4 }}
-          animate={{ scale: 1, opacity: 1, rotate: -1.5 }}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={POP_SPRING}
           className="pop-textshadow text-center font-black tracking-[-0.02em] text-pop-ink"
           style={{ fontSize: 'clamp(48px, 8vw, 72px)' }}
@@ -135,10 +135,10 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
         </motion.h1>
 
         {/* Question count stepper */}
-        <div className="mx-auto mt-10 flex max-w-xl items-center justify-between gap-4 rounded-pill bg-white px-7 py-4 shadow-pop-card">
+        <div className="mx-auto mt-10 flex max-w-xl items-center justify-between gap-4 rounded-card bg-white px-5 py-4 shadow-pop-card">
           <span className="text-xl font-black text-pop-ink md:text-2xl">How many questions?</span>
           <div className="flex items-center gap-4">
-            <StepBtn onClick={() => setCount(amountQuestions - 1)}>
+            <StepBtn label="Fewer questions" onClick={() => setCount(amountQuestions - 1)}>
               <Minus size={24} strokeWidth={3.5} />
             </StepBtn>
             <div className="grid w-14 place-items-center overflow-hidden">
@@ -156,14 +156,14 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
                 </motion.span>
               </AnimatePresence>
             </div>
-            <StepBtn onClick={() => setCount(amountQuestions + 1)}>
+            <StepBtn label="More questions" onClick={() => setCount(amountQuestions + 1)}>
               <Plus size={24} strokeWidth={3.5} />
             </StepBtn>
           </div>
         </div>
 
         {/* Difficulty */}
-        <div className="mx-auto mt-6 flex max-w-xl flex-col gap-3 rounded-3xl bg-white px-7 py-5 shadow-pop-card">
+        <div className="mx-auto mt-6 flex max-w-xl flex-col gap-3 rounded-card bg-white px-7 py-5 shadow-pop-card">
           <span className="text-xl font-black text-pop-ink md:text-2xl">Difficulty</span>
           <div className="flex flex-wrap gap-2.5">
             {DIFFICULTY_OPTIONS.map((opt) => {
@@ -172,13 +172,13 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
                 <button
                   key={opt.id}
                   onClick={() => updateGame({ selectedDifficulty: opt.id })}
-                  className={`flex-1 rounded-pill px-4 py-2.5 text-base font-black transition-colors ${
+                  className={`flex-1 rounded-xl px-4 py-2.5 text-base font-black transition-colors ${
                     active ? 'border-4 border-white shadow-pop' : 'border-2 border-pop-ink/15'
                   }`}
                   style={
                     active
                       ? { background: opt.fill, color: opt.light ? '#fff' : POP.ink }
-                      : { background: 'rgba(255,255,255,0.6)', color: 'rgba(23,18,20,0.5)' }
+                      : { background: 'rgba(255,255,255,0.6)', color: POP.ink }
                   }
                 >
                   {opt.label}
@@ -186,7 +186,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
               )
             })}
           </div>
-          <p className="text-sm font-bold text-pop-ink/60">
+          <p className="text-sm font-bold text-pop-ink/75">
             Difficulty scales with how well-known each country is - Hard leans on the obscure ones.
           </p>
         </div>
@@ -196,8 +196,8 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           Pick your categories
         </h2>
         <p className="mt-3 text-center text-lg font-bold text-pop-ink/70">
-          Tap to toggle - greyed-out stickers sit this round out. Hold one to see what it is.
-          Flags, Borders and Capitals let you pick options or typing.
+          Tap to toggle - greyed-out stickers sit this round out. Hold one to see what it is. Flags,
+          Borders and Capitals let you pick options or typing.
         </p>
 
         <CategorySection
@@ -237,7 +237,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
       </div>
 
       {/* CTA - a live "boarding pass" reads back the quiz you built, then launches it. */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-20 flex flex-col items-center gap-3 px-5">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2 bg-pop-paper px-5 pb-[calc(16px+env(safe-area-inset-bottom,0px))] pt-3 shadow-[0_-4px_16px_rgba(33,24,18,0.08)]">
         <QuizTicket
           count={amountQuestions}
           packs={selectedCategories.length}
@@ -248,7 +248,6 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
           <PopButton
             variant="primary"
             size="lg"
-            rotate={-1}
             disabled={!canStart}
             onClick={async () => {
               if (!canStart) return
@@ -296,7 +295,8 @@ function CategorySection({
   const [openMode, setOpenMode] = useState<string | null>(null)
   const isDesktop = useMediaQuery('(min-width: 640px)')
   const openCat = cats.find((c) => c.id === openMode)
-  const openModeValue: AnswerMode = openMode && answerModes[openMode] === 'input' ? 'input' : 'choice'
+  const openModeValue: AnswerMode =
+    openMode && answerModes[openMode] === 'input' ? 'input' : 'choice'
 
   // The explainer popover. Positioned with fixed viewport coords (clamped to
   // stay on-screen) so edge chips never clip it. With a mouse it appears after
@@ -418,47 +418,47 @@ function CategorySection({
             >
               <motion.button
                 initial={{ scale: 0 }}
-                animate={{ scale: visible ? 1 : 0, rotate: selected ? (i % 2 ? 3 : -3) : 0 }}
+                animate={{ scale: visible ? 1 : 0 }}
                 transition={{ ...POP_SPRING, delay: i * 0.03 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleChip(cat)}
-                className={`inline-flex items-center gap-1.5 rounded-pill border-[3px] border-transparent px-3.5 py-2 text-base font-black sm:gap-2 sm:border-4 sm:px-5 sm:py-3 sm:text-[22px] ${
-                  selected ? 'border-white shadow-pop' : ''
+                className={`inline-flex items-center gap-1.5 rounded-xl border-[3px] border-transparent px-3.5 py-2 text-base font-black sm:gap-2 sm:border-4 sm:px-5 sm:py-3 sm:text-[22px] ${
+                  selected ? `border-white shadow-pop ${canInput ? 'pr-12 sm:pr-16' : ''}` : ''
                 }`}
                 style={
                   selected
                     ? { background: fill, color: light ? '#fff' : POP.ink }
-                    : { background: 'rgba(255,255,255,0.45)', color: 'rgba(23,18,20,0.45)' }
+                    : { background: 'rgba(255,255,255,0.45)', color: POP.ink }
                 }
               >
                 {Icon && (
                   <Icon strokeWidth={2.5} className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" />
                 )}
                 {cat.name}
-                {canInput && selected && (
-                  <motion.span
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Answer mode: ${mode === 'input' ? 'typing' : 'multiple choice'}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setOpenMode((cur) => (cur === cat.id ? null : cat.id))
-                    }}
-                    // Badge mounts exactly when the category is selected, so this
-                    // pop-in + double pulse is the "you can change this" nudge.
-                    initial={{ scale: 0 }}
-                    animate={{ scale: [0, 1, 1.25, 1, 1.25, 1] }}
-                    transition={{
-                      duration: 0.9,
-                      times: [0, 0.15, 0.35, 0.55, 0.75, 1],
-                      ease: 'easeInOut',
-                    }}
-                    className="ml-0.5 grid h-6 w-6 place-items-center rounded-full border-2 border-pop-ink/20 bg-white text-pop-ink sm:h-8 sm:w-8 sm:border-[3px]"
-                  >
-                    <ModeIcon strokeWidth={2.75} className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  </motion.span>
-                )}
               </motion.button>
+              {canInput && selected && (
+                <motion.button
+                  type="button"
+                  style={{ y: '-50%' }}
+                  aria-label={`Answer mode: ${mode === 'input' ? 'typing' : 'multiple choice'}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setOpenMode((cur) => (cur === cat.id ? null : cat.id))
+                  }}
+                  // Badge mounts exactly when the category is selected, so this
+                  // pop-in + double pulse is the "you can change this" nudge.
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [0, 1, 1.25, 1, 1.25, 1] }}
+                  transition={{
+                    duration: 0.9,
+                    times: [0, 0.15, 0.35, 0.55, 0.75, 1],
+                    ease: 'easeInOut',
+                  }}
+                  className="absolute right-1.5 top-1/2 grid h-10 w-10 place-items-center rounded-full border-2 border-pop-ink/20 bg-white text-pop-ink sm:h-11 sm:w-11 sm:border-[3px]"
+                >
+                  <ModeIcon strokeWidth={2.75} className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                </motion.button>
+              )}
 
               <AnimatePresence>
                 {isDesktop && openMode === cat.id && (
@@ -522,19 +522,24 @@ function CategorySection({
         <Drawer.Root open={!!openCat} onOpenChange={(o) => !o && setOpenMode(null)}>
           <Drawer.Portal>
             <Drawer.Overlay className="fixed inset-0 z-40 bg-pop-ink/40" />
-            <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-[28px] border-x-4 border-t-4 border-pop-ink bg-white px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-3 outline-none">
+            <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-[16px] border border-pop-ink bg-white px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-3 outline-none">
               <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-pop-ink/20" />
               <Drawer.Title className="text-center text-2xl font-black text-pop-ink">
                 {openCat?.name}
               </Drawer.Title>
-              <Drawer.Description className="mt-1 text-center text-base font-bold text-pop-ink/60">
+              <Drawer.Description className="mt-1 text-center text-base font-bold text-pop-ink/75">
                 How do you want to answer?
               </Drawer.Description>
               <div className="mt-5 flex flex-col gap-3">
                 {(
                   [
                     { id: 'choice', Icon: Grid2x2, label: 'Choose', hint: 'Pick from options' },
-                    { id: 'input', Icon: Keyboard, label: 'Type', hint: 'Type the answer yourself' },
+                    {
+                      id: 'input',
+                      Icon: Keyboard,
+                      label: 'Type',
+                      hint: 'Type the answer yourself',
+                    },
                   ] as const
                 ).map(({ id, Icon, label, hint }) => {
                   const active = openModeValue === id
@@ -545,7 +550,7 @@ function CategorySection({
                         if (openMode) onSetMode(openMode, id)
                         setOpenMode(null)
                       }}
-                      className={`flex items-center gap-4 rounded-3xl border-4 px-5 py-4 text-left transition-colors ${
+                      className={`flex items-center gap-4 rounded-card border-4 px-5 py-4 text-left transition-colors ${
                         active
                           ? 'border-pop-ink bg-pop-ink text-white'
                           : 'border-pop-ink/15 bg-white text-pop-ink'
@@ -555,7 +560,9 @@ function CategorySection({
                       <span className="flex flex-col">
                         <span className="text-xl font-black">{label}</span>
                         <span
-                          className={`text-sm font-bold ${active ? 'text-white/70' : 'text-pop-ink/55'}`}
+                          className={`text-sm font-bold ${
+                            active ? 'text-white/70' : 'text-pop-ink/75'
+                          }`}
                         >
                           {hint}
                         </span>
@@ -592,12 +599,12 @@ function QuizTicket({
   return (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1, rotate: ready ? 1.5 : -1.5 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={POP_SPRING}
       className={`rounded-pill border-4 px-4 py-2 text-base font-black md:text-lg ${
         ready
           ? 'border-white text-pop-ink shadow-pop-sm'
-          : 'border-dashed border-pop-ink/25 text-pop-ink/55'
+          : 'border-dashed border-pop-ink/25 text-pop-ink/75'
       }`}
       style={{ background: ready ? POP.paper : 'rgba(255,255,255,0.6)' }}
     >
@@ -652,7 +659,7 @@ function ModePill({
     <button
       onClick={onClick}
       className={`flex items-center gap-1.5 whitespace-nowrap rounded-pill px-3.5 py-2 text-base font-black transition-colors ${
-        active ? 'bg-pop-ink text-white' : 'bg-transparent text-pop-ink/60 hover:text-pop-ink'
+        active ? 'bg-pop-ink text-white' : 'bg-transparent text-pop-ink/75 hover:text-pop-ink'
       }`}
     >
       <Icon size={17} strokeWidth={2.75} />
@@ -661,9 +668,18 @@ function ModePill({
   )
 }
 
-function StepBtn({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function StepBtn({
+  onClick,
+  children,
+  label,
+}: {
+  onClick: () => void
+  children: React.ReactNode
+  label: string
+}) {
   return (
     <motion.button
+      aria-label={label}
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
       className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-pop-ink text-white shadow-pop-sm"
@@ -685,12 +701,12 @@ function TogglePill({
   onChange: () => void
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-3xl bg-white px-6 py-4 shadow-pop">
+    <div className="flex items-center justify-between gap-4 rounded-card bg-white px-6 py-4 shadow-pop">
       <div className="min-w-0">
         <span className="block text-lg font-black text-pop-ink md:text-xl">{label}</span>
-        {sublabel && <span className="block text-sm font-bold text-pop-ink/55">{sublabel}</span>}
+        {sublabel && <span className="block text-sm font-bold text-pop-ink/75">{sublabel}</span>}
       </div>
-      <PopToggle checked={checked} onChange={onChange} />
+      <PopToggle label={label} checked={checked} onChange={onChange} />
     </div>
   )
 }

@@ -66,7 +66,17 @@ export function MapPicker({
   const overlay =
     expanded && typeof document !== 'undefined'
       ? createPortal(
-          <div className="fixed inset-0 z-[60] flex flex-col" style={{ background: POP.paper }}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Place your guess on the map"
+            className="fixed inset-0 z-[60] flex flex-col"
+            style={{
+              background: POP.paper,
+              paddingTop: 'var(--safe-top)',
+              paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+            }}
+          >
             <div className="flex items-center justify-between px-4 py-3">
               <span className="rounded-pill bg-pop-ink px-4 py-2 text-sm font-black text-white">
                 {value ? 'Tap to adjust, then confirm' : 'Tap the map to guess'}
@@ -114,11 +124,13 @@ export function MapPicker({
         type="button"
         disabled={disabled}
         onClick={() => setExpanded(true)}
-        aria-label={value ? 'Open the map to adjust your guess' : 'Open the map to place your guess'}
-        className="relative block w-full overflow-hidden rounded-[24px] border-4 border-pop-ink shadow-pop-card disabled:opacity-60"
+        aria-label={
+          value ? 'Open the map to adjust your guess' : 'Open the map to place your guess'
+        }
+        className="relative block w-full overflow-hidden rounded-card border-4 border-pop-ink shadow-pop-card disabled:opacity-60"
       >
         <div className="pointer-events-none">
-          <WorldMap value={value} interactive={false} />
+          <WorldMap value={value} interactive={false} showControls={false} />
         </div>
         {!disabled && (
           <div className="absolute inset-0 flex items-center justify-center bg-pop-ink/15">

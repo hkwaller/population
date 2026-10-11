@@ -120,9 +120,9 @@ export function BuildUp({
             key={i}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl border-4 border-pop-ink bg-white px-5 py-3 text-left text-lg font-black text-pop-ink"
+            className="rounded-card border-4 border-pop-ink bg-white px-5 py-3 text-left text-lg font-black text-pop-ink"
           >
-            <span className="mr-2 text-pop-ink/40">{i + 1}.</span>
+            <span className="mr-2 text-pop-ink/75">{i + 1}.</span>
             {clue}
           </motion.div>
         ))}
@@ -138,67 +138,66 @@ export function BuildUp({
       {/* Read-only mirror (shared game screen / spectators): clues only, no input. */}
       {readOnly ? null : (
         <>
-      {/* Typeahead */}
-      <div className="relative">
-        <AnimatePresence>
-          {showList && (
-            <motion.ul
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
-              transition={{ duration: 0.12 }}
-              className="absolute bottom-full left-0 right-0 z-10 mb-2 overflow-hidden rounded-[20px] border-4 border-pop-ink bg-white shadow-pop-card"
-            >
-              {suggestions.map((s, i) => (
-                <li key={s}>
-                  <button
-                    type="button"
-                    onMouseDown={(e) => {
-                      e.preventDefault()
-                      commit(s)
-                    }}
-                    onMouseEnter={() => setActive(i)}
-                    className={`block w-full px-5 py-3 text-left text-lg font-black text-pop-ink ${
-                      i === active ? 'bg-pop-sunshine' : 'bg-white'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                </li>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
+          {/* Typeahead */}
+          <div className="relative">
+            <AnimatePresence>
+              {showList && (
+                <motion.ul
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.12 }}
+                  className="absolute bottom-full left-0 right-0 z-10 mb-2 overflow-hidden rounded-card border-4 border-pop-ink bg-white shadow-pop-card"
+                >
+                  {suggestions.map((s, i) => (
+                    <li key={s}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault()
+                          commit(s)
+                        }}
+                        onMouseEnter={() => setActive(i)}
+                        className={`block w-full px-5 py-3 text-left text-lg font-black text-pop-ink ${
+                          i === active ? 'bg-pop-sunshine' : 'bg-white'
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    </li>
+                  ))}
+                </motion.ul>
+              )}
+            </AnimatePresence>
 
-        <input
-          value={text}
-          disabled={disabled}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="words"
-          spellCheck={false}
-          placeholder="Which country?"
-          onChange={(e) => {
-            setText(e.target.value)
-            setActive(0)
-          }}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onKeyDown={onKeyDown}
-          className="w-full rounded-pill border-4 border-pop-ink bg-white px-6 py-4 text-xl font-black text-pop-ink outline-none placeholder:text-[rgba(23,18,20,0.35)] focus:ring-4 focus:ring-pop-ink disabled:opacity-60"
-        />
-      </div>
+            <input
+              value={text}
+              disabled={disabled}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="words"
+              spellCheck={false}
+              placeholder="Which country?"
+              onChange={(e) => {
+                setText(e.target.value)
+                setActive(0)
+              }}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              onKeyDown={onKeyDown}
+              className="w-full rounded-pill border-4 border-pop-ink bg-white px-6 py-4 text-xl font-black text-pop-ink outline-none placeholder:text-pop-ink/65 focus:ring-4 focus:ring-pop-ink disabled:opacity-60"
+            />
+          </div>
 
-      <PopButton
-        variant="primary"
-        size="lg"
-        rotate={-1}
-        className="w-full"
-        disabled={disabled || !text.trim()}
-        onClick={() => commit(text)}
-      >
-        Lock it in
-      </PopButton>
+          <PopButton
+            variant="primary"
+            size="lg"
+            className="w-full"
+            disabled={disabled || !text.trim()}
+            onClick={() => commit(text)}
+          >
+            Lock it in
+          </PopButton>
         </>
       )}
     </div>

@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
+import { PopShell } from '@/app/components/pop/PopShell'
+import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
+import { POP } from '@/app/components/pop/theme'
 import { useSupabase } from '@/hooks/useSupabase'
 import {
   Table,
@@ -44,39 +47,42 @@ export default function ReportedQuestionsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="text-yellow-500" />
-            Reported Questions
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Question</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Reports</TableHead>
-                <TableHead>First Reported</TableHead>
-                <TableHead>Last Reported</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {reportedQuestions.map((report) => (
-                <TableRow key={report.id}>
-                  <TableCell className="font-medium">{report.question}</TableCell>
-                  <TableCell>{report.category}</TableCell>
-                  <TableCell>{report.report_count}</TableCell>
-                  <TableCell>{new Date(report.created_at).toLocaleDateString()}</TableCell>
-                  <TableCell>{new Date(report.updated_at).toLocaleDateString()}</TableCell>
+    <PopShell bg={POP.paper}>
+      <PopHeader logoTone="ink" right={<PopAuth tone="dark" />} />
+      <main className="container mx-auto py-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="text-yellow-500" />
+              Reported Questions
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Question</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Reports</TableHead>
+                  <TableHead>First Reported</TableHead>
+                  <TableHead>Last Reported</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
+              </TableHeader>
+              <TableBody>
+                {reportedQuestions.map((report) => (
+                  <TableRow key={report.id}>
+                    <TableCell className="font-medium">{report.question}</TableCell>
+                    <TableCell>{report.category}</TableCell>
+                    <TableCell>{report.report_count}</TableCell>
+                    <TableCell>{new Date(report.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(report.updated_at).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </main>
+    </PopShell>
   )
 }

@@ -32,11 +32,15 @@ export function CountryOutline({
   size = 260,
   fill = '#2F5E4E',
   className,
+  showHeading = true,
+  label = 'Country outline',
 }: {
   code: string // cca3
   size?: number
   fill?: string
   className?: string
+  showHeading?: boolean
+  label?: string
 }) {
   const ccn3 = byCca3.get(code)?.ccn3
   const key = ccn3 ? String(parseInt(ccn3, 10)) : null
@@ -78,21 +82,24 @@ export function CountryOutline({
         className={className}
         style={{ width: size, height: size, display: 'grid', placeItems: 'center' }}
       >
-        <span className="text-sm font-bold text-pop-ink/40">shape unavailable</span>
+        <span className="text-sm font-bold text-pop-ink/75">shape unavailable</span>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl md:text-4xl font-bold text-pop-ink">What country is this?</h1>
+    <div className="flex flex-col items-center gap-4">
+      {showHeading && (
+        <h1 className="text-2xl md:text-4xl font-bold text-pop-ink">What country is this?</h1>
+      )}
       <svg
         viewBox={viewBox}
         width={size}
         height={size}
         className={className}
+        style={{ maxWidth: '100%', height: 'auto' }}
         role="img"
-        aria-label="Country outline"
+        aria-label={label}
       >
         {outline && (
           <path

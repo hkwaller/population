@@ -61,7 +61,7 @@ export function TvScoreboard() {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="flex items-center gap-3 rounded-[22px] border-[3px] border-white bg-white/95 py-2 pl-3 pr-4 shadow-pop"
           >
-            <span className="w-7 text-center text-xl font-black text-pop-ink/40">{i + 1}</span>
+            <span className="w-7 text-center text-xl font-black text-pop-ink/75">{i + 1}</span>
             <span
               className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-[3px] border-pop-ink"
               style={{ background: stickerFill(player.color) }}

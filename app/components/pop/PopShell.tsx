@@ -27,7 +27,7 @@ export function PopShell({
   return (
     // paddingTop keeps content below the native status bar; 0 in a browser.
     <div
-      className="pop-wipe fixed inset-0 overflow-hidden"
+      className="atlas-shell pop-wipe fixed inset-0 overflow-hidden"
       style={{ backgroundColor: bg, paddingTop: 'var(--safe-top)' }}
     >
       {chips && <PopChips opacity={chipsOpacity} />}

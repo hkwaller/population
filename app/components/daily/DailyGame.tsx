@@ -71,7 +71,9 @@ export function DailyGame({ questions, dateKey }: { questions: TQuestion[]; date
   }
 
   if (saved) {
-    return <Results saved={saved} maxTotal={maxTotal} dateKey={dateKey} alreadyPlayed={alreadyPlayed} />
+    return (
+      <Results saved={saved} maxTotal={maxTotal} dateKey={dateKey} alreadyPlayed={alreadyPlayed} />
+    )
   }
 
   return (
@@ -97,7 +99,9 @@ function Results({
 }) {
   const [copied, setCopied] = useState(false)
   const home = useHomeHref()
-  const shareText = `Population ${dateKey}\n${saved.buckets}\n${saved.total.toLocaleString()}/${maxTotal.toLocaleString()} pts`
+  const shareText = `Population ${dateKey}\n${
+    saved.buckets
+  }\n${saved.total.toLocaleString()}/${maxTotal.toLocaleString()} pts`
 
   // Share sheet in the app (and Web Share where the browser has it), else the clipboard.
   const share = async () => {
@@ -124,8 +128,8 @@ function Results({
       </header>
       <main className="mx-auto flex w-full max-w-md flex-col items-center gap-6 px-5 pb-16 pt-10 text-center">
         <motion.h1
-          initial={{ scale: 0, rotate: -6 }}
-          animate={{ scale: 1, rotate: -2 }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 18 }}
           className="pop-textshadow-sm text-5xl font-black text-pop-ink"
         >
@@ -133,10 +137,10 @@ function Results({
         </motion.h1>
 
         <div className="w-full rounded-card bg-white p-7 shadow-pop-card">
-          <div className="text-6xl font-black text-pop-ink">
-            {saved.total.toLocaleString()}
+          <div className="text-6xl font-black text-pop-ink">{saved.total.toLocaleString()}</div>
+          <div className="text-lg font-bold text-pop-ink/75">
+            of {maxTotal.toLocaleString()} points
           </div>
-          <div className="text-lg font-bold text-pop-ink/60">of {maxTotal.toLocaleString()} points</div>
           <div className="my-5 text-3xl tracking-widest">{saved.buckets}</div>
           <div
             className="inline-block rounded-pill px-5 py-2 text-lg font-black text-white"
@@ -157,7 +161,9 @@ function Results({
         <PopButton href={home} variant="secondary" size="lg" className="w-full">
           Home
         </PopButton>
-        <p className="text-base font-bold text-pop-ink/60">A fresh set drops every day. Come back tomorrow!</p>
+        <p className="text-base font-bold text-pop-ink/75">
+          A fresh set drops every day. Come back tomorrow!
+        </p>
       </main>
     </PopShell>
   )

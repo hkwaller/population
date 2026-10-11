@@ -22,9 +22,9 @@ export const SpringModal = ({ isOpen, setIsOpen, children, onClose }: SpringModa
           }}
         >
           <motion.div
-            initial={{ scale: 0, rotate: '12.5deg' }}
-            animate={{ scale: 1, rotate: '0deg' }}
-            exit={{ scale: 0, rotate: '0deg' }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
             onClick={(e) => e.stopPropagation()}
             className="bg-blue p-6 bg-white rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-hidden"
           >

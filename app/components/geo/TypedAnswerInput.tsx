@@ -115,7 +115,7 @@ export function TypedAnswerInput({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.12 }}
-              className="absolute bottom-full left-0 right-0 z-10 mb-2 overflow-hidden rounded-[20px] border-4 border-pop-ink bg-white shadow-pop-card"
+              className="absolute bottom-full left-0 right-0 z-10 mb-2 overflow-hidden rounded-card border-4 border-pop-ink bg-white shadow-pop-card"
             >
               {suggestions.map((s, i) => (
                 <li key={s}>
@@ -147,6 +147,7 @@ export function TypedAnswerInput({
           autoCorrect="off"
           autoCapitalize="words"
           spellCheck={false}
+          aria-label="Your answer"
           placeholder="Type your answer…"
           onChange={(e) => {
             setText(e.target.value)
@@ -155,14 +156,13 @@ export function TypedAnswerInput({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onKeyDown={onKeyDown}
-          className="w-full rounded-pill border-4 border-pop-ink bg-white px-6 py-4 text-xl font-black text-pop-ink outline-none placeholder:text-[rgba(23,18,20,0.35)] focus:ring-4 focus:ring-pop-ink disabled:opacity-60"
+          className="w-full rounded-xl border-2 border-pop-ink bg-white px-6 py-4 text-xl font-black text-pop-ink outline-none placeholder:text-pop-ink/65 focus:ring-4 focus:ring-pop-ink disabled:opacity-60"
         />
       </div>
 
       <PopButton
         variant="primary"
         size="lg"
-        rotate={-1}
         className="w-full"
         disabled={disabled || !text.trim()}
         onClick={() => commit(text)}

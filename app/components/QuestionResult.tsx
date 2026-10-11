@@ -6,6 +6,7 @@ import { PlayerResult } from './PlayerResult'
 import { Category } from './Category'
 import { RankAnswerFlags } from './geo/RankFlags'
 import { RouteReveal } from './geo/RouteReveal'
+import { CountryOutline } from './geo/CountryOutline'
 import { WorldMap, type MapPin } from './geo/WorldMap'
 import { POP, stickerFill } from './pop/theme'
 
@@ -22,19 +23,28 @@ export const QuestionResult = ({
     <div
       key={question.id}
       className="mx-auto w-full max-w-[640px] rounded-card bg-white p-6 shadow-pop-card"
-      style={{ rotate: index % 2 === 0 ? '1deg' : '-1deg' }}
     >
       <div className="mb-3 flex items-center justify-between gap-3">
         <h3 className="text-2xl font-black text-pop-ink">Question {index + 1}</h3>
         <Category question={question} />
       </div>
       <p className="mb-4 text-xl font-bold text-pop-ink">{question.question}</p>
+      {question.type === 'choice' && question.prompt?.kind === 'outline' && (
+        <div className="mb-4 flex justify-center">
+          <CountryOutline
+            code={question.prompt.code}
+            size={200}
+            showHeading={false}
+            label={`Outline of ${formatAnswerValue(question.answer)}`}
+          />
+        </div>
+      )}
       {question.type === 'rank' ? (
         <RankAnswerFlags answer={question.answer} />
       ) : question.type === 'route' ? (
         <RouteReveal question={question} players={players} />
       ) : question.type === 'map' ? (
-        <div className="overflow-hidden rounded-[20px] border-4 border-pop-ink">
+        <div className="overflow-hidden rounded-card border-4 border-pop-ink">
           <WorldMap
             answer={question.answer}
             pins={

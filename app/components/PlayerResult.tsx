@@ -1,7 +1,7 @@
 'use client'
 
 import { createElement } from 'react'
-import { icons } from 'lucide-react'
+import { icons, Target } from 'lucide-react'
 import { motion } from 'motion/react'
 import CountUp from 'react-countup'
 
@@ -53,10 +53,10 @@ export const PlayerResult = ({
       ? 'CORRECT!'
       : 'PERFECT!'
     : // "CLOSEST!" only makes sense for a guess that actually scored - a 0 (e.g. a
-      // route that never connected) isn't "close" to anything.
-      !isExact && isClosest && score > 0
-      ? 'CLOSEST!'
-      : null
+    // route that never connected) isn't "close" to anything.
+    !isExact && isClosest && score > 0
+    ? 'CLOSEST!'
+    : null
   const pillBg = positive ? POP.mint : POP.coral
   const highlight = positive || isWinner || isClosest
   const pointsBg = highlight ? (positive ? POP.mint : POP.coral) : POP.ink
@@ -70,7 +70,7 @@ export const PlayerResult = ({
   const guessLine = (() => {
     if (answer === undefined || isRank || isRoute) return null
     if (question?.type === 'map' && typeof answer === 'object') {
-      if (score >= MAX_SCORE) return 'nailed it 🎯'
+      if (score >= MAX_SCORE) return 'nailed it'
       const km = Math.round(haversineKm(answer as LatLng, question.answer))
       const line = `${km.toLocaleString()} km away`
       return confidence ? `${line} · ${confidence.toLocaleString()} km circle` : line
@@ -92,14 +92,14 @@ export const PlayerResult = ({
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1, rotate: index % 2 === 0 ? 2 : -2 }}
+      animate={{ scale: 1, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.1 + index * 0.06 }}
-      className="relative flex w-[210px] max-w-full flex-col items-center gap-2 rounded-[28px] bg-white p-4 shadow-pop border-2 border-black"
+      className="relative flex w-[210px] max-w-full flex-col items-center gap-2 rounded-card bg-white p-4 shadow-pop border-2 border-black"
     >
       {pill && (
         <span
-          className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-pill px-3 py-1 text-xs font-black text-white"
-          style={{ background: pillBg, rotate: '-4deg' }}
+          className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-xl px-3 py-1 text-xs font-black text-pop-ink"
+          style={{ background: pillBg }}
         >
           {pill}
         </span>
@@ -115,12 +115,12 @@ export const PlayerResult = ({
         <RankGuessFlags guess={answer as string[]} answer={question.answer} />
       )}
       {isRoute && answer !== undefined && <RouteGuessFlags answer={answer} />}
-      {guessLine && <span className="text-[17px] font-bold text-pop-ink/60">{guessLine}</span>}
+      {guessLine && <span className="text-[17px] font-bold text-pop-ink/75">{guessLine}</span>}
       <span
-        className="rounded-pill px-4 py-1.5 text-lg font-black text-white"
-        style={{ background: pointsBg }}
+        className="inline-flex items-center gap-1.5 rounded-xl px-4 py-1.5 text-lg font-black text-white"
+        style={{ background: pointsBg, color: pointsBg === POP.mint ? POP.ink : '#fff' }}
       >
-        {bullseye && !isExact ? '🎯 ' : '+'}
+        {bullseye && !isExact ? <Target size={18} aria-label="Bullseye" /> : '+'}
         <CountUp end={score} duration={0.6} separator="" preserveValue />
       </span>
     </motion.div>

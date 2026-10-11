@@ -174,12 +174,12 @@ function Card({ item, i }: { item: Item; i: number }) {
       initial={{ scale: 0.94, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ ...POP_SPRING, delay: 0.04 * i }}
-      className="flex items-start gap-4 rounded-3xl border-[3px] border-pop-ink/10 bg-white p-4 shadow-pop-sm"
+      className="flex items-start gap-4 rounded-card border-[3px] border-pop-ink/10 bg-white p-4 shadow-pop-sm"
     >
       <IconBadge item={item} />
       <div className="min-w-0">
         <h4 className="text-lg font-black leading-tight text-pop-ink">{item.title}</h4>
-        <p className="mt-1 text-[15px] font-bold leading-snug text-pop-ink/65">{item.text}</p>
+        <p className="mt-1 text-[15px] font-bold leading-snug text-pop-ink/75">{item.text}</p>
       </div>
     </motion.div>
   )
@@ -205,12 +205,12 @@ export function HowToPlayContent() {
         className="flex items-start gap-4 rounded-card border-4 border-white p-5"
         style={{ background: POP.mint }}
       >
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/25 text-white">
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/25 text-pop-ink">
           <Target size={26} strokeWidth={2.5} />
         </span>
         <div>
-          <h3 className="text-2xl font-black text-white">Guess the world</h3>
-          <p className="mt-1 text-[17px] font-bold leading-snug text-white/90">
+          <h3 className="text-2xl font-black text-pop-ink">Guess the world</h3>
+          <p className="mt-1 text-[17px] font-bold leading-snug text-pop-ink">
             Every question is worth up to <span className="text-white">1,000 points</span>. The
             closer your guess, the more you score - and the highest total takes the crown 👑.
           </p>
@@ -286,7 +286,7 @@ export function HowToPlayModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
           exit={{ opacity: 0 }}
           onClick={onClose}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(23,18,20,0.55)' }}
+          style={{ background: 'rgba(33,24,18,0.55)' }}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -294,8 +294,8 @@ export function HowToPlayModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             onClick={(e) => e.stopPropagation()}
-            className="pop-scroll relative max-h-[86vh] w-full max-w-2xl overflow-y-auto rounded-[36px] bg-pop-paper p-6 md:p-8"
-            style={{ boxShadow: '0 16px 0 rgba(0,0,0,0.2)' }}
+            className="pop-scroll relative max-h-[86vh] w-full max-w-2xl overflow-y-auto rounded-card bg-pop-paper p-6 md:p-8"
+            style={{ boxShadow: '0 8px 24px rgba(33,24,18,0.16)' }}
           >
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-3xl font-black text-pop-ink md:text-4xl">How to play</h2>
@@ -329,9 +329,8 @@ export function HowToPlayButton({
   return (
     <motion.button
       aria-label="How to play"
-      whileHover={{ rotate: 0, y: -2 }}
+      whileHover={{ y: -2 }}
       whileTap={{ scale: 0.92 }}
-      style={{ rotate: '2deg' }}
       onClick={onClick}
       className={
         tone === 'light'

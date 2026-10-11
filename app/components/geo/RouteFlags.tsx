@@ -28,7 +28,10 @@ export function RouteFlag({
   const cca2 = byCca3.get(cca3)?.cca2
   const label = name(cca3)
   return (
-    <div className="relative flex flex-none flex-col items-center gap-1" style={{ opacity: dim ? 0.55 : 1 }}>
+    <div
+      className="relative flex flex-none flex-col items-center gap-1"
+      style={{ opacity: dim ? 0.55 : 1 }}
+    >
       {onRemove && (
         <button
           type="button"
@@ -97,7 +100,7 @@ export function RoutePathFlags({
         return (
           <Fragment key={`${cca3}-${i}`}>
             {i > 0 && (
-              <ChevronRight size={18} strokeWidth={3} className="mt-4 flex-none text-pop-ink/40" />
+              <ChevronRight size={18} strokeWidth={3} className="mt-4 flex-none text-pop-ink/75" />
             )}
             <RouteFlag
               cca3={cca3}
@@ -149,7 +152,12 @@ export function RouteGuessFlags({ answer }: { answer: AnswerValue }) {
         {path.map((cca3, i) => (
           <Fragment key={`${cca3}-${i}`}>
             {i > 0 && (
-              <ChevronRight size={15} strokeWidth={3.5} className="mt-3 flex-none" color={POP.mint} />
+              <ChevronRight
+                size={15}
+                strokeWidth={3.5}
+                className="mt-3 flex-none"
+                color={POP.mint}
+              />
             )}
             <RouteFlag cca3={cca3} size={28} />
           </Fragment>

@@ -67,7 +67,9 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   useEffect(() => {
     setMapPin(null)
     setStartedAt(performance.now())
-    setRadius(Math.round((currentQuestion?.type === 'map' ? currentQuestion.falloffKm ?? 2500 : 2500) / 4))
+    setRadius(
+      Math.round((currentQuestion?.type === 'map' ? currentQuestion.falloffKm ?? 2500 : 2500) / 4),
+    )
     if (!slider) return
     const mid = (slider.lower_bound + slider.upper_bound) / 2
     setCurrentAnswer(Math.round(mid))
@@ -236,7 +238,11 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                       onPick={setMapPin}
                       onConfirm={() =>
                         mapPin &&
-                        submit(mapPin, elapsed(), confidenceMode ? { confidence: radius } : undefined)
+                        submit(
+                          mapPin,
+                          elapsed(),
+                          confidenceMode ? { confidence: radius } : undefined,
+                        )
                       }
                     />
                     {confidenceMode && (
@@ -292,7 +298,6 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                     <PopButton
                       variant="primary"
                       size="lg"
-                      rotate={-1}
                       className="w-full"
                       onClick={() =>
                         submit(
@@ -399,7 +404,7 @@ function LockedState({
     <div className="flex flex-col items-center gap-3 rounded-card bg-white/15 p-6 text-center">
       <span
         className="rounded-pill bg-white px-5 py-2 text-3xl font-black"
-        style={{ color: POP.ink, rotate: '-2deg' }}
+        style={{ color: POP.ink }}
       >
         {confidence != null && typeof value === 'number'
           ? `${formatAnswerValue(value - confidence)} – ${formatAnswerValue(value + confidence)}`

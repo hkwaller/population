@@ -58,7 +58,7 @@ function AnimatedDots() {
 function WaitingSticker({ rot = -2, delay = 0 }: { rot?: number; delay?: number }) {
   return (
     <div
-      className="pop-bob inline-flex min-w-[128px] flex-col items-center justify-center gap-1 rounded-sticker px-5 py-4 text-center"
+      className="inline-flex min-w-[128px] flex-col items-center justify-center gap-1 rounded-sticker px-5 py-4 text-center"
       style={
         {
           border: '4px dashed rgba(33,24,18,0.3)',
@@ -67,7 +67,7 @@ function WaitingSticker({ rot = -2, delay = 0 }: { rot?: number; delay?: number 
         } as React.CSSProperties
       }
     >
-      <span className="text-lg font-black text-pop-ink/50">
+      <span className="text-lg font-black text-pop-ink/75">
         waiting
         <AnimatedDots />
       </span>
@@ -105,7 +105,7 @@ function JoinBurst({ trigger }: { trigger: number }) {
       {bits.map((b) => (
         <motion.span
           key={b.id}
-          initial={{ x: 0, y: 0, scale: 0, rotate: 0, opacity: 1 }}
+          initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
           animate={{ x: b.x, y: b.y, scale: 1, rotate: b.rot, opacity: 0 }}
           transition={{ duration: 0.9, delay: b.delay, ease: [0.22, 1, 0.36, 1] }}
           className="absolute block rounded-[5px] border-2 border-white"
@@ -295,7 +295,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
       <div className="mx-auto max-w-5xl px-5 pb-40 pt-6 md:pt-10">
         <h1
           className="text-center font-black leading-none tracking-[-0.02em] text-pop-ink"
-          style={{ fontSize: 'clamp(52px, 10vw, 84px)', rotate: '-1.5deg' }}
+          style={{ fontSize: 'clamp(52px, 10vw, 84px)' }}
         >
           Get in here!
         </h1>
@@ -307,15 +307,15 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
           {/* QR card */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, rotate: -2 }}
+            animate={{ scale: 1, opacity: 1 }}
             transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-            whileHover={reduce ? undefined : { y: -5, rotate: -0.5 }}
+            whileHover={reduce ? undefined : { y: -5 }}
             className="relative mx-auto flex w-full max-w-sm flex-col items-center rounded-card bg-white p-5 shadow-pop-card md:p-6"
           >
             {/* "Aim your camera here" badge */}
             <motion.span
-              initial={{ scale: 0, rotate: -12 }}
-              animate={{ scale: 1, rotate: -8 }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
               transition={{ ...POP_SPRING, delay: 0.25 }}
               className="absolute -left-3 -top-4 z-20 rounded-pill border-[3px] border-white px-3.5 py-1.5 text-sm font-black tracking-tight text-white shadow-pop"
               style={{ background: POP.cobalt }}
@@ -323,7 +323,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
               SCAN ME
             </motion.span>
 
-            <div className="relative rounded-[20px] bg-white p-3">
+            <div className="relative rounded-card bg-white p-3">
               {VIEWFINDER_CORNERS.map((c, i) => (
                 <motion.span
                   key={i}
@@ -363,8 +363,8 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
                 >
                   {copied ? (
                     <motion.span
-                      initial={reduce ? false : { scale: 0, rotate: -20 }}
-                      animate={{ scale: 1, rotate: 0 }}
+                      initial={reduce ? false : { scale: 0 }}
+                      animate={{ scale: 1 }}
                       transition={
                         reduce ? { duration: 0 } : { type: 'spring', stiffness: 400, damping: 14 }
                       }
@@ -388,8 +388,8 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
             <div className="mb-5 flex items-center gap-3">
               <motion.span
                 key={players.length}
-                initial={reduce ? false : { scale: 0.5, rotate: -10 }}
-                animate={{ scale: 1, rotate: -4 }}
+                initial={reduce ? false : { scale: 0.5 }}
+                animate={{ scale: 1 }}
                 transition={
                   reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 15 }
                 }
@@ -444,9 +444,9 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
             {!tv && user && !players.find((p) => p.id === user.id) && (
               <motion.button
                 onClick={handleAddMe}
-                whileHover={reduce ? undefined : { y: -2, rotate: -1 }}
+                whileHover={reduce ? undefined : { y: -2 }}
                 whileTap={reduce ? undefined : { scale: 0.96, y: 2 }}
-                className="mt-4 inline-flex items-center gap-3 rounded-pill bg-pop-ink px-5 py-3 text-lg font-black text-white shadow-pop-btn"
+                className="mt-4 inline-flex items-center gap-3 rounded-xl bg-pop-ink px-5 py-3 text-lg font-black text-white shadow-pop-btn"
               >
                 Add me
                 {user.imageUrl && (
@@ -466,15 +466,16 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
                 {!playingOnSameDevice ? (
                   <motion.button
                     onClick={() => updateGame({ playingOnSameDevice: true })}
-                    whileHover={reduce ? undefined : { y: -2, rotate: 1 }}
+                    whileHover={reduce ? undefined : { y: -2 }}
                     whileTap={reduce ? undefined : { scale: 0.96, y: 2 }}
-                    className="inline-flex items-center gap-2 rounded-pill bg-white px-5 py-3 text-lg font-black text-pop-ink shadow-pop"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-lg font-black text-pop-ink shadow-pop"
                   >
                     <UserPlus size={20} /> Add player on this device
                   </motion.button>
                 ) : (
-                  <div className="flex max-w-sm items-center gap-2 rounded-pill bg-white p-2 pl-5 shadow-pop">
+                  <div className="flex max-w-sm items-center gap-2 rounded-xl bg-white p-2 pl-5 shadow-pop">
                     <input
+                      aria-label="Player name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       onKeyDown={(e) => {
@@ -482,7 +483,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
                       }}
                       maxLength={15}
                       placeholder="name"
-                      className="min-w-0 flex-1 bg-transparent text-xl font-black text-pop-ink outline-none placeholder:text-[rgba(33,24,18,0.35)]"
+                      className="min-w-0 flex-1 bg-transparent text-xl font-black text-pop-ink outline-none placeholder:text-pop-ink/75"
                     />
                     <motion.button
                       onClick={handleAddLocalPlayer}
@@ -512,24 +513,15 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
       <div className="fixed inset-x-0 bottom-6 z-20 flex justify-center px-5">
         {!ready || tv ? (
           <div
-            className="pop-bob inline-flex items-center gap-2 rounded-pill border-[3px] border-dashed border-pop-ink/40 bg-white/85 px-8 py-4 text-xl font-black text-pop-ink/70"
+            className="inline-flex items-center gap-2 rounded-pill border-[3px] border-dashed border-pop-ink/40 bg-white/85 px-8 py-4 text-xl font-black text-pop-ink/70"
             style={{ ['--rot' as any]: '1deg' }}
           >
             {ready ? 'Waiting for the host' : 'Waiting for players'}
             <AnimatedDots />
           </div>
         ) : (
-          <motion.div
-            animate={reduce ? undefined : { rotate: [1, -1.5, 1], y: [0, -3, 0] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <PopButton
-              variant="primary"
-              size="lg"
-              rotate={0}
-              disabled={isStarting}
-              onClick={handleContinue}
-            >
+          <div>
+            <PopButton variant="primary" size="lg" disabled={isStarting} onClick={handleContinue}>
               {isStarting ? (
                 'Starting…'
               ) : (
@@ -538,7 +530,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
                 </>
               )}
             </PopButton>
-          </motion.div>
+          </div>
         )}
       </div>
 

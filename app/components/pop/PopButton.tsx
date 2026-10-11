@@ -23,13 +23,12 @@ const SIZES: Record<Size, string> = {
   lg: 'text-[26px] md:text-[28px] px-9 py-4',
 }
 
-const DISABLED = 'bg-[rgba(23,18,20,0.15)] text-[rgba(23,18,20,0.4)] shadow-none border-none'
+const DISABLED = 'bg-[rgba(33,24,18,0.15)] text-[rgba(33,24,18,0.4)] shadow-none border-none'
 
 export type PopButtonProps = {
   children: React.ReactNode
   variant?: Variant
   size?: Size
-  rotate?: number
   href?: string
   onClick?: () => void
   disabled?: boolean
@@ -41,7 +40,6 @@ export function PopButton({
   children,
   variant = 'primary',
   size = 'md',
-  rotate = 0,
   href,
   onClick,
   disabled = false,
@@ -49,7 +47,7 @@ export function PopButton({
   className,
 }: PopButtonProps) {
   const classes = cn(
-    'inline-flex items-center justify-center gap-2 rounded-pill font-black tracking-tight select-none whitespace-nowrap',
+    'inline-flex items-center justify-center gap-2 rounded-xl font-bold tracking-tight select-none whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4',
     SIZES[size],
     disabled ? DISABLED : VARIANTS[variant],
     disabled && 'cursor-not-allowed',
@@ -59,15 +57,13 @@ export function PopButton({
   const motionProps = disabled
     ? {}
     : {
-        whileHover: { rotate: 0, y: -2 },
-        whileTap: { y: 4, boxShadow: '0 2px 0 rgba(0,0,0,0.25)' },
+        whileHover: { y: -2 },
+        whileTap: { y: 1 },
       }
-
-  const style = { rotate: `${rotate}deg` }
 
   if (href && !disabled) {
     return (
-      <MotionLink href={href} className={classes} style={style} {...motionProps} onClick={onClick}>
+      <MotionLink href={href} className={classes} {...motionProps} onClick={onClick}>
         {children}
       </MotionLink>
     )
@@ -76,12 +72,12 @@ export function PopButton({
   return (
     <motion.button
       type={type}
+      disabled={disabled}
       onClick={() => {
         if (disabled) return
         onClick?.()
       }}
       className={classes}
-      style={style}
       {...motionProps}
     >
       {children}

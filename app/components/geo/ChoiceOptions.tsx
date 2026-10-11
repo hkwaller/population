@@ -35,7 +35,6 @@ export function ChoiceOptions({
           bg = POP.mint
         } else if (isWrongPick) {
           bg = POP.coral
-          color = '#fff'
         } else if (isSelected) {
           bg = POP.sunshine
         }
@@ -45,16 +44,16 @@ export function ChoiceOptions({
             key={opt}
             type="button"
             disabled={disabled || correct != null}
-            whileHover={disabled || correct != null ? undefined : { y: -3, rotate: 0 }}
+            whileHover={disabled || correct != null ? undefined : { y: -3 }}
             whileTap={disabled || correct != null ? undefined : { y: 3 }}
             onClick={() => {
               haptic('select')
               onSelect?.(opt)
             }}
             initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -0.6 : 0.6 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04, type: 'spring', stiffness: 260, damping: 20 }}
-            className="flex min-h-[64px] min-w-0 items-center justify-center text-balance break-words rounded-3xl border-4 border-pop-ink px-4 py-3 text-center text-base font-black leading-tight shadow-pop-btn sm:text-lg"
+            className="flex min-h-[64px] min-w-0 items-center justify-center text-balance break-words rounded-xl border-2 border-pop-ink px-4 py-3 text-center text-base font-black leading-tight shadow-pop-btn sm:text-lg"
             style={{ background: bg, color }}
           >
             {opt}

@@ -12,7 +12,7 @@ import { haversineKm } from '@/lib/utils'
 // We can't draw their outline, but we still mark their location so they're visible.
 const TINY_COUNTRIES = COUNTRIES.filter(
   (c) => !c.hasOutline && c.lat != null && c.lng != null,
-) as (typeof COUNTRIES[number] & { lat: number; lng: number })[]
+) as ((typeof COUNTRIES)[number] & { lat: number; lng: number })[]
 
 const VBW = 800
 const VBH = 411
@@ -36,6 +36,7 @@ export function WorldMap({
   answer,
   pins = [],
   interactive = true,
+  showControls = true,
   fill = false,
   className,
 }: {
@@ -44,6 +45,7 @@ export function WorldMap({
   answer?: LatLng | null
   pins?: MapPin[]
   interactive?: boolean
+  showControls?: boolean
   /** Fit the container's height too (letterboxed) instead of sizing by width - for fullscreen/landscape. */
   fill?: boolean
   className?: string
@@ -410,27 +412,29 @@ export function WorldMap({
         )}
       </svg>
 
-      {/* zoom controls */}
-      <div
-        style={{
-          position: 'absolute',
-          right: 8,
-          bottom: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 6,
-        }}
-      >
-        <ZoomButton label="Zoom in" onClick={() => zoomAroundCenter(1 / 1.6)}>
-          +
-        </ZoomButton>
-        <ZoomButton label="Zoom out" onClick={() => zoomAroundCenter(1.6)}>
-          −
-        </ZoomButton>
-        <ZoomButton label="Reset view" onClick={() => setView(isReveal ? fitToPins() : FULL)}>
-          ⤢
-        </ZoomButton>
-      </div>
+      {/* Interactive maps retain zoom; static launcher previews do not nest controls. */}
+      {showControls && (
+        <div
+          style={{
+            position: 'absolute',
+            right: 8,
+            bottom: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 6,
+          }}
+        >
+          <ZoomButton label="Zoom in" onClick={() => zoomAroundCenter(1 / 1.6)}>
+            +
+          </ZoomButton>
+          <ZoomButton label="Zoom out" onClick={() => zoomAroundCenter(1.6)}>
+            −
+          </ZoomButton>
+          <ZoomButton label="Reset view" onClick={() => setView(isReveal ? fitToPins() : FULL)}>
+            ⤢
+          </ZoomButton>
+        </div>
+      )}
 
       {/* Discoverability: panning needs a modifier so taps can place pins. Fades
           out after a couple seconds; touch devices never see "hold space". */}

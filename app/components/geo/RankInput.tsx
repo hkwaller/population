@@ -67,7 +67,7 @@ function RankListInner({
     <div className="flex w-full flex-col gap-4">
       <p
         className={`text-center text-base font-bold ${
-          tone === 'light' ? 'text-white/80' : 'text-pop-ink/60'
+          tone === 'light' ? 'text-white/80' : 'text-pop-ink/75'
         }`}
       >
         Drag into order - most populous at the top
@@ -83,8 +83,8 @@ function RankListInner({
             key={label}
             value={label}
             dragListener={!disabled}
-            whileDrag={{ scale: 1.03, boxShadow: '0 10px 0 rgba(0,0,0,0.18)' }}
-            className={`flex touch-none items-center gap-3 rounded-pill border-4 border-pop-ink bg-white px-4 py-3.5 shadow-pop-btn ${
+            whileDrag={{ scale: 1.03, boxShadow: '0 8px 24px rgba(33,24,18,0.16)' }}
+            className={`flex touch-none items-center gap-3 rounded-xl border-4 border-pop-ink bg-white px-4 py-3.5 shadow-pop-btn ${
               disabled ? '' : 'cursor-grab active:cursor-grabbing'
             }`}
           >
@@ -112,10 +112,12 @@ export function RankInput({
   question,
   onAnswer,
   disabled = false,
+  tone = 'dark',
 }: {
   question: RankQuestion
   onAnswer: (value: string[], elapsedMs: number) => void
   disabled?: boolean
+  tone?: 'light' | 'dark'
 }) {
   const [order, setOrder] = useState<string[]>(() => question.items.map((i) => i.label))
   const startedAt = useRef<number>(0)
@@ -135,6 +137,7 @@ export function RankInput({
   return (
     <div className="flex flex-col gap-4">
       <RankList
+        tone={tone}
         items={question.items}
         resetKey={question.id}
         onChange={setOrder}

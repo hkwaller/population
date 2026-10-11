@@ -18,6 +18,7 @@ import { WorldMap, type MapPin } from './geo/WorldMap'
 import { RankReveal } from './geo/RankReveal'
 import { HigherLower } from './geo/HigherLower'
 import { RouteReveal } from './geo/RouteReveal'
+import { CountryOutline } from './geo/CountryOutline'
 import { byName } from '@/lib/geo/countries'
 import { AdsterraBanner } from './AdsterraBanner'
 import { useHaptic } from '@/hooks/useNative'
@@ -131,23 +132,24 @@ export default function QuestionResultModal({
             }
           >
             <div className={tv ? 'flex flex-col items-center' : 'contents'}>
-              <motion.span
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1, rotate: -2 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-                className="rounded-pill bg-pop-ink px-6 py-3 text-xl font-black text-white md:text-2xl"
-              >
-                The answer was…
-              </motion.span>
-
               <motion.div
                 initial={{ scale: 1.4, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1, rotate: 1 }}
+                animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.15 }}
-                className="mt-8 w-full max-w-2xl rounded-[48px] bg-white px-6 py-10 shadow-pop-card"
+                className="mt-8 w-full max-w-2xl rounded-card bg-white px-6 py-10 shadow-pop-card"
               >
+                {revealed?.type === 'choice' && revealed.prompt?.kind === 'outline' && (
+                  <div className="mb-4 flex justify-center">
+                    <CountryOutline
+                      code={revealed.prompt.code}
+                      size={240}
+                      showHeading={false}
+                      label={`Outline of ${answerText}`}
+                    />
+                  </div>
+                )}
                 {revealed?.type === 'map' ? (
-                  <div className="overflow-hidden rounded-[24px] border-4 border-pop-ink">
+                  <div className="overflow-hidden rounded-card border-4 border-pop-ink">
                     <WorldMap
                       answer={revealed.answer}
                       pins={
@@ -181,7 +183,7 @@ export default function QuestionResultModal({
                     >
                       {revealed.answer}
                     </span>
-                    <p className="text-base font-bold text-pop-ink/70 md:text-lg">
+                    <p className="text-base font-bold text-pop-ink/75 md:text-lg">
                       The odd one out - the others {revealed.sharedProperty}.
                     </p>
                   </div>
@@ -200,7 +202,7 @@ export default function QuestionResultModal({
                     </span>
                     <ul className="mt-2 flex flex-col gap-1 text-left">
                       {revealed.clues.map((clue, i) => (
-                        <li key={i} className="text-sm font-bold text-pop-ink/60 md:text-base">
+                        <li key={i} className="text-sm font-bold text-pop-ink/75 md:text-base">
                           <span className="mr-1 text-pop-ink/30">{i + 1}.</span>
                           {clue}
                         </li>
@@ -219,7 +221,7 @@ export default function QuestionResultModal({
                     )}
                   </span>
                 )}
-                <p className="mt-4 text-lg font-bold text-pop-ink/60 md:text-xl">
+                <p className="mt-4 text-lg font-bold text-pop-ink/75 md:text-xl">
                   {revealed?.question}
                 </p>
                 {revealed && <PopulationCompare question={revealed} />}
@@ -260,9 +262,10 @@ export default function QuestionResultModal({
               initial={{ y: 80, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 260, damping: 24, delay: 0.2 }}
+              style={{ bottom: 'calc(20px + env(safe-area-inset-bottom, 0px))' }}
               className="pointer-events-none fixed inset-x-0 bottom-5 z-10 flex justify-center px-4"
             >
-              <div className="pointer-events-auto flex items-center gap-2 rounded-pill border-[3px] border-white bg-pop-ink/95 p-2 shadow-pop-card backdrop-blur">
+              <div className="pointer-events-auto flex items-center gap-2 rounded-xl border-[3px] border-white bg-pop-ink/95 p-2 shadow-pop-card backdrop-blur">
                 {canEndGame ? (
                   <DockButton
                     onClick={async () => {

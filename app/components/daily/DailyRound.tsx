@@ -101,21 +101,22 @@ export function DailyRound({
         ) : (
           <div className="w-full">
             {index === 0 && hasBandQuestion && (
-              <div className="mb-4 flex items-center justify-between gap-4 rounded-3xl bg-white px-5 py-3 shadow-pop">
+              <div className="mb-4 flex items-center justify-between gap-4 rounded-card bg-white px-5 py-3 shadow-pop">
                 <div className="min-w-0">
                   <span className="block text-base font-black text-pop-ink">Confidence mode</span>
-                  <span className="block text-sm font-bold text-pop-ink/55">
+                  <span className="block text-sm font-bold text-pop-ink/75">
                     Bet a range - narrow scores more, miss it and you get nothing
                   </span>
                 </div>
                 <PopToggle
+                  label="Confidence mode"
                   compact
                   checked={confidenceMode}
                   onChange={(v) => updateGame({ confidenceMode: v })}
                 />
               </div>
             )}
-            <QuestionInput question={q} onAnswer={onAnswer} />
+            <QuestionInput tone="light" question={q} onAnswer={onAnswer} />
           </div>
         )}
       </main>
@@ -131,7 +132,7 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
     <div className="flex flex-col items-center gap-4 rounded-card bg-white p-6 shadow-pop-card">
       {question.type === 'map' && (
         <>
-          <div className="w-full overflow-hidden rounded-[20px] border-4 border-pop-ink">
+          <div className="w-full overflow-hidden rounded-card border-4 border-pop-ink">
             <WorldMap
               value={attempt.value as { lat: number; lng: number }}
               answer={question.answer}
@@ -163,7 +164,7 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
             selected={attempt.value as string}
             correct={question.answer}
           />
-          <p className="text-center text-base font-bold text-pop-ink/60">
+          <p className="text-center text-base font-bold text-pop-ink/75">
             The others {question.sharedProperty}.
           </p>
         </>
@@ -172,13 +173,13 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
         <p className="text-center text-xl font-black text-pop-ink">
           Answer: {question.answer}
           <br />
-          <span className="text-pop-ink/60">You: {formatAnswerValue(attempt.value)}</span>
+          <span className="text-pop-ink/75">You: {formatAnswerValue(attempt.value)}</span>
         </p>
       )}
       {question.type === 'route' && (
         <div className="flex flex-col items-center gap-4">
           <div className="flex flex-col items-center gap-1">
-            <span className="text-[11px] font-black uppercase tracking-wide text-pop-ink/50">
+            <span className="text-[11px] font-black uppercase tracking-wide text-pop-ink/75">
               Your route
             </span>
             <RouteGuessFlags answer={attempt.value} />
@@ -193,7 +194,7 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
           <br />
           {/* In confidence mode the bet was a range, so echo the range - showing
               only its midpoint would look like a guess the player never made. */}
-          <span className="text-pop-ink/60">
+          <span className="text-pop-ink/75">
             You:{' '}
             {attempt.confidence != null && typeof attempt.value === 'number'
               ? `${formatAnswerValue(attempt.value - attempt.confidence)} – ${formatAnswerValue(

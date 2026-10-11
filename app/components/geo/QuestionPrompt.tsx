@@ -16,7 +16,7 @@ export function FlagPrompt({ code, className }: { code: string; className?: stri
         width: 'min(340px, 78vw)',
         borderRadius: 12,
         border: '4px solid #211812',
-        boxShadow: '0 8px 0 rgba(0,0,0,0.18)',
+        boxShadow: '0 4px 12px rgba(33,24,18,0.12)',
       }}
     />
   )
@@ -24,7 +24,10 @@ export function FlagPrompt({ code, className }: { code: string; className?: stri
 
 /** The set of neighbouring countries (their flags) for a "which borders these?" question. */
 export function BordersPrompt({ codes }: { codes: string[] }) {
-  const neighbours = codes.map((c) => byCca3.get(c)).filter(Boolean).slice(0, 6)
+  const neighbours = codes
+    .map((c) => byCca3.get(c))
+    .filter(Boolean)
+    .slice(0, 6)
   return (
     <div className="flex flex-col items-center gap-5">
       <p
@@ -36,8 +39,8 @@ export function BordersPrompt({ codes }: { codes: string[] }) {
       <div className="flex flex-wrap items-center justify-center gap-3">
         {neighbours.map((n) => (
           <div key={n!.cca3} className="flex flex-col items-center gap-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              // eslint-disable-next-line @next/next/no-img-element
               src={`/flags/${n!.cca2.toLowerCase()}.svg`}
               alt={n!.name}
               style={{ width: 64, borderRadius: 6, border: '2px solid #211812' }}

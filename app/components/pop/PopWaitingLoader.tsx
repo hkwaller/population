@@ -7,6 +7,7 @@
 // of equal-point-count silhouettes (scripts/build-country-shapes.mjs) so each
 // can be linearly interpolated into the next.
 import { useEffect, useRef, useState } from 'react'
+import { useReducedMotion } from 'motion/react'
 
 import shapes from '@/lib/geo/country-shapes.json'
 import { POP } from '@/app/components/pop/theme'
@@ -55,11 +56,13 @@ export function PopWaitingLoader({
   msPerShape?: number
   showCountryName?: boolean
 }) {
+  const reduce = useReducedMotion()
   const [t, setT] = useState(0)
   const raf = useRef(0)
   const t0 = useRef(0)
 
   useEffect(() => {
+    if (reduce) return
     t0.current = performance.now()
     const loop = () => {
       raf.current = requestAnimationFrame(loop)
@@ -67,7 +70,7 @@ export function PopWaitingLoader({
     }
     raf.current = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf.current)
-  }, [])
+  }, [reduce])
 
   const cycle = msPerShape
   const B = pathAt(cycle, t, 0)
@@ -85,16 +88,16 @@ export function PopWaitingLoader({
 
   return (
     <div className="mt-16 flex flex-col items-center gap-6 text-center">
-      <style>{`@keyframes popBreathe{0%,100%{transform:translateY(0) rotate(-2deg) scale(1)}50%{transform:translateY(-6px) rotate(-2deg) scale(1.03)}}`}</style>
+      <style>{`@keyframes popBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.03)}}`}</style>
 
       <div
-        className="grid place-items-center rounded-[36px] border-4 border-white"
+        className="grid place-items-center rounded-card border-4 border-white"
         style={{
           width: 232,
           height: 232,
           background: POP.paper,
-          boxShadow: '0 12px 0 rgba(0,0,0,0.15)',
-          animation: 'popBreathe 5.2s ease-in-out infinite',
+          boxShadow: '0 8px 24px rgba(33,24,18,0.16)',
+          animation: reduce ? 'none' : 'popBreathe 5.2s ease-in-out infinite',
         }}
       >
         <svg viewBox="-6 -6 112 112" width={186} height={186} role="img" aria-label="Loading">

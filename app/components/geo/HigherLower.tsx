@@ -59,9 +59,9 @@ export function HigherLower({
               onSelect?.(side)
             }}
             initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -0.6 : 0.6 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04, type: 'spring', stiffness: 260, damping: 20 }}
-            className="flex min-h-[96px] min-w-0 flex-col items-center justify-center gap-1 text-balance break-words rounded-3xl border-4 border-pop-ink px-4 py-4 text-center font-black leading-tight shadow-pop-btn"
+            className="flex min-h-[96px] min-w-0 flex-col items-center justify-center gap-1 text-balance break-words rounded-card border-4 border-pop-ink px-4 py-4 text-center font-black leading-tight shadow-pop-btn"
             style={{ background: bg, color }}
           >
             {data.code ? <span className="text-3xl leading-none">{data.code}</span> : null}

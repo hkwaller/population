@@ -4,7 +4,17 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, useReducedMotion } from 'motion/react'
-import { ArrowRight, Bird, Cat, CircleHelp, Flame, Rabbit, ScanLine, Trophy, UserRound } from 'lucide-react'
+import {
+  ArrowRight,
+  Bird,
+  Cat,
+  CircleHelp,
+  Flame,
+  Rabbit,
+  ScanLine,
+  Trophy,
+  UserRound,
+} from 'lucide-react'
 
 import stats from '../database/stats.json'
 import { categories, MAX_SCORE } from '@/lib/utils'
@@ -31,7 +41,7 @@ function useDailyState(): DailyState | null {
       const today = dateKeyUTC(new Date())
       const yesterday = dateKeyUTC(new Date(Date.now() - 86_400_000))
       const alive = store.lastDate === today || store.lastDate === yesterday
-      next = { played: store.plays?.[today] ?? null, streak: alive ? (store.streak ?? 0) : 0 }
+      next = { played: store.plays?.[today] ?? null, streak: alive ? store.streak ?? 0 : 0 }
     } catch {
       /* malformed storage reads as a fresh device */
     }
@@ -48,12 +58,12 @@ export function AppHome() {
 
   // Tiles deal in like cards, once. Never hidden at rest: a stalled animation
   // still leaves them readable, and reduced motion skips it.
-  const deal = (i: number, rotate: number) =>
+  const deal = (i: number) =>
     reduce
-      ? { initial: false as const, style: { rotate } }
+      ? { initial: false as const, style: {} }
       : {
-          initial: { y: 28, rotate: rotate * 3 },
-          animate: { y: 0, rotate },
+          initial: { y: 28 },
+          animate: { y: 0 },
           transition: { ...DEAL, delay: 0.06 + i * 0.07 },
         }
 
@@ -70,25 +80,25 @@ export function AppHome() {
           <section className="flex min-h-[calc(100svh-var(--safe-top)-env(safe-area-inset-bottom,0px)-124px)] flex-col justify-end gap-5 pb-2 pt-4">
             <div className="my-auto py-4 md:py-10">
               <h1
-                className="pop-textshadow origin-left font-black leading-[0.86] tracking-[-0.035em] text-white"
-                style={{ fontSize: 'clamp(64px, 21vw, 96px)', rotate: '-3deg' }}
+                className="origin-left font-black leading-[0.86] tracking-[-0.035em] text-white"
+                style={{ fontSize: 'clamp(64px, 21vw, 96px)' }}
               >
                 Guess
                 <br />
                 the world.
               </h1>
-              <p className="mt-5 max-w-[30ch] text-lg font-bold leading-snug text-pop-paper">
+              <p className="mt-5 max-w-[30ch] text-lg font-bold leading-snug text-pop-ink">
                 Closest guess wins. Pick a way in.
               </p>
             </div>
 
-            <motion.div {...deal(0, -1)}>
+            <motion.div {...deal(0)}>
               <PartyTile />
             </motion.div>
-            <motion.div {...deal(1, 1)}>
+            <motion.div {...deal(1)}>
               <JoinTile />
             </motion.div>
-            <motion.div {...deal(2, -0.5)}>
+            <motion.div {...deal(2)}>
               <DailyTicket state={daily} />
             </motion.div>
           </section>
@@ -96,12 +106,24 @@ export function AppHome() {
           <Formats totalQuestions={totalQuestions} />
 
           <nav aria-label="More" className="mt-10 grid grid-cols-3 gap-3">
-            <MoreLink href="/highscores" label="Highscores" icon={<Trophy size={22} strokeWidth={2.5} />} />
-            <MoreLink href="/how-to-play" label="How to play" icon={<CircleHelp size={22} strokeWidth={2.5} />} />
-            <MoreLink href="/profile" label="Profile" icon={<UserRound size={22} strokeWidth={2.5} />} />
+            <MoreLink
+              href="/highscores"
+              label="Highscores"
+              icon={<Trophy size={22} strokeWidth={2.5} />}
+            />
+            <MoreLink
+              href="/how-to-play"
+              label="How to play"
+              icon={<CircleHelp size={22} strokeWidth={2.5} />}
+            />
+            <MoreLink
+              href="/profile"
+              label="Profile"
+              icon={<UserRound size={22} strokeWidth={2.5} />}
+            />
           </nav>
 
-          <footer className="mt-12 flex flex-col items-center gap-3 text-center text-[15px] font-bold text-pop-paper/80">
+          <footer className="mt-12 flex flex-col items-center gap-3 text-center text-[15px] font-bold text-pop-ink">
             <div className="flex gap-5">
               <Link href="/about" className="py-1 hover:text-white">
                 About
@@ -128,15 +150,15 @@ export function AppHome() {
   )
 }
 
-const TILE_PRESS = { whileTap: { y: 5, boxShadow: '0 3px 0 rgba(0,0,0,0.2)' } }
+const TILE_PRESS = { whileTap: { y: 1 } }
 
 function PartyTile() {
   return (
-    <motion.div {...TILE_PRESS} className="relative rounded-[28px] bg-white shadow-pop-card">
+    <motion.div {...TILE_PRESS} className="relative rounded-[16px] bg-white shadow-pop-card">
       <Players />
       <Link
         href="/new-game"
-        className="flex items-center gap-4 rounded-[28px] p-5 pt-6 outline-none focus-visible:ring-4 focus-visible:ring-pop-ink"
+        className="flex items-center gap-4 rounded-[16px] p-5 pt-6 outline-none focus-visible:ring-4 focus-visible:ring-pop-ink"
       >
         <div className="min-w-0 flex-1">
           <div className="text-[32px] font-black leading-none tracking-[-0.02em] text-pop-coral">
@@ -162,7 +184,7 @@ function Players() {
         <span
           key={i}
           className="flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-white text-pop-ink shadow-pop"
-          style={{ background: STICKER_FILLS[i], rotate: `${(i - 1) * 8}deg`, zIndex: 3 - i }}
+          style={{ background: STICKER_FILLS[i], zIndex: 3 - i }}
         >
           <Icon size={22} strokeWidth={2.5} />
         </span>
@@ -186,12 +208,12 @@ function JoinTile() {
   }
 
   return (
-    <div className="rounded-[28px] bg-pop-ink shadow-pop-card">
+    <div className="rounded-[16px] bg-pop-ink shadow-pop-card">
       <div className="flex items-stretch">
-        <motion.div {...TILE_PRESS} className="min-w-0 flex-1 rounded-[28px]">
+        <motion.div {...TILE_PRESS} className="min-w-0 flex-1 rounded-[16px]">
           <Link
             href="/join"
-            className="flex h-full items-center gap-3 rounded-[28px] p-5 outline-none focus-visible:ring-4 focus-visible:ring-white"
+            className="flex h-full items-center gap-3 rounded-[16px] p-5 outline-none focus-visible:ring-4 focus-visible:ring-white"
           >
             <div className="min-w-0 flex-1">
               <div className="text-[28px] font-black leading-none tracking-[-0.02em] text-white">
@@ -209,7 +231,7 @@ function JoinTile() {
             type="button"
             onClick={scan}
             whileTap={{ scale: 0.94 }}
-            className="m-3 flex w-[84px] shrink-0 flex-col items-center justify-center gap-1 rounded-[20px] bg-white text-pop-ink outline-none focus-visible:ring-4 focus-visible:ring-pop-sunshine"
+            className="m-3 flex w-[84px] shrink-0 flex-col items-center justify-center gap-1 rounded-card bg-white text-pop-ink outline-none focus-visible:ring-4 focus-visible:ring-pop-sunshine"
           >
             <ScanLine size={30} strokeWidth={2.5} />
             <span className="text-sm font-black">Scan</span>
@@ -232,10 +254,13 @@ function DailyTicket({ state }: { state: DailyState | null }) {
 
   return (
     // The drop shadow sits on the wrapper so it follows the notches the mask cuts.
-    <motion.div whileTap={{ y: 5 }} style={{ filter: 'drop-shadow(0 12px 0 rgba(0,0,0,0.15))' }}>
+    <motion.div
+      whileTap={{ y: 5 }}
+      style={{ filter: 'drop-shadow(0 6px 10px rgba(33,24,18,0.16))' }}
+    >
       <Link
         href="/daily"
-        className="relative flex items-stretch rounded-[28px] outline-none focus-visible:ring-4 focus-visible:ring-pop-ink"
+        className="relative flex items-stretch rounded-[16px] outline-none focus-visible:ring-4 focus-visible:ring-pop-ink"
         style={{ background: POP.sunshine, ...TICKET_NOTCHES }}
       >
         <div className="min-w-0 flex-1 p-5 pr-4">
@@ -245,8 +270,8 @@ function DailyTicket({ state }: { state: DailyState | null }) {
           {played ? (
             <>
               <p className="mt-2 text-base font-bold text-pop-ink/75">
-                <span className="tabular-nums">{played.total.toLocaleString('en-US')}</span> / {max.toLocaleString('en-US')}.
-                Back tomorrow for a new one.
+                <span className="tabular-nums">{played.total.toLocaleString('en-US')}</span> /{' '}
+                {max.toLocaleString('en-US')}. Back tomorrow for a new one.
               </p>
               <Buckets buckets={played.buckets} />
             </>
@@ -293,7 +318,12 @@ const BUCKET_FILL: Record<string, string> = {
   '🟧': POP.coral,
   '⬛': 'rgba(33,24,18,0.22)',
 }
-const BUCKET_WORD: Record<string, string> = { '🟩': 'great', '🟨': 'close', '🟧': 'far', '⬛': 'missed' }
+const BUCKET_WORD: Record<string, string> = {
+  '🟩': 'great',
+  '🟨': 'close',
+  '🟧': 'far',
+  '⬛': 'missed',
+}
 
 function Buckets({ buckets }: { buckets: string }) {
   const cells = Array.from(buckets).filter((c) => c in BUCKET_FILL)
@@ -309,34 +339,49 @@ function Buckets({ buckets }: { buckets: string }) {
 
 // Each format drawn as a tiny piece of its own UI: breadth is the brand.
 const FORMATS = [
-  { name: 'Slide it', example: 'How many people live in Peru?', fill: POP.cobalt, art: <SliderArt /> },
+  {
+    name: 'Slide it',
+    example: 'How many people live in Peru?',
+    fill: POP.cobalt,
+    art: <SliderArt />,
+  },
   { name: 'Pick one', example: 'Which flag is Chile?', fill: POP.grape, art: <ChoiceArt /> },
   { name: 'Pin it', example: 'Drop a pin on Ulaanbaatar.', fill: POP.mint, art: <MapArt /> },
-  { name: 'Rank them', example: 'Sort four countries by population.', fill: POP.bubblegum, art: <RankArt /> },
+  {
+    name: 'Rank them',
+    example: 'Sort four countries by population.',
+    fill: POP.bubblegum,
+    art: <RankArt />,
+  },
 ]
 
 function Formats({ totalQuestions }: { totalQuestions: number }) {
   return (
     <section aria-labelledby="formats" className="mt-10">
-      <h2 id="formats" className="text-[28px] font-black leading-tight tracking-[-0.02em] text-white">
+      <h2
+        id="formats"
+        className="text-[28px] font-black leading-tight tracking-[-0.02em] text-white"
+      >
         One game, many ways to guess
       </h2>
-      <p className="mt-1 text-base font-bold text-pop-paper/85">
-        <span className="tabular-nums">{totalQuestions.toLocaleString('en-US')}</span> questions across{' '}
-        {categories.length} categories. The closer you get, the more you score.
+      <p className="mt-1 text-base font-bold text-pop-ink">
+        <span className="tabular-nums">{totalQuestions.toLocaleString('en-US')}</span> questions
+        across {categories.length} categories. The closer you get, the more you score.
       </p>
       <ul className="-mx-5 mt-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 pt-1 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0">
         {FORMATS.map((f, i) => (
           <li
             key={f.name}
-            className="w-[70%] shrink-0 snap-start rounded-[24px] bg-white p-4 shadow-pop md:w-auto"
-            style={{ rotate: `${i % 2 === 0 ? -1 : 1}deg` }}
+            className="w-[70%] shrink-0 snap-start rounded-card bg-white p-4 shadow-pop md:w-auto"
           >
-            <div className="flex h-[84px] items-center justify-center rounded-[16px]" style={{ background: f.fill }}>
+            <div
+              className="flex h-[84px] items-center justify-center rounded-[16px]"
+              style={{ background: f.fill }}
+            >
               {f.art}
             </div>
             <div className="mt-3 text-xl font-black text-pop-ink">{f.name}</div>
-            <p className="mt-0.5 text-[15px] font-bold leading-snug text-pop-ink/65">{f.example}</p>
+            <p className="mt-0.5 text-[15px] font-bold leading-snug text-pop-ink/75">{f.example}</p>
           </li>
         ))}
       </ul>
@@ -389,7 +434,11 @@ function RankArt() {
   return (
     <div className="flex w-[60%] flex-col gap-1.5" aria-hidden>
       {[100, 76, 52, 30].map((w, i) => (
-        <span key={w} className={`h-2.5 rounded-full ${i === 0 ? 'bg-pop-sunshine' : 'bg-white/85'}`} style={{ width: `${w}%` }} />
+        <span
+          key={w}
+          className={`h-2.5 rounded-full ${i === 0 ? 'bg-pop-sunshine' : 'bg-white/85'}`}
+          style={{ width: `${w}%` }}
+        />
       ))}
     </div>
   )
@@ -399,7 +448,7 @@ function MoreLink({ href, label, icon }: { href: string; label: string; icon: Re
   return (
     <Link
       href={href}
-      className="flex flex-col items-center gap-1.5 rounded-[20px] border-[3px] border-white/80 px-2 py-3 text-center text-[15px] font-black text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-4 focus-visible:ring-white"
+      className="flex flex-col items-center gap-1.5 rounded-card border-[3px] border-white/80 px-2 py-3 text-center text-[15px] font-black text-pop-ink outline-none transition-colors hover:bg-white/10 focus-visible:ring-4 focus-visible:ring-white"
     >
       {icon}
       {label}

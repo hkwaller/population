@@ -40,13 +40,13 @@ export function PopSlider({
 
   return (
     <div
-      className={`mx-auto w-full rounded-pill bg-white/15 ${
-        compact ? 'px-4 py-3' : 'px-8 py-5'
-      } ${locked ? 'pointer-events-none opacity-60' : ''}`}
+      className={`mx-auto w-full rounded-xl bg-white ${compact ? 'px-4 py-3' : 'px-8 py-5'} ${
+        locked ? 'pointer-events-none opacity-60' : ''
+      }`}
     >
       <div className="flex items-center gap-3 md:gap-4">
         <button
-          className="shrink-0 text-lg font-extrabold text-white/90 md:text-xl"
+          className="shrink-0 text-lg font-extrabold text-pop-ink md:text-xl"
           onClick={() => onChange(Math.max(min, value - nudge))}
           aria-label="Nudge down"
         >
@@ -65,29 +65,27 @@ export function PopSlider({
           className="relative flex flex-1 touch-none select-none items-center"
         >
           <SliderPrimitive.Track
-            className={`relative grow rounded-pill bg-white/30 ${compact ? 'h-5' : 'h-7'}`}
+            className={`relative grow rounded-xl bg-white/30 ${compact ? 'h-5' : 'h-7'}`}
           >
             <SliderPrimitive.Range
-              className="absolute h-full rounded-pill"
+              className="absolute h-full rounded-xl"
               style={{ background: fill }}
             />
           </SliderPrimitive.Track>
 
           <SliderPrimitive.Thumb className="block focus:outline-none" aria-label="Guess">
             <motion.div
-              animate={
-                dragging && !locked
-                  ? { rotate: [0, 8, -8, 0], scale: 1.08 }
-                  : { rotate: 0, scale: 1 }
-              }
+              animate={dragging && !locked ? { scale: 1.08 } : { scale: 1 }}
               transition={
                 dragging && !locked
-                  ? { rotate: { repeat: Infinity, duration: 0.4 }, scale: { duration: 0.15 } }
+                  ? { scale: { duration: 0.15 } }
                   : { type: 'spring', stiffness: 300, damping: 20 }
               }
-              className="flex items-center gap-1.5 rounded-pill bg-white px-3 py-1.5"
+              className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1.5"
               style={{
-                boxShadow: dragging ? '0 8px 0 rgba(0,0,0,0.25)' : '0 5px 0 rgba(0,0,0,0.18)',
+                boxShadow: dragging
+                  ? '0 6px 16px rgba(33,24,18,0.18)'
+                  : '0 3px 8px rgba(33,24,18,0.12)',
               }}
             >
               <span
@@ -102,7 +100,7 @@ export function PopSlider({
         </SliderPrimitive.Root>
 
         <button
-          className="shrink-0 text-lg font-extrabold text-white/90 md:text-xl"
+          className="shrink-0 text-lg font-extrabold text-pop-ink md:text-xl"
           onClick={() => onChange(Math.min(max, value + nudge))}
           aria-label="Nudge up"
         >
@@ -114,7 +112,7 @@ export function PopSlider({
       {onOpenKeypad && !locked && (
         <button
           onClick={onOpenKeypad}
-          className="mx-auto mt-3 flex items-center gap-1.5 rounded-pill bg-white/20 px-4 py-1.5 text-sm font-bold text-white/90"
+          className="mx-auto mt-3 flex items-center gap-1.5 rounded-xl bg-pop-paper px-4 py-1.5 text-sm font-bold text-pop-ink"
         >
           <Keyboard size={16} /> Type exact number
         </button>

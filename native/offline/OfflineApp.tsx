@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Globe2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { App } from '@capacitor/app'
 
@@ -41,7 +42,11 @@ export async function siteReachable(timeoutMs = 6000): Promise<boolean> {
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), timeoutMs)
   try {
-    await fetch(`${APP_URL}?ping=${Date.now()}`, { mode: 'no-cors', cache: 'no-store', signal: ctrl.signal })
+    await fetch(`${APP_URL}?ping=${Date.now()}`, {
+      mode: 'no-cors',
+      cache: 'no-store',
+      signal: ctrl.signal,
+    })
     return true
   } catch {
     return false
@@ -73,7 +78,9 @@ function autoGoOnline() {
  * the world geometry the prompts and maps load are copied into native/www
  * (vite.config.ts), so nothing here needs the network.
  */
-const POOL = (geoQuestions as unknown as TQuestion[]).map((q) => (q.type === 'rank' ? toLargestFirstRank(q) : q))
+const POOL = (geoQuestions as unknown as TQuestion[]).map((q) =>
+  q.type === 'rank' ? toLargestFirstRank(q) : q,
+)
 
 /** A fresh practice set: the daily's picker (category mix, easy to hard) with a random seed. */
 function practiceSet(): { questions: TQuestion[]; key: string } {
@@ -142,9 +149,10 @@ export function OfflineApp() {
 function Tag({ color }: { color: string }) {
   return (
     <span
-      className="inline-block rounded-[18px] bg-white px-4 py-2 text-xl font-black"
-      style={{ rotate: '-3deg', color, boxShadow: '0 5px 0 rgba(0,0,0,0.15)' }}
+      className="inline-flex items-center gap-2.5 rounded-xl bg-white px-3 py-2 text-xl font-bold"
+      style={{ color: color === POP.sunshine ? POP.ink : color }}
     >
+      <Globe2 size={26} strokeWidth={1.75} aria-hidden />
       Population
     </span>
   )
@@ -172,7 +180,7 @@ function OfflineHome({ onPlay }: { onPlay: () => void }) {
             <br />
             <span className="text-pop-ink">The world isn&apos;t.</span>
           </h1>
-          <p className="max-w-[340px] text-lg font-bold leading-snug" style={{ color: POP.paper }}>
+          <p className="max-w-[340px] text-lg font-bold leading-snug" style={{ color: POP.ink }}>
             Parties, the daily puzzle and your stats need the internet. A practice round works
             anywhere.
           </p>
@@ -194,7 +202,7 @@ function OfflineHome({ onPlay }: { onPlay: () => void }) {
           >
             {retry === 'checking' ? 'Checking...' : 'Try again'}
           </PopButton>
-          <p className="text-center text-sm font-bold" style={{ color: POP.paper }}>
+          <p className="text-center text-sm font-bold" style={{ color: POP.ink }}>
             {DAILY_SIZE} questions. Practice rounds don&apos;t count toward stats or streaks.
           </p>
         </div>
@@ -221,8 +229,8 @@ function PracticeResult({
       </header>
       <main className="mx-auto flex w-full max-w-md flex-col items-center gap-6 px-5 pb-10 pt-10 text-center">
         <motion.h1
-          initial={{ scale: 0, rotate: -6 }}
-          animate={{ scale: 1, rotate: -2 }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 18 }}
           className="pop-textshadow-sm text-5xl font-black text-pop-ink"
         >
@@ -231,7 +239,7 @@ function PracticeResult({
 
         <div className="w-full rounded-card bg-white p-7 shadow-pop-card">
           <div className="text-6xl font-black text-pop-ink">{total.toLocaleString()}</div>
-          <div className="text-lg font-bold text-pop-ink/60">of {max.toLocaleString()} points</div>
+          <div className="text-lg font-bold text-pop-ink/75">of {max.toLocaleString()} points</div>
         </div>
 
         <PopButton variant="primary" size="lg" className="w-full" onClick={onAgain}>
@@ -240,8 +248,9 @@ function PracticeResult({
         <PopButton variant="secondary" size="lg" className="w-full" onClick={onHome}>
           Back
         </PopButton>
-        <p className="text-base font-bold text-pop-ink/60">
-          Practice only, so nothing was saved. Back online, the daily puzzle and parties are waiting.
+        <p className="text-base font-bold text-pop-ink/75">
+          Practice only, so nothing was saved. Back online, the daily puzzle and parties are
+          waiting.
         </p>
       </main>
     </PopShell>

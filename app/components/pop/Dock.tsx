@@ -35,9 +35,10 @@ export function Dock({
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+      style={{ bottom: 'calc(20px + env(safe-area-inset-bottom, 0px))' }}
       className="pointer-events-none fixed inset-x-0 bottom-5 z-40 flex justify-center px-4"
     >
-      <div className="pointer-events-auto flex items-center gap-2 rounded-pill border-[3px] border-white bg-pop-ink/95 p-2 shadow-pop-card backdrop-blur">
+      <div className="pointer-events-auto flex items-center gap-2 rounded-xl border-[3px] border-white bg-pop-ink/95 p-2 shadow-pop-card backdrop-blur">
         <DockButton onClick={onReplace} label="Replace" tone="subtle">
           <RefreshCw size={18} strokeWidth={2.75} />
         </DockButton>
@@ -90,9 +91,10 @@ export function DockButton({
         if (disabled) return
         onClick()
       }}
+      disabled={disabled}
       aria-label={label}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-pill px-4 py-2.5 text-base font-black tracking-tight transition-colors',
+        'inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-base font-black tracking-tight transition-colors',
         disabled && 'opacity-60',
         tone === 'primary' ? 'text-pop-ink' : 'bg-white/15 text-white',
       )}

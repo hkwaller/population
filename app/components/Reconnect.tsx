@@ -11,7 +11,7 @@ export const Reconnect = () => {
       <Button
         size="lg"
         className={`
-          bg-ish-coral text-white font-extrabold group py-6 px-14 text-2xl uppercase border-8 border-ish-ink transform rotate-1 transition-all duration-200 hover:scale-105 hover:opacity-90
+          bg-ish-coral text-white font-extrabold group py-6 px-14 text-2xl uppercase border-8 border-ish-ink transform transition-all duration-200 hover:scale-105 hover:opacity-90
         `}
         onClick={() => {
           router.push(`/game/${gameId}/${me?.id}`)

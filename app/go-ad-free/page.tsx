@@ -21,7 +21,6 @@ type Tier = {
   cadence: string
   blurb: string
   color: string
-  rotate: number
 }
 
 const TIERS: Tier[] = [
@@ -32,7 +31,6 @@ const TIERS: Tier[] = [
     cadence: 'one-time · 24 hours',
     blurb: 'Ad-free for 24 hours. No auto-renew.',
     color: POP.sunshine,
-    rotate: -2,
   },
   {
     plan: 'month',
@@ -41,7 +39,6 @@ const TIERS: Tier[] = [
     cadence: 'per month',
     blurb: 'Ad-free everywhere. Cancel anytime.',
     color: POP.mint,
-    rotate: 1,
   },
   {
     plan: 'year',
@@ -50,7 +47,6 @@ const TIERS: Tier[] = [
     cadence: 'per year',
     blurb: 'Best value - under 34 kr/month.',
     color: POP.coral,
-    rotate: -1,
   },
 ]
 
@@ -121,7 +117,7 @@ function GoAdFreeContent() {
       <div className="mx-auto max-w-4xl px-5 pb-24 pt-6 text-center md:pt-10">
         <motion.h1
           initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1, rotate: -2 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 16 }}
           className="pop-textshadow font-black leading-[0.9] tracking-[-0.02em] text-white"
           style={{ fontSize: 'clamp(48px, 10vw, 92px)' }}
@@ -133,28 +129,28 @@ function GoAdFreeContent() {
         </p>
 
         {status === 'success' && (
-          <div className="mx-auto mt-8 max-w-md rounded-3xl border-4 border-white bg-white/10 p-5 text-lg font-black text-white">
+          <div className="mx-auto mt-8 max-w-md rounded-card border-4 border-white bg-white/10 p-5 text-lg font-black text-white">
             Payment complete! Your ad-free status is activating…
           </div>
         )}
         {status === 'cancelled' && (
-          <div className="mx-auto mt-8 max-w-md rounded-3xl border-4 border-white/60 p-4 text-base font-bold text-white/80">
+          <div className="mx-auto mt-8 max-w-md rounded-card border-4 border-white/60 p-4 text-base font-bold text-white/80">
             Checkout cancelled - no charge was made.
           </div>
         )}
         {error && (
-          <div className="mx-auto mt-8 max-w-md rounded-3xl border-4 border-white bg-pop-ink/20 p-4 text-base font-bold text-white">
+          <div className="mx-auto mt-8 max-w-md rounded-card border-4 border-white bg-pop-ink/20 p-4 text-base font-bold text-white">
             {error}
           </div>
         )}
 
         {/* Already ad-free */}
         {isLoaded && adFree && (
-          <div className="mx-auto mt-10 max-w-md rounded-[32px] bg-white p-8 shadow-pop-card">
+          <div className="mx-auto mt-10 max-w-md rounded-card bg-white p-8 shadow-pop-card">
             <div className="flex items-center justify-center gap-2 text-2xl font-black text-pop-ink">
               <Check size={28} /> You&apos;re ad-free
             </div>
-            <p className="mt-3 text-base font-bold text-pop-ink/60">
+            <p className="mt-3 text-base font-bold text-pop-ink/75">
               {meta.subStatus === 'day-pass' ? 'Day pass active' : 'Subscription active'} until{' '}
               {new Date(meta.adFreeUntil!).toLocaleString()}
             </p>
@@ -163,7 +159,6 @@ function GoAdFreeContent() {
                 <PopButton
                   variant="secondary"
                   size="lg"
-                  rotate={-1}
                   disabled={busy === 'portal'}
                   onClick={openPortal}
                 >
@@ -180,8 +175,7 @@ function GoAdFreeContent() {
             {TIERS.map((tier) => (
               <div
                 key={tier.plan}
-                className="flex w-[260px] flex-col items-center rounded-[32px] bg-white p-6 shadow-pop-card"
-                style={{ rotate: `${tier.rotate}deg` }}
+                className="flex w-[260px] flex-col items-center rounded-card bg-white p-6 shadow-pop-card"
               >
                 <span
                   className="rounded-pill border-4 border-pop-ink px-5 py-2 text-lg font-black text-pop-ink"
@@ -190,7 +184,7 @@ function GoAdFreeContent() {
                   {tier.name}
                 </span>
                 <span className="mt-5 text-5xl font-black text-pop-ink">{tier.price}</span>
-                <span className="mt-1 text-sm font-bold uppercase tracking-wide text-pop-ink/50">
+                <span className="mt-1 text-sm font-bold uppercase tracking-wide text-pop-ink/75">
                   {tier.cadence}
                 </span>
                 <p className="mt-4 min-h-[48px] text-base font-bold text-pop-ink/70">
@@ -201,7 +195,6 @@ function GoAdFreeContent() {
                     <PopButton
                       variant="primary"
                       size="lg"
-                      rotate={0}
                       disabled={busy === tier.plan}
                       onClick={() => checkout(tier.plan)}
                     >
@@ -209,7 +202,7 @@ function GoAdFreeContent() {
                     </PopButton>
                   ) : (
                     <SignInButton mode="modal">
-                      <PopButton variant="primary" size="lg" rotate={0}>
+                      <PopButton variant="primary" size="lg">
                         Sign in to buy
                       </PopButton>
                     </SignInButton>

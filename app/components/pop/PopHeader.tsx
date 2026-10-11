@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { Globe2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { SignInButton, useUser } from '@clerk/nextjs'
 import {
@@ -12,6 +13,7 @@ import {
 } from '@/components/ui/context-menu'
 import { SignOutButton } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
+import { POP } from './theme'
 import { useHomeHref } from '@/hooks/useNative'
 
 // The tilted `Population` tag, top-left of most screens. Clicking it goes home.
@@ -27,13 +29,23 @@ export function PopLogo({
   return (
     <Link href={home}>
       <motion.span
-        whileHover={{ rotate: 0, y: -2 }}
+        whileHover={{ y: -2 }}
         className={cn(
-          'inline-block cursor-pointer rounded-[18px] px-4 py-2 text-xl font-black shadow-pop-sm md:text-2xl',
+          'inline-flex items-center gap-2.5 cursor-pointer rounded-xl px-3 py-2 text-xl font-bold md:text-2xl',
           isPaper ? 'bg-white' : 'bg-pop-ink text-white',
         )}
-        style={{ rotate: '-3deg', color: textColor, boxShadow: '0 5px 0 rgba(0,0,0,0.15)' }}
+        style={{
+          color:
+            isPaper &&
+            (textColor === POP.sky ||
+              textColor === POP.sunshine ||
+              textColor === POP.bubblegum ||
+              textColor === POP.mint)
+              ? POP.ink
+              : textColor,
+        }}
       >
+        <Globe2 size={26} strokeWidth={1.75} aria-hidden />
         Population
       </motion.span>
     </Link>
@@ -49,13 +61,10 @@ export function PopAuth({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
     return (
       <SignInButton mode="modal">
         <motion.button
-          whileHover={{ rotate: 0, y: -2 }}
-          style={{ rotate: '2deg' }}
+          whileHover={{ y: -2 }}
           className={cn(
-            'rounded-pill border-[3px] px-5 py-2.5 text-lg font-black',
-            tone === 'light'
-              ? 'border-white text-white'
-              : 'border-pop-ink text-pop-ink',
+            'rounded-lg border-2 px-5 py-2.5 text-xl font-bold',
+            tone === 'light' ? 'border-white text-white' : 'border-pop-ink text-pop-ink',
           )}
         >
           Sign in

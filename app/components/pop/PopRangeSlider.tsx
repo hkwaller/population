@@ -62,9 +62,9 @@ export function PopRangeSlider({
 
   return (
     <div
-      className={`mx-auto w-full rounded-pill bg-white/15 ${
-        compact ? 'px-4 py-3' : 'px-6 py-4'
-      } ${locked ? 'pointer-events-none opacity-60' : ''}`}
+      className={`mx-auto w-full rounded-xl bg-white ${compact ? 'px-4 py-3' : 'px-6 py-4'} ${
+        locked ? 'pointer-events-none opacity-60' : ''
+      }`}
     >
       {/* The readout lives above the track - two value pills riding the thumbs
           would collide as soon as the band gets narrow. */}
@@ -72,8 +72,12 @@ export function PopRangeSlider({
         <motion.div
           animate={{ scale: dragging && !locked ? 1.04 : 1 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          className="flex items-center gap-2 rounded-pill bg-white px-4 py-1.5"
-          style={{ boxShadow: dragging ? '0 6px 0 rgba(0,0,0,0.22)' : '0 4px 0 rgba(0,0,0,0.16)' }}
+          className="flex items-center gap-2 rounded-xl bg-white px-4 py-1.5"
+          style={{
+            boxShadow: dragging
+              ? '0 6px 16px rgba(33,24,18,0.18)'
+              : '0 3px 8px rgba(33,24,18,0.12)',
+          }}
         >
           <span
             className={`font-black leading-none ${compact ? 'text-xl' : 'text-[28px]'}`}
@@ -98,7 +102,7 @@ export function PopRangeSlider({
       </div>
 
       <div className="mt-2.5 flex items-center gap-3 md:gap-4">
-        <span className="shrink-0 text-base font-extrabold text-white/70 md:text-lg">
+        <span className="shrink-0 text-base font-extrabold text-pop-ink/75 md:text-lg">
           {fmt(min)}
         </span>
 
@@ -115,10 +119,10 @@ export function PopRangeSlider({
           className="relative flex flex-1 touch-none select-none items-center"
         >
           <SliderPrimitive.Track
-            className={`relative grow rounded-pill bg-white/25 ${compact ? 'h-5' : 'h-7'}`}
+            className={`relative grow rounded-xl bg-white/25 ${compact ? 'h-5' : 'h-7'}`}
           >
             <SliderPrimitive.Range
-              className="absolute h-full rounded-pill"
+              className="absolute h-full rounded-xl"
               style={{ background: fill }}
             />
           </SliderPrimitive.Track>
@@ -127,7 +131,7 @@ export function PopRangeSlider({
           <RangeThumb label="High edge" compact={compact} dragging={dragging && !locked} />
         </SliderPrimitive.Root>
 
-        <span className="shrink-0 text-base font-extrabold text-white/70 md:text-lg">
+        <span className="shrink-0 text-base font-extrabold text-pop-ink/75 md:text-lg">
           {fmt(max)}
         </span>
       </div>
@@ -140,7 +144,7 @@ export function PopRangeSlider({
       {onOpenKeypad && !locked && (
         <button
           onClick={onOpenKeypad}
-          className="mx-auto mt-2 flex items-center gap-1.5 rounded-pill bg-white/20 px-4 py-1.5 text-sm font-bold text-white/90"
+          className="mx-auto mt-2 flex items-center gap-1.5 rounded-xl bg-pop-paper px-4 py-1.5 text-sm font-bold text-pop-ink"
         >
           <Keyboard size={16} /> Type exact number
         </button>
@@ -164,13 +168,13 @@ function RangeThumb({
       <motion.div
         animate={{ scale: dragging ? 1.12 : 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className={`flex items-center justify-center gap-[3px] rounded-pill bg-white ${
+        className={`flex items-center justify-center gap-[3px] rounded-xl bg-white ${
           compact ? 'h-8 w-8' : 'h-10 w-10'
         }`}
-        style={{ boxShadow: '0 4px 0 rgba(0,0,0,0.2)' }}
+        style={{ boxShadow: '0 8px 24px rgba(33,24,18,0.16)' }}
       >
-        <span className="h-3 w-[2px] rounded-pill" style={{ background: POP.ink, opacity: 0.3 }} />
-        <span className="h-3 w-[2px] rounded-pill" style={{ background: POP.ink, opacity: 0.3 }} />
+        <span className="h-3 w-[2px] rounded-xl" style={{ background: POP.ink, opacity: 0.3 }} />
+        <span className="h-3 w-[2px] rounded-xl" style={{ background: POP.ink, opacity: 0.3 }} />
       </motion.div>
     </SliderPrimitive.Thumb>
   )

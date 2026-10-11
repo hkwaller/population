@@ -62,27 +62,27 @@ export const AnswerInputModal: React.FC<AnswerInputModalProps> = ({
           exit={{ opacity: 0 }}
           onClick={onClose}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(23,18,20,0.55)' }}
+          style={{ background: 'rgba(33,24,18,0.55)' }}
         >
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, rotate: -1 }}
+            animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 18 }}
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-sm rounded-[44px] bg-white p-7"
-            style={{ boxShadow: '0 14px 0 rgba(0,0,0,0.18)' }}
+            style={{ boxShadow: '0 8px 24px rgba(33,24,18,0.16)' }}
           >
             <h2 className="mb-4 text-center text-3xl font-black text-pop-ink">Type it instead</h2>
 
             <div
-              className="mb-5 rounded-3xl border-4 border-pop-ink px-4 py-4 text-center"
+              className="mb-5 rounded-card border-4 border-pop-ink px-4 py-4 text-center"
               style={{ background: POP.paper }}
             >
               <span className="block text-6xl font-black leading-none" style={{ color: POP.coral }}>
                 {display}
               </span>
-              <span className="mt-1 block text-sm font-bold text-[rgba(23,18,20,0.5)]">
+              <span className="mt-1 block text-sm font-bold text-[rgba(33,24,18,0.5)]">
                 {upper >= 1_000_000
                   ? `${formatCompactNumber(lower)} – ${formatCompactNumber(upper)}`
                   : `${lower.toLocaleString()} – ${upper.toLocaleString()}`}

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createElement, useEffect, useState } from 'react'
-import { icons } from 'lucide-react'
+import { icons, Medal, Target } from 'lucide-react'
 import { motion } from 'motion/react'
 
 import { useSupabase } from '@/hooks/useSupabase'
@@ -15,12 +15,10 @@ import { BANNER_ENABLED } from '@/lib/ads'
 type SortOption = 'overall' | 'perGame' | 'bullseyes'
 
 const TABS: { id: SortOption; label: string }[] = [
-  { id: 'overall', label: 'Lowest scores' },
+  { id: 'overall', label: 'Highest scores' },
   { id: 'perGame', label: 'Points per game' },
   { id: 'bullseyes', label: 'Most bullseyes' },
 ]
-
-const MEDALS = ['🥇', '🥈', '🥉']
 
 export default function Highscores() {
   const [sortOption, setSortOption] = useState<SortOption>('overall')
@@ -35,11 +33,21 @@ export default function Highscores() {
     fetch()
   }, [getHighscores])
 
+  const sortedScores = [...highScores].sort((a, b) => {
+    const value = (player: TPlayer) =>
+      sortOption === 'bullseyes'
+        ? player.bullseyes ?? 0
+        : sortOption === 'perGame'
+        ? (player.overall_score ?? 0) / (player.games_played || 1)
+        : player.overall_score ?? 0
+    return value(b) - value(a)
+  })
+
   const scoreFor = (player: TPlayer) => {
     if (sortOption === 'overall') return `${player.overall_score ?? 0} pts`
     if (sortOption === 'perGame')
       return `${((player.overall_score || 0) / (player.games_played || 1)).toFixed(1)} /game`
-    return `${player.bullseyes ?? 0} 🎯`
+    return `${player.bullseyes ?? 0}`
   }
 
   return (
@@ -49,7 +57,7 @@ export default function Highscores() {
       <div className="mx-auto max-w-3xl px-5 pb-24 pt-6 md:pt-10">
         <h1
           className="text-center font-black tracking-[-0.02em] text-pop-ink"
-          style={{ fontSize: 'clamp(48px, 9vw, 72px)', rotate: '-1.5deg' }}
+          style={{ fontSize: 'clamp(48px, 9vw, 72px)' }}
         >
           Hall of fame
         </h1>
@@ -74,7 +82,7 @@ export default function Highscores() {
 
         {/* Rows */}
         <div className="mt-10 flex flex-col gap-4">
-          {highScores.map((player, index) => {
+          {sortedScores.map((player, index) => {
             const Icon = icons[player.icon as keyof typeof icons]
             const isFirst = index === 0
             return (
@@ -83,15 +91,18 @@ export default function Highscores() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.04 }}
-                className="mx-auto flex w-full max-w-[820px] items-center gap-4 rounded-[28px] bg-white px-5 py-4 shadow-pop"
+                className="mx-auto flex w-full max-w-[820px] items-center gap-3 rounded-card bg-white px-3 py-4 shadow-pop sm:px-5"
                 style={{
-                  rotate: index % 2 === 0 ? '-1deg' : '1deg',
                   background: isFirst ? POP.sunshine : '#fff',
                   border: isFirst ? '4px solid #211812' : undefined,
                 }}
               >
-                <span className="w-9 shrink-0 text-center text-2xl font-black text-pop-ink/40">
-                  {MEDALS[index] ?? index + 1}
+                <span className="w-9 shrink-0 text-center text-2xl font-black text-pop-ink/75">
+                  {index < 3 ? (
+                    <Medal className="mx-auto" size={24} aria-label={`Rank ${index + 1}`} />
+                  ) : (
+                    index + 1
+                  )}
                 </span>
                 <div
                   className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-[3px] border-pop-ink"
@@ -100,21 +111,22 @@ export default function Highscores() {
                   {Icon && createElement(Icon, { size: 24, className: 'text-pop-ink' })}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-[28px] font-black leading-tight text-pop-ink">
+                  <div className="truncate text-xl sm:text-[28px] font-black leading-tight text-pop-ink">
                     {player.display_name}
                   </div>
-                  <div className="text-sm font-bold text-pop-ink/55">
+                  <div className="text-sm font-bold text-pop-ink/75">
                     {player.games_played} games
                   </div>
                 </div>
-                <span className="shrink-0 rounded-pill bg-pop-ink px-4 py-2 text-lg font-black text-white">
+                <span className="inline-flex items-center gap-1.5 shrink-0 rounded-pill bg-pop-ink px-3 py-2 text-lg font-black text-white">
+                  {sortOption === 'bullseyes' && <Target size={18} aria-hidden />}
                   {scoreFor(player)}
                 </span>
               </motion.div>
             )
           })}
           {highScores.length === 0 && (
-            <p className="text-center text-xl font-bold text-pop-ink/50">
+            <p className="text-center text-xl font-bold text-pop-ink/75">
               No scores yet - go make history.
             </p>
           )}

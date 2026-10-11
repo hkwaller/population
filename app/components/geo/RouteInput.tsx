@@ -123,7 +123,7 @@ export function RouteInput({
 
   return (
     <div className="flex w-full flex-col gap-3">
-      <p className="text-center text-sm font-black uppercase tracking-wide text-pop-ink/50">
+      <p className="text-center text-sm font-black uppercase tracking-wide text-pop-ink/75">
         Shortest {question.optimalSteps} hops · you {path.length - 1}
         {wrong.length > 0 && <span className="text-pop-coral"> · {wrong.length} wrong</span>}
       </p>
@@ -132,7 +132,7 @@ export function RouteInput({
 
       {/* The path you've walked, as flags: type a country, then see (or learn) its
           flag. Start/destination are fixed; the last hop can be undone. */}
-      <div className="flex flex-col gap-3 rounded-3xl border-4 border-pop-ink bg-white px-4 py-4">
+      <div className="flex flex-col gap-3 rounded-card border-4 border-pop-ink bg-white px-4 py-4">
         <RoutePathFlags path={path} to={question.to} onUndo={locked ? undefined : undo} />
         <RouteWrongFlags wrong={wrong} />
       </div>
@@ -151,7 +151,7 @@ export function RouteInput({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 8 }}
                 transition={{ duration: 0.12 }}
-                className="absolute bottom-full left-0 right-0 z-10 mb-2 overflow-hidden rounded-[20px] border-4 border-pop-ink bg-white shadow-pop-card"
+                className="absolute bottom-full left-0 right-0 z-10 mb-2 overflow-hidden rounded-card border-4 border-pop-ink bg-white shadow-pop-card"
               >
                 {suggestions.map((s, i) => (
                   <li key={s.cca3}>
@@ -189,7 +189,7 @@ export function RouteInput({
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             onKeyDown={onKeyDown}
-            className="w-full rounded-pill border-4 border-pop-ink bg-white px-6 py-4 text-lg font-black text-pop-ink outline-none placeholder:text-[rgba(23,18,20,0.35)] focus:ring-4 focus:ring-pop-ink disabled:opacity-60"
+            className="w-full rounded-pill border-4 border-pop-ink bg-white px-6 py-4 text-lg font-black text-pop-ink outline-none placeholder:text-pop-ink/65 focus:ring-4 focus:ring-pop-ink disabled:opacity-60"
           />
           <AnimatePresence>
             {note && (
@@ -210,7 +210,6 @@ export function RouteInput({
       <PopButton
         variant="primary"
         size="lg"
-        rotate={-1}
         className="w-full"
         disabled={disabled}
         onClick={commit}

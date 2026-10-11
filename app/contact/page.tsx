@@ -13,10 +13,10 @@ export default function ContactPage() {
   return (
     <AnimatedContainer>
       <Logo />
-      <div className="h-full text-ish-ink p-0 md:p-8">
-        <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-8 max-w-[800px]">
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h1 className="text-3xl md:text-5xl font-extrabold mb-6 uppercase tracking-tight text-ish-coral">
+      <div className="h-full text-ish-ink p-0 md:p-6 md:p-8">
+        <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-6 md:p-8 max-w-[800px]">
+          <div className="w-full bg-white rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h1 className="text-3xl md:text-5xl font-extrabold mb-6  tracking-tight text-pop-ink">
               Get In Touch
             </h1>
             <p className="text-lg md:text-xl mb-4">
@@ -36,20 +36,18 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-sun border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-6 uppercase">Email Us</h2>
+          <div className="w-full bg-ish-sun rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-6 ">Email Us</h2>
             <a
               href="mailto:hei@amaliesutviklingsfabrikk.no"
-              className="inline-block bg-ish-ink text-white text-xl md:text-2xl font-extrabold py-4 px-8 border-4 border-ish-ink transform rotate-1 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#211812]"
+              className="inline-block bg-ish-ink text-white text-base sm:text-xl font-extrabold py-4 px-4 rounded-xl transform hover:rotate-0 transition-transform shadow-pop-card"
             >
               hei@amaliesutviklingsfabrikk.no
             </a>
           </div>
 
-          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
-              Reporting a Problem?
-            </h2>
+          <div className="w-full bg-ish-cobalt text-white rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">Reporting a Problem?</h2>
             <p className="text-lg md:text-xl mb-4">
               If you&apos;ve spotted a question that seems wrong or inappropriate, you can report it
               directly from inside the game while playing.
@@ -60,8 +58,8 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-mint border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Visit Us Online</h2>
+          <div className="w-full bg-ish-mint rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">Visit Us Online</h2>
             <p className="text-lg md:text-xl mb-4">
               Check out our other projects and work at{' '}
               <a
@@ -80,7 +78,7 @@ export default function ContactPage() {
         <footer className="bg-ish-ink text-white p-6 mt-20">
           <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Population.</div>
-            <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-md md:text-xl">
+            <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-base md:text-xl">
               <Link href="/about" className="text-xl hover:underline">
                 About
               </Link>
@@ -96,7 +94,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="text-xl font-bold hover:underline text-center"
               >
-                Created by Amalies Utviklingsfabrikk
+                Made by Amalies Utviklingsfabrikk
               </a>
             </nav>
           </div>

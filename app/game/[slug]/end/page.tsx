@@ -61,7 +61,7 @@ const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
       <div className="mx-auto max-w-4xl px-5 pb-24 pt-6 text-center md:pt-10">
         <motion.h1
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1, rotate: -2 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 16 }}
           className="pop-textshadow font-black leading-[0.9] tracking-[-0.02em] text-white"
           style={{ fontSize: 'clamp(64px, 14vw, 130px)' }}
@@ -88,7 +88,7 @@ const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 18, delay: index * 0.08 }}
-                className="flex w-[200px] flex-col items-center gap-2 rounded-[28px] bg-white p-5 shadow-pop-card"
+                className="flex w-[200px] flex-col items-center gap-2 rounded-card bg-white p-5 shadow-pop-card"
                 style={{ marginTop: [0, 40, 70, 95][index] ?? 110 }}
               >
                 <span className="text-3xl font-black" style={{ color: POP.grape }}>
@@ -101,7 +101,7 @@ const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
                   {Icon && createElement(Icon, { size: 30, className: 'text-pop-ink' })}
                 </div>
                 <span className="text-2xl font-black text-pop-ink">{player.name}</span>
-                <span className="text-lg font-bold text-pop-ink/60">{player.score} pts</span>
+                <span className="text-lg font-bold text-pop-ink/75">{player.score} pts</span>
               </motion.div>
             )
           })}
@@ -113,7 +113,6 @@ const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
             <PopButton
               variant="secondary"
               size="lg"
-              rotate={-1}
               disabled={loading}
               onClick={async () => {
                 setLoading(true)

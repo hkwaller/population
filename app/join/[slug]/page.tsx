@@ -70,7 +70,7 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
 
         <h1
           className="text-center font-black leading-none tracking-[-0.02em] text-white"
-          style={{ fontSize: 'clamp(56px, 14vw, 84px)', rotate: '-2deg' }}
+          style={{ fontSize: 'clamp(56px, 14vw, 84px)' }}
         >
           You&apos;re in!
         </h1>
@@ -99,7 +99,12 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
         {/* Name */}
         <label className="mt-10 block text-xl font-black text-white">Your name</label>
         <div className="mt-3">
-          <PopInput value={playerName} onChange={setPlayerName} placeholder="who are you?" maxLength={12} />
+          <PopInput
+            value={playerName}
+            onChange={setPlayerName}
+            placeholder="who are you?"
+            maxLength={12}
+          />
         </div>
 
         {/* Icon picker */}
@@ -118,10 +123,10 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
                 }`}
                 style={{
                   background: STICKER_FILLS[i % STICKER_FILLS.length],
-                  rotate: isSel ? `${i % 2 ? 3 : -3}deg` : '0deg',
                 }}
               >
-                {Icon && createElement(Icon, { size: 30, strokeWidth: 2.5, className: 'text-pop-ink' })}
+                {Icon &&
+                  createElement(Icon, { size: 30, strokeWidth: 2.5, className: 'text-pop-ink' })}
               </motion.button>
             )
           })}
@@ -148,7 +153,6 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
         <PopButton
           variant="action"
           size="lg"
-          rotate={-1}
           className="w-full max-w-md"
           onClick={() =>
             handleJoin({

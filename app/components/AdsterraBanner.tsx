@@ -57,7 +57,7 @@ export function AdsterraBanner() {
       {!isNative && (
         <Link
           href="/go-ad-free"
-          className="text-xs font-bold text-pop-ink/40 underline decoration-dotted hover:text-pop-ink/70"
+          className="text-xs font-bold text-pop-ink/75 underline decoration-dotted hover:text-pop-ink/70"
         >
           Remove ads
         </Link>

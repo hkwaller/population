@@ -13,10 +13,10 @@ export default function PrivacyPage() {
   return (
     <AnimatedContainer>
       <Logo />
-      <div className="h-full text-ish-ink p-0 md:p-8">
-        <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-8 max-w-[800px]">
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h1 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-ish-coral">
+      <div className="h-full text-ish-ink p-0 md:p-6 md:p-8">
+        <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-6 md:p-8 max-w-[800px]">
+          <div className="w-full bg-white rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h1 className="text-3xl md:text-5xl font-extrabold mb-4  tracking-tight text-pop-ink">
               Privacy Policy
             </h1>
             <p className="text-base md:text-lg text-ish-ink/60 mb-6">Last updated: April 2025</p>
@@ -27,8 +27,8 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-cobalt text-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">What We Collect</h2>
+          <div className="w-full bg-ish-cobalt text-white rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">What We Collect</h2>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-3">
               <li>
                 <span className="font-bold">Account information</span> - if you sign in, we store
@@ -45,8 +45,8 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-ish-lime border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">How We Use It</h2>
+          <div className="w-full bg-ish-lime rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">How We Use It</h2>
             <ul className="list-disc list-inside text-lg md:text-xl space-y-3">
               <li>To run and display the game correctly</li>
               <li>To show you your scores, highscores, and game history</li>
@@ -55,10 +55,8 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-white border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">
-              Third-Party Services
-            </h2>
+          <div className="w-full bg-white rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">Third-Party Services</h2>
             <p className="text-lg md:text-xl mb-4">
               Population uses the following third-party services, each with their own privacy
               policies:
@@ -100,8 +98,8 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div className="w-full bg-ish-violet text-white border-8 border-ish-ink p-8 transform -rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Your Rights</h2>
+          <div className="w-full bg-ish-violet text-white rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">Your Rights</h2>
             <p className="text-lg md:text-xl mb-4">
               You have the right to access, correct, or delete your personal data. If you want to
               delete your account and all associated data, reach out to us and we&apos;ll take care
@@ -116,8 +114,8 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div className="w-full bg-ish-sun border-8 border-ish-ink p-8 transform rotate-1 shadow-[8px_8px_0px_#211812]">
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 uppercase">Changes</h2>
+          <div className="w-full bg-ish-sun rounded-card p-6 md:p-8 transform shadow-pop-card">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-4 ">Changes</h2>
             <p className="text-lg md:text-xl">
               We may update this policy occasionally. When we do, we&apos;ll update the date at the
               top of this page. Continued use of Population after changes means you accept the
@@ -129,7 +127,7 @@ export default function PrivacyPage() {
         <footer className="bg-ish-ink text-white p-6 mt-20">
           <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <div className="text-lg md:text-2xl font-bold mb-4 md:mb-0">Population.</div>
-            <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-md md:text-xl">
+            <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-base md:text-xl">
               <Link href="/about" className="text-xl hover:underline">
                 About
               </Link>
@@ -145,7 +143,7 @@ export default function PrivacyPage() {
                 rel="noopener noreferrer"
                 className="text-xl font-bold hover:underline text-center"
               >
-                Created by Amalies Utviklingsfabrikk
+                Made by Amalies Utviklingsfabrikk
               </a>
             </nav>
           </div>

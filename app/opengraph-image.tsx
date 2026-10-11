@@ -30,7 +30,6 @@ export default function Image() {
             color: 'white',
             letterSpacing: '-0.03em',
             lineHeight: 1,
-            transform: 'rotate(-2deg)',
           }}
         >
           Population
