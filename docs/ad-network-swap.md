@@ -1,3 +1,5 @@
+> Historical implementation notes. Superseded on 11 October 2026: Adsterra was completely removed. No web ads are active. See `adsense-readiness.md` for the current policy; do not re-enable this provider.
+
 # Ad network swap: Adsterra → AdSense (banners) + AdinPlay (rewarded video)
 
 Instructions for Claude Code. Goal: replace the Adsterra banner and popunder with a network-neutral banner (AdSense/AdinPlay) and a rewarded video shown on player devices at end of game. Keep all existing gating, upsell, and cooldown behavior. **Ads must stay OFF behind a feature flag until we're eligible and launched** (see step 5).

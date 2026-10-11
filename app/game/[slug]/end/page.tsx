@@ -1,5 +1,9 @@
 'use client'
 
+// Future monetization boundary: only after the entire session has completed and final results are visible.
+// Consult playam-monetization.monetizationBreakReached; no ad SDK or event is invoked here.
+
+
 import React, { createElement, useState, useEffect } from 'react'
 import Confetti from 'react-confetti'
 import { icons } from 'lucide-react'
@@ -8,23 +12,18 @@ import { useRouter } from 'next/navigation'
 
 import { QuestionResult } from '@/app/components/QuestionResult'
 import { useGame } from '@/hooks/useGame'
-import { useInGameAdsSuppressed } from '@/hooks/useInGameAdsSuppressed'
 import { useCastToTv } from '@/hooks/useNative'
 import { GameRoomProvider } from '@/app/providers'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader, PopAuth } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { POP, stickerFill } from '@/app/components/pop/theme'
-import { AdsterraBanner } from '@/app/components/AdsterraBanner'
-import { AdsterraPopunder } from '@/app/components/AdsterraPopunder'
-import { BANNER_ENABLED } from '@/lib/ads'
 
 const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
   const [size, setSize] = useState({ width: 0, height: 0 })
   const [showBreakdown, setShowBreakdown] = useState(false)
   const { game, send } = useGame(slug)
   const { players, answeredQuestions, command, boss, me } = game
-  const { suppressed: adsSuppressed } = useInGameAdsSuppressed()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   // iOS app: the host device keeps the results on the AirPlay TV (see setup page).
@@ -125,18 +124,6 @@ const EndPageContent = ({ slug, tv }: { slug: string; tv: boolean }) => {
           )}
         </div>
 
-        {/* Ad banner + popunder (popunder only on player devices, per plan).
-            Suppressed when this device or the host is ad-free. */}
-        {!adsSuppressed && !tv && (
-          <>
-            {BANNER_ENABLED && (
-              <div className="mt-16">
-                <AdsterraBanner />
-              </div>
-            )}
-            {me && <AdsterraPopunder />}
-          </>
-        )}
 
         {/* Breakdown */}
         <div className="mt-12 flex flex-col gap-8">

@@ -136,7 +136,7 @@ export function AppHome() {
               </Link>
             </div>
             <a
-              href="https://amaliesutviklingsfabrikk.no"
+              href="https://playam.app"
               target="_blank"
               rel="noopener noreferrer"
               className="font-extrabold text-white hover:underline"

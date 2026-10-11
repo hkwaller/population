@@ -1,3 +1,5 @@
+import type { NextFetchEvent, NextRequest as PublicNextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 const isPublicRoute = createRouteMatcher([
@@ -16,6 +18,7 @@ const isPublicRoute = createRouteMatcher([
   '/about',
   '/contact',
   '/privacy',
+  '/terms',
   '/go-ad-free',
   '/sign-in',
   '/sign-up',
@@ -34,11 +37,21 @@ const isPublicRoute = createRouteMatcher([
   '/api/delete-account',
 ])
 
-export default clerkMiddleware(async (auth, req) => {
+const clerkProxy = clerkMiddleware(async (auth, req) => {
   if (!isPublicRoute(req)) {
     await auth.protect()
   }
 })
+
+
+// Public HTML must not depend on a Clerk handshake. Account/game routes keep their existing auth policy.
+export default function publicProxy(request: PublicNextRequest, event: NextFetchEvent) {
+  if (['/', '/privacy', '/terms', '/about', '/contact', '/support', '/how-to-play', '/robots.txt', '/sitemap.xml'].includes(request.nextUrl.pathname.replace(/\/$/, '') || '/')) {
+
+    return NextResponse.next()
+  }
+  return clerkProxy(request, event)
+}
 
 export const config = {
   matcher: [

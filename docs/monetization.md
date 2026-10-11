@@ -1,3 +1,5 @@
+> Historical implementation notes. Superseded on 11 October 2026: Adsterra was completely removed. No web ads are active. See `adsense-readiness.md` for the current policy; do not re-enable this provider.
+
 # Monetization: Adsterra ads + Stripe ad-free subscription
 
 The repeatable recipe used to add ads + a "remove ads" subscription to Population. Written to be portable to our other games (the moving parts are the same).

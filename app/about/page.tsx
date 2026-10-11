@@ -121,7 +121,7 @@ export default function AboutPage() {
             <p className="text-lg font-bold leading-snug text-white/80">
               Population was built by{' '}
               <a
-                href="https://amaliesutviklingsfabrikk.no"
+                href="https://playam.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-black text-white underline"

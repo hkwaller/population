@@ -12,8 +12,6 @@ import { PopHeader, PopAuth } from './components/pop/PopHeader'
 import { PopButton } from './components/pop/PopButton'
 import { POP, POP_SPRING } from './components/pop/theme'
 import { AtlasGlobe } from './components/pop/AtlasGlobe'
-import { AdsterraBanner } from './components/AdsterraBanner'
-import { BANNER_ENABLED } from '@/lib/ads'
 
 const STEPS = [
   { n: 1, bg: POP.coral, text: 'Host starts a party, friends scan the code' },
@@ -117,11 +115,7 @@ export default function StartPage() {
         </div>
       </main>
 
-      {BANNER_ENABLED && (
-        <div className="px-6 pb-10">
-          <AdsterraBanner />
-        </div>
-      )}
+
 
       <Footer />
     </PopShell>
@@ -160,13 +154,14 @@ function Footer() {
           <Link href="/privacy" className="hover:text-white">
             Privacy
           </Link>
+          <a href="/terms" className="text-sm font-bold underline">Terms</a>
           <a
-            href="https://amaliesutviklingsfabrikk.no"
+            href="https://playam.app"
             target="_blank"
             rel="noopener noreferrer"
             className="font-extrabold text-white hover:underline"
           >
-            Made by Amalies Utviklingsfabrikk ✌
+            A game from Playam ✌
           </a>
         </nav>
       </div>

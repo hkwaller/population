@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/new-game',
     '/about',
     '/contact',
-    '/privacy',
+    '/privacy', '/terms',
     ...(ADS_ENABLED ? ['/go-ad-free'] : []),
   ]
 

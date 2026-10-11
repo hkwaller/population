@@ -25,7 +25,7 @@ export default function ContactPage() {
             <p className="text-lg md:text-xl">
               Population is made by{' '}
               <a
-                href="https://amaliesutviklingsfabrikk.no"
+                href="https://playam.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-extrabold underline"
@@ -63,7 +63,7 @@ export default function ContactPage() {
             <p className="text-lg md:text-xl mb-4">
               Check out our other projects and work at{' '}
               <a
-                href="https://amaliesutviklingsfabrikk.no"
+                href="https://playam.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-extrabold underline"
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 Privacy Policy
               </Link>
               <a
-                href="https://amaliesutviklingsfabrikk.no"
+                href="https://playam.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xl font-bold hover:underline text-center"

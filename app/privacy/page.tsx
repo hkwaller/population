@@ -1,3 +1,4 @@
+import { WebAdvertisingPrivacy } from '@/lib/PublicLegal'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { AnimatedContainer } from '../components/AnimatedContainer'
@@ -15,11 +16,12 @@ export default function PrivacyPage() {
       <Logo />
       <div className="h-full text-ish-ink p-0 md:p-6 md:p-8">
         <main className="container py-4 md:py-12 mx-auto flex flex-col items-center gap-6 md:p-8 max-w-[800px]">
+          <WebAdvertisingPrivacy />
           <div className="w-full bg-white rounded-card p-6 md:p-8 transform shadow-pop-card">
             <h1 className="text-3xl md:text-5xl font-extrabold mb-4  tracking-tight text-pop-ink">
               Privacy Policy
             </h1>
-            <p className="text-base md:text-lg text-ish-ink/60 mb-6">Last updated: April 2025</p>
+            <p className="text-base md:text-lg text-ish-ink/60 mb-6">Last updated: 11 October 2026</p>
             <p className="text-lg md:text-xl">
               Population is made by Amalies Utviklingsfabrikk. This policy explains what data we
               collect, why we collect it, and how we use it. We keep things simple - we only collect
@@ -137,8 +139,9 @@ export default function PrivacyPage() {
               <Link href="/privacy" className="text-xl hover:underline">
                 Privacy Policy
               </Link>
+              <Link href="/terms" className="underline">Terms</Link>
               <a
-                href="https://amaliesutviklingsfabrikk.no"
+                href="https://playam.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xl font-bold hover:underline text-center"

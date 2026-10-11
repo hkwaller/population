@@ -20,9 +20,7 @@ import { HigherLower } from './geo/HigherLower'
 import { RouteReveal } from './geo/RouteReveal'
 import { CountryOutline } from './geo/CountryOutline'
 import { byName } from '@/lib/geo/countries'
-import { AdsterraBanner } from './AdsterraBanner'
 import { useHaptic } from '@/hooks/useNative'
-import { BANNER_ENABLED } from '@/lib/ads'
 
 type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<void> | void
 
@@ -30,13 +28,10 @@ type SendFn = (commandOrType: Command | CommandType, payload?: any) => Promise<v
 export default function QuestionResultModal({
   canEndGame,
   send,
-  adsSuppressed = false,
   tv = false,
 }: {
   canEndGame: boolean
   send?: SendFn
-  /** Hide the ad banner (local user is ad-free, or the host is - see useInGameAdsSuppressed). */
-  adsSuppressed?: boolean
   /** The AirPlay TV copy: a zoomed two-column stage (see pop/tv.tsx). */
   tv?: boolean
 }) {
@@ -247,11 +242,7 @@ export default function QuestionResultModal({
               ))}
             </div>
 
-            {BANNER_ENABLED && !adsSuppressed && (
-              <div className="mt-12 w-full">
-                <AdsterraBanner />
-              </div>
-            )}
+
           </div>
 
           {/* Pinned control so the host never has to scroll past the player

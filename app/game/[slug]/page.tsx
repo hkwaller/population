@@ -363,7 +363,6 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
       <QuestionResultModal
         canEndGame={canEndGame}
         send={tv ? undefined : send}
-        adsSuppressed={tv}
         tv={tv}
       />
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
