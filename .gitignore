@@ -41,3 +41,6 @@ next-env.d.ts
 /native/www/app-url.js
 /native/www/flags/
 /native/www/geo/
+
+# clerk configuration (can include secrets)
+/.clerk/
