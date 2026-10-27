@@ -46,11 +46,21 @@ export const coolColors = [
 export const MAX_SCORE = 1000
 /** Distance (km) at which a map guess scores 0, unless the question overrides it. */
 export const MAP_FALLOFF_KM = 2500
-/** A choice answered within this window earns the full speed bonus decay curve. */
-export const CHOICE_TIME_LIMIT_MS = 15000
-const CHOICE_BASE = 700
-/** Max points a correct choice can earn on top of CHOICE_BASE, decaying to 0 over CHOICE_TIME_LIMIT_MS. */
-export const CHOICE_SPEED_BONUS = 300
+/** Timed pick-one rounds: 5s grace, decay until 15s, then a 500-point floor until 30s. */
+export const CHOICE_GRACE_MS = 5000
+export const CHOICE_DECAY_END_MS = 15000
+export const CHOICE_TIME_LIMIT_MS = 30000
+export const CHOICE_BASE = 500
+export const CHOICE_SPEED_BONUS = MAX_SCORE - CHOICE_BASE
+
+/** Available points before the deadline; also drives the visible points bar. */
+export function timedChoicePoints(elapsedMs: number) {
+  const decay = Math.min(
+    1,
+    Math.max(0, (elapsedMs - CHOICE_GRACE_MS) / (CHOICE_DECAY_END_MS - CHOICE_GRACE_MS)),
+  )
+  return MAX_SCORE - Math.round(CHOICE_SPEED_BONUS * decay)
+}
 /** Points docked per broken hop on a route question (non-adjacent or revisited step). */
 export const ROUTE_HOP_PENALTY = 100
 
@@ -114,13 +124,14 @@ function scoreChoice(question: ChoiceQuestion, guess: string, elapsedMs?: number
 /**
  * Shared right/wrong + speed-bonus scoring for the "pick one label" family
  * (choice, higher-lower, odd-one-out). Wrong → 0; correct → base + a bonus that
- * decays to 0 over CHOICE_TIME_LIMIT_MS. No timing → full base + bonus.
+ * decays after a grace period to a 500-point floor. At the deadline → 0.
+ * No timing → full base + bonus.
  */
 function scoreExact(correct: boolean, elapsedMs?: number) {
   if (!correct) return 0
   if (elapsedMs == null) return CHOICE_BASE + CHOICE_SPEED_BONUS
-  const speed = Math.max(0, 1 - elapsedMs / CHOICE_TIME_LIMIT_MS)
-  return CHOICE_BASE + Math.round(CHOICE_SPEED_BONUS * speed)
+  if (elapsedMs >= CHOICE_TIME_LIMIT_MS) return 0
+  return timedChoicePoints(elapsedMs)
 }
 
 /**

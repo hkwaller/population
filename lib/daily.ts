@@ -1,6 +1,10 @@
 import type { TQuestion } from '@/app/types'
+import { categories } from '@/lib/utils'
 
 export const DAILY_SIZE = 8
+const dailyCategories = new Set<string>(
+  categories.filter((category) => category.tier === 'main').map((category) => category.id),
+)
 
 /** UTC calendar day, e.g. "2026-07-14". Everyone worldwide gets the same set. */
 export function dateKeyUTC(d: Date): string {
@@ -28,7 +32,7 @@ function mulberry32(a: number) {
 }
 
 /**
- * Deterministically pick the day's questions, round-robining across categories
+ * Deterministically pick the day's questions, round-robining across main categories
  * for variety. Same dateKey → same set, everywhere, with no persistence.
  */
 export function pickDaily(all: TQuestion[], dateKey: string, size = DAILY_SIZE): TQuestion[] {
@@ -44,6 +48,7 @@ export function pickDaily(all: TQuestion[], dateKey: string, size = DAILY_SIZE):
 
   const byCat = new Map<string, TQuestion[]>()
   for (const q of all) {
+    if (!dailyCategories.has(q.category)) continue
     const list = byCat.get(q.category) ?? []
     list.push(q)
     byCat.set(q.category, list)

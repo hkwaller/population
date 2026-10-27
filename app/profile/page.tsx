@@ -12,6 +12,7 @@ import { PopShell } from '../components/pop/PopShell'
 import { PopHeader } from '../components/pop/PopHeader'
 import { PopButton } from '../components/pop/PopButton'
 import { POP, stickerColors, stickerFill } from '../components/pop/theme'
+import { PlayerStickerPicker } from '../components/pop/PlayerStickerPicker'
 
 export default function Profile() {
   const { user, isLoaded } = useUser()
@@ -88,40 +89,13 @@ export default function Profile() {
               style={{ background: POP.paper }}
             />
 
-            <label className="mt-6 block text-lg font-black text-pop-ink">Icon</label>
-            <div className="mt-2 flex flex-wrap gap-2.5">
-              {icons.map((icon, i) => {
-                const Icon = lucideIcons[icon.name as keyof typeof lucideIcons]
-                const sel = iconName === icon.name
-                return (
-                  <button
-                    key={icon.name}
-                    onClick={() => set({ icon: icon.name })}
-                    className="flex h-[62px] w-[62px] items-center justify-center rounded-card"
-                    style={{
-                      background: sel ? stickerFill(colorId) : POP.paper,
-                      border: sel ? '4px solid #211812' : 'none',
-                    }}
-                  >
-                    {Icon && createElement(Icon, { size: 26, className: 'text-pop-ink' })}
-                  </button>
-                )
-              })}
-            </div>
-
-            <label className="mt-6 block text-lg font-black text-pop-ink">Color</label>
-            <div className="mt-2 flex gap-3">
-              {stickerColors.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => set({ preferred_color: c.id })}
-                  className={`h-12 w-12 rounded-full ${
-                    colorId === c.id ? 'border-4 border-pop-ink' : ''
-                  }`}
-                  style={{ background: c.hex }}
-                  aria-label={c.id}
-                />
-              ))}
+            <div className="mt-6">
+              <PlayerStickerPicker
+                colorId={colorId}
+                iconName={iconName}
+                onColorChange={(color) => set({ preferred_color: color })}
+                onIconChange={(icon) => set({ icon })}
+              />
             </div>
 
             <div className="mt-8">

@@ -243,7 +243,7 @@ export function HowToPlayContent() {
         <ul className="flex flex-col gap-2.5">
           {[
             'Closer guesses score higher - a bullseye is the full 1,000.',
-            'Quick rounds (choice, higher/lower, odd one out) pay a speed bonus.',
+            'Quick rounds give you 30 seconds: 1,000 points for the first 5 seconds, falling to 500 by second 15. A correct answer earns at least 500 until time’s up.',
             'On Name it, the fewer clues you use, the more points you keep.',
             'No penalty for a wrong pick, so always take a swing.',
           ].map((line) => (

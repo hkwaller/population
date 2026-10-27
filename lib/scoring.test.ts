@@ -69,7 +69,7 @@ describe('scoreAnswer - choice', () => {
     const fast = scoreAnswer(choice, 'B', 500)
     const slow = scoreAnswer(choice, 'B', 14000)
     expect(fast).toBeGreaterThan(slow)
-    expect(slow).toBeGreaterThanOrEqual(700) // base
+    expect(slow).toBeGreaterThanOrEqual(500) // base
   })
   it('correct with no timing gets full base + bonus', () => {
     expect(scoreAnswer(choice, 'B')).toBe(1000)
@@ -206,7 +206,10 @@ describe('toLargestFirstRank', () => {
     expect(flipped.order).toBe('desc')
     expect(flipped.answer).toEqual(['A', 'B', 'C']) // largest first now
     expect(flipped.question).toBe('Sort these by population - largest first')
-    expect(flipped.prompt).toEqual({ kind: 'text', text: 'Sort these by population - largest first' })
+    expect(flipped.prompt).toEqual({
+      kind: 'text',
+      text: 'Sort these by population - largest first',
+    })
     // The player who drags largest-to-smallest now scores full marks.
     expect(scoreAnswer(flipped, ['A', 'B', 'C'])).toBe(MAX_SCORE)
   })
@@ -235,7 +238,7 @@ describe('scoreAnswer - higher-lower', () => {
     const fast = scoreAnswer(higherLower, 'left', 500)
     const slow = scoreAnswer(higherLower, 'left', 14000)
     expect(fast).toBeGreaterThan(slow)
-    expect(slow).toBeGreaterThanOrEqual(700)
+    expect(slow).toBeGreaterThanOrEqual(500)
   })
   it('correct with no timing gets full base + bonus', () => {
     expect(scoreAnswer(higherLower, 'left')).toBe(1000)
@@ -260,7 +263,7 @@ describe('scoreAnswer - odd-one-out', () => {
     const fast = scoreAnswer(oddOneOut, 'C', 500)
     const slow = scoreAnswer(oddOneOut, 'C', 14000)
     expect(fast).toBeGreaterThan(slow)
-    expect(slow).toBeGreaterThanOrEqual(700)
+    expect(slow).toBeGreaterThanOrEqual(500)
   })
   it('correct with no timing gets full base + bonus', () => {
     expect(scoreAnswer(oddOneOut, 'C')).toBe(1000)
@@ -281,13 +284,19 @@ const route: RouteQuestion = {
 describe('scoreAnswer - route', () => {
   const path = ['PRT', 'ESP', 'FRA', 'DEU', 'POL']
   it('a completed route with no wrong hops scores max', () => {
-    expect(scoreAnswer(route, { path, wrong: [] }, undefined, { routeComplete: true, routeWrongHops: 0 })).toBe(
-      MAX_SCORE,
-    )
+    expect(
+      scoreAnswer(route, { path, wrong: [] }, undefined, {
+        routeComplete: true,
+        routeWrongHops: 0,
+      }),
+    ).toBe(MAX_SCORE)
   })
   it('docks ROUTE_HOP_PENALTY per attempted wrong hop', () => {
     expect(
-      scoreAnswer(route, { path, wrong: ['ITA'] }, undefined, { routeComplete: true, routeWrongHops: 1 }),
+      scoreAnswer(route, { path, wrong: ['ITA'] }, undefined, {
+        routeComplete: true,
+        routeWrongHops: 1,
+      }),
     ).toBe(MAX_SCORE - ROUTE_HOP_PENALTY)
     expect(
       scoreAnswer(route, { path, wrong: ['ITA', 'MAR'] }, undefined, {
@@ -306,7 +315,10 @@ describe('scoreAnswer - route', () => {
   })
   it('never scores below 0', () => {
     expect(
-      scoreAnswer(route, { path, wrong: [] }, undefined, { routeComplete: true, routeWrongHops: 99 }),
+      scoreAnswer(route, { path, wrong: [] }, undefined, {
+        routeComplete: true,
+        routeWrongHops: 99,
+      }),
     ).toBe(0)
   })
 })
@@ -322,5 +334,25 @@ describe('haversineKm', () => {
   })
   it('falloff constant is a sane positive distance', () => {
     expect(MAP_FALLOFF_KM).toBeGreaterThan(0)
+  })
+})
+
+describe.each([
+  ['choice', choice, 'B'],
+  ['higher-lower', higherLower, 'left'],
+  ['odd-one-out', oddOneOut, 'C'],
+] as const)('timed scoring - %s', (_type, question, correct) => {
+  it.each([0, 3000, 4999, 5000])('keeps full points through the grace period (%i ms)', (ms) => {
+    expect(scoreAnswer(question, correct, ms)).toBe(1000)
+  })
+  it('decays to 500 by 15 seconds, then holds until the deadline', () => {
+    expect(scoreAnswer(question, correct, 10000)).toBe(750)
+    expect(scoreAnswer(question, correct, 15000)).toBe(500)
+    expect(scoreAnswer(question, correct, 29999)).toBe(500)
+  })
+  it('gives zero at and after the deadline, even for a correct answer', () => {
+    expect(scoreAnswer(question, correct, 30000)).toBe(0)
+    expect(scoreAnswer(question, correct, 45000)).toBe(0)
+    expect(scoreAnswer(question, '', 30000)).toBe(0)
   })
 })

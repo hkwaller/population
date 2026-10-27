@@ -28,16 +28,27 @@ export const ROUTE_BG: Record<string, string> = {
   generate: POP.grape,
 }
 
-// The 5 earthy player-sticker fills.
+// Keep the original fills stable for legacy color IDs and existing decorations.
 export const STICKER_FILLS = ['#E7C77A', '#8FC7C4', '#A8C79B', '#E0A98C', '#CBA24A']
 
-// Player color options (id + hex) shown in the join/profile pickers.
+// Playful player colors, independent of the earthy route palette.
+// Keep these bright enough for ink icons and player names to stay readable.
 export const stickerColors = [
-  { id: 'sand', hex: '#E7C77A' },
-  { id: 'lagoon', hex: '#8FC7C4' },
-  { id: 'sage', hex: '#A8C79B' },
-  { id: 'clay', hex: '#E0A98C' },
-  { id: 'ochre', hex: '#CBA24A' },
+  { id: 'sand', hex: '#FFD43B' },
+  { id: 'lagoon', hex: '#20C4D9' },
+  { id: 'sage', hex: '#52D76A' },
+  { id: 'clay', hex: '#FF963D' },
+  { id: 'ochre', hex: '#D99A45' },
+  { id: 'rose', hex: '#FF69AD' },
+  { id: 'lavender', hex: '#A27BFF' },
+  { id: 'sky', hex: '#579BFF' },
+  { id: 'mint', hex: '#36E4AE' },
+  { id: 'peach', hex: '#FF6257' },
+  { id: 'lemon', hex: '#F4F45B' },
+  { id: 'lilac', hex: '#DD73EC' },
+  { id: 'seafoam', hex: '#69EDF1' },
+  { id: 'olive', hex: '#B4ED36' },
+  { id: 'stone', hex: '#B2BAC9' },
 ]
 
 function hashStr(s: string): number {
@@ -46,7 +57,7 @@ function hashStr(s: string): number {
   return h
 }
 
-// Map any player color id (new pastel ids OR legacy ids like "red"/"blue") to a pastel fill.
+// Resolve player colors, retaining the original fallback for legacy IDs.
 export function stickerFill(colorId?: string): string {
   if (!colorId) return STICKER_FILLS[0]
   const direct = stickerColors.find((c) => c.id === colorId)

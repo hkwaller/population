@@ -11,7 +11,7 @@ import { useGame } from '@/hooks/useGame'
 import { useSupabase } from '@/hooks/useSupabase'
 import { useToast } from '@/hooks/use-toast'
 import { GameRoomProvider } from '@/app/providers'
-import { asSlider, formatAnswerValue, isInputMode } from '@/lib/utils'
+import { CHOICE_TIME_LIMIT_MS, asSlider, formatAnswerValue, isInputMode } from '@/lib/utils'
 import { AnswerValue, LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { HigherLower } from '@/app/components/geo/HigherLower'
@@ -60,7 +60,7 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
   const [band, setBand] = useState(0)
   const [radius, setRadius] = useState(0)
   // Timestamp the question was shown; drives the choice speed bonus + meter.
-  const [startedAt, setStartedAt] = useState(0)
+  const [startedAt, setStartedAt] = useState(-1)
 
   useEffect(() => {
     setMapPin(null)
@@ -232,6 +232,8 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 {currentQuestion.type === 'map' && (
                   <>
                     <MapPicker
+                      key={currentQuestion.id}
+                      question={currentQuestion.question}
                       value={mapPin}
                       onPick={setMapPin}
                       onConfirm={() =>
@@ -258,7 +260,12 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 )}
                 {currentQuestion.type === 'choice' && (
                   <>
-                    <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+                    <SpeedBonusMeter
+                      key={currentQuestion.id}
+                      startedAt={startedAt}
+                      active={!myAnswered}
+                      onExpire={() => submit('', CHOICE_TIME_LIMIT_MS)}
+                    />
                     {isInputMode(currentQuestion, answerModes) ? (
                       <TypedAnswerInput
                         question={currentQuestion}
@@ -274,7 +281,12 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 )}
                 {currentQuestion.type === 'odd-one-out' && (
                   <>
-                    <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+                    <SpeedBonusMeter
+                      key={currentQuestion.id}
+                      startedAt={startedAt}
+                      active={!myAnswered}
+                      onExpire={() => submit('', CHOICE_TIME_LIMIT_MS)}
+                    />
                     <ChoiceOptions
                       options={currentQuestion.options}
                       onSelect={(opt) => submit(opt, elapsed())}
@@ -283,7 +295,12 @@ function PlayerPageContent({ params }: { params: { slug: string; id: string } })
                 )}
                 {currentQuestion.type === 'higher-lower' && (
                   <>
-                    <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+                    <SpeedBonusMeter
+                      key={currentQuestion.id}
+                      startedAt={startedAt}
+                      active={!myAnswered}
+                      onExpire={() => submit('', CHOICE_TIME_LIMIT_MS)}
+                    />
                     <HigherLower
                       question={currentQuestion}
                       onSelect={(side) => submit(side, elapsed())}

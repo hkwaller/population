@@ -501,136 +501,42 @@ for (const [a, b] of makePairs(withArea, 2, 'hl-area-pairs')) {
   )
 }
 
-// 15. odd-one-out - three countries share a property, one doesn't (choice-like).
-// A generator over country attributes: region, hemisphere, currency, language,
-// and "island / no land borders". The property is surfaced verbatim on reveal.
+// 15. odd-one-out - editorial questions with an explicit, unambiguous criterion.
+// Keep the curated source separate so regeneration never restores generic puzzles.
 {
-  const oooDifficulty = (odd, three) =>
-    (obscurity(odd) + three.reduce((s, c) => s + obscurity(c), 0) / three.length) / 2
-
-  const oddQuestion = (seed, three, odd, sharedProperty) => {
-    const four = shuffle([...three, odd], rng(`${seed}:o`))
-    const optionCodes = four.map((c) => c.flag ?? null)
-    return {
-      id: id(seed),
-      type: 'odd-one-out',
-      category: 'odd-one-out',
-      question: `Which is the odd one out?`,
-      prompt: {
-        kind: 'text',
-        text: `Three of these share something. Which is the odd one out?`,
+  const curated = JSON.parse(
+    readFileSync(join(root, 'scripts/gen/odd-one-out.json'), 'utf-8'),
+  )
+  const keys = new Set()
+  for (const entry of curated) {
+    const { key, question, three, odd, sharedProperty, difficulty } = entry
+    const codes = [...three, odd]
+    if (
+      !key || keys.has(key) || three.length !== 3 || new Set(codes).size !== 4 ||
+      codes.some((code) => !byCca3.has(code)) || !question?.endsWith('?') ||
+      !sharedProperty || !Number.isFinite(difficulty) || difficulty < 0 || difficulty > 1
+    ) {
+      throw new Error(`Invalid curated odd-one-out question: ${key}`)
+    }
+    keys.add(key)
+    const seed = `ooo-curated:${key}`
+    const four = shuffle(codes.map((code) => byCca3.get(code)), rng(`${seed}:o`))
+    const optionCodes = four.map((c) => c.flag)
+    push(
+      {
+        id: id(seed),
+        type: 'odd-one-out',
+        category: 'odd-one-out',
+        question,
+        prompt: { kind: 'text', text: question },
+        options: four.map((c) => c.name),
+        answer: byCca3.get(odd).name,
+        sharedProperty,
+        optionCodes,
+        extra: { sharedProperty, optionCodes },
       },
-      options: four.map((c) => c.name),
-      answer: odd.name,
-      sharedProperty,
-      optionCodes,
-      extra: { sharedProperty, optionCodes },
-    }
-  }
-
-  const byRegion = {}
-  for (const c of countries) if (c.region) (byRegion[c.region] ??= []).push(c)
-  const regions = Object.keys(byRegion)
-
-  // a) region
-  {
-    let made = 0
-    for (const odd of shuffle(
-      countries.filter((c) => c.region),
-      rng('ooo-region'),
-    )) {
-      if (made >= 120) break
-      const otherRegions = regions.filter((r) => r !== odd.region && byRegion[r].length >= 3)
-      if (!otherRegions.length) continue
-      const R = shuffle(otherRegions, rng(`ooo-region:${odd.cca3}`))[0]
-      const three = shuffle(byRegion[R], rng(`ooo-region:${odd.cca3}:pick`)).slice(0, 3)
-      if (three.length < 3) continue
-      push(
-        oddQuestion(`ooo-region:${odd.cca3}`, three, odd, `are in ${R}`),
-        oooDifficulty(odd, three),
-      )
-      made++
-    }
-  }
-
-  // b) hemisphere (sign of centroid latitude)
-  {
-    const north = withLatLng.filter((c) => c.lat >= 0)
-    const south = withLatLng.filter((c) => c.lat < 0)
-    let made = 0
-    for (const odd of shuffle(withLatLng, rng('ooo-hemi'))) {
-      if (made >= 80) break
-      const oddNorth = odd.lat >= 0
-      const pool = oddNorth ? south : north
-      const hemiName = oddNorth ? 'Southern Hemisphere' : 'Northern Hemisphere'
-      const three = shuffle(pool, rng(`ooo-hemi:${odd.cca3}`)).slice(0, 3)
-      if (three.length < 3) continue
-      push(
-        oddQuestion(`ooo-hemi:${odd.cca3}`, three, odd, `are in the ${hemiName}`),
-        oooDifficulty(odd, three),
-      )
-      made++
-    }
-  }
-
-  // c) shared currency
-  {
-    const byCurr = {}
-    for (const c of withCurrency) (byCurr[c.currencyCode] ??= []).push(c)
-    for (const [code, arr] of Object.entries(byCurr)) {
-      if (arr.length < 3) continue
-      const three = shuffle(arr, rng(`ooo-curr:${code}`)).slice(0, 3)
-      const odd = shuffle(
-        withCurrency.filter((c) => c.currencyCode !== code),
-        rng(`ooo-curr:${code}:odd`),
-      )[0]
-      if (three.length < 3 || !odd) continue
-      push(
-        oddQuestion(`ooo-curr:${code}`, three, odd, `use the ${three[0].currency}`),
-        oooDifficulty(odd, three),
-      )
-    }
-  }
-
-  // d) shared primary language
-  {
-    const byLang = {}
-    for (const c of withLang) (byLang[c.languages[0]] ??= []).push(c)
-    for (const [lang, arr] of Object.entries(byLang)) {
-      if (arr.length < 3) continue
-      const three = shuffle(arr, rng(`ooo-lang:${lang}`)).slice(0, 3)
-      const odd = shuffle(
-        withLang.filter((c) => c.languages[0] !== lang),
-        rng(`ooo-lang:${lang}:odd`),
-      )[0]
-      if (three.length < 3 || !odd) continue
-      push(
-        oddQuestion(`ooo-lang:${lang}`, three, odd, `have ${lang} as an official language`),
-        oooDifficulty(odd, three),
-      )
-    }
-  }
-
-  // e) island / no land borders
-  {
-    const islands = countries.filter((c) => c.borders.length === 0)
-    const mainland = countries.filter((c) => c.borders.length > 0)
-    let made = 0
-    for (const odd of shuffle(mainland, rng('ooo-island'))) {
-      if (made >= 60) break
-      const three = shuffle(islands, rng(`ooo-island:${odd.cca3}`)).slice(0, 3)
-      if (three.length < 3) continue
-      push(
-        oddQuestion(
-          `ooo-island:${odd.cca3}`,
-          three,
-          odd,
-          `are island nations with no land borders`,
-        ),
-        oooDifficulty(odd, three),
-      )
-      made++
-    }
+      difficulty,
+    )
   }
 }
 

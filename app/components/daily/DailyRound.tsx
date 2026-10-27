@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react'
 
 import type { AnswerValue, TQuestion } from '@/app/types'
 import { usePopStore } from '@/app/state'
-import { formatAnswerValue } from '@/lib/utils'
+import { CHOICE_TIME_LIMIT_MS, formatAnswerValue } from '@/lib/utils'
 import { scoreGuess } from '@/lib/geo/score'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopButton } from '@/app/components/pop/PopButton'
@@ -21,7 +21,7 @@ import { WorldMap, mapDistanceKm } from '@/app/components/geo/WorldMap'
 import { useHaptic } from '@/hooks/useNative'
 
 /** `confidence` is the band half-width / map radius, when confidence mode is on. */
-export type Attempt = { value: AnswerValue; score: number; confidence?: number }
+export type Attempt = { value: AnswerValue; score: number; confidence?: number; timedOut?: boolean }
 
 /**
  * One run over a fixed list of questions: question, answer, reveal, next. The
@@ -62,6 +62,9 @@ export function DailyRound({
       value,
       score: scoreGuess(q, value, elapsedMs, extra),
       confidence: extra?.confidence,
+      timedOut:
+        elapsedMs >= CHOICE_TIME_LIMIT_MS &&
+        ['choice', 'higher-lower', 'odd-one-out'].includes(q.type),
     })
   }
 
@@ -130,6 +133,11 @@ function Reveal({ question, attempt }: { question: TQuestion; attempt: Attempt }
 
   return (
     <div className="flex flex-col items-center gap-4 rounded-card bg-white p-6 shadow-pop-card">
+      {attempt.timedOut && (
+        <p role="status" className="text-xl font-black text-pop-ink">
+          Time’s up!
+        </p>
+      )}
       {question.type === 'map' && (
         <>
           <div className="w-full overflow-hidden rounded-card border-4 border-pop-ink">

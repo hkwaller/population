@@ -22,13 +22,16 @@ let loaded: Loaded | null = null
 const ccn3Key = (ccn3: string) => String(parseInt(ccn3, 10))
 
 /**
- * Loads the world-atlas 110m country geometry from /geo/countries-110m.json once
+ * Loads the world-atlas 50m country geometry from /geo/countries-50m.json once
  * and memoises it. Features are keyed by numeric ISO code (matches Country.ccn3).
  */
 export function loadCountryGeometry() {
   if (!cache) {
-    cache = fetch('/geo/countries-110m.json')
-      .then((r) => r.json())
+    cache = fetch('/geo/countries-50m.json')
+      .then((r) => {
+        if (!r.ok) throw new Error(`country geometry: ${r.status}`)
+        return r.json()
+      })
       .then((topo: any) => {
         const collection = feature(topo, topo.objects.countries) as unknown as FeatureCollection<
           Geometry,
@@ -51,7 +54,7 @@ export function loadCountryGeometry() {
 
 /**
  * Is `guess` inside the country's real borders? Point-in-polygon against the same
- * 110m geometry we render. Returns null when the geometry isn't loaded yet or the
+ * 50m geometry we render. Returns null when the geometry isn't loaded yet or the
  * country is too small to appear in the atlas - callers then fall back to distance.
  */
 export function guessInCountry(ccn3: string, guess: LatLng): boolean | null {

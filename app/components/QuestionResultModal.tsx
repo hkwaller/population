@@ -216,9 +216,11 @@ export default function QuestionResultModal({
                     )}
                   </span>
                 )}
-                <p className="mt-4 text-lg font-bold text-pop-ink/75 md:text-xl">
-                  {revealed?.question}
-                </p>
+                {revealed?.type !== 'odd-one-out' && (
+                  <p className="mt-4 text-lg font-bold text-pop-ink/75 md:text-xl">
+                    {revealed?.question}
+                  </p>
+                )}
                 {revealed && <PopulationCompare question={revealed} />}
               </motion.div>
             </div>

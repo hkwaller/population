@@ -1,55 +1,77 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { CHOICE_SPEED_BONUS, CHOICE_TIME_LIMIT_MS } from '@/lib/utils'
+import { CHOICE_GRACE_MS, CHOICE_TIME_LIMIT_MS, MAX_SCORE, timedChoicePoints } from '@/lib/utils'
 import { POP } from '../pop/theme'
 
-/**
- * Draining bonus meter for time-scored `choice` questions. It shows the speed
- * bonus (+CHOICE_SPEED_BONUS) shrinking to 0 over CHOICE_TIME_LIMIT_MS - honest
- * to the scoring: answering late still earns the base points, you just forfeit
- * the bonus. NOT a deadline; the bar hitting empty doesn't end the question.
- *
- * `startedAt` is a performance.now() timestamp captured when the question was
- * shown. When `active` goes false (answer locked) the bar freezes where it is.
- */
-export function SpeedBonusMeter({ startedAt, active }: { startedAt: number; active: boolean }) {
-  const [fraction, setFraction] = useState(1)
+/** The points bar holds at 50%; the separate clock keeps running to the deadline. */
+export function SpeedBonusMeter({
+  startedAt,
+  active,
+  onExpire,
+}: {
+  startedAt: number
+  active: boolean
+  onExpire: () => void
+}) {
+  const [elapsed, setElapsed] = useState(0)
+  const expireRef = useRef(onExpire)
+  useEffect(() => {
+    expireRef.current = onExpire
+  }, [onExpire])
 
   useEffect(() => {
-    if (!active) return
-    let raf = 0
-    const tick = () => {
-      const elapsed = performance.now() - startedAt
-      const f = Math.max(0, 1 - elapsed / CHOICE_TIME_LIMIT_MS)
-      setFraction(f)
-      if (f > 0) raf = requestAnimationFrame(tick)
+    if (!active || startedAt < 0) return
+    const update = () => setElapsed(Math.max(0, performance.now() - startedAt))
+    update()
+    // Only this small display ticks; the answer controls do not re-render with it.
+    const interval = window.setInterval(update, 50)
+    const timeout = window.setTimeout(() => {
+      window.clearInterval(interval)
+      setElapsed(CHOICE_TIME_LIMIT_MS)
+      expireRef.current()
+    }, Math.max(0, CHOICE_TIME_LIMIT_MS - (performance.now() - startedAt)))
+    return () => {
+      window.clearInterval(interval)
+      window.clearTimeout(timeout)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
   }, [startedAt, active])
 
-  const points = Math.round(CHOICE_SPEED_BONUS * fraction)
-  // Green while there's plenty of bonus left, warming to coral as it drains.
-  const fill = fraction > 0.5 ? POP.mint : fraction > 0.2 ? POP.sunshine : POP.coral
+  const points = timedChoicePoints(elapsed)
+  const seconds = Math.max(0, Math.ceil((CHOICE_TIME_LIMIT_MS - elapsed) / 1000))
+  const grace = Math.max(0, Math.ceil((CHOICE_GRACE_MS - elapsed) / 1000))
 
   return (
-    <div className="mb-3 select-none">
-      <div className="mb-1.5 flex items-center justify-between px-1">
-        <span className="text-sm font-black uppercase tracking-wide text-pop-ink/75">
-          Speed bonus
+    <div className="mb-5 select-none rounded-card bg-white p-4 text-pop-ink">
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <span className="text-2xl font-black tabular-nums sm:text-3xl">
+          {points.toLocaleString('en-US')} <span className="text-base">pts</span>
         </span>
-        <span className="text-sm font-black tabular-nums text-pop-ink/80">
-          {points > 0 ? `+${points}` : 'no bonus'}
+        <span role="timer" aria-label="Time remaining" className="text-lg font-black tabular-nums">
+          {seconds > 0 ? `${seconds}s left` : 'Time’s up'}
         </span>
       </div>
-      <div className="h-3 w-full overflow-hidden rounded-pill border-2 border-pop-ink bg-white">
+      <div
+        role="progressbar"
+        aria-label="Points for a correct answer"
+        aria-valuemin={0}
+        aria-valuemax={MAX_SCORE}
+        aria-valuenow={points}
+        className="h-7 w-full overflow-hidden rounded-pill border-2 border-pop-ink bg-pop-ink/10"
+      >
         <div
-          className="h-full rounded-pill"
-          style={{ width: `${fraction * 100}%`, background: fill }}
+          className="h-full origin-left motion-safe:transition-transform motion-safe:duration-75 motion-safe:ease-linear"
+          style={{ transform: `scaleX(${points / MAX_SCORE})`, background: POP.mint }}
         />
       </div>
+      <p className="mt-2 text-sm font-bold">
+        {seconds === 0
+          ? 'No answer in time · 0 points'
+          : grace > 0
+          ? `Full points for ${grace}s · for a correct answer`
+          : 'For a correct answer · 500 minimum until time’s up'}
+      </p>
     </div>
   )
 }

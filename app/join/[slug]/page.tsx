@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useEffect, useRef, useState, createElement } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'motion/react'
 import { useUser } from '@clerk/nextjs'
-import { icons as lucideIcons, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 import { GameRoomProvider } from '@/app/providers'
 import { Reconnect } from '@/app/components/Reconnect'
@@ -16,7 +16,8 @@ import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader } from '@/app/components/pop/PopHeader'
 import { PopButton } from '@/app/components/pop/PopButton'
 import { PopInput } from '@/app/components/pop/PopControls'
-import { POP, STICKER_FILLS, stickerColors, stickerFill } from '@/app/components/pop/theme'
+import { POP, stickerColors } from '@/app/components/pop/theme'
+import { PlayerStickerPicker } from '@/app/components/pop/PlayerStickerPicker'
 
 function JoinPageContent({ params }: { params: { slug: string } }) {
   const [playerName, setPlayerName] = useState('')
@@ -107,45 +108,14 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
           />
         </div>
 
-        {/* Icon picker */}
-        <label className="mt-8 block text-xl font-black text-white">Pick a sticker</label>
-        <div className="mt-3 grid grid-cols-4 gap-3">
-          {icons.map((icon, i) => {
-            const isSel = selectedIcon === icon.name
-            const Icon = lucideIcons[icon.name as keyof typeof lucideIcons]
-            return (
-              <motion.button
-                key={icon.name}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setSelectedIcon(icon.name)}
-                className={`flex aspect-square items-center justify-center rounded-sticker ${
-                  isSel ? 'border-4 border-white shadow-pop' : ''
-                }`}
-                style={{
-                  background: STICKER_FILLS[i % STICKER_FILLS.length],
-                }}
-              >
-                {Icon &&
-                  createElement(Icon, { size: 30, strokeWidth: 2.5, className: 'text-pop-ink' })}
-              </motion.button>
-            )
-          })}
-        </div>
-
-        {/* Color picker */}
-        <label className="mt-8 block text-xl font-black text-white">Your color</label>
-        <div className="mt-3 flex gap-3">
-          {stickerColors.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => setSelectedColor(c.id)}
-              className={`h-12 w-12 rounded-full ${
-                selectedColor === c.id ? 'border-4 border-white' : ''
-              }`}
-              style={{ background: c.hex }}
-              aria-label={c.id}
-            />
-          ))}
+        <div className="mt-8">
+          <PlayerStickerPicker
+            colorId={selectedColor}
+            iconName={selectedIcon}
+            onColorChange={setSelectedColor}
+            onIconChange={setSelectedIcon}
+            tone="light"
+          />
         </div>
       </div>
 

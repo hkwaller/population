@@ -1,0 +1,2834 @@
+[
+  {
+    "key": "border-germany",
+    "question": "Three of these countries share a land border with Germany. Which one does not?",
+    "three": [
+      "FRA",
+      "POL",
+      "DNK"
+    ],
+    "odd": "ITA",
+    "sharedProperty": "share a land border with Germany",
+    "difficulty": 0.25
+  },
+  {
+    "key": "border-brazil",
+    "question": "Three of these countries share a land border with Brazil. Which one does not?",
+    "three": [
+      "ARG",
+      "PER",
+      "COL"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "share a land border with Brazil",
+    "difficulty": 0.4
+  },
+  {
+    "key": "border-china",
+    "question": "Three of these countries share a land border with China. Which one does not?",
+    "three": [
+      "MNG",
+      "NPL",
+      "VNM"
+    ],
+    "odd": "THA",
+    "sharedProperty": "share a land border with China",
+    "difficulty": 0.45
+  },
+  {
+    "key": "border-south-africa",
+    "question": "Three of these countries share a land border with South Africa. Which one does not?",
+    "three": [
+      "NAM",
+      "BWA",
+      "MOZ"
+    ],
+    "odd": "AGO",
+    "sharedProperty": "share a land border with South Africa",
+    "difficulty": 0.5
+  },
+  {
+    "key": "border-spain",
+    "question": "Three of these countries share a land border with Spain. Which one does not?",
+    "three": [
+      "PRT",
+      "FRA",
+      "AND"
+    ],
+    "odd": "ITA",
+    "sharedProperty": "share a land border with Spain",
+    "difficulty": 0.2
+  },
+  {
+    "key": "border-austria",
+    "question": "Three of these countries share a land border with Austria. Which one does not?",
+    "three": [
+      "DEU",
+      "HUN",
+      "SVN"
+    ],
+    "odd": "POL",
+    "sharedProperty": "share a land border with Austria",
+    "difficulty": 0.5
+  },
+  {
+    "key": "one-land-neighbour",
+    "question": "Three of these countries share land borders with exactly one other country. Which one has more than one land neighbour?",
+    "three": [
+      "PRT",
+      "KOR",
+      "LSO"
+    ],
+    "odd": "BEL",
+    "sharedProperty": "each share a land border with exactly one other country",
+    "difficulty": 0.6
+  },
+  {
+    "key": "landlocked-europe",
+    "question": "Three of these European countries are landlocked. Which one has a coastline?",
+    "three": [
+      "AUT",
+      "CHE",
+      "HUN"
+    ],
+    "odd": "HRV",
+    "sharedProperty": "are landlocked",
+    "difficulty": 0.25
+  },
+  {
+    "key": "landlocked-southern-africa",
+    "question": "Three of these African countries are landlocked. Which one has a coastline?",
+    "three": [
+      "ZMB",
+      "ZWE",
+      "BWA"
+    ],
+    "odd": "MOZ",
+    "sharedProperty": "are landlocked",
+    "difficulty": 0.45
+  },
+  {
+    "key": "island-countries",
+    "question": "Three of these countries lie entirely on islands. Which one has territory on a continental mainland?",
+    "three": [
+      "MDG",
+      "LKA",
+      "JAM"
+    ],
+    "odd": "BLZ",
+    "sharedProperty": "lie entirely on islands",
+    "difficulty": 0.25
+  },
+  {
+    "key": "shared-islands",
+    "question": "Three of these countries share an island with another country. Which one does not?",
+    "three": [
+      "HTI",
+      "DOM",
+      "PNG"
+    ],
+    "odd": "LKA",
+    "sharedProperty": "share an island with another country",
+    "difficulty": 0.55
+  },
+  {
+    "key": "mediterranean-coast",
+    "question": "Three of these countries have a Mediterranean coastline. Which one does not?",
+    "three": [
+      "MAR",
+      "TUN",
+      "GRC"
+    ],
+    "odd": "PRT",
+    "sharedProperty": "have a Mediterranean coastline",
+    "difficulty": 0.4
+  },
+  {
+    "key": "north-sea-coast",
+    "question": "Three of these countries have a North Sea coastline. Which one does not?",
+    "three": [
+      "DEU",
+      "DNK",
+      "NOR"
+    ],
+    "odd": "POL",
+    "sharedProperty": "have a coastline on the North Sea",
+    "difficulty": 0.3
+  },
+  {
+    "key": "andes-mountains",
+    "question": "Three of these countries contain part of the Andes mountain range. Which one does not?",
+    "three": [
+      "CHL",
+      "PER",
+      "ECU"
+    ],
+    "odd": "BRA",
+    "sharedProperty": "contain part of the Andes mountain range",
+    "difficulty": 0.25
+  },
+  {
+    "key": "sahara-desert",
+    "question": "Three of these countries contain part of the Sahara Desert. Which one does not?",
+    "three": [
+      "DZA",
+      "LBY",
+      "TCD"
+    ],
+    "odd": "KEN",
+    "sharedProperty": "contain part of the Sahara Desert",
+    "difficulty": 0.3
+  },
+  {
+    "key": "equator-mainland",
+    "question": "The Equator crosses the mainland of three of these countries. Which country does it not cross?",
+    "three": [
+      "BRA",
+      "ECU",
+      "KEN"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "have mainland territory crossed by the Equator",
+    "difficulty": 0.25
+  },
+  {
+    "key": "baltic-coast",
+    "question": "Three of these countries have a Baltic Sea coastline. Which one does not?",
+    "three": [
+      "SWE",
+      "FIN",
+      "POL"
+    ],
+    "odd": "NOR",
+    "sharedProperty": "have a coastline on the Baltic Sea",
+    "difficulty": 0.45
+  },
+  {
+    "key": "red-sea-coast",
+    "question": "Three of these countries have a Red Sea coastline. Which one does not?",
+    "three": [
+      "EGY",
+      "SDN",
+      "SAU"
+    ],
+    "odd": "OMN",
+    "sharedProperty": "have a coastline on the Red Sea",
+    "difficulty": 0.5
+  },
+  {
+    "key": "himalaya-mountains",
+    "question": "Three of these countries contain part of the Himalayas. Which one does not?",
+    "three": [
+      "NPL",
+      "BTN",
+      "CHN"
+    ],
+    "odd": "THA",
+    "sharedProperty": "contain part of the Himalayan mountain range",
+    "difficulty": 0.4
+  },
+  {
+    "key": "amazon-river-course",
+    "question": "The Amazon River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "BRA",
+      "PER",
+      "COL"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "have the Amazon River flowing through their territory or along their border",
+    "difficulty": 0.6
+  },
+  {
+    "key": "danube-river-course",
+    "question": "The Danube River flows through three of these countries. Which one does it not flow through?",
+    "three": [
+      "DEU",
+      "AUT",
+      "HUN"
+    ],
+    "odd": "POL",
+    "sharedProperty": "have the Danube River flowing through them",
+    "difficulty": 0.5
+  },
+  {
+    "key": "caspian-shore",
+    "question": "Three of these countries have a shoreline on the Caspian Sea. Which one does not?",
+    "three": [
+      "AZE",
+      "KAZ",
+      "TKM"
+    ],
+    "odd": "UZB",
+    "sharedProperty": "have a shoreline on the Caspian Sea",
+    "difficulty": 0.75
+  },
+  {
+    "key": "lake-victoria-shore",
+    "question": "Three of these countries have a shoreline on Lake Victoria. Which one does not?",
+    "three": [
+      "KEN",
+      "UGA",
+      "TZA"
+    ],
+    "odd": "RWA",
+    "sharedProperty": "have a shoreline on Lake Victoria",
+    "difficulty": 0.75
+  },
+  {
+    "key": "alps-mountains",
+    "question": "Three of these countries contain part of the Alps. Which one does not?",
+    "three": [
+      "SVN",
+      "AUT",
+      "CHE"
+    ],
+    "odd": "SVK",
+    "sharedProperty": "contain part of the Alpine mountain range",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-southern-hemisphere",
+    "question": "Which country's capital is not south of the equator?",
+    "three": [
+      "AUS",
+      "NZL",
+      "ARG"
+    ],
+    "odd": "JPN",
+    "sharedProperty": "have capitals south of the equator",
+    "difficulty": 0.2
+  },
+  {
+    "key": "official-language-portuguese",
+    "question": "Which country does not have Portuguese as an official language?",
+    "three": [
+      "PRT",
+      "BRA",
+      "AGO"
+    ],
+    "odd": "ESP",
+    "sharedProperty": "have Portuguese as an official language",
+    "difficulty": 0.2
+  },
+  {
+    "key": "official-language-spanish-south-america",
+    "question": "Which South American country does not have Spanish as an official language?",
+    "three": [
+      "COL",
+      "PER",
+      "BOL"
+    ],
+    "odd": "BRA",
+    "sharedProperty": "have Spanish as an official language",
+    "difficulty": 0.25
+  },
+  {
+    "key": "capital-in-europe",
+    "question": "Which country's capital is not in Europe?",
+    "three": [
+      "ITA",
+      "FRA",
+      "DEU"
+    ],
+    "odd": "JPN",
+    "sharedProperty": "have capitals in Europe",
+    "difficulty": 0.15
+  },
+  {
+    "key": "capital-european-mainland",
+    "question": "Three of these countries have capitals on islands. Which country has its capital on the European mainland?",
+    "three": [
+      "GBR",
+      "IRL",
+      "ISL"
+    ],
+    "odd": "FRA",
+    "sharedProperty": "have capitals on islands",
+    "difficulty": 0.4
+  },
+  {
+    "key": "official-language-portuguese-africa",
+    "question": "Which African country does not have Portuguese as an official language?",
+    "three": [
+      "AGO",
+      "MOZ",
+      "CPV"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "have Portuguese as an official language",
+    "difficulty": 0.5
+  },
+  {
+    "key": "official-language-dutch",
+    "question": "Which country does not have Dutch as an official language?",
+    "three": [
+      "BEL",
+      "SUR",
+      "NLD"
+    ],
+    "odd": "GUY",
+    "sharedProperty": "have Dutch as an official language",
+    "difficulty": 0.55
+  },
+  {
+    "key": "capital-west-of-greenwich",
+    "question": "Which country's capital is not west of the Greenwich meridian?",
+    "three": [
+      "IRL",
+      "PRT",
+      "ISL"
+    ],
+    "odd": "ITA",
+    "sharedProperty": "have capitals west of the Greenwich meridian",
+    "difficulty": 0.5
+  },
+  {
+    "key": "official-language-french-africa",
+    "question": "Which African country does not have French as an official language?",
+    "three": [
+      "SEN",
+      "CIV",
+      "BEN"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "have French as an official language",
+    "difficulty": 0.4
+  },
+  {
+    "key": "capital-within-two-degrees-equator",
+    "question": "Which country's capital is not within 2 degrees of latitude of the equator?",
+    "three": [
+      "ECU",
+      "KEN",
+      "UGA"
+    ],
+    "odd": "COL",
+    "sharedProperty": "have capitals within 2 degrees of latitude of the equator",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-south-tropic-capricorn",
+    "question": "Which country's capital is not south of the Tropic of Capricorn?",
+    "three": [
+      "ARG",
+      "CHL",
+      "AUS"
+    ],
+    "odd": "PER",
+    "sharedProperty": "have capitals south of the Tropic of Capricorn",
+    "difficulty": 0.74
+  },
+  {
+    "key": "capital-north-fifty-five-degrees",
+    "question": "Which country's capital is not north of latitude 55 degrees north?",
+    "three": [
+      "FIN",
+      "ISL",
+      "SWE"
+    ],
+    "odd": "DEU",
+    "sharedProperty": "have capitals north of 55 degrees north",
+    "difficulty": 0.72
+  },
+  {
+    "key": "border-mainland-france",
+    "question": "Three of these countries share a land border with mainland France in Europe. Which one does not?",
+    "three": [
+      "ESP",
+      "BEL",
+      "CHE"
+    ],
+    "odd": "AUT",
+    "sharedProperty": "share a land border with mainland France in Europe",
+    "difficulty": 0.3
+  },
+  {
+    "key": "border-italy",
+    "question": "Three of these countries share a land border with Italy. Which one does not?",
+    "three": [
+      "FRA",
+      "AUT",
+      "SVN"
+    ],
+    "odd": "HRV",
+    "sharedProperty": "share a land border with Italy",
+    "difficulty": 0.35
+  },
+  {
+    "key": "border-poland",
+    "question": "Three of these countries share a land border with Poland. Which one does not?",
+    "three": [
+      "DEU",
+      "LTU",
+      "SVK"
+    ],
+    "odd": "HUN",
+    "sharedProperty": "share a land border with Poland",
+    "difficulty": 0.45
+  },
+  {
+    "key": "border-turkey",
+    "question": "Three of these countries share a land border with Turkey. Which one does not?",
+    "three": [
+      "GRC",
+      "BGR",
+      "GEO"
+    ],
+    "odd": "LBN",
+    "sharedProperty": "share a land border with Turkey",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-india",
+    "question": "Three of these countries share a land border with India. Which one does not?",
+    "three": [
+      "PAK",
+      "NPL",
+      "BGD"
+    ],
+    "odd": "THA",
+    "sharedProperty": "share a land border with India",
+    "difficulty": 0.3
+  },
+  {
+    "key": "border-thailand",
+    "question": "Three of these countries share a land border with Thailand. Which one does not?",
+    "three": [
+      "MMR",
+      "LAO",
+      "KHM"
+    ],
+    "odd": "VNM",
+    "sharedProperty": "share a land border with Thailand",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-vietnam",
+    "question": "Three of these countries share a land border with Vietnam. Which one does not?",
+    "three": [
+      "CHN",
+      "LAO",
+      "KHM"
+    ],
+    "odd": "THA",
+    "sharedProperty": "share a land border with Vietnam",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-argentina",
+    "question": "Three of these countries share a land border with Argentina. Which one does not?",
+    "three": [
+      "CHL",
+      "BOL",
+      "PRY"
+    ],
+    "odd": "PER",
+    "sharedProperty": "share a land border with Argentina",
+    "difficulty": 0.4
+  },
+  {
+    "key": "border-bolivia",
+    "question": "Three of these countries share a land border with Bolivia. Which one does not?",
+    "three": [
+      "PER",
+      "CHL",
+      "PRY"
+    ],
+    "odd": "ECU",
+    "sharedProperty": "share a land border with Bolivia",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-peru",
+    "question": "Three of these countries share a land border with Peru. Which one does not?",
+    "three": [
+      "ECU",
+      "BOL",
+      "BRA"
+    ],
+    "odd": "VEN",
+    "sharedProperty": "share a land border with Peru",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-colombia",
+    "question": "Three of these countries share a land border with Colombia. Which one does not?",
+    "three": [
+      "PAN",
+      "ECU",
+      "VEN"
+    ],
+    "odd": "BOL",
+    "sharedProperty": "share a land border with Colombia",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-mexico",
+    "question": "Three of these countries share a land border with Mexico. Which one does not?",
+    "three": [
+      "USA",
+      "GTM",
+      "BLZ"
+    ],
+    "odd": "HND",
+    "sharedProperty": "share a land border with Mexico",
+    "difficulty": 0.3
+  },
+  {
+    "key": "border-guatemala",
+    "question": "Three of these countries share a land border with Guatemala. Which one does not?",
+    "three": [
+      "MEX",
+      "BLZ",
+      "SLV"
+    ],
+    "odd": "NIC",
+    "sharedProperty": "share a land border with Guatemala",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-kenya",
+    "question": "Three of these countries share a land border with Kenya. Which one does not?",
+    "three": [
+      "ETH",
+      "UGA",
+      "TZA"
+    ],
+    "odd": "RWA",
+    "sharedProperty": "share a land border with Kenya",
+    "difficulty": 0.45
+  },
+  {
+    "key": "border-ethiopia",
+    "question": "Three of these countries share a land border with Ethiopia. Which one does not?",
+    "three": [
+      "KEN",
+      "DJI",
+      "ERI"
+    ],
+    "odd": "UGA",
+    "sharedProperty": "share a land border with Ethiopia",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-zambia",
+    "question": "Three of these countries share a land border with Zambia. Which one does not?",
+    "three": [
+      "AGO",
+      "MWI",
+      "MOZ"
+    ],
+    "odd": "UGA",
+    "sharedProperty": "share a land border with Zambia",
+    "difficulty": 0.72
+  },
+  {
+    "key": "border-tanzania",
+    "question": "Three of these countries share a land border with Tanzania. Which one does not?",
+    "three": [
+      "RWA",
+      "BDI",
+      "MWI"
+    ],
+    "odd": "ZWE",
+    "sharedProperty": "share a land border with Tanzania",
+    "difficulty": 0.68
+  },
+  {
+    "key": "border-algeria",
+    "question": "Three of these countries share a land border with Algeria. Which one does not?",
+    "three": [
+      "TUN",
+      "LBY",
+      "NER"
+    ],
+    "odd": "EGY",
+    "sharedProperty": "share a land border with Algeria",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-sudan",
+    "question": "Three of these countries share a land border with Sudan. Which one does not?",
+    "three": [
+      "EGY",
+      "TCD",
+      "ETH"
+    ],
+    "odd": "DJI",
+    "sharedProperty": "share a land border with Sudan",
+    "difficulty": 0.73
+  },
+  {
+    "key": "border-iran",
+    "question": "Three of these countries share a land border with Iran. Which one does not?",
+    "three": [
+      "IRQ",
+      "ARM",
+      "TKM"
+    ],
+    "odd": "JOR",
+    "sharedProperty": "share a land border with Iran",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-afghanistan",
+    "question": "Three of these countries share a land border with Afghanistan. Which one does not?",
+    "three": [
+      "TJK",
+      "UZB",
+      "TKM"
+    ],
+    "odd": "KGZ",
+    "sharedProperty": "share a land border with Afghanistan",
+    "difficulty": 0.76
+  },
+  {
+    "key": "border-romania",
+    "question": "Three of these countries share a land border with Romania. Which one does not?",
+    "three": [
+      "UKR",
+      "BGR",
+      "SRB"
+    ],
+    "odd": "SVN",
+    "sharedProperty": "share a land border with Romania",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-hungary",
+    "question": "Three of these countries share a land border with Hungary. Which one does not?",
+    "three": [
+      "AUT",
+      "ROU",
+      "SVK"
+    ],
+    "odd": "BGR",
+    "sharedProperty": "share a land border with Hungary",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-laos",
+    "question": "Three of these countries share a land border with Laos. Which one does not?",
+    "three": [
+      "CHN",
+      "MMR",
+      "KHM"
+    ],
+    "odd": "MYS",
+    "sharedProperty": "share a land border with Laos",
+    "difficulty": 0.73
+  },
+  {
+    "key": "border-cameroon",
+    "question": "Three of these countries share a land border with Cameroon. Which one does not?",
+    "three": [
+      "NGA",
+      "GAB",
+      "TCD"
+    ],
+    "odd": "BEN",
+    "sharedProperty": "share a land border with Cameroon",
+    "difficulty": 0.76
+  },
+  {
+    "key": "landlocked-asia",
+    "question": "Three of these Asian countries are landlocked. Which one has a coastline?",
+    "three": [
+      "MNG",
+      "NPL",
+      "BTN"
+    ],
+    "odd": "VNM",
+    "sharedProperty": "are landlocked",
+    "difficulty": 0.4
+  },
+  {
+    "key": "africa-no-land-borders",
+    "question": "Three of these African countries have no land borders with another country. Which one does?",
+    "three": [
+      "MDG",
+      "MUS",
+      "SYC"
+    ],
+    "odd": "GMB",
+    "sharedProperty": "have no land borders with another country",
+    "difficulty": 0.35
+  },
+  {
+    "key": "surrounded-by-one-country",
+    "question": "Three of these countries are entirely surrounded by the territory of a single other country. Which one is not?",
+    "three": [
+      "LSO",
+      "SMR",
+      "VAT"
+    ],
+    "odd": "AND",
+    "sharedProperty": "are entirely surrounded by the territory of a single other country",
+    "difficulty": 0.74
+  },
+  {
+    "key": "exactly-two-land-neighbours",
+    "question": "Three of these countries share land borders with exactly two other countries. Which one has more than two land neighbours?",
+    "three": [
+      "MNG",
+      "SWE",
+      "BTN"
+    ],
+    "odd": "PAK",
+    "sharedProperty": "each share land borders with exactly two other countries",
+    "difficulty": 0.68
+  },
+  {
+    "key": "border-france-and-germany",
+    "question": "Three of these countries share land borders with both France and Germany. Which one does not?",
+    "three": [
+      "BEL",
+      "LUX",
+      "CHE"
+    ],
+    "odd": "AUT",
+    "sharedProperty": "share land borders with both France and Germany",
+    "difficulty": 0.55
+  },
+  {
+    "key": "at-least-six-land-neighbours",
+    "question": "Three of these countries share land borders with at least six other countries. Which one has fewer than six land neighbours?",
+    "three": [
+      "DEU",
+      "ZMB",
+      "TZA"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "each share land borders with at least six other countries",
+    "difficulty": 0.78
+  },
+  {
+    "key": "pacific-and-caribbean-coasts",
+    "question": "Three of these countries have both a Pacific coast and a Caribbean coast. Which one does not?",
+    "three": [
+      "MEX",
+      "GTM",
+      "COL"
+    ],
+    "odd": "PER",
+    "sharedProperty": "have both a Pacific coast and a Caribbean coast",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-china-and-india",
+    "question": "Three of these countries share land borders with both China and India. Which one does not?",
+    "three": [
+      "NPL",
+      "BTN",
+      "MMR"
+    ],
+    "odd": "BGD",
+    "sharedProperty": "share land borders with both China and India",
+    "difficulty": 0.74
+  },
+  {
+    "key": "border-brazil-and-argentina",
+    "question": "Three of these countries share land borders with both Brazil and Argentina. Which one does not?",
+    "three": [
+      "BOL",
+      "PRY",
+      "URY"
+    ],
+    "odd": "PER",
+    "sharedProperty": "share land borders with both Brazil and Argentina",
+    "difficulty": 0.45
+  },
+  {
+    "key": "atlantic-ocean-coast",
+    "question": "Three of these countries have a coastline on the Atlantic Ocean. Which one does not?",
+    "three": [
+      "ESP",
+      "MAR",
+      "NAM"
+    ],
+    "odd": "MOZ",
+    "sharedProperty": "have a coastline on the Atlantic Ocean",
+    "difficulty": 0.25
+  },
+  {
+    "key": "pacific-ocean-coast",
+    "question": "Three of these countries have a coastline on the Pacific Ocean. Which one does not?",
+    "three": [
+      "CHL",
+      "PER",
+      "ECU"
+    ],
+    "odd": "BRA",
+    "sharedProperty": "have a coastline on the Pacific Ocean",
+    "difficulty": 0.2
+  },
+  {
+    "key": "indian-ocean-coast",
+    "question": "Three of these countries have a coastline on the Indian Ocean. Which one does not?",
+    "three": [
+      "KEN",
+      "TZA",
+      "MOZ"
+    ],
+    "odd": "NAM",
+    "sharedProperty": "have a coastline on the Indian Ocean",
+    "difficulty": 0.3
+  },
+  {
+    "key": "arctic-ocean-coast",
+    "question": "Three of these countries have a coastline on the Arctic Ocean. Which one does not?",
+    "three": [
+      "CAN",
+      "RUS",
+      "NOR"
+    ],
+    "odd": "FIN",
+    "sharedProperty": "have a coastline on the Arctic Ocean",
+    "difficulty": 0.45
+  },
+  {
+    "key": "caribbean-sea-coast",
+    "question": "Three of these countries have a coastline on the Caribbean Sea. Which one does not?",
+    "three": [
+      "MEX",
+      "BLZ",
+      "HND"
+    ],
+    "odd": "SLV",
+    "sharedProperty": "have a coastline on the Caribbean Sea",
+    "difficulty": 0.45
+  },
+  {
+    "key": "black-sea-coast",
+    "question": "Three of these countries have a coastline on the Black Sea. Which one does not?",
+    "three": [
+      "BGR",
+      "ROU",
+      "GEO"
+    ],
+    "odd": "ARM",
+    "sharedProperty": "have a coastline on the Black Sea",
+    "difficulty": 0.4
+  },
+  {
+    "key": "adriatic-sea-coast",
+    "question": "Three of these countries have a coastline on the Adriatic Sea. Which one does not?",
+    "three": [
+      "HRV",
+      "ALB",
+      "MNE"
+    ],
+    "odd": "SRB",
+    "sharedProperty": "have a coastline on the Adriatic Sea",
+    "difficulty": 0.45
+  },
+  {
+    "key": "persian-gulf-coast",
+    "question": "Three of these countries have a coastline on the Persian Gulf. Which one does not?",
+    "three": [
+      "QAT",
+      "BHR",
+      "KWT"
+    ],
+    "odd": "JOR",
+    "sharedProperty": "have a coastline on the Persian Gulf",
+    "difficulty": 0.4
+  },
+  {
+    "key": "bay-of-bengal-coast",
+    "question": "Three of these countries have a coastline on the Bay of Bengal. Which one does not?",
+    "three": [
+      "IND",
+      "BGD",
+      "MMR"
+    ],
+    "odd": "PAK",
+    "sharedProperty": "have a coastline on the Bay of Bengal",
+    "difficulty": 0.4
+  },
+  {
+    "key": "gulf-of-mexico-coast",
+    "question": "Three of these countries have a coastline on the Gulf of Mexico. Which one does not?",
+    "three": [
+      "USA",
+      "MEX",
+      "CUB"
+    ],
+    "odd": "GTM",
+    "sharedProperty": "have a coastline on the Gulf of Mexico",
+    "difficulty": 0.4
+  },
+  {
+    "key": "gulf-of-guinea-coast",
+    "question": "Three of these countries have a coastline on the Gulf of Guinea. Which one does not?",
+    "three": [
+      "GHA",
+      "BEN",
+      "TGO"
+    ],
+    "odd": "SEN",
+    "sharedProperty": "have a coastline on the Gulf of Guinea",
+    "difficulty": 0.55
+  },
+  {
+    "key": "gulf-of-finland-coast",
+    "question": "Three of these countries have a coastline on the Gulf of Finland. Which one does not?",
+    "three": [
+      "FIN",
+      "EST",
+      "RUS"
+    ],
+    "odd": "LVA",
+    "sharedProperty": "have a coastline on the Gulf of Finland",
+    "difficulty": 0.6
+  },
+  {
+    "key": "andaman-sea-coast",
+    "question": "Three of these countries have a coastline on the Andaman Sea. Which one does not?",
+    "three": [
+      "THA",
+      "MMR",
+      "IND"
+    ],
+    "odd": "VNM",
+    "sharedProperty": "have a coastline on the Andaman Sea",
+    "difficulty": 0.65
+  },
+  {
+    "key": "south-china-sea-coast",
+    "question": "Three of these countries have a coastline on the South China Sea. Which one does not?",
+    "three": [
+      "VNM",
+      "MYS",
+      "PHL"
+    ],
+    "odd": "BGD",
+    "sharedProperty": "have a coastline on the South China Sea",
+    "difficulty": 0.55
+  },
+  {
+    "key": "arabian-sea-coast",
+    "question": "Three of these countries have a coastline on the Arabian Sea. Which one does not?",
+    "three": [
+      "PAK",
+      "OMN",
+      "IND"
+    ],
+    "odd": "BGD",
+    "sharedProperty": "have a coastline on the Arabian Sea",
+    "difficulty": 0.5
+  },
+  {
+    "key": "ionian-sea-coast",
+    "question": "Three of these countries have a coastline on the Ionian Sea. Which one does not?",
+    "three": [
+      "ITA",
+      "GRC",
+      "ALB"
+    ],
+    "odd": "HRV",
+    "sharedProperty": "have a coastline on the Ionian Sea",
+    "difficulty": 0.68
+  },
+  {
+    "key": "coral-sea-coast",
+    "question": "Three of these countries have a coastline on the Coral Sea. Which one does not?",
+    "three": [
+      "AUS",
+      "PNG",
+      "SLB"
+    ],
+    "odd": "NZL",
+    "sharedProperty": "have a coastline on the Coral Sea",
+    "difficulty": 0.7
+  },
+  {
+    "key": "lake-tanganyika-shore",
+    "question": "Three of these countries have a shoreline on Lake Tanganyika. Which one does not?",
+    "three": [
+      "BDI",
+      "COD",
+      "ZMB"
+    ],
+    "odd": "MWI",
+    "sharedProperty": "have a shoreline on Lake Tanganyika",
+    "difficulty": 0.7
+  },
+  {
+    "key": "lake-malawi-shore",
+    "question": "Three of these countries have a shoreline on Lake Malawi (also called Lake Nyasa). Which one does not?",
+    "three": [
+      "MWI",
+      "MOZ",
+      "TZA"
+    ],
+    "odd": "ZMB",
+    "sharedProperty": "have a shoreline on Lake Malawi (also called Lake Nyasa)",
+    "difficulty": 0.6
+  },
+  {
+    "key": "lake-constance-shore",
+    "question": "Three of these countries have a shoreline on Lake Constance. Which one does not?",
+    "three": [
+      "AUT",
+      "CHE",
+      "DEU"
+    ],
+    "odd": "LIE",
+    "sharedProperty": "have a shoreline on Lake Constance",
+    "difficulty": 0.68
+  },
+  {
+    "key": "rhine-river-course",
+    "question": "The Rhine River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "DEU",
+      "FRA",
+      "NLD"
+    ],
+    "odd": "BEL",
+    "sharedProperty": "have the Rhine River flowing through their territory or along their border",
+    "difficulty": 0.55
+  },
+  {
+    "key": "mekong-river-course",
+    "question": "The Mekong River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "LAO",
+      "KHM",
+      "VNM"
+    ],
+    "odd": "MYS",
+    "sharedProperty": "have the Mekong River flowing through their territory or along their border",
+    "difficulty": 0.5
+  },
+  {
+    "key": "niger-river-course",
+    "question": "The Niger River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "GIN",
+      "MLI",
+      "NER"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "have the Niger River flowing through their territory or along their border",
+    "difficulty": 0.65
+  },
+  {
+    "key": "zambezi-river-course",
+    "question": "The Zambezi River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "ZMB",
+      "ZWE",
+      "MOZ"
+    ],
+    "odd": "ZAF",
+    "sharedProperty": "have the Zambezi River flowing through their territory or along their border",
+    "difficulty": 0.65
+  },
+  {
+    "key": "senegal-river-course",
+    "question": "The Senegal River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "MLI",
+      "MRT",
+      "SEN"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "have the Senegal River flowing through their territory or along their border",
+    "difficulty": 0.7
+  },
+  {
+    "key": "orange-senqu-river-course",
+    "question": "The Orange-Senqu River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "LSO",
+      "ZAF",
+      "NAM"
+    ],
+    "odd": "BWA",
+    "sharedProperty": "have the Orange-Senqu River flowing through their territory or along their border",
+    "difficulty": 0.78
+  },
+  {
+    "key": "dnieper-river-course",
+    "question": "The Dnieper River (also called the Dnipro) flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "RUS",
+      "BLR",
+      "UKR"
+    ],
+    "odd": "POL",
+    "sharedProperty": "have the Dnieper River (also called the Dnipro) flowing through their territory or along their border",
+    "difficulty": 0.72
+  },
+  {
+    "key": "oder-river-course",
+    "question": "The Oder River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "CZE",
+      "POL",
+      "DEU"
+    ],
+    "odd": "AUT",
+    "sharedProperty": "have the Oder River flowing through their territory or along their border",
+    "difficulty": 0.75
+  },
+  {
+    "key": "tisza-river-course",
+    "question": "The Tisza River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "UKR",
+      "HUN",
+      "SRB"
+    ],
+    "odd": "AUT",
+    "sharedProperty": "have the Tisza River flowing through their territory or along their border",
+    "difficulty": 0.8
+  },
+  {
+    "key": "carpathian-mountains",
+    "question": "Three of these countries contain part of the Carpathian Mountains. Which one does not?",
+    "three": [
+      "POL",
+      "SVK",
+      "ROU"
+    ],
+    "odd": "SVN",
+    "sharedProperty": "contain part of the Carpathian Mountains",
+    "difficulty": 0.72
+  },
+  {
+    "key": "altai-mountains",
+    "question": "Three of these countries contain part of the Altai Mountains. Which one does not?",
+    "three": [
+      "RUS",
+      "CHN",
+      "MNG"
+    ],
+    "odd": "UZB",
+    "sharedProperty": "contain part of the Altai Mountains",
+    "difficulty": 0.8
+  },
+  {
+    "key": "tian-shan-mountains",
+    "question": "Three of these countries contain part of the Tian Shan mountain range. Which one does not?",
+    "three": [
+      "KGZ",
+      "KAZ",
+      "CHN"
+    ],
+    "odd": "MNG",
+    "sharedProperty": "contain part of the Tian Shan mountain range",
+    "difficulty": 0.8
+  },
+  {
+    "key": "kalahari-desert",
+    "question": "Three of these countries contain part of the Kalahari Desert. Which one does not?",
+    "three": [
+      "BWA",
+      "NAM",
+      "ZAF"
+    ],
+    "odd": "MOZ",
+    "sharedProperty": "contain part of the Kalahari Desert",
+    "difficulty": 0.72
+  },
+  {
+    "key": "flag-nordic-cross",
+    "question": "Three of these countries have a Nordic cross on their flag. Which one does not?",
+    "three": [
+      "DNK",
+      "SWE",
+      "FIN"
+    ],
+    "odd": "CHE",
+    "sharedProperty": "have a Nordic cross on their flag",
+    "difficulty": 0.2
+  },
+  {
+    "key": "flag-crescent",
+    "question": "Three of these countries have a crescent on their flag. Which one does not?",
+    "three": [
+      "TUR",
+      "PAK",
+      "TUN"
+    ],
+    "odd": "MAR",
+    "sharedProperty": "have a crescent on their flag",
+    "difficulty": 0.3
+  },
+  {
+    "key": "flag-plain-vertical-tricolour",
+    "question": "Three of these countries have flags made of three plain vertical stripes. Which one does not?",
+    "three": [
+      "FRA",
+      "ITA",
+      "IRL"
+    ],
+    "odd": "NLD",
+    "sharedProperty": "have flags made of three plain vertical stripes",
+    "difficulty": 0.25
+  },
+  {
+    "key": "flag-union-jack",
+    "question": "Three of these countries have the Union Jack in the corner of their flag. Which one does not?",
+    "three": [
+      "AUS",
+      "NZL",
+      "FJI"
+    ],
+    "odd": "CAN",
+    "sharedProperty": "have the Union Jack in the corner of their flag",
+    "difficulty": 0.3
+  },
+  {
+    "key": "flag-red-white-blue-only",
+    "question": "Three of these countries have flags using only red, white and blue. Which one does not?",
+    "three": [
+      "FRA",
+      "NLD",
+      "RUS"
+    ],
+    "odd": "DEU",
+    "sharedProperty": "have flags using only red, white and blue",
+    "difficulty": 0.2
+  },
+  {
+    "key": "flag-large-disc",
+    "question": "Three of these countries have a large solid-colour disc on their flag. Which one does not?",
+    "three": [
+      "JPN",
+      "BGD",
+      "PLW"
+    ],
+    "odd": "VNM",
+    "sharedProperty": "have a large solid-colour disc on their flag",
+    "difficulty": 0.35
+  },
+  {
+    "key": "capital-in-asia",
+    "question": "Three of these countries have capitals in Asia. Which one does not?",
+    "three": [
+      "CHN",
+      "THA",
+      "VNM"
+    ],
+    "odd": "EGY",
+    "sharedProperty": "have capitals in Asia",
+    "difficulty": 0.2
+  },
+  {
+    "key": "capital-in-africa",
+    "question": "Three of these countries have capitals in Africa. Which one does not?",
+    "three": [
+      "KEN",
+      "GHA",
+      "EGY"
+    ],
+    "odd": "SAU",
+    "sharedProperty": "have capitals in Africa",
+    "difficulty": 0.25
+  },
+  {
+    "key": "capital-country-same-name",
+    "question": "Three of these countries share their English name with their capital city. Which one does not?",
+    "three": [
+      "LUX",
+      "SGP",
+      "DJI"
+    ],
+    "odd": "MLT",
+    "sharedProperty": "share their English name with their capital city",
+    "difficulty": 0.4
+  },
+  {
+    "key": "capital-country-same-initial",
+    "question": "Three of these countries have capitals starting with the same letter as their English country name. Which one does not?",
+    "three": [
+      "SWE",
+      "SGP",
+      "MEX"
+    ],
+    "odd": "CAN",
+    "sharedProperty": "have capitals starting with the same letter as their English country name",
+    "difficulty": 0.4
+  },
+  {
+    "key": "flag-plain-horizontal-tricolour",
+    "question": "Three of these countries have flags made of three plain horizontal stripes. Which one does not?",
+    "three": [
+      "DEU",
+      "HUN",
+      "NLD"
+    ],
+    "odd": "BEL",
+    "sharedProperty": "have flags made of three plain horizontal stripes",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-southern-cross",
+    "question": "Three of these countries show the Southern Cross constellation on their flag. Which one does not?",
+    "three": [
+      "AUS",
+      "NZL",
+      "PNG"
+    ],
+    "odd": "CAN",
+    "sharedProperty": "show the Southern Cross constellation on their flag",
+    "difficulty": 0.55
+  },
+  {
+    "key": "flag-contains-black",
+    "question": "Three of these countries have black in their flag. Which one does not?",
+    "three": [
+      "DEU",
+      "BEL",
+      "KEN"
+    ],
+    "odd": "FRA",
+    "sharedProperty": "have black in their flag",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-blue-white-only",
+    "question": "Three of these countries have flags using only blue and white. Which one does not?",
+    "three": [
+      "GRC",
+      "FIN",
+      "ISR"
+    ],
+    "odd": "SWE",
+    "sharedProperty": "have flags using only blue and white",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-green-white-red-only",
+    "question": "Three of these countries have flags using only green, white and red. Which one does not?",
+    "three": [
+      "ITA",
+      "HUN",
+      "BGR"
+    ],
+    "odd": "IRL",
+    "sharedProperty": "have flags using only green, white and red",
+    "difficulty": 0.55
+  },
+  {
+    "key": "flag-rayed-sun",
+    "question": "Three of these countries have a sun with rays on their flag. Which one does not?",
+    "three": [
+      "ARG",
+      "URY",
+      "PHL"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "have a sun with rays on their flag",
+    "difficulty": 0.55
+  },
+  {
+    "key": "flag-hoist-triangle",
+    "question": "Three of these countries have a triangle at the flagpole side of their flag. Which one does not?",
+    "three": [
+      "CZE",
+      "CUB",
+      "PHL"
+    ],
+    "odd": "ROU",
+    "sharedProperty": "have a triangle at the flagpole side of their flag",
+    "difficulty": 0.55
+  },
+  {
+    "key": "flag-weapon",
+    "question": "Three of these countries have a weapon depicted on their flag. Which one does not?",
+    "three": [
+      "MOZ",
+      "SAU",
+      "LKA"
+    ],
+    "odd": "BTN",
+    "sharedProperty": "have a weapon depicted on their flag",
+    "difficulty": 0.65
+  },
+  {
+    "key": "flag-bird",
+    "question": "Three of these countries have a bird depicted on their flag. Which one does not?",
+    "three": [
+      "MEX",
+      "ZMB",
+      "PNG"
+    ],
+    "odd": "LKA",
+    "sharedProperty": "have a bird depicted on their flag",
+    "difficulty": 0.6
+  },
+  {
+    "key": "capital-name-city",
+    "question": "Three of these countries have capital names containing the English word City. Which one does not?",
+    "three": [
+      "MEX",
+      "GTM",
+      "PAN"
+    ],
+    "odd": "CRI",
+    "sharedProperty": "have capital names containing the English word City",
+    "difficulty": 0.55
+  },
+  {
+    "key": "capital-in-south-america",
+    "question": "Three of these countries have capitals in South America. Which one does not?",
+    "three": [
+      "PER",
+      "COL",
+      "CHL"
+    ],
+    "odd": "PAN",
+    "sharedProperty": "have capitals in South America",
+    "difficulty": 0.5
+  },
+  {
+    "key": "capital-north-american-mainland",
+    "question": "Three of these countries have capitals on the North American mainland. Which one does not?",
+    "three": [
+      "CAN",
+      "USA",
+      "MEX"
+    ],
+    "odd": "BRA",
+    "sharedProperty": "have capitals on the North American mainland",
+    "difficulty": 0.5
+  },
+  {
+    "key": "official-language-german",
+    "question": "Three of these countries have German as an official language. Which one does not?",
+    "three": [
+      "DEU",
+      "AUT",
+      "CHE"
+    ],
+    "odd": "NLD",
+    "sharedProperty": "have German as an official language",
+    "difficulty": 0.55
+  },
+  {
+    "key": "official-language-arabic",
+    "question": "Three of these countries have Arabic as an official language. Which one does not?",
+    "three": [
+      "EGY",
+      "MAR",
+      "JOR"
+    ],
+    "odd": "IRN",
+    "sharedProperty": "have Arabic as an official language",
+    "difficulty": 0.5
+  },
+  {
+    "key": "capital-on-mainland-asia",
+    "question": "Three of these countries have capitals on the Asian mainland. Which one does not?",
+    "three": [
+      "CHN",
+      "THA",
+      "VNM"
+    ],
+    "odd": "JPN",
+    "sharedProperty": "have capitals on the Asian mainland",
+    "difficulty": 0.6
+  },
+  {
+    "key": "flag-eagle",
+    "question": "Three of these countries have an eagle depicted on their flag. Which one does not?",
+    "three": [
+      "MEX",
+      "ALB",
+      "ZMB"
+    ],
+    "odd": "KEN",
+    "sharedProperty": "have an eagle depicted on their flag",
+    "difficulty": 0.74
+  },
+  {
+    "key": "capital-east-of-beijing",
+    "question": "Three of these countries have capitals east of Beijing. Which one does not?",
+    "three": [
+      "JPN",
+      "KOR",
+      "PHL"
+    ],
+    "odd": "THA",
+    "sharedProperty": "have capitals east of Beijing",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-west-of-new-york",
+    "question": "Three of these countries have capitals west of New York City. Which one does not?",
+    "three": [
+      "CAN",
+      "CUB",
+      "MEX"
+    ],
+    "odd": "DOM",
+    "sharedProperty": "have capitals west of New York City",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-northwest-of-rome",
+    "question": "Three of these countries have capitals both north and west of Rome. Which one does not?",
+    "three": [
+      "FRA",
+      "GBR",
+      "NLD"
+    ],
+    "odd": "GRC",
+    "sharedProperty": "have capitals both north and west of Rome",
+    "difficulty": 0.78
+  },
+  {
+    "key": "capital-southern-tropics",
+    "question": "Three of these countries have capitals between the Equator and the Tropic of Capricorn. Which one does not?",
+    "three": [
+      "BRA",
+      "PER",
+      "ZMB"
+    ],
+    "odd": "ARG",
+    "sharedProperty": "have capitals between the Equator and the Tropic of Capricorn",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-south-of-sydney",
+    "question": "Three of these countries have capitals farther south than Sydney. Which one does not?",
+    "three": [
+      "NZL",
+      "ARG",
+      "URY"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "have capitals farther south than Sydney",
+    "difficulty": 0.78
+  },
+  {
+    "key": "flag-one-five-pointed-star",
+    "question": "Three of these countries have exactly one five-pointed star on their flag. Which one does not?",
+    "three": [
+      "MAR",
+      "VNM",
+      "SOM"
+    ],
+    "odd": "CHN",
+    "sharedProperty": "have exactly one five-pointed star on their flag",
+    "difficulty": 0.72
+  },
+  {
+    "key": "flag-exactly-five-stars",
+    "question": "Three of these countries have exactly five stars on their flag. Which one does not?",
+    "three": [
+      "CHN",
+      "HND",
+      "SLB"
+    ],
+    "odd": "NZL",
+    "sharedProperty": "have exactly five stars on their flag",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-switzerland",
+    "question": "Three of these countries share a land border with Switzerland. Which one does not?",
+    "three": [
+      "FRA",
+      "ITA",
+      "LIE"
+    ],
+    "odd": "BEL",
+    "sharedProperty": "share a land border with Switzerland",
+    "difficulty": 0.4
+  },
+  {
+    "key": "border-belgium",
+    "question": "Three of these countries share a land border with Belgium. Which one does not?",
+    "three": [
+      "DEU",
+      "FRA",
+      "NLD"
+    ],
+    "odd": "CHE",
+    "sharedProperty": "share a land border with Belgium",
+    "difficulty": 0.35
+  },
+  {
+    "key": "border-czechia",
+    "question": "Three of these countries share a land border with Czechia. Which one does not?",
+    "three": [
+      "DEU",
+      "AUT",
+      "POL"
+    ],
+    "odd": "SVN",
+    "sharedProperty": "share a land border with Czechia",
+    "difficulty": 0.45
+  },
+  {
+    "key": "border-slovakia",
+    "question": "Three of these countries share a land border with Slovakia. Which one does not?",
+    "three": [
+      "CZE",
+      "HUN",
+      "UKR"
+    ],
+    "odd": "SRB",
+    "sharedProperty": "share a land border with Slovakia",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-croatia",
+    "question": "Three of these countries share a land border with Croatia. Which one does not?",
+    "three": [
+      "SVN",
+      "HUN",
+      "BIH"
+    ],
+    "odd": "MKD",
+    "sharedProperty": "share a land border with Croatia",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-slovenia",
+    "question": "Three of these countries share a land border with Slovenia. Which one does not?",
+    "three": [
+      "AUT",
+      "ITA",
+      "HUN"
+    ],
+    "odd": "SVK",
+    "sharedProperty": "share a land border with Slovenia",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-ukraine",
+    "question": "Three of these countries share a land border with Ukraine. Which one does not?",
+    "three": [
+      "POL",
+      "SVK",
+      "ROU"
+    ],
+    "odd": "CZE",
+    "sharedProperty": "share a land border with Ukraine",
+    "difficulty": 0.58
+  },
+  {
+    "key": "border-belarus",
+    "question": "Three of these countries share a land border with Belarus. Which one does not?",
+    "three": [
+      "POL",
+      "LTU",
+      "LVA"
+    ],
+    "odd": "EST",
+    "sharedProperty": "share a land border with Belarus",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-lithuania",
+    "question": "Three of these countries share a land border with Lithuania. Which one does not?",
+    "three": [
+      "POL",
+      "LVA",
+      "BLR"
+    ],
+    "odd": "EST",
+    "sharedProperty": "share a land border with Lithuania",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-latvia",
+    "question": "Three of these countries share a land border with Latvia. Which one does not?",
+    "three": [
+      "EST",
+      "LTU",
+      "RUS"
+    ],
+    "odd": "POL",
+    "sharedProperty": "share a land border with Latvia",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-norway",
+    "question": "Three of these countries share a land border with Norway. Which one does not?",
+    "three": [
+      "SWE",
+      "FIN",
+      "RUS"
+    ],
+    "odd": "DNK",
+    "sharedProperty": "share a land border with Norway",
+    "difficulty": 0.4
+  },
+  {
+    "key": "border-finland",
+    "question": "Three of these countries share a land border with Finland. Which one does not?",
+    "three": [
+      "NOR",
+      "SWE",
+      "RUS"
+    ],
+    "odd": "EST",
+    "sharedProperty": "share a land border with Finland",
+    "difficulty": 0.35
+  },
+  {
+    "key": "border-paraguay",
+    "question": "Three of these countries share a land border with Paraguay. Which one does not?",
+    "three": [
+      "BRA",
+      "ARG",
+      "BOL"
+    ],
+    "odd": "URY",
+    "sharedProperty": "share a land border with Paraguay",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-senegal",
+    "question": "Three of these countries share a land border with Senegal. Which one does not?",
+    "three": [
+      "MRT",
+      "MLI",
+      "GIN"
+    ],
+    "odd": "SLE",
+    "sharedProperty": "share a land border with Senegal",
+    "difficulty": 0.72
+  },
+  {
+    "key": "border-honduras",
+    "question": "Three of these countries share a land border with Honduras. Which one does not?",
+    "three": [
+      "GTM",
+      "SLV",
+      "NIC"
+    ],
+    "odd": "CRI",
+    "sharedProperty": "share a land border with Honduras",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-saudi-arabia",
+    "question": "Three of these countries share a land border with Saudi Arabia. Which one does not?",
+    "three": [
+      "JOR",
+      "KWT",
+      "YEM"
+    ],
+    "odd": "SYR",
+    "sharedProperty": "share a land border with Saudi Arabia",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-botswana",
+    "question": "Three of these countries share a land border with Botswana. Which one does not?",
+    "three": [
+      "NAM",
+      "ZAF",
+      "ZWE"
+    ],
+    "odd": "AGO",
+    "sharedProperty": "share a land border with Botswana",
+    "difficulty": 0.55
+  },
+  {
+    "key": "border-namibia",
+    "question": "Three of these countries share a land border with Namibia. Which one does not?",
+    "three": [
+      "AGO",
+      "ZMB",
+      "BWA"
+    ],
+    "odd": "MOZ",
+    "sharedProperty": "share a land border with Namibia",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-zimbabwe",
+    "question": "Three of these countries share a land border with Zimbabwe. Which one does not?",
+    "three": [
+      "ZMB",
+      "MOZ",
+      "BWA"
+    ],
+    "odd": "NAM",
+    "sharedProperty": "share a land border with Zimbabwe",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-mozambique",
+    "question": "Three of these countries share a land border with Mozambique. Which one does not?",
+    "three": [
+      "ZAF",
+      "MWI",
+      "TZA"
+    ],
+    "odd": "NAM",
+    "sharedProperty": "share a land border with Mozambique",
+    "difficulty": 0.5
+  },
+  {
+    "key": "border-malawi",
+    "question": "Three of these countries share a land border with Malawi. Which one does not?",
+    "three": [
+      "MOZ",
+      "TZA",
+      "ZMB"
+    ],
+    "odd": "ZWE",
+    "sharedProperty": "share a land border with Malawi",
+    "difficulty": 0.64
+  },
+  {
+    "key": "border-uganda",
+    "question": "Three of these countries share a land border with Uganda. Which one does not?",
+    "three": [
+      "KEN",
+      "RWA",
+      "SSD"
+    ],
+    "odd": "ETH",
+    "sharedProperty": "share a land border with Uganda",
+    "difficulty": 0.7
+  },
+  {
+    "key": "border-rwanda",
+    "question": "Three of these countries share a land border with Rwanda. Which one does not?",
+    "three": [
+      "UGA",
+      "BDI",
+      "COD"
+    ],
+    "odd": "KEN",
+    "sharedProperty": "share a land border with Rwanda",
+    "difficulty": 0.62
+  },
+  {
+    "key": "border-burundi",
+    "question": "Three of these countries share a land border with Burundi. Which one does not?",
+    "three": [
+      "RWA",
+      "COD",
+      "TZA"
+    ],
+    "odd": "UGA",
+    "sharedProperty": "share a land border with Burundi",
+    "difficulty": 0.7
+  },
+  {
+    "key": "border-drc",
+    "question": "Three of these countries share a land border with the Democratic Republic of the Congo. Which one does not?",
+    "three": [
+      "AGO",
+      "CAF",
+      "SSD"
+    ],
+    "odd": "CMR",
+    "sharedProperty": "share a land border with the Democratic Republic of the Congo",
+    "difficulty": 0.78
+  },
+  {
+    "key": "border-nigeria",
+    "question": "Three of these countries share a land border with Nigeria. Which one does not?",
+    "three": [
+      "BEN",
+      "NER",
+      "CMR"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "share a land border with Nigeria",
+    "difficulty": 0.6
+  },
+  {
+    "key": "border-china-and-russia",
+    "question": "Three of these countries share land borders with both China and Russia. Which one does not?",
+    "three": [
+      "KAZ",
+      "MNG",
+      "PRK"
+    ],
+    "odd": "UZB",
+    "sharedProperty": "share land borders with both China and Russia",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-austria-and-switzerland",
+    "question": "Three of these countries share land borders with both Austria and Switzerland. Which one does not?",
+    "three": [
+      "DEU",
+      "ITA",
+      "LIE"
+    ],
+    "odd": "SVN",
+    "sharedProperty": "share land borders with both Austria and Switzerland",
+    "difficulty": 0.7
+  },
+  {
+    "key": "border-germany-and-italy",
+    "question": "Three of these countries share land borders with both Germany and Italy. Which one does not?",
+    "three": [
+      "AUT",
+      "CHE",
+      "FRA"
+    ],
+    "odd": "SVN",
+    "sharedProperty": "share land borders with both Germany and Italy",
+    "difficulty": 0.65
+  },
+  {
+    "key": "border-kazakhstan-and-tajikistan",
+    "question": "Three of these countries share land borders with both Kazakhstan and Tajikistan. Which one does not?",
+    "three": [
+      "CHN",
+      "KGZ",
+      "UZB"
+    ],
+    "odd": "TKM",
+    "sharedProperty": "share land borders with both Kazakhstan and Tajikistan",
+    "difficulty": 0.8
+  },
+  {
+    "key": "border-mozambique-and-zambia",
+    "question": "Three of these countries share land borders with both Mozambique and Zambia. Which one does not?",
+    "three": [
+      "MWI",
+      "TZA",
+      "ZWE"
+    ],
+    "odd": "NAM",
+    "sharedProperty": "share land borders with both Mozambique and Zambia",
+    "difficulty": 0.78
+  },
+  {
+    "key": "border-namibia-and-zimbabwe",
+    "question": "Three of these countries share land borders with both Namibia and Zimbabwe. Which one does not?",
+    "three": [
+      "BWA",
+      "ZAF",
+      "ZMB"
+    ],
+    "odd": "AGO",
+    "sharedProperty": "share land borders with both Namibia and Zimbabwe",
+    "difficulty": 0.78
+  },
+  {
+    "key": "border-south-africa-and-zambia",
+    "question": "Three of these countries share land borders with both South Africa and Zambia. Which one does not?",
+    "three": [
+      "ZWE",
+      "MOZ",
+      "NAM"
+    ],
+    "odd": "SWZ",
+    "sharedProperty": "share land borders with both South Africa and Zambia",
+    "difficulty": 0.75
+  },
+  {
+    "key": "border-brazil-and-chile",
+    "question": "Three of these countries share land borders with both Brazil and Chile. Which one does not?",
+    "three": [
+      "ARG",
+      "BOL",
+      "PER"
+    ],
+    "odd": "PRY",
+    "sharedProperty": "share land borders with both Brazil and Chile",
+    "difficulty": 0.65
+  },
+  {
+    "key": "sava-river-course",
+    "question": "The Sava River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "SVN",
+      "HRV",
+      "SRB"
+    ],
+    "odd": "MKD",
+    "sharedProperty": "have the Sava River flowing through their territory or along their border",
+    "difficulty": 0.65
+  },
+  {
+    "key": "drava-river-course",
+    "question": "The Drava River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "AUT",
+      "SVN",
+      "HRV"
+    ],
+    "odd": "ROU",
+    "sharedProperty": "have the Drava River flowing through their territory or along their border",
+    "difficulty": 0.78
+  },
+  {
+    "key": "prut-river-course",
+    "question": "The Prut River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "UKR",
+      "ROU",
+      "MDA"
+    ],
+    "odd": "BGR",
+    "sharedProperty": "have the Prut River flowing through their territory or along their border",
+    "difficulty": 0.75
+  },
+  {
+    "key": "gambia-river-course",
+    "question": "The Gambia River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "GIN",
+      "SEN",
+      "GMB"
+    ],
+    "odd": "GNB",
+    "sharedProperty": "have the Gambia River flowing through their territory or along their border",
+    "difficulty": 0.68
+  },
+  {
+    "key": "uruguay-river-course",
+    "question": "The Uruguay River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "BRA",
+      "ARG",
+      "URY"
+    ],
+    "odd": "PRY",
+    "sharedProperty": "have the Uruguay River flowing through their territory or along their border",
+    "difficulty": 0.55
+  },
+  {
+    "key": "parana-river-course",
+    "question": "The Paran\u00e1 River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "BRA",
+      "PRY",
+      "ARG"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "have the Paran\u00e1 River flowing through their territory or along their border",
+    "difficulty": 0.6
+  },
+  {
+    "key": "paraguay-river-course",
+    "question": "The Paraguay River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "BRA",
+      "BOL",
+      "PRY"
+    ],
+    "odd": "URY",
+    "sharedProperty": "have the Paraguay River flowing through their territory or along their border",
+    "difficulty": 0.7
+  },
+  {
+    "key": "limpopo-river-course",
+    "question": "The Limpopo River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "ZAF",
+      "BWA",
+      "MOZ"
+    ],
+    "odd": "ZMB",
+    "sharedProperty": "have the Limpopo River flowing through their territory or along their border",
+    "difficulty": 0.65
+  },
+  {
+    "key": "okavango-river-course",
+    "question": "The Cubango\u2013Okavango River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "AGO",
+      "NAM",
+      "BWA"
+    ],
+    "odd": "ZWE",
+    "sharedProperty": "have the Cubango\u2013Okavango River flowing through their territory or along their border",
+    "difficulty": 0.62
+  },
+  {
+    "key": "congo-river-course",
+    "question": "The Congo River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "COD",
+      "COG",
+      "AGO"
+    ],
+    "odd": "GAB",
+    "sharedProperty": "have the Congo River flowing through their territory or along their border",
+    "difficulty": 0.75
+  },
+  {
+    "key": "euphrates-river-course",
+    "question": "The Euphrates River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "TUR",
+      "SYR",
+      "IRQ"
+    ],
+    "odd": "IRN",
+    "sharedProperty": "have the Euphrates River flowing through their territory or along their border",
+    "difficulty": 0.5
+  },
+  {
+    "key": "tigris-river-course",
+    "question": "The Tigris River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "TUR",
+      "SYR",
+      "IRQ"
+    ],
+    "odd": "JOR",
+    "sharedProperty": "have the Tigris River flowing through their territory or along their border",
+    "difficulty": 0.68
+  },
+  {
+    "key": "salween-river-course",
+    "question": "The Salween River flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "CHN",
+      "MMR",
+      "THA"
+    ],
+    "odd": "LAO",
+    "sharedProperty": "have the Salween River flowing through their territory or along their border",
+    "difficulty": 0.8
+  },
+  {
+    "key": "amu-darya-river-course",
+    "question": "The Amu Darya flows through or along the border of three of these countries. Which is the exception?",
+    "three": [
+      "AFG",
+      "TJK",
+      "UZB"
+    ],
+    "odd": "KGZ",
+    "sharedProperty": "have the Amu Darya flowing through their territory or along their border",
+    "difficulty": 0.82
+  },
+  {
+    "key": "dinaric-alps-mountains",
+    "question": "Three of these countries contain part of the Dinaric Alps. Which one does not?",
+    "three": [
+      "HRV",
+      "BIH",
+      "MNE"
+    ],
+    "odd": "ROU",
+    "sharedProperty": "contain part of the Dinaric Alps",
+    "difficulty": 0.75
+  },
+  {
+    "key": "greater-caucasus-mountains",
+    "question": "Three of these countries contain part of the Greater Caucasus mountain range. Which one does not?",
+    "three": [
+      "GEO",
+      "RUS",
+      "AZE"
+    ],
+    "odd": "ARM",
+    "sharedProperty": "contain part of the Greater Caucasus mountain range",
+    "difficulty": 0.72
+  },
+  {
+    "key": "atlas-mountains",
+    "question": "Three of these countries contain part of the Atlas Mountains. Which one does not?",
+    "three": [
+      "MAR",
+      "DZA",
+      "TUN"
+    ],
+    "odd": "LBY",
+    "sharedProperty": "contain part of the Atlas Mountains",
+    "difficulty": 0.5
+  },
+  {
+    "key": "pamir-mountains",
+    "question": "Three of these countries contain part of the Pamir Mountains. Which one does not?",
+    "three": [
+      "TJK",
+      "AFG",
+      "CHN"
+    ],
+    "odd": "MNG",
+    "sharedProperty": "contain part of the Pamir Mountains",
+    "difficulty": 0.8
+  },
+  {
+    "key": "east-african-rift",
+    "question": "Three of these countries contain part of the East African Rift system. Which one does not?",
+    "three": [
+      "ETH",
+      "KEN",
+      "TZA"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "contain part of the East African Rift system",
+    "difficulty": 0.6
+  },
+  {
+    "key": "arabian-desert",
+    "question": "Three of these countries contain part of the Arabian Desert. Which one does not?",
+    "three": [
+      "SAU",
+      "OMN",
+      "YEM"
+    ],
+    "odd": "LBN",
+    "sharedProperty": "contain part of the Arabian Desert",
+    "difficulty": 0.4
+  },
+  {
+    "key": "namib-desert",
+    "question": "Three of these countries contain part of the Namib Desert. Which one does not?",
+    "three": [
+      "NAM",
+      "AGO",
+      "ZAF"
+    ],
+    "odd": "BWA",
+    "sharedProperty": "contain part of the Namib Desert",
+    "difficulty": 0.7
+  },
+  {
+    "key": "tropic-capricorn-mainland",
+    "question": "The Tropic of Capricorn crosses the mainland of three of these countries. Which country does it not cross?",
+    "three": [
+      "AUS",
+      "NAM",
+      "BRA"
+    ],
+    "odd": "ZMB",
+    "sharedProperty": "have mainland territory crossed by the Tropic of Capricorn",
+    "difficulty": 0.45
+  },
+  {
+    "key": "tropic-cancer-mainland",
+    "question": "The Tropic of Cancer crosses the mainland of three of these countries. Which country does it not cross?",
+    "three": [
+      "MEX",
+      "EGY",
+      "IND"
+    ],
+    "odd": "THA",
+    "sharedProperty": "have mainland territory crossed by the Tropic of Cancer",
+    "difficulty": 0.5
+  },
+  {
+    "key": "arctic-circle-mainland",
+    "question": "The Arctic Circle crosses the mainland of three of these countries. Which country does it not cross?",
+    "three": [
+      "CAN",
+      "NOR",
+      "FIN"
+    ],
+    "odd": "EST",
+    "sharedProperty": "have mainland territory crossed by the Arctic Circle",
+    "difficulty": 0.4
+  },
+  {
+    "key": "gulf-of-aden-coast",
+    "question": "Three of these countries have a coastline on the Gulf of Aden. Which one does not?",
+    "three": [
+      "DJI",
+      "SOM",
+      "YEM"
+    ],
+    "odd": "ERI",
+    "sharedProperty": "have a coastline on the Gulf of Aden",
+    "difficulty": 0.6
+  },
+  {
+    "key": "gulf-of-thailand-coast",
+    "question": "Three of these countries have a coastline on the Gulf of Thailand. Which one does not?",
+    "three": [
+      "THA",
+      "KHM",
+      "VNM"
+    ],
+    "odd": "MMR",
+    "sharedProperty": "have a coastline on the Gulf of Thailand",
+    "difficulty": 0.55
+  },
+  {
+    "key": "celebes-sea-coast",
+    "question": "Three of these countries have a coastline on the Celebes Sea. Which one does not?",
+    "three": [
+      "IDN",
+      "MYS",
+      "PHL"
+    ],
+    "odd": "VNM",
+    "sharedProperty": "have a coastline on the Celebes Sea",
+    "difficulty": 0.75
+  },
+  {
+    "key": "timor-sea-coast",
+    "question": "Three of these countries have a coastline on the Timor Sea. Which one does not?",
+    "three": [
+      "AUS",
+      "IDN",
+      "TLS"
+    ],
+    "odd": "PNG",
+    "sharedProperty": "have a coastline on the Timor Sea",
+    "difficulty": 0.65
+  },
+  {
+    "key": "great-prespa-shore",
+    "question": "Three of these countries have a shoreline on Great Prespa Lake. Which one does not?",
+    "three": [
+      "ALB",
+      "GRC",
+      "MKD"
+    ],
+    "odd": "SRB",
+    "sharedProperty": "have a shoreline on Great Prespa Lake",
+    "difficulty": 0.78
+  },
+  {
+    "key": "peaks-over-eight-thousand-metres",
+    "question": "Three of these countries have mountain summits more than 8,000 metres above sea level. Which one does not?",
+    "three": [
+      "NPL",
+      "CHN",
+      "IND"
+    ],
+    "odd": "BTN",
+    "sharedProperty": "have mountain summits more than 8,000 metres above sea level",
+    "difficulty": 0.6
+  },
+  {
+    "key": "south-american-peaks-over-six-thousand-metres",
+    "question": "Three of these South American countries have mountain summits more than 6,000 metres above sea level. Which one does not?",
+    "three": [
+      "ARG",
+      "CHL",
+      "PER"
+    ],
+    "odd": "BRA",
+    "sharedProperty": "have mountain summits more than 6,000 metres above sea level",
+    "difficulty": 0.4
+  },
+  {
+    "key": "highest-point-on-island",
+    "question": "Three of these countries have their highest point on an island. Which one does not?",
+    "three": [
+      "ESP",
+      "PRT",
+      "JPN"
+    ],
+    "odd": "DEU",
+    "sharedProperty": "have their highest point on an island",
+    "difficulty": 0.45
+  },
+  {
+    "key": "highest-point-is-volcano",
+    "question": "Three of these countries have a volcano as their highest point. Which one does not?",
+    "three": [
+      "JPN",
+      "TZA",
+      "MEX"
+    ],
+    "odd": "PER",
+    "sharedProperty": "have a volcano as their highest point",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-red-white-only",
+    "question": "Three of these countries have flags using only red and white. Which one does not?",
+    "three": [
+      "AUT",
+      "POL",
+      "JPN"
+    ],
+    "odd": "FIN",
+    "sharedProperty": "have flags using only red and white",
+    "difficulty": 0.25
+  },
+  {
+    "key": "flag-exactly-two-colours",
+    "question": "Three of these countries have flags using exactly two colours. Which one does not?",
+    "three": [
+      "POL",
+      "UKR",
+      "JPN"
+    ],
+    "odd": "IRL",
+    "sharedProperty": "have flags using exactly two colours",
+    "difficulty": 0.3
+  },
+  {
+    "key": "flag-centred-upright-cross",
+    "question": "Three of these countries have a large upright cross centred on their flag. Which one does not?",
+    "three": [
+      "CHE",
+      "GEO",
+      "DOM"
+    ],
+    "odd": "NOR",
+    "sharedProperty": "have a large upright cross centred on their flag",
+    "difficulty": 0.6
+  },
+  {
+    "key": "flag-lion",
+    "question": "Three of these countries have a lion depicted on their flag. Which one does not?",
+    "three": [
+      "LKA",
+      "ESP",
+      "FJI"
+    ],
+    "odd": "BTN",
+    "sharedProperty": "have a lion depicted on their flag",
+    "difficulty": 0.73
+  },
+  {
+    "key": "flag-tree",
+    "question": "Three of these countries have a tree depicted on their flag. Which one does not?",
+    "three": [
+      "LBN",
+      "BLZ",
+      "GNQ"
+    ],
+    "odd": "JAM",
+    "sharedProperty": "have a tree depicted on their flag",
+    "difficulty": 0.75
+  },
+  {
+    "key": "flag-leaves",
+    "question": "Three of these countries have leaves depicted on their flag. Which one does not?",
+    "three": [
+      "CAN",
+      "LKA",
+      "CYP"
+    ],
+    "odd": "JPN",
+    "sharedProperty": "have leaves depicted on their flag",
+    "difficulty": 0.65
+  },
+  {
+    "key": "flag-diagonal-band",
+    "question": "Three of these countries have a diagonal band running across their flag. Which one does not?",
+    "three": [
+      "COD",
+      "TZA",
+      "TTO"
+    ],
+    "odd": "ZMB",
+    "sharedProperty": "have a diagonal band running across their flag",
+    "difficulty": 0.6
+  },
+  {
+    "key": "flag-diagonal-cross",
+    "question": "Three of these countries have a diagonal cross on their flag. Which one does not?",
+    "three": [
+      "JAM",
+      "GBR",
+      "BDI"
+    ],
+    "odd": "KEN",
+    "sharedProperty": "have a diagonal cross on their flag",
+    "difficulty": 0.6
+  },
+  {
+    "key": "flag-red-black-green",
+    "question": "Three of these countries have red, black and green in their flag. Which one does not?",
+    "three": [
+      "KEN",
+      "MWI",
+      "ZAF"
+    ],
+    "odd": "SEN",
+    "sharedProperty": "have red, black and green in their flag",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-red-white-blue-green",
+    "question": "Three of these countries have red, white, blue and green in their flag. Which one does not?",
+    "three": [
+      "AZE",
+      "UZB",
+      "NAM"
+    ],
+    "odd": "TJK",
+    "sharedProperty": "have red, white, blue and green in their flag",
+    "difficulty": 0.74
+  },
+  {
+    "key": "flag-no-white",
+    "question": "Three of these countries have flags without any white. Which one does not?",
+    "three": [
+      "DEU",
+      "BEL",
+      "CHN"
+    ],
+    "odd": "FRA",
+    "sharedProperty": "have flags without any white",
+    "difficulty": 0.3
+  },
+  {
+    "key": "flag-white-bordered-red-cross",
+    "question": "Three of these countries include a red cross outlined in white on their flag. Which one does not?",
+    "three": [
+      "ISL",
+      "GBR",
+      "AUS"
+    ],
+    "odd": "NOR",
+    "sharedProperty": "include a red cross outlined in white on their flag",
+    "difficulty": 0.65
+  },
+  {
+    "key": "flag-star-in-centre",
+    "question": "Three of these countries have a single star at the centre of their flag. Which one does not?",
+    "three": [
+      "VNM",
+      "SOM",
+      "MAR"
+    ],
+    "odd": "CHL",
+    "sharedProperty": "have a single star at the centre of their flag",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-white-hoist-band",
+    "question": "Three of these countries have a white vertical band along the flagpole edge of their flag. Which one does not?",
+    "three": [
+      "PAK",
+      "BHR",
+      "QAT"
+    ],
+    "odd": "TUN",
+    "sharedProperty": "have a white vertical band along the flagpole edge of their flag",
+    "difficulty": 0.6
+  },
+  {
+    "key": "flag-white-stars-blue",
+    "question": "Three of these countries have at least one white star on a blue background on their flag. Which one does not?",
+    "three": [
+      "AUS",
+      "SOM",
+      "FSM"
+    ],
+    "odd": "VNM",
+    "sharedProperty": "have at least one white star on a blue background on their flag",
+    "difficulty": 0.4
+  },
+  {
+    "key": "flag-canton",
+    "question": "Three of these countries have a separate rectangular panel in the top flagpole-side corner of their flag. Which one does not?",
+    "three": [
+      "USA",
+      "AUS",
+      "LBR"
+    ],
+    "odd": "FRA",
+    "sharedProperty": "have a separate rectangular panel in the top flagpole-side corner of their flag",
+    "difficulty": 0.5
+  },
+  {
+    "key": "flag-six-pointed-stars",
+    "question": "Three of these countries have six-pointed stars on their flag. Which one does not?",
+    "three": [
+      "ISR",
+      "BDI",
+      "GNQ"
+    ],
+    "odd": "MAR",
+    "sharedProperty": "have six-pointed stars on their flag",
+    "difficulty": 0.78
+  },
+  {
+    "key": "flag-wide-central-red-band",
+    "question": "Three of these countries have a wide red horizontal band in the middle of their flag. Which one does not?",
+    "three": [
+      "CRI",
+      "KHM",
+      "PRK"
+    ],
+    "odd": "THA",
+    "sharedProperty": "have a wide red horizontal band in the middle of their flag",
+    "difficulty": 0.65
+  },
+  {
+    "key": "flag-blue-white-blue-bands",
+    "question": "Three of these countries have flags with three horizontal bands in blue, white, blue order. Which one does not?",
+    "three": [
+      "HND",
+      "NIC",
+      "SLV"
+    ],
+    "odd": "CRI",
+    "sharedProperty": "have flags with three horizontal bands in blue, white, blue order",
+    "difficulty": 0.6
+  },
+  {
+    "key": "capital-starts-b",
+    "question": "Three of these countries have capitals whose English names start with B. Which one does not?",
+    "three": [
+      "BEL",
+      "DEU",
+      "LBN"
+    ],
+    "odd": "AUT",
+    "sharedProperty": "have capitals whose English names start with B",
+    "difficulty": 0.45
+  },
+  {
+    "key": "capital-starts-s",
+    "question": "Three of these countries have capitals whose English names start with S. Which one does not?",
+    "three": [
+      "SWE",
+      "KOR",
+      "BGR"
+    ],
+    "odd": "NOR",
+    "sharedProperty": "have capitals whose English names start with S",
+    "difficulty": 0.5
+  },
+  {
+    "key": "country-name-ends-stan",
+    "question": "Three of these countries have English country names ending in stan. Which one does not?",
+    "three": [
+      "KAZ",
+      "UZB",
+      "PAK"
+    ],
+    "odd": "IRN",
+    "sharedProperty": "have English country names ending in stan",
+    "difficulty": 0.25
+  },
+  {
+    "key": "purpose-built-capital",
+    "question": "Three of these countries have capital cities purpose-built to serve as national capitals. Which one does not?",
+    "three": [
+      "BRA",
+      "AUS",
+      "PAK"
+    ],
+    "odd": "FRA",
+    "sharedProperty": "have capital cities purpose-built to serve as national capitals",
+    "difficulty": 0.6
+  },
+  {
+    "key": "capital-above-two-thousand-metres",
+    "question": "Three of these countries have capitals more than 2,000 metres above sea level. Which one does not?",
+    "three": [
+      "ECU",
+      "COL",
+      "ETH"
+    ],
+    "odd": "NPL",
+    "sharedProperty": "have capitals more than 2,000 metres above sea level",
+    "difficulty": 0.73
+  },
+  {
+    "key": "coastal-capital-west-africa",
+    "question": "Three of these countries have capitals on the Atlantic coast of West Africa. Which one does not?",
+    "three": [
+      "SEN",
+      "GIN",
+      "LBR"
+    ],
+    "odd": "MLI",
+    "sharedProperty": "have capitals on the Atlantic coast of West Africa",
+    "difficulty": 0.55
+  },
+  {
+    "key": "capital-mediterranean-shore",
+    "question": "Three of these countries have capitals on the shore of the Mediterranean Sea. Which one does not?",
+    "three": [
+      "DZA",
+      "LBY",
+      "LBN"
+    ],
+    "odd": "JOR",
+    "sharedProperty": "have capitals on the shore of the Mediterranean Sea",
+    "difficulty": 0.55
+  },
+  {
+    "key": "capital-baltic-shore",
+    "question": "Three of these countries have capitals on the Baltic Sea or one of its gulfs. Which one does not?",
+    "three": [
+      "SWE",
+      "FIN",
+      "EST"
+    ],
+    "odd": "NOR",
+    "sharedProperty": "have capitals on the Baltic Sea or one of its gulfs",
+    "difficulty": 0.65
+  },
+  {
+    "key": "capital-caribbean-shore",
+    "question": "Three of these countries have capitals on the shore of the Caribbean Sea. Which one does not?",
+    "three": [
+      "JAM",
+      "HTI",
+      "DOM"
+    ],
+    "odd": "CRI",
+    "sharedProperty": "have capitals on the shore of the Caribbean Sea",
+    "difficulty": 0.6
+  },
+  {
+    "key": "capital-in-oceania",
+    "question": "Three of these countries have capitals in Oceania. Which one does not?",
+    "three": [
+      "AUS",
+      "NZL",
+      "FJI"
+    ],
+    "odd": "JPN",
+    "sharedProperty": "have capitals in Oceania",
+    "difficulty": 0.3
+  },
+  {
+    "key": "capital-north-of-london",
+    "question": "Three of these countries have capitals farther north than London. Which one does not?",
+    "three": [
+      "DEU",
+      "POL",
+      "IRL"
+    ],
+    "odd": "CZE",
+    "sharedProperty": "have capitals farther north than London",
+    "difficulty": 0.74
+  },
+  {
+    "key": "capital-west-of-lisbon",
+    "question": "Three of these countries have capitals farther west than Lisbon. Which one does not?",
+    "three": [
+      "SEN",
+      "LBR",
+      "GNB"
+    ],
+    "odd": "GHA",
+    "sharedProperty": "have capitals farther west than Lisbon",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-east-of-tokyo",
+    "question": "Three of these countries have capitals farther east than Tokyo without crossing the International Date Line. Which one does not?",
+    "three": [
+      "NZL",
+      "FJI",
+      "KIR"
+    ],
+    "odd": "PHL",
+    "sharedProperty": "have capitals farther east than Tokyo without crossing the International Date Line",
+    "difficulty": 0.75
+  },
+  {
+    "key": "capital-north-tropic-cancer",
+    "question": "Three of these countries have capitals north of the Tropic of Cancer. Which one does not?",
+    "three": [
+      "IND",
+      "PAK",
+      "BGD"
+    ],
+    "odd": "THA",
+    "sharedProperty": "have capitals north of the Tropic of Cancer",
+    "difficulty": 0.6
+  }
+]

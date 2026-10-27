@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Maximize2, X } from 'lucide-react'
 
@@ -9,57 +9,63 @@ import { PopButton } from '../pop/PopButton'
 import { POP } from '../pop/theme'
 import { WorldMap } from './WorldMap'
 
-/**
- * Map answering UI. The inline map is too small to aim on, so it's a
- * tap-anywhere launcher (a static preview of your current pin) that opens a
- * fullscreen overlay - that overlay is where you pan/zoom/tap to drop the pin
- * and confirm. Rotating a phone into landscape also opens it, but that's only a
- * bonus: most people play with rotation lock on, so the OS never reports
- * landscape and the tap target is the path that always works. The pin is shared
- * between the preview and the fullscreen view.
+/** Opens each map question directly in the fullscreen answering surface.
+ * Closing returns to the inline preview, which can reopen the same guess.
  */
 export function MapPicker({
+  question,
   value,
   onPick,
   onConfirm,
   disabled = false,
 }: {
+  question: string
   value: LatLng | null
   onPick: (p: LatLng) => void
   onConfirm: () => void
   disabled?: boolean
 }) {
   const [expanded, setExpanded] = useState(false)
+  const dialogRef = useRef<HTMLDivElement>(null)
 
-  // Phones only: landscape opens the fullscreen map. We open both when the
-  // question already loads in landscape and when the device rotates into it.
-  // NOTE: with rotation lock on (the common case) the OS never enters landscape,
-  // so this never fires - that's why the tap-to-open target below is the primary
-  // path and this is only a shortcut for people who play unlocked. Firing on the
-  // change (not on every render) means closing it while still landscape won't
-  // immediately reopen. Desktops (fine pointer) are excluded.
+  const titleId = useId()
+
+  // Open after hydration. A parent's question key starts a fresh picker for each
+  // round; ordinary pin updates and closing the dialog do not reopen it.
   useEffect(() => {
-    if (disabled) return
-    if (typeof window === 'undefined' || !window.matchMedia) return
-    const isPhone = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches
-    if (!isPhone) return
-    const landscape = window.matchMedia('(orientation: landscape)')
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads matchMedia after mount, hydration-safe
-    if (landscape.matches) setExpanded(true)
-    const onChange = (e: MediaQueryListEvent) => {
-      if (e.matches) setExpanded(true)
-    }
-    landscape.addEventListener('change', onChange)
-    return () => landscape.removeEventListener('change', onChange)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fullscreen portal opens after hydration and follows answer availability
+    setExpanded(!disabled)
   }, [disabled])
 
   // Lock body scroll while the overlay is open.
   useEffect(() => {
     if (!expanded) return
     const prev = document.body.style.overflow
+    const previousFocus = document.activeElement as HTMLElement | null
     document.body.style.overflow = 'hidden'
+    const dialog = dialogRef.current
+    dialog?.querySelector<HTMLButtonElement>('button')?.focus()
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setExpanded(false)
+      if (event.key !== 'Tab' || !dialog) return
+      const controls = Array.from(dialog.querySelectorAll<HTMLElement>(
+        'button:not(:disabled), [tabindex="0"]',
+      ))
+      const first = controls[0]
+      const last = controls[controls.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last?.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first?.focus()
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
     return () => {
+      document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = prev
+      previousFocus?.focus()
     }
   }, [expanded])
 
@@ -67,38 +73,45 @@ export function MapPicker({
     expanded && typeof document !== 'undefined'
       ? createPortal(
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Place your guess on the map"
-            className="fixed inset-0 z-[60] flex flex-col"
+            aria-labelledby={titleId}
+            className="fixed inset-0 z-[60] flex min-h-0 flex-col overflow-hidden"
             style={{
               background: POP.paper,
-              paddingTop: 'var(--safe-top)',
+              paddingTop: 'var(--safe-top, env(safe-area-inset-top, 0px))',
+              paddingLeft: 'env(safe-area-inset-left, 0px)',
+              paddingRight: 'env(safe-area-inset-right, 0px)',
               paddingBottom: 'env(safe-area-inset-bottom, 0px)',
             }}
           >
-            <div className="flex items-center justify-between px-4 py-3">
-              <span className="rounded-pill bg-pop-ink px-4 py-2 text-sm font-black text-white">
-                {value ? 'Tap to adjust, then confirm' : 'Tap the map to guess'}
-              </span>
+            <div className="flex shrink-0 items-center justify-between gap-3 px-4 py-2">
+              <h2 id={titleId} className="min-w-0 text-base font-black leading-snug text-pop-ink sm:text-lg">
+                {question}
+              </h2>
               <button
                 type="button"
                 aria-label="Close fullscreen map"
                 onClick={() => setExpanded(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-pop-ink bg-white text-pop-ink shadow-pop-sm"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-pop-ink bg-white text-pop-ink shadow-pop-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pop-ink"
               >
                 <X size={22} />
               </button>
             </div>
 
-            <div className="flex min-h-0 flex-1 items-center justify-center px-3">
-              <WorldMap value={value} onPick={onPick} interactive={!disabled} />
+            <div className="min-h-0 flex-1">
+              <WorldMap value={value} onPick={onPick} interactive={!disabled} fill />
             </div>
 
-            <div className="flex flex-col px-4 pb-6 pt-3">
+            <div className="flex shrink-0 flex-col gap-2 px-4 pb-3 pt-2">
+              <p className="text-center text-xs font-bold text-pop-ink/80">
+                Tap to place · Drag to pan · Pinch or scroll to zoom
+                <span className="hidden sm:inline"> · Space + drag to pan</span>
+              </p>
               <PopButton
                 variant="primary"
-                size="lg"
+                size="md"
                 disabled={disabled || !value}
                 onClick={() => {
                   if (!value) return
@@ -106,7 +119,7 @@ export function MapPicker({
                   onConfirm()
                 }}
               >
-                {value ? 'Lock it in' : 'Tap the map to guess'}
+                {value ? 'Lock it in' : 'Place a pin to continue'}
               </PopButton>
             </div>
           </div>,

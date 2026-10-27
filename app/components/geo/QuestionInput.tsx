@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import type { AnswerValue, LatLng, TQuestion } from '@/app/types'
 import { usePopStore } from '@/app/state'
@@ -15,6 +15,8 @@ import { RankInput } from './RankInput'
 import { BuildUp } from './BuildUp'
 import { RouteInput } from './RouteInput'
 import { ConfidenceBand } from './ConfidenceBand'
+import { SpeedBonusMeter } from './SpeedBonusMeter'
+import { CHOICE_TIME_LIMIT_MS } from '@/lib/utils'
 
 /** Extra scoring modifiers an input can attach to its answer (confidence mode, build-up). */
 export type AnswerExtra = { confidence?: number; cluesUsed?: number }
@@ -42,12 +44,13 @@ export function QuestionInput({
   const storeConfidence = usePopStore((s) => s.confidenceMode)
   const confidenceMode = confidenceModeProp ?? storeConfidence
 
-  const startedAt = useRef<number>(0)
+  const [startedAt, setStartedAt] = useState(-1)
   // reset the timer whenever the question changes
   useEffect(() => {
-    startedAt.current = performance.now()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- timestamp starts after hydration, alongside the visible question
+    setStartedAt(performance.now())
   }, [question.id])
-  const elapsed = () => Math.round(performance.now() - startedAt.current)
+  const elapsed = () => Math.round(performance.now() - startedAt)
 
   const midpoint = useMemo(
     () =>
@@ -79,23 +82,38 @@ export function QuestionInput({
     setRadius(0)
   }
 
+  const meter = (
+    <SpeedBonusMeter
+      key={question.id}
+      startedAt={startedAt}
+      active={!disabled}
+      onExpire={() => onAnswer('', CHOICE_TIME_LIMIT_MS)}
+    />
+  )
+
   if (question.type === 'choice' || question.type === 'odd-one-out') {
     return (
-      <ChoiceOptions
-        options={question.options}
-        disabled={disabled}
-        onSelect={(opt) => onAnswer(opt, elapsed())}
-      />
+      <>
+        {meter}
+        <ChoiceOptions
+          options={question.options}
+          disabled={disabled}
+          onSelect={(opt) => onAnswer(opt, elapsed())}
+        />
+      </>
     )
   }
 
   if (question.type === 'higher-lower') {
     return (
-      <HigherLower
-        question={question}
-        disabled={disabled}
-        onSelect={(side) => onAnswer(side, elapsed())}
-      />
+      <>
+        {meter}
+        <HigherLower
+          question={question}
+          disabled={disabled}
+          onSelect={(side) => onAnswer(side, elapsed())}
+        />
+      </>
     )
   }
 
@@ -130,6 +148,8 @@ export function QuestionInput({
     return (
       <div className="flex flex-col gap-4">
         <MapPicker
+          key={question.id}
+          question={question.question}
           value={pin}
           onPick={setPin}
           onConfirm={() =>

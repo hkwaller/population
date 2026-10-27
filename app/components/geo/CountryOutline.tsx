@@ -25,7 +25,7 @@ function loadOutline(key: string) {
 /**
  * A country silhouette, auto-fit to the box. Uses the high-detail per-country
  * outlines (10m data, home landmass only, globe-style projection) rather than
- * the 110m world geometry the map draws from.
+ * the complete world geometry (including distant territories) the map draws from.
  */
 export function CountryOutline({
   code,

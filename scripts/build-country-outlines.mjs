@@ -1,8 +1,8 @@
 // Build one high-detail silhouette per country for the "which country has this
 // shape?" questions (app/components/geo/CountryOutline.tsx).
 //
-// The world map and point-in-country scoring keep using the light 110m atlas;
-// a single country blown up to fill the screen needs far more detail, so this
+// The world map and point-in-country scoring use the complete 50m atlas;
+// a single country blown up to fill the screen needs its own framing, so this
 // reads the 10m atlas once at build time and writes a tiny pre-projected SVG
 // path per country:
 //

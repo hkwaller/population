@@ -123,7 +123,7 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
         }
       />
 
-      <div className="mx-auto max-w-4xl px-5 pb-52 pt-6 md:pt-10">
+      <div className="mx-auto max-w-4xl px-5 pb-[calc(128px+env(safe-area-inset-bottom,0px))] pt-6 md:pt-10">
         <motion.h1
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -236,27 +236,30 @@ function NewGamePageContent({ gameId }: { gameId: string }) {
         </div>
       </div>
 
-      {/* CTA - a live "boarding pass" reads back the quiz you built, then launches it. */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2 bg-pop-paper px-5 pb-[calc(16px+env(safe-area-inset-bottom,0px))] pt-3 shadow-[0_-4px_16px_rgba(33,24,18,0.08)]">
-        <QuizTicket
-          count={amountQuestions}
-          packs={selectedCategories.length}
-          difficulty={diffLabel}
-          ready={canStart}
-        />
-        <div className="pointer-events-auto">
-          <PopButton
-            variant="primary"
-            size="lg"
-            disabled={!canStart}
-            onClick={async () => {
-              if (!canStart) return
-              await send('setup')
-              router.push(`/setup/${refId.current}`)
-            }}
-          >
-            Open the lobby <ArrowRight size={26} />
-          </PopButton>
+      {/* Keep the quiz summary and lobby action together in a compact dock. */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 bg-pop-paper px-5 pb-[calc(12px+env(safe-area-inset-bottom,0px))] pt-3 shadow-[0_-4px_16px_rgba(33,24,18,0.08)]">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 sm:gap-6">
+          <QuizTicket
+            count={amountQuestions}
+            packs={selectedCategories.length}
+            difficulty={diffLabel}
+            ready={canStart}
+          />
+          <div className="pointer-events-auto shrink-0">
+            <PopButton
+              variant="primary"
+              size="md"
+              className="px-4 py-3 text-base sm:px-7 sm:text-xl md:text-2xl"
+              disabled={!canStart}
+              onClick={async () => {
+                if (!canStart) return
+                await send('setup')
+                router.push(`/setup/${refId.current}`)
+              }}
+            >
+              Open the lobby <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            </PopButton>
+          </div>
         </div>
       </div>
 
@@ -601,7 +604,7 @@ function QuizTicket({
       initial={{ opacity: 0, y: 12, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={POP_SPRING}
-      className={`rounded-pill border-4 px-4 py-2 text-base font-black md:text-lg ${
+      className={`min-w-0 rounded-2xl border-4 px-3 py-2 text-sm font-black sm:rounded-pill sm:px-4 sm:text-base md:text-lg ${
         ready
           ? 'border-white text-pop-ink shadow-pop-sm'
           : 'border-dashed border-pop-ink/25 text-pop-ink/75'
@@ -609,11 +612,11 @@ function QuizTicket({
       style={{ background: ready ? POP.paper : 'rgba(255,255,255,0.6)' }}
     >
       {ready ? (
-        <span className="flex items-center gap-1.5">
+        <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
           <TicketStat value={count} label={count === 1 ? 'question' : 'questions'} />
-          <span className="opacity-30">·</span>
+          <span className="hidden opacity-30 sm:inline">·</span>
           <TicketStat value={packs} label={packs === 1 ? 'category' : 'categories'} />
-          <span className="opacity-30">·</span>
+          <span className="hidden opacity-30 sm:inline">·</span>
           <span>{difficulty}</span>
         </span>
       ) : (
@@ -628,7 +631,7 @@ function QuizTicket({
 // the ticket's own mode="wait" presence and freeze it mid-fade.
 function TicketStat({ value, label }: { value: number; label: string }) {
   return (
-    <span className="inline-flex items-baseline gap-1">
+    <span className="inline-flex items-baseline gap-1 whitespace-nowrap">
       <motion.span
         key={value}
         initial={{ y: 8, scale: 0.7, opacity: 0.3 }}

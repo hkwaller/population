@@ -186,14 +186,14 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
     }
   }, [user?.id, preferences?.display_name, fetchPlayerPreferences, updateGame])
 
-  const copyCode = async () => {
+  const copyLink = async () => {
     // Native app: the share sheet with the join link (Messages, WhatsApp...).
     if (isNative) {
       await shareText(`Join my Population game: ${url}`)
       return
     }
     try {
-      await navigator.clipboard.writeText(params.id)
+      await navigator.clipboard.writeText(url)
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     } catch {
@@ -202,7 +202,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
   }
 
   const url =
-    typeof window !== 'undefined'
+    mounted
       ? `${window.location.origin}/join/${params.id}`
       : `/join/${params.id}`
 
@@ -300,7 +300,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
           Get in here!
         </h1>
         <p className="mt-4 text-center text-xl font-bold text-pop-ink/70">
-          Scan the code, or head to the join page and enter it
+          Scan the code, or open the link to join
         </p>
 
         <div className="mt-8 grid grid-cols-1 items-start gap-8 md:mt-12 md:grid-cols-2">
@@ -345,21 +345,21 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
               )}
             </div>
 
-            <div className="mt-5 flex items-center gap-2 md:mt-6">
+            <div className="mt-5 flex w-full min-w-0 items-center gap-2 md:mt-6">
               <span
-                className="rounded-pill border-[3px] border-pop-ink px-5 py-2.5 text-xl font-black text-pop-ink"
+                className="min-w-0 flex-1 break-all rounded-pill border-[3px] border-pop-ink px-5 py-2.5 text-center text-base font-black text-pop-ink"
                 style={{ background: POP.sunshine }}
               >
-                {params.id}
+                {url}
               </span>
               {!tv && (
                 <motion.button
-                  onClick={copyCode}
+                  onClick={copyLink}
                   whileTap={reduce ? undefined : { scale: 0.9 }}
                   aria-label={
-                    isNative ? 'Share invite link' : copied ? 'Code copied' : 'Copy game code'
+                    isNative ? 'Share invite link' : copied ? 'Link copied' : 'Copy invite link'
                   }
-                  className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[3px] border-pop-ink bg-white text-pop-ink transition-colors active:bg-pop-ink active:text-white"
                 >
                   {copied ? (
                     <motion.span

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import { useGame } from '@/hooks/useGame'
 import { useSupabase } from '@/hooks/useSupabase'
-import { asSlider, isInputMode } from '@/lib/utils'
+import { CHOICE_TIME_LIMIT_MS, asSlider, isInputMode } from '@/lib/utils'
 import { LatLng } from '@/app/types'
 import { ChoiceOptions } from '@/app/components/geo/ChoiceOptions'
 import { HigherLower } from '@/app/components/geo/HigherLower'
@@ -53,7 +53,7 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
   const slider = asSlider(currentQuestion)
   const [mapPin, setMapPin] = useState<LatLng | null>(null)
   // Timestamp the question was shown; drives the choice speed bonus + meter.
-  const [startedAt, setStartedAt] = useState(0)
+  const [startedAt, setStartedAt] = useState(-1)
 
   useEffect(() => {
     setMapPin(null)
@@ -245,7 +245,19 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
           )}
           {me?.localPlayer && !myAnswered && currentQuestion?.type === 'choice' && (
             <div className="mb-4">
-              <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+              <SpeedBonusMeter
+                key={currentQuestion.id}
+                startedAt={startedAt}
+                active={!myAnswered}
+                onExpire={() =>
+                  send('answer', {
+                    id: me?.id,
+                    answer: '',
+                    questionId: currentQuestion.id,
+                    elapsedMs: CHOICE_TIME_LIMIT_MS,
+                  })
+                }
+              />
               {isInputMode(currentQuestion, answerModes) ? (
                 <TypedAnswerInput
                   question={currentQuestion}
@@ -275,7 +287,19 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
           )}
           {me?.localPlayer && !myAnswered && currentQuestion?.type === 'odd-one-out' && (
             <div className="mb-4">
-              <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+              <SpeedBonusMeter
+                key={currentQuestion.id}
+                startedAt={startedAt}
+                active={!myAnswered}
+                onExpire={() =>
+                  send('answer', {
+                    id: me?.id,
+                    answer: '',
+                    questionId: currentQuestion.id,
+                    elapsedMs: CHOICE_TIME_LIMIT_MS,
+                  })
+                }
+              />
               <ChoiceOptions
                 options={currentQuestion.options}
                 onSelect={(opt) =>
@@ -291,7 +315,19 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
           )}
           {me?.localPlayer && !myAnswered && currentQuestion?.type === 'higher-lower' && (
             <div className="mb-4">
-              <SpeedBonusMeter startedAt={startedAt} active={!myAnswered} />
+              <SpeedBonusMeter
+                key={currentQuestion.id}
+                startedAt={startedAt}
+                active={!myAnswered}
+                onExpire={() =>
+                  send('answer', {
+                    id: me?.id,
+                    answer: '',
+                    questionId: currentQuestion.id,
+                    elapsedMs: CHOICE_TIME_LIMIT_MS,
+                  })
+                }
+              />
               <HigherLower
                 question={currentQuestion}
                 onSelect={(side) =>
@@ -360,11 +396,7 @@ function GamePageContent({ params, tv }: { params: { slug: string }; tv: boolean
           })
         }}
       />
-      <QuestionResultModal
-        canEndGame={canEndGame}
-        send={tv ? undefined : send}
-        tv={tv}
-      />
+      <QuestionResultModal canEndGame={canEndGame} send={tv ? undefined : send} tv={tv} />
       <HowToPlayModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </PopShell>
   )

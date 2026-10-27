@@ -2,12 +2,13 @@ import { describe, it, expect } from 'vitest'
 
 import { pickDaily, dateKeyUTC, DAILY_SIZE } from './daily'
 import type { TQuestion } from '@/app/types'
+import { categories } from '@/lib/utils'
 
 // A small synthetic bank spanning several categories.
 const bank: TQuestion[] = Array.from({ length: 120 }, (_, i) => ({
   id: `q${i}`,
   type: 'slider',
-  category: ['flags', 'population', 'capitals', 'locate', 'area', 'borders'][i % 6],
+  category: ['flags', 'outline', 'capitals', 'locate', 'build-up', 'borders'][i % 6],
   question: `q${i}`,
   answer: i,
   lower_bound: 0,
@@ -39,6 +40,25 @@ describe('pickDaily', () => {
   it('never picks the same question twice', () => {
     const ids = pickDaily(bank, '2026-07-14').map((q) => q.id)
     expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('excludes every special category from a mixed question bank', () => {
+    const specialQuestions = categories
+      .filter((category) => category.tier === 'special')
+      .map((category) => ({ ...bank[0], id: category.id, category: category.id }))
+
+    const picked = pickDaily([...bank, ...specialQuestions], '2026-07-14', 200)
+
+    expect(picked).toHaveLength(bank.length)
+    expect(picked.every((question) => bank.includes(question))).toBe(true)
+  })
+
+  it('returns no questions when only special categories are available', () => {
+    const specialQuestions = categories
+      .filter((category) => category.tier === 'special')
+      .map((category) => ({ ...bank[0], id: category.id, category: category.id }))
+
+    expect(pickDaily(specialQuestions, '2026-07-14')).toEqual([])
   })
 })
 
