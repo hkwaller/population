@@ -19,7 +19,6 @@ const isPublicRoute = createRouteMatcher([
   '/contact',
   '/privacy',
   '/terms',
-  '/go-ad-free',
   '/sign-in(.*)',
   '/sign-up(.*)',
   // SEO / crawler endpoints (metadata file conventions with no static-asset
@@ -28,9 +27,6 @@ const isPublicRoute = createRouteMatcher([
   '/sitemap.xml',
   '/opengraph-image',
   '/api/party-auth',
-  // Stripe routes enforce their own auth (checkout/portal require a userId;
-  // the webhook is authenticated by its Stripe signature).
-  '/api/stripe/(.*)',
   // Universal links / App Links for the native app (NATIVE.md).
   '/.well-known/(.*)',
   // Checks auth itself and only ever deletes the signed-in user.

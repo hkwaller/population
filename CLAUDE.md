@@ -94,7 +94,7 @@ Auth middleware is **`proxy.ts`** (Next 16's renamed middleware entry), not `mid
 
 ## Native app
 
-iOS + Android builds are a Capacitor shell around the live site (branch `capacitor`), see `NATIVE.md`. Only `lib/native.ts` touches Capacitor; components branch through `useIsNativeApp()` / `useNativePlatform()` (`hooks/useNative.ts`) so the website stays identical. No Stripe purchase UI in the app (store billing rules).
+iOS + Android builds are a Capacitor shell around the live site (branch `capacitor`), see `NATIVE.md`. Only `lib/native.ts` touches Capacitor; components branch through `useIsNativeApp()` / `useNativePlatform()` (`hooks/useNative.ts`) so the website stays identical. Purchases will use native in-app billing; purchase integration is not implemented yet.
 
 ## Gotchas
 

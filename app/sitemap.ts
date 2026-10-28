@@ -1,5 +1,4 @@
 import type { MetadataRoute } from 'next'
-import { ADS_ENABLED } from '@/lib/ads'
 import { SITE_URL } from '@/lib/site'
 
 // Public, indexable routes. Game/room/setup/join routes are per-session and
@@ -14,7 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/about',
     '/contact',
     '/privacy', '/terms',
-    ...(ADS_ENABLED ? ['/go-ad-free'] : []),
   ]
 
   return routes.map((path) => ({

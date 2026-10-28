@@ -8,6 +8,7 @@ import { usePopStore } from '../state'
 import { icons } from '@/app/icons'
 import { TGame } from '../types'
 import { useSupabase } from '@/hooks/useSupabase'
+import { useToast } from '@/hooks/use-toast'
 import { PopShell } from '../components/pop/PopShell'
 import { PopHeader } from '../components/pop/PopHeader'
 import { PopButton } from '../components/pop/PopButton'
@@ -17,6 +18,7 @@ import { PlayerStickerPicker } from '../components/pop/PlayerStickerPicker'
 export default function Profile() {
   const { user, isLoaded } = useUser()
   const { signOut } = useClerk()
+  const { toast } = useToast()
   const { updateGame, preferences } = usePopStore()
   const [games, setGames] = useState<TGame[]>([])
 
@@ -102,14 +104,25 @@ export default function Profile() {
               <PopButton
                 variant="primary"
                 size="md"
+                disabled={loading || !user?.id}
                 onClick={async () => {
+                  if (!user?.id || loading) return
                   const data = await updatePlayerPreferences(
-                    user?.id!,
+                    user.id,
                     colorId,
                     iconName as any,
                     name,
                   )
-                  if (data) updateGame({ preferences: data })
+                  if (data) {
+                    updateGame({ preferences: data })
+                    toast({ title: 'Sticker saved', duration: 3000 })
+                  } else {
+                    toast({
+                      title: 'Couldn’t save your sticker',
+                      description: 'Please try again.',
+                      variant: 'destructive',
+                    })
+                  }
                 }}
               >
                 {loading ? 'Saving…' : 'Save my sticker'}
@@ -203,8 +216,7 @@ export default function Profile() {
 
 /**
  * Two-step account deletion (App Store rule 5.1.1(v)): /api/delete-account
- * cancels any ad-free subscription, deletes the stats and profile, then the
- * Clerk user.
+ * deletes the stats and profile, then the Clerk user.
  */
 function DeleteAccount({ onDeleted }: { onDeleted: () => Promise<void> }) {
   const [step, setStep] = useState<'idle' | 'confirm' | 'busy' | 'failed'>('idle')
@@ -235,8 +247,7 @@ function DeleteAccount({ onDeleted }: { onDeleted: () => Promise<void> }) {
         <div className="w-full max-w-md rounded-card bg-white p-6 shadow-pop-card">
           <p className="text-lg font-black text-pop-ink">Delete your account for good?</p>
           <p className="mt-2 text-sm font-bold text-pop-ink/75">
-            Your profile, stats and game history go, and any ad-free subscription is cancelled. This
-            can&apos;t be undone.
+            Your profile, stats and game history will be deleted. This can&apos;t be undone.
           </p>
           {step === 'failed' && (
             <p className="mt-3 text-sm font-black" style={{ color: POP.coral }}>

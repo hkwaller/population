@@ -5,7 +5,7 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 ## How it works
 
 - **The app opens on `/app`**, a launcher built for the phone (`app/app/AppHome.tsx`: start a party, join or scan, today's daily with streak). `server.url` is `${origin}/app`; the website keeps `/` as its landing page. Logo taps go to `/app` in the app (`useHomeHref`). `CAP_SERVER_URL` is an origin.
-- **Remote URL, not a bundled export.** The app opens population.playam.app in a WKWebView (iOS) or WebView (Android). The game needs its server (PartyServer auth, Clerk `proxy.ts`, Stripe and delete-account routes), and a remote URL means every Vercel deploy reaches the app without a store review. The shell only ships the icon, splash, offline page and native plugins.
+- **Remote URL, not a bundled export.** The app opens population.playam.app in a WKWebView (iOS) or WebView (Android). The game needs its server (PartyServer auth, Clerk `proxy.ts`, and delete-account routes), and a remote URL means every Vercel deploy reaches the app without a store review. The shell only ships the icon, splash, offline page and native plugins.
 - **One codebase.** `lib/native.ts` is the only file that touches Capacitor. Every helper falls back or does nothing in a browser, and components branch only through `useIsNativeApp()` / `useNativePlatform()` (`hooks/useNative.ts`, hydration-safe). The website is unchanged.
 - iOS uses Swift Package Manager (no CocoaPods). Android uses Gradle and needs Java and the Android SDK.
 
@@ -37,8 +37,8 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 - **Storage that survives.** `population-store` (Zustand) and `population-daily` (streak) are mirrored to native Preferences. Reads stay synchronous so hydration is exactly as on the web; NativeBoot copies the native copy back if localStorage was wiped, then rehydrates the store.
 - **Safe area.** `PopShell` pads by `--safe-top` (`env(safe-area-inset-top)`, 0 in a browser) and sets the status bar text colour from each route's background. Plain pages get `body` padding and a parchment strip.
 - **Sign-in.** Google blocks OAuth in app web views, so `globals.css` hides Clerk's Google button and divider under `html.native-app`. Email codes must stay on.
-- **No purchases in the app.** Apple and Google require their own billing for digital goods, so the app hides the "Remove ads" link, the Stripe tiers and the portal on `/go-ad-free` ("Ad-free passes aren't sold in the app"). A pass bought on the web still applies (it's on the Clerk user). Popunders never fire in the app; banners stay.
-- **Account deletion.** "Delete my account" on `/profile` (two steps, web and app). `/api/delete-account` cancels any Stripe subscription, runs `population.delete_identity` (deletes the profile row and solo games, strips the player from shared games), then deletes the Clerk user.
+- **Purchases.** Future digital purchases will use native in-app billing. Purchase integration is not implemented yet, and there is no web purchase page. The provider-independent `adFreeUntil` entitlement remains on the Clerk user.
+- **Account deletion.** "Delete my account" on `/profile` (two steps, web and app). `/api/delete-account` runs `population.delete_identity` (deletes the profile row and solo games, strips the player from shared games), then deletes the Clerk user.
 
 ## Dev loop
 

@@ -62,7 +62,7 @@ Routes span `/`, `/new-game`, `/setup/[id]`, `/join/[slug]`, `/game/[slug]/[id]`
 
 - A working, deployed game with a seeded Supabase question bank (`scripts/schema.sql`, `scripts/migrate-questions.ts`) and generated country data (`lib/geo/countries.json`).
 - Existing marketing/support surfaces: landing (`app/page.tsx`), `how-to-play`, `about`, `highscores`, `profile`, `privacy`, `contact`.
-- **Monetization present in code** (Adsterra ads + a Stripe ad-free upgrade, `/go-ad-free`): this exists in the codebase but the user did **not** mark it as a fixed constraint during init - treat it as current implementation, not a binding commitment.
+- **Monetization:** web ads are currently disabled. Purchases will use native in-app billing; purchase integration is not implemented yet.
 - No confirmed testimonials, user counts, press, or benchmark figures - future work must not fabricate these.
 
 ## Product Principles

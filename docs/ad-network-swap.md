@@ -1,20 +1,20 @@
-> Historical implementation notes. Superseded on 11 October 2026: Adsterra was completely removed. No web ads are active. See `adsense-readiness.md` for the current policy; do not re-enable this provider.
+> Historical implementation notes. Superseded on 11 October 2026: Adsterra was completely removed. No web ads are active. The web purchase flow was also removed on 28 October 2026; purchase-related instructions below are obsolete. See `adsense-readiness.md` and `monetization.md` for current policy; do not re-enable this provider.
 
 # Ad network swap: Adsterra → AdSense (banners) + AdinPlay (rewarded video)
 
-Instructions for Claude Code. Goal: replace the Adsterra banner and popunder with a network-neutral banner (AdSense/AdinPlay) and a rewarded video shown on player devices at end of game. Keep all existing gating, upsell, and cooldown behavior. **Ads must stay OFF behind a feature flag until we're eligible and launched** (see step 5).
+Instructions for Claude Code. Goal: replace the Adsterra banner and popunder with a network-neutral banner (AdSense/AdinPlay) and a rewarded video shown on player devices at end of game. Keep all existing gating and cooldown behavior. **Ads must stay OFF behind a feature flag until we're eligible and launched** (see step 5).
 
 ## Context (already in the repo - do not rebuild)
 
 - `hooks/useAdFree.ts` - Clerk entitlement gate (`adFreeUntil`). Keep as-is.
 - `hooks/useInGameAdsSuppressed.ts` - combines local ad-free + host's `hostAdFree`. Keep as-is.
-- `app/components/AdsterraBanner.tsx` - self-gating 468x60 banner + "Remove ads" upsell. Mounted on `/`, `/highscores`, `/game/[slug]/end`, and `app/components/QuestionResultModal.tsx`.
+- `app/components/AdsterraBanner.tsx` - self-gating 468x60 banner. Mounted on `/`, `/highscores`, `/game/[slug]/end`, and `app/components/QuestionResultModal.tsx`.
 - `app/components/AdsterraPopunder.tsx` - popunder, mounted on the end screen as `{me && <AdsterraPopunder />}` (player devices only), 24h localStorage cooldown.
 - Surface distinction: `me` from `useGame()` is truthy on a player's phone (`/game/[slug]/[id]`) and falsy on the big screen/host (`/game/[slug]`). The end screen `/game/[slug]/end` is shared by both and already keys off `me`.
 
 ## Step 1 - Network-neutral banner
 
-Create `app/components/AdBanner.tsx` that preserves the exact shell of `AdsterraBanner.tsx` (the `useAdFree` gate, the hidden-while-loading behavior, the container ref with `minHeight`, and the "Remove ads" `<Link href="/go-ad-free">`). Only the script/markup injected into the container changes, selected by an env var:
+Create `app/components/AdBanner.tsx` that preserves the exact shell of `AdsterraBanner.tsx` (the `useAdFree` gate, the hidden-while-loading behavior, the container ref with `minHeight`). Only the script/markup injected into the container changes, selected by an env var:
 
 - `NEXT_PUBLIC_AD_NETWORK=adsense` → render a Google AdSense display unit (`<ins class="adsbygoogle" ...>` with `data-ad-client` and `data-ad-slot`, then push to `window.adsbygoogle`). Load the AdSense loader script once, globally, in the root layout (`app/layout.tsx`) guarded by the presence of the client id - not per-banner.
 - `NEXT_PUBLIC_AD_NETWORK=adinplay` → inject AdinPlay's banner tag for the configured unit.
@@ -53,9 +53,9 @@ NEXT_PUBLIC_ADINPLAY_VIDEO_UNIT=xxxxx
 
 Remove the now-unused `NEXT_PUBLIC_ADSTERRA_BANNER_KEY` and `NEXT_PUBLIC_ADSTERRA_POPUNDER_SRC`.
 
-## Step 4 - Keep the entitlement/upsell layer intact
+## Step 4 - Preserve entitlement gates
 
-Do **not** touch `useAdFree`, `useInGameAdsSuppressed`, the Stripe flow, or `/go-ad-free`. The new components must respect the same gates so paid ad-free users and ad-free hosts still see no ads. Preserve the "Remove ads" upsell link in the banner.
+Future ad components must respect the provider-independent ad-free entitlement and host gates. There is no web purchase flow or upsell link; see `monetization.md`.
 
 ## Step 5 - Feature flag (ads off until eligible)
 

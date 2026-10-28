@@ -3,15 +3,11 @@
  *
  * publicMetadata (client-readable via useUser):
  *   adFreeUntil:  ISO timestamp - ads hidden while this is in the future
- *   adFreePlan:   'day' | 'month' | 'year' - informational (latest purchase)
- *   subStatus:    Stripe subscription status, or 'day-pass' for the one-time pass
- * privateMetadata (server only):
- *   stripeCustomerId: the Stripe customer for this user
+ *
+ * Kept independent of the purchase provider for future native in-app purchases.
  */
 export type AdFreePublicMetadata = {
   adFreeUntil?: string
-  adFreePlan?: 'day' | 'month' | 'year'
-  subStatus?: string
 }
 
 /** True when the given metadata grants ad-free right now. */

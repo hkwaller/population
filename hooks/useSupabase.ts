@@ -183,13 +183,19 @@ export function useSupabase() {
             .from('user_preferences')
             .update({ preferred_color: color, icon, display_name: displayName })
             .eq('id', playerId)
+            .select()
+            .single()
         } else {
-          result = await supabase.from('user_preferences').insert({
-            id: playerId,
-            preferred_color: color,
-            icon,
-            display_name: displayName,
-          })
+          result = await supabase
+            .from('user_preferences')
+            .insert({
+              id: playerId,
+              preferred_color: color,
+              icon,
+              display_name: displayName,
+            })
+            .select()
+            .single()
         }
 
         if (result.error) throw result.error
