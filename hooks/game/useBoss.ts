@@ -1,13 +1,5 @@
-import { BossPayload } from '@/app/types'
-import { useUpdateGameState } from '../useUpdateGameState'
-
+import { useRoom } from '@/hooks/partyRoom'
 export const useBoss = () => {
-  const { updateGameState } = useUpdateGameState()
-
-  const boss = async (payload: BossPayload) => {
-    console.log('🚀 ~ boss ~ payload:', payload)
-    await updateGameState({ boss: payload })
-  }
-
-  return { boss }
+  const { send } = useRoom()
+  return { boss: (payload?: string) => send({ type: 'boss', id: payload }) }
 }

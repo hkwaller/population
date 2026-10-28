@@ -13,15 +13,15 @@ import {
   type ScoreOpts,
   type SliderQuestion,
   TQuestion,
-} from '@/app/types'
+} from '../app/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 import { sample } from 'lodash'
-import { animals, adjectives } from '@/app/mockData'
-import { byCca3 } from '@/lib/geo/countries'
+import { animals, adjectives } from '../app/mockData'
+import { byCca3 } from './geo/countries'
 
 export const isDevelopment = process.env.DEVELOPMENT === 'true'
 export const devId = '42-sneaky-geese'

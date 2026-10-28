@@ -27,7 +27,7 @@ const isPublicRoute = createRouteMatcher([
   '/robots.txt',
   '/sitemap.xml',
   '/opengraph-image',
-  '/api/liveblocks-auth',
+  '/api/party-auth',
   // Stripe routes enforce their own auth (checkout/portal require a userId;
   // the webhook is authenticated by its Stripe signature).
   '/api/stripe/(.*)',

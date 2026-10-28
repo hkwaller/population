@@ -1,10 +1,9 @@
-'use client'
 
 import { feature } from 'topojson-client'
 import { geoContains } from 'd3-geo'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 
-import type { LatLng } from '@/app/types'
+import type { LatLng } from '../../app/types'
 
 export type CountryFeature = Feature<Geometry, { name?: string }>
 
@@ -17,6 +16,16 @@ let cache: Promise<Loaded> | null = null
 // Synchronous handle to the resolved geometry, so scoring can point-in-polygon test
 // without awaiting - by answer time the map has already rendered and loaded it.
 let loaded: Loaded | null = null
+
+/** Installs the same atlas in the Worker without a browser fetch. */
+export function installCountryGeometry(topo: any) {
+  const collection = feature(topo, topo.objects.countries) as unknown as Loaded['collection']
+  const byCcn3 = new Map<string, CountryFeature>()
+  for (const f of collection.features) {
+    if (f.id != null) byCcn3.set(String(parseInt(String(f.id), 10)), f as CountryFeature)
+  }
+  loaded = { collection, byCcn3 }
+}
 
 /** Normalise a ccn3 code ("036" / 36) to the map key world-atlas uses ("36"). */
 const ccn3Key = (ccn3: string) => String(parseInt(ccn3, 10))

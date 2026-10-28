@@ -8,13 +8,13 @@ A real-time, multiplayer **geography guessing game**. Answer numeric, multiple-c
 
 - **Live multiplayer** - one player creates a room and shares the link; everyone plays in real time.
 - **Daily** - a shared, deterministic puzzle; everyone worldwide gets the same set for a given day.
-- **Solo / same-device** - pass-and-play on one device.
+- **Solo** - play on your own device. Live rooms allow one player per device.
 - **Custom (AI-generated)** - generate a question set on any topic via the Anthropic API.
 
 ## Stack
 
 - **Next.js 16** (App Router, RSC) + React 18 + TypeScript (strict)
-- **Liveblocks** - realtime room state (multiplayer source of truth)
+- **PartyServer** - realtime room state (multiplayer source of truth)
 - **Zustand** - device-local state (`usePopStore`)
 - **Supabase** - question bank + player/game stats
 - **Clerk** - auth (anonymous guests can play without signing in)
@@ -26,9 +26,12 @@ A real-time, multiplayer **geography guessing game**. Answer numeric, multiple-c
 
 ```sh
 npm install
-cp .env.example .env.local   # then fill in - provision your OWN Liveblocks/Supabase/Clerk projects
+cp .env.example .env.local   # then fill in - provision your OWN PartyServer/Supabase/Clerk projects
+npm run party:dev            # Worker on :1999 (separate terminal)
 npm run dev                  # http://localhost:3000
 ```
+
+Configure the shared room secret and host using **[party/README.md](party/README.md)** before starting multiplayer.
 
 Seed the question bank (after applying `scripts/schema.sql` in your Supabase project):
 
@@ -49,7 +52,7 @@ npm run test:run   # vitest once   (npm test runs in watch mode)
 ## Where things live
 
 - Architecture, conventions, and gotchas: **[CLAUDE.md](CLAUDE.md)**
-- The two-layer state model (Liveblocks vs. Zustand): **[docs/state-store.md](docs/state-store.md)**
+- The two-layer state model (PartyServer vs. Zustand): **[docs/state-store.md](docs/state-store.md)**
 
 ## License
 

@@ -24,7 +24,7 @@ export type State = {
   /**
    * Confidence mode (device-local): slider/map answers also carry a band/radius;
    * narrow-and-right scores big, wide scores little. Owned by Zustand, never synced
-   * from Liveblocks (see hooks/useGame.ts).
+   * from PartyServer (see hooks/useGame.ts).
    */
   confidenceMode: boolean
   /** Native app only: the daily puzzle reminder is scheduled on this device. */

@@ -1,5 +1,5 @@
 import { usePopStore } from '@/app/state'
-import { useUpdateGameState } from '../useUpdateGameState'
+import { useRoom } from '@/hooks/partyRoom'
 import { useSupabase } from '../useSupabase'
 import { useAdFree } from '../useAdFree'
 import { StartPayload } from '@/app/types'
@@ -10,7 +10,6 @@ export const useStart = () => {
   // whole room inherits the perk (see GameState.hostAdFree).
   const { adFree: hostAdFree } = useAdFree()
   const {
-    nextQuestion,
     amountQuestions,
     showQuestions,
     confidenceMode,
@@ -20,7 +19,7 @@ export const useStart = () => {
     getSeenQuestionIds,
     updateGame,
   } = usePopStore()
-  const { updateGameState } = useUpdateGameState()
+  const { send } = useRoom()
   const { fetchQuestionsByCategories } = useSupabase()
 
   const start = async (payload: StartPayload) => {
@@ -34,26 +33,26 @@ export const useStart = () => {
     })
 
     if (sampled.length === 0) {
-      console.error('[useStart] No questions returned from Supabase for categories:', selectedCategories)
+      console.error(
+        '[useStart] No questions returned from Supabase for categories:',
+        selectedCategories,
+      )
       return
     }
 
-    const [first] = sampled
-
     updateGame({ questions: sampled })
 
-    await updateGameState({
-      command: 'start',
-      currentQuestion: first,
-      answeredQuestions: [],
-      skippedQuestions: [],
+    await send({
+      type: 'start',
       questions: sampled,
-      amountQuestions: amountQuestions,
-      showQuestions: showQuestions,
-      confidenceMode: confidenceMode,
-      answerModes: answerModes,
-      selectedCategories: selectedCategories,
-      hostAdFree: hostAdFree,
+      config: {
+        amountQuestions,
+        showQuestions,
+        answerModes,
+        selectedCategories,
+        confidenceMode: confidenceMode,
+        hostAdFree: hostAdFree,
+      },
     })
   }
 

@@ -1,39 +1,22 @@
-
 import { usePopStore } from '@/app/state'
-import { useUpdateGameState } from '../useUpdateGameState'
-
+import { useRoom } from '@/hooks/partyRoom'
 export const useSetup = () => {
-  const {
-    updateGame,
-    amountQuestions,
-    showQuestions,
-    confidenceMode,
-    answerModes,
-    selectedCategories,
-  } = usePopStore()
-  const { updateGameState } = useUpdateGameState()
-
-  const setup = async (payload: undefined) => {
-    updateGame({
-      me: undefined,
-    })
-
-    // Room creation is handled by RoomProvider's initialStorage.
-    // Here we just reset the state for a fresh game (also handles rematch).
-    await updateGameState({
-      command: 'idle',
-      amountQuestions: amountQuestions,
-      currentQuestion: undefined,
-      answeredQuestions: [],
-      skippedQuestions: [],
-      selectedCategories: selectedCategories,
-      showQuestions: showQuestions,
-      confidenceMode: confidenceMode,
-      answerModes: answerModes,
-      players: [],
-      hostAdFree: false,
-    })
+  const { send } = useRoom()
+  return {
+    setup: async (_payload?: undefined) => {
+      const s = usePopStore.getState()
+      s.updateGame({ me: undefined })
+      await send({
+        type: 'setup',
+        config: {
+          amountQuestions: s.amountQuestions,
+          showQuestions: s.showQuestions,
+          confidenceMode: s.confidenceMode,
+          answerModes: s.answerModes,
+          selectedCategories: s.selectedCategories,
+          hostAdFree: false,
+        },
+      })
+    },
   }
-
-  return { setup }
 }

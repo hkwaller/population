@@ -43,8 +43,8 @@ Routes span `/`, `/new-game`, `/setup/[id]`, `/join/[slug]`, `/game/[slug]/[id]`
 
 ## Capabilities and Constraints
 
-- **Stack:** Next.js 16 (App Router, RSC) + React 18 + TypeScript (strict); Liveblocks for authoritative realtime room state; Zustand (`usePopStore`) for device-local state; Supabase (Postgres) for the question bank and player/game stats; Clerk for auth (anonymous guests supported); Tailwind + Radix + Framer Motion (`motion`); Vitest.
-- **Two-layer state model:** room-shared/authoritative state lives in Liveblocks; per-device/per-player config lives in Zustand. The two layers own separate fields and must not be blanket-synced (see `docs/state-store.md`). `hooks/useGame.ts` is the single canonical boundary hook.
+- **Stack:** Next.js 16 (App Router, RSC) + React 18 + TypeScript (strict); PartyServer for authoritative realtime room state; Zustand (`usePopStore`) for device-local state; Supabase (Postgres) for the question bank and player/game stats; Clerk for auth (anonymous guests supported); Tailwind + Radix + Framer Motion (`motion`); Vitest.
+- **Two-layer state model:** room-shared/authoritative state lives in PartyServer; per-device/per-player config lives in Zustand. The two layers own separate fields and must not be blanket-synced (see `docs/state-store.md`). `hooks/useGame.ts` is the single canonical boundary hook.
 - **Scoring** lives in `lib/utils.ts` (`scoreAnswer`, `haversineKm`, `isBullseye`, `MAX_SCORE`); it is closeness-based and shared across all question types.
 - **Question model** is a discriminated union `TQuestion` on `type` (`app/types.ts`).
 - Supabase objects are prefixed `population_`.

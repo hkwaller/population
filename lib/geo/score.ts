@@ -1,7 +1,6 @@
-'use client'
 
-import type { AnswerValue, LatLng, TQuestion } from '@/app/types'
-import { scoreAnswer, asRouteAnswer } from '@/lib/utils'
+import type { AnswerValue, LatLng, TQuestion } from '../../app/types'
+import { scoreAnswer, asRouteAnswer } from '../utils'
 import { guessInCountry } from './geometry'
 import { invalidHopCount } from './adjacency'
 

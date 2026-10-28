@@ -132,6 +132,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
   const { players, preferences, boss, playingOnSameDevice, command } = game
   const [name, setName] = useState('')
   const [isStarting, setIsStarting] = useState(false)
+  const joining = useRef(false)
   const [copied, setCopied] = useState(false)
   const isNative = useIsNativeApp()
   const [howToOpen, setHowToOpen] = useState(false)
@@ -215,7 +216,9 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
     router.push(`/game/${params.id}`)
   }
 
-  const handleAddLocalPlayer = () => {
+  const handleAddLocalPlayer = async () => {
+    if (joining.current || players.some(p => p.localPlayer) || !name.trim()) return
+    joining.current = true
     const id = makeId()
     const player = {
       id,
@@ -224,19 +227,25 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
       localPlayer: true,
       icon: sample(Object.keys(lucideIcons))!,
     }
-    send({ type: 'boss', payload: id })
-    setLocalJoinInfo({ player: player as any, gameId: params.id! })
-    send('join', { ...player, gameId: params.id! })
+    try {
+      await send('join', { ...player, gameId: params.id! })
+      await send({ type: 'boss', payload: id })
+      setLocalJoinInfo({ player: player as any, gameId: params.id! })
+    } finally { joining.current = false }
     setName('')
   }
 
   // Add the signed-in player to the room with a resolved display name + sticker.
-  const joinAsUser = ({ name, color, icon }: { name: string; color: string; icon: string }) => {
+  const joinAsUser = async ({ name, color, icon }: { name: string; color: string; icon: string }) => {
+    if (joining.current || players.some(p => p.localPlayer)) return
+    joining.current = true
     const id = user?.id
     const player = { id: id!, name, color, localPlayer: true, icon }
-    send({ type: 'boss', payload: id })
-    setLocalJoinInfo({ player: player as any, gameId: params.id! })
-    send('join', { ...player, gameId: params.id! })
+    try {
+      await send('join', { ...player, gameId: params.id! })
+      await send({ type: 'boss', payload: id })
+      setLocalJoinInfo({ player: player as any, gameId: params.id! })
+    } finally { joining.current = false }
   }
 
   const handleAddMe = () => {
@@ -441,7 +450,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
               </p>
             )}
 
-            {!tv && user && !players.find((p) => p.id === user.id) && (
+            {!tv && user && !players.some((p) => p.localPlayer) && (
               <motion.button
                 onClick={handleAddMe}
                 whileHover={reduce ? undefined : { y: -2 }}
@@ -470,7 +479,7 @@ function SetupPageContent({ params, tv }: { params: { id: string }; tv: boolean 
                     whileTap={reduce ? undefined : { scale: 0.96, y: 2 }}
                     className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-lg font-black text-pop-ink shadow-pop"
                   >
-                    <UserPlus size={20} /> Add player on this device
+                    <UserPlus size={20} /> Play on this device
                   </motion.button>
                 ) : (
                   <div className="flex max-w-sm items-center gap-2 rounded-xl bg-white p-2 pl-5 shadow-pop">

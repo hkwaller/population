@@ -22,7 +22,7 @@ import { POP } from '../pop/theme'
  *  - `touch-action: none` on the surface, the group, and every item so the
  *    browser never interprets the drag start as a scroll.
  *  - Owns its order as local state and only reports it on Lock, and is memoised on
- *    question id, so the Liveblocks-driven page re-rendering never reaches the
+ *    question id, so the PartyServer-driven page re-rendering never reaches the
  *    list mid-gesture.
  *
  * Order is always presented most-populous-first (see toLargestFirstRank).
@@ -107,7 +107,7 @@ function RankModalInner({
 }
 
 /**
- * Memoised on question id: parent (game page) re-renders from Liveblocks must not
+ * Memoised on question id: parent (game page) re-renders from PartyServer must not
  * re-render the modal mid-drag. `onLock` is intentionally ignored - it closes over
  * values that are stable for the lifetime of a question.
  */

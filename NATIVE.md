@@ -5,7 +5,7 @@ The App Store and Google Play builds are a Capacitor 8 shell around the live sit
 ## How it works
 
 - **The app opens on `/app`**, a launcher built for the phone (`app/app/AppHome.tsx`: start a party, join or scan, today's daily with streak). `server.url` is `${origin}/app`; the website keeps `/` as its landing page. Logo taps go to `/app` in the app (`useHomeHref`). `CAP_SERVER_URL` is an origin.
-- **Remote URL, not a bundled export.** The app opens population.playam.app in a WKWebView (iOS) or WebView (Android). The game needs its server (Liveblocks auth, Clerk `proxy.ts`, Stripe and delete-account routes), and a remote URL means every Vercel deploy reaches the app without a store review. The shell only ships the icon, splash, offline page and native plugins.
+- **Remote URL, not a bundled export.** The app opens population.playam.app in a WKWebView (iOS) or WebView (Android). The game needs its server (PartyServer auth, Clerk `proxy.ts`, Stripe and delete-account routes), and a remote URL means every Vercel deploy reaches the app without a store review. The shell only ships the icon, splash, offline page and native plugins.
 - **One codebase.** `lib/native.ts` is the only file that touches Capacitor. Every helper falls back or does nothing in a browser, and components branch only through `useIsNativeApp()` / `useNativePlatform()` (`hooks/useNative.ts`, hydration-safe). The website is unchanged.
 - iOS uses Swift Package Manager (no CocoaPods). Android uses Gradle and needs Java and the Android SDK.
 

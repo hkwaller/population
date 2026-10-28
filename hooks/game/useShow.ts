@@ -1,14 +1,9 @@
-
-import { useUpdateGameState } from '../useUpdateGameState'
-
+import { useRoom } from '@/hooks/partyRoom'
 export const useShow = () => {
-  const { updateGameState } = useUpdateGameState()
-
-  const show = async (payload: undefined) => {
-    await updateGameState({
-      command: 'show',
-    })
+  const { state, send } = useRoom()
+  return {
+    show: async (_payload?: undefined) => {
+      if (state?.currentQuestion) await send({ type: 'show', questionId: state.currentQuestion.id })
+    },
   }
-
-  return { show }
 }

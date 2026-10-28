@@ -11,7 +11,7 @@ A real-time, multiplayer **geography/trivia guessing game**. Players answer nume
 ## Stack
 
 - **Next.js 16** (App Router, RSC) + React 18 + TypeScript (strict)
-- **Liveblocks** - realtime room state (the multiplayer source of truth)
+- **PartyServer** - realtime room state (the multiplayer source of truth)
 - **Zustand** - device-local state (`usePopStore`)
 - **Supabase** - question bank + player/game stats (Postgres)
 - **Clerk** - auth; anonymous guests play without signing in
@@ -53,11 +53,11 @@ npm run geo:outlines   # writes public/geo/outlines/<ccn3>.json
 
 `hooks/useGame.ts` is the **single canonical boundary hook** - always use it. It merges:
 
-- **Liveblocks (room-shared, authoritative for a live game):** `command`, `currentQuestion`, `players`, `boss`, `answeredQuestions`, `skippedQuestions`, `endedAt`, plus the host's config stamped at `start` (`amountQuestions`, `showQuestions`, `answerModes`, `confidenceMode`, `hostAdFree`) so joining players inherit it. Anything that changes **scoring** must live here - `confidenceMode` is resolved by `resolveConfidenceMode` (`lib/confidenceMode.ts`): the host's stamped value wins in a live room, a device's own preference only applies in the lobby and in daily/solo.
+- **PartyServer (room-shared, authoritative for a live game):** `command`, `currentQuestion`, `players`, `boss`, `answeredQuestions`, `skippedQuestions`, `endedAt`, plus the host's config stamped at `start` (`amountQuestions`, `showQuestions`, `answerModes`, `confidenceMode`, `hostAdFree`) so joining players inherit it. Anything that changes **scoring** must live here - `confidenceMode` is resolved by `resolveConfidenceMode` (`lib/confidenceMode.ts`): the host's stamped value wins in a live room, a device's own preference only applies in the lobby and in daily/solo.
 - **Zustand / `usePopStore` (device-local, per player):** `selectedCategories`, `amountQuestions`, `capAnswers`, `hideQuestions`, `showQuestions`, `me`, `preferences`
 - **Derived (no store):** `showQuestionResultModal`
 
-`useGame` deliberately does **not** sync the Zustand-owned config fields back from Liveblocks - each layer owns its fields. If a field needs to be shared across players, add it to `GameState` in `liveblocks.config.ts` and mutate it via a hook in `hooks/game/`; if it's per-device, keep it in Zustand. Don't reach into Liveblocks storage directly from components. (A prior `useLiveGame` hook blanket-synced everything and wiped category picks on room join - it's been removed. See `docs/state-store.md`.)
+`useGame` deliberately does **not** sync the Zustand-owned config fields back from PartyServer - each layer owns its fields. If a field needs to be shared across players, add it to `GameState` in `lib/partyRoom.ts` and mutate it via a hook in `hooks/game/`; if it's per-device, keep it in Zustand. Don't reach into PartyServer storage directly from components. (A prior `useLiveGame` hook blanket-synced everything and wiped category picks on room join - it's been removed. See `docs/state-store.md`.)
 
 Per-command mutations live in `hooks/game/` (`useAnswer`, `useNext`, `useReveal`, `useStart`, `useEnd`, `useJoin`, `useBoss`, `useRematch`, etc.). A game advances by issuing a `command` (see `CommandType` in `app/types.ts`) through these hooks.
 
@@ -83,15 +83,14 @@ Auth middleware is **`proxy.ts`** (Next 16's renamed middleware entry), not `mid
 
 ### API routes
 
-- `app/api/liveblocks-auth/route.ts` - issues Liveblocks room tokens (Clerk-aware; guests allowed)
+- `app/api/party-auth/route.ts` - issues PartyServer room tokens (Clerk-aware; guests allowed)
 
 ## Conventions
 
 - Import alias: `@/*` → repo root (mirrored in `vitest.config.ts`).
-- Liveblocks storage must be JSON-serializable - that's why `players` is `any[]` in `liveblocks.config.ts` (icons carry symbol indices). Don't "fix" that type without a plan.
 - UI components: shared in `app/components/`, feature-scoped under `app/components/{geo,daily,pop}/`. `pop/` is the current design-system shell (`PopShell`, `PopSlider`, `theme.ts`).
 - Prettier + `.eslintrc.json` (next core-web-vitals) are the formatters - match surrounding style.
-- Env vars: copy `.env.example` → `.env.local`. **Provision your own Liveblocks/Supabase/Clerk projects - do not reuse the originals.** `SUPABASE_SERVICE_ROLE_KEY` is server/script only.
+- Env vars: copy `.env.example` → `.env.local`. **Provision your own PartyServer/Supabase/Clerk projects - do not reuse the originals.** `SUPABASE_SERVICE_ROLE_KEY` is server/script only.
 
 ## Native app
 

@@ -1,20 +1,6 @@
-import { usePopStore } from '@/app/state'
-import { AnswerPayload } from '@/app/types'
-import { useUpdateGameState } from '../useUpdateGameState'
-
+import { useRoom } from '@/hooks/partyRoom'
+import type { AnswerPayload, JoinPayload } from '@/app/types'
 export const useAnswer = () => {
-  const { answerQuestion } = usePopStore()
-  const { updateGameState } = useUpdateGameState()
-
-  const answer = async (payload: AnswerPayload) => {
-    answerQuestion(payload.id, payload.answer, payload.questionId, payload.elapsedMs, {
-      confidence: payload.confidence,
-      cluesUsed: payload.cluesUsed,
-    })
-    // Read players AFTER answerQuestion commits to avoid stale-closure bug
-    const freshPlayers = usePopStore.getState().players
-    await updateGameState({ players: freshPlayers })
-  }
-
-  return { answer }
+  const { send } = useRoom()
+  return { answer: (payload: AnswerPayload) => send({ type: 'answer', payload }) }
 }

@@ -1,26 +1,9 @@
-
-import { usePopStore } from '@/app/state'
-import { useUpdateGameState } from '../useUpdateGameState'
-
+import { useRoom } from '@/hooks/partyRoom'
 export const useEnd = () => {
-  const { players, answeredQuestions, currentQuestion, closeModals } = usePopStore()
-  const { updateGameState } = useUpdateGameState()
-
-  const end = async (payload: undefined) => {
-    closeModals()
-
-    const updatedPlayers = players.map((p) => ({
-      ...p,
-      score: p.answers.reduce((acc, answer) => acc + answer.score, 0),
-    }))
-
-    await updateGameState({
-      answeredQuestions: [...answeredQuestions, currentQuestion!],
-      players: updatedPlayers,
-      command: 'end',
-      endedAt: new Date().toISOString(),
-    })
+  const { state, send } = useRoom()
+  return {
+    end: async (_payload?: undefined) => {
+      if (state?.currentQuestion) await send({ type: 'end', questionId: state.currentQuestion.id })
+    },
   }
-
-  return { end }
 }

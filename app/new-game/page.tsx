@@ -22,7 +22,7 @@ import {
   type AnswerModes,
 } from '@/lib/utils'
 import { useGame } from '@/hooks/useGame'
-import { useStorage } from '@/liveblocks.config'
+import { useStorage } from '@/hooks/partyRoom'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { haptic } from '@/lib/native'
 

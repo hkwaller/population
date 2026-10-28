@@ -1,13 +1,11 @@
 import { usePopStore } from '@/app/state'
-import { TQuestion } from '@/app/types'
-import { useUpdateGameState } from '../useUpdateGameState'
+import { useRoom } from '@/hooks/partyRoom'
 import { useSupabase } from '../useSupabase'
 import { sampleQuestions } from '@/lib/sampleQuestions'
-import { useStorage } from '@/liveblocks.config'
+import { useStorage } from '@/hooks/partyRoom'
 
 export const useRematch = () => {
   const {
-    players,
     amountQuestions,
     showQuestions,
     answerModes,
@@ -16,7 +14,7 @@ export const useRematch = () => {
     getSeenQuestionIds,
     updateGame,
   } = usePopStore()
-  const { updateGameState } = useUpdateGameState()
+  const { send, state: roomState } = useRoom()
   const { fetchQuestionsByCategories } = useSupabase()
   // The host stamped the room's categories at `start`. Any device can issue
   // `rematch` (the boss may have been handed over to a player who never picked
@@ -47,21 +45,19 @@ export const useRematch = () => {
       return
     }
 
-    const [firstQuestion] = sampled as TQuestion[]
-
     updateGame({ questions: sampled })
 
-    await updateGameState({
-      command: 'rematch',
-      answeredQuestions: [],
-      skippedQuestions: [],
-      amountQuestions,
-      showQuestions,
-      answerModes,
+    await send({
+      type: 'rematch',
       questions: sampled,
-      currentQuestion: firstQuestion,
-      selectedCategories,
-      players: players.map((p) => ({ ...p, answers: [], score: 0 })),
+      config: {
+        amountQuestions,
+        showQuestions,
+        answerModes,
+        selectedCategories,
+        confidenceMode: roomState?.confidenceMode ?? false,
+        hostAdFree: roomState?.hostAdFree ?? false,
+      },
     })
   }
 

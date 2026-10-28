@@ -11,6 +11,7 @@ import { GameRoomProvider } from '@/app/providers'
 import { Reconnect } from '@/app/components/Reconnect'
 import { icons } from '@/app/icons'
 import { makeId } from '@/lib/utils'
+import { useRoom } from '@/hooks/partyRoom'
 import { useGame } from '@/hooks/useGame'
 import { PopShell } from '@/app/components/pop/PopShell'
 import { PopHeader } from '@/app/components/pop/PopHeader'
@@ -26,12 +27,14 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
   const [selectedIcon, setSelectedIcon] = useState(icons[0].name)
 
   const { user } = useUser()
+  const { myPlayer } = useRoom()
+  const joining = useRef(false)
   const { game, send, closeModals, resetGame, setLocalJoinInfo } = useGame(params.slug)
   const { preferences, gameStartedAt, command, endedAt, me } = game
   const generatedId = useRef(makeId())
   const router = useRouter()
 
-  function handleJoin({
+  async function handleJoin({
     name,
     icon,
     color,
@@ -42,12 +45,19 @@ function JoinPageContent({ params }: { params: { slug: string } }) {
     color: string
     id: string
   }) {
-    if (!name || !icon || !color) return
+    if (!name || !icon || !color || joining.current) return
+    if (myPlayer) {
+      setLocalJoinInfo({ player: myPlayer, gameId: params.slug })
+      router.push(`/game/${params.slug}/${myPlayer.id}`)
+      return
+    }
+    joining.current = true
     resetGame()
     const player = { name, id, color, icon: icon as any }
     setLocalJoinInfo({ player, gameId: params.slug })
     closeModals()
-    send('join', { gameId: params.slug, ...player })
+    try { await send('join', { gameId: params.slug, ...player }) }
+    finally { joining.current = false }
     router.push(`/game/${params.slug}/${player.id}`)
   }
 

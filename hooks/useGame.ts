@@ -4,7 +4,7 @@
  * Design C: single boundary hook.
  *
  * Source-of-truth split:
- *   Liveblocks (room-shared):  command, currentQuestion, players, boss,
+ *   PartyServer (room-shared):  command, currentQuestion, players, boss,
  *                              answeredQuestions, skippedQuestions, endedAt,
  *                              plus host-chosen config once the game starts
  *                              (amountQuestions, showQuestions, confidenceMode,
@@ -13,10 +13,10 @@
  *                              host's own config picks while still idle
  *   Derived (no store):        showQuestionResultModal
  *
- * The previous useLiveGame synced ALL Liveblocks fields including
+ * The previous useLiveGame synced ALL PartyServer fields including
  * selectedCategories: [] (initial storage value), wiping the user's
  * category selections on every room join. This hook intentionally
- * does NOT sync those Zustand-owned fields from Liveblocks.
+ * does NOT sync those Zustand-owned fields from PartyServer.
  */
 
 import { useEffect, useMemo } from 'react'
@@ -24,7 +24,7 @@ import { useEffect, useMemo } from 'react'
 import { usePopStore } from '@/app/state'
 import { Command, CommandType } from '@/app/types'
 import { resolveConfidenceMode } from '@/lib/confidenceMode'
-import { useStorage } from '@/liveblocks.config'
+import { useStorage } from '@/hooks/partyRoom'
 
 import { useAnswer } from './game/useAnswer'
 import { useBoss } from './game/useBoss'
@@ -43,9 +43,9 @@ export const useGame = (gameId?: string) => {
   const zustand = usePopStore()
   const gameStorage = useStorage((root) => root.game)
 
-  // ── Selective sync: only Liveblocks-authoritative fields ──────────────────
+  // ── Selective sync: only PartyServer-authoritative fields ──────────────────
   // selectedCategories is Zustand-owned and must NOT be overwritten from
-  // Liveblocks initial storage (it would wipe the host's category picks). The
+  // PartyServer initial storage (it would wipe the host's category picks). The
   // host-chosen game config below is synced once the game leaves 'idle'.
   useEffect(() => {
     if (!gameStorage) return
@@ -53,16 +53,16 @@ export const useGame = (gameId?: string) => {
     const patch: Parameters<typeof zustand.updateGame>[0] = {
       command: gameStorage.command,
       currentQuestion: gameStorage.currentQuestion!,
-      players: gameStorage.players as any,
+      players: gameStorage.players,
       boss: gameStorage.boss,
       answeredQuestions: gameStorage.answeredQuestions,
       skippedQuestions: gameStorage.skippedQuestions,
-      questions: gameStorage.questions as any,
+      questions: gameStorage.questions,
       endedAt: gameStorage.endedAt,
       gameId: gameId,
     }
 
-    // Sync host-chosen config from Liveblocks once game has started, so joining
+    // Sync host-chosen config from PartyServer once game has started, so joining
     // players inherit it. Excluded during 'idle' so the host's own new-game
     // selections aren't overwritten by initial storage.
     if (gameStorage.command !== 'idle') {
@@ -160,7 +160,7 @@ export const useGame = (gameId?: string) => {
 
   // ── Merged game object ─────────────────────────────────────────────────────
   const game = {
-    // Liveblocks-owned (synced above)
+    // PartyServer-owned (synced above)
     command: zustand.command,
     currentQuestion: zustand.currentQuestion,
     players: zustand.players,
@@ -172,7 +172,7 @@ export const useGame = (gameId?: string) => {
     showQuestions: zustand.showQuestions,
     // Room-wide once the game has started; see resolveConfidenceMode.
     confidenceMode,
-    // Zustand-owned (never overwritten by Liveblocks)
+    // Zustand-owned (never overwritten by PartyServer)
     selectedCategories: zustand.selectedCategories,
     answerModes: zustand.answerModes,
     me: zustand.me,

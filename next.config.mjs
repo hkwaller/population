@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: ['127.0.0.1'],
   // PostHog reverse proxy (see instrumentation-client.ts)
   skipTrailingSlashRedirect: true,
   async rewrites() {

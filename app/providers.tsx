@@ -2,10 +2,7 @@
 
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
-import { LiveObject } from '@liveblocks/client'
-
-import { RoomProvider } from '@/liveblocks.config'
-import type { CommandType } from '@/app/types'
+import { PartyRoomProvider } from '@/hooks/partyRoom'
 
 if (typeof window !== 'undefined') {
   // posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
@@ -27,29 +24,8 @@ export function GameRoomProvider({
   children: React.ReactNode
 }) {
   return (
-    <RoomProvider
-      id={gameId}
-      initialPresence={{ playerId: null }}
-      initialStorage={{
-        game: new LiveObject({
-          command: 'idle' as CommandType,
-          boss: undefined,
-          currentQuestion: undefined,
-          answeredQuestions: [],
-          skippedQuestions: [],
-          questions: [],
-          amountQuestions: 10,
-          showQuestions: false,
-          confidenceMode: false,
-          answerModes: {},
-          selectedCategories: [],
-          players: [],
-          endedAt: undefined,
-          hostAdFree: false,
-        }),
-      }}
-    >
+    <PartyRoomProvider key={gameId} code={gameId}>
       {children}
-    </RoomProvider>
+    </PartyRoomProvider>
   )
 }

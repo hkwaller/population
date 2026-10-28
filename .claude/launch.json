@@ -36,6 +36,15 @@
         "--strictPort"
       ],
       "port": 4174
+    },
+    {
+      "name": "party",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "party:dev"
+      ],
+      "port": 1999
     }
   ]
 }

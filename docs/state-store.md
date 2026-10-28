@@ -4,15 +4,13 @@ This document explains the two-layer state model. `app/state.ts` links here.
 
 ## Two sources of truth
 
-State is split deliberately. **Consume everything through `hooks/useGame.ts`** - it's the single boundary hook that merges both layers. Don't read Liveblocks storage or the Zustand store directly in components.
+State is split deliberately. **Consume everything through `hooks/useGame.ts`** - it's the single boundary hook that merges both layers. Don't read PartyServer storage or the Zustand store directly in components.
 
-### 1. Liveblocks - room-shared, authoritative during a live game
+### 1. PartyServer - room-shared, authoritative during a live game
 
-Defined in `liveblocks.config.ts` (`GameState`). This is what every player in a room sees and what the host mutates to drive the game forward:
+Defined in `lib/partyRoom.ts` (`GameState`). This is what every player in a room sees and what the host mutates to drive the game forward:
 
 `command`, `boss`, `currentQuestion`, `answeredQuestions`, `skippedQuestions`, `players`, `endedAt` (plus the game config fields the host sets at setup: `amountQuestions`, `showQuestions`, `answerModes`, `confidenceMode`, `hostAdFree`).
-
-Liveblocks storage must be JSON-serializable - that's why `players` is typed `any[]` (player icons carry symbol indices). Don't tighten that type without a serialization plan.
 
 ### 2. Zustand (`usePopStore`) - device-local, per player
 
@@ -24,14 +22,18 @@ Defined in `app/state.ts`. Persisted to `localStorage` under the key **`populati
 
 ## The bug this split fixes
 
-An earlier `useLiveGame` hook (now removed) synced **all** Liveblocks fields into Zustand on every render, including `selectedCategories: []` (the initial room storage value). Result: joining a room wiped the user's category selections.
+An earlier boundary hook synced **all** room fields into Zustand on every render, including `selectedCategories: []` (the initial room storage value). Result: joining a room wiped the user's category selections.
 
-`useGame` fixes this by **not** syncing the Zustand-owned config fields back from Liveblocks. Each layer owns its fields:
+`useGame` fixes this by **not** syncing the Zustand-owned config fields back from PartyServer. Each layer owns its fields:
 
-- Room state flows Liveblocks → `useGame` → components.
+- Room state flows PartyServer → `useGame` → components.
 - Local config flows `usePopStore` → `useGame` → components, and is written straight to Zustand.
 
-**Do not reintroduce a blanket sync.** If a field needs to be shared across players, move it into `GameState` in `liveblocks.config.ts` and mutate it via a hook in `hooks/game/`. If it's per-device, keep it in Zustand.
+**Do not reintroduce a blanket sync.** If a field needs to be shared across players, move it into `GameState` in `lib/partyRoom.ts` and mutate it via a hook in `hooks/game/`. If it's per-device, keep it in Zustand.
+
+The Worker in `party/server.ts` validates each action through `parseAction` and applies it with `applyAction` before persisting and broadcasting the full room. `owners` binds each seat to its authenticated connection identity, with one seat per device. The room creator and the player crowned as boss can issue round controls; players can only submit their own answers. Scoring runs on the server, including map-border and route validation.
+
+The client provider in `hooks/partyRoom.tsx` refreshes signed tickets on reconnect. Joining and answering are optimistic; navigation waits for a server acknowledgement. No component can submit an arbitrary room-state patch.
 
 ## Advancing the game
 

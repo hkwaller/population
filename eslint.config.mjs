@@ -3,7 +3,7 @@
 //
 // Ruleset intentionally matches the old `.eslintrc.json` (`next/core-web-vitals`
 // only). We do NOT add `eslint-config-next/typescript` - it errors on the
-// `any` types this project uses on purpose (e.g. Liveblocks `players: any[]`).
+// Legacy application boundary types still use `any` in a few places.
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
 
 const config = [

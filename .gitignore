@@ -44,3 +44,7 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# Cloudflare local secrets and runtime state
+.dev.vars
+.wrangler/

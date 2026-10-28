@@ -12,14 +12,14 @@ import { POP } from '../pop/theme'
 /**
  * Drag-to-reorder list for a rank question (top = position 1). Owns its order as
  * LOCAL state on purpose: the parent (a live game page) re-renders on every
- * Liveblocks update, and a *controlled* Reorder resets the drag mid-gesture when
+ * PartyServer update, and a *controlled* Reorder resets the drag mid-gesture when
  * new `values` arrive - the item snaps back. Local state keeps the drag smooth;
  * the current order is mirrored up via `onChange` for whatever commits it (the
  * Dock's Lock, or a standalone button). Re-inits when `resetKey` (the question id)
  * changes. `tone` sets the helper-text colour for dark vs light backgrounds.
  *
  * Wrapped in `memo` with a resetKey-based comparator: the live game pages that
- * host this list re-render constantly (Liveblocks presence/answers), and any of
+ * host this list re-render constantly (PartyServer presence/answers), and any of
  * those re-renders landing mid-drag would drop the gesture and snap the tile
  * back. We deliberately ignore `items`/`onChange` identity - `items` is only read
  * when `resetKey` changes (a new question) and `onChange` closes over a stable
