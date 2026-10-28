@@ -16,7 +16,7 @@ export const LoginAndProfile = () => {
 
   if (!isSignedIn) {
     return (
-      <SignInButton mode="modal">
+      <SignInButton withSignUp mode="modal">
         <button className="bg-black text-white text-md font-bold py-3 px-4 mb-8 border-4 border-white transform hover:transition-transform mt-8">
           LOG IN
         </button>

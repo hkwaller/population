@@ -20,8 +20,8 @@ const isPublicRoute = createRouteMatcher([
   '/privacy',
   '/terms',
   '/go-ad-free',
-  '/sign-in',
-  '/sign-up',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
   // SEO / crawler endpoints (metadata file conventions with no static-asset
   // extension are otherwise caught by the matcher and gated by Clerk).
   '/robots.txt',

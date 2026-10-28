@@ -93,6 +93,8 @@ export default function RootLayout({
           ]}
         />
         <ClerkProvider
+          signInUrl="/sign-in"
+          signUpUrl="/sign-in"
           appearance={{
             variables: {
               colorPrimary: POP.cobalt,

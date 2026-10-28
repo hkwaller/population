@@ -59,7 +59,7 @@ export function PopAuth({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
 
   if (!isSignedIn) {
     return (
-      <SignInButton mode="modal">
+      <SignInButton withSignUp mode="modal">
         <motion.button
           whileHover={{ y: -2 }}
           className={cn(

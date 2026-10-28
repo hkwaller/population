@@ -201,7 +201,7 @@ function GoAdFreeContent() {
                       {busy === tier.plan ? 'Loading…' : 'Choose'}
                     </PopButton>
                   ) : (
-                    <SignInButton mode="modal">
+                    <SignInButton withSignUp mode="modal">
                       <PopButton variant="primary" size="lg">
                         Sign in to buy
                       </PopButton>
